@@ -1,0 +1,113 @@
+<apex:page tabStyle="Contact" title="Customers - Search Duplicates" id="searchdupeups"  standardController="Contact" extensions="dealer.ContactsDuplicateSearch">
+	<script>
+	function dateValidation(){
+        alert ('You should select two or three records for merge');    
+    }
+	</script>
+	<apex:sectionHeader title="Customers" subtitle="Search for Duplicates"/>
+	<apex:form id="sF">
+		<apex:pageBlock mode="maindetail">
+			<apex:pageBlockButtons >
+				<apex:commandButton value="Find Duplicates" action="{!FindDupes}"/>
+				<!--  <apex:commandButton value="Create New Customer and Sales Up" action="{!noMatch}" />  -->
+				<apex:commandButton value="Cancel" action="{!Cancel}" />
+			</apex:pageBlockButtons>
+			<apex:pageMessage summary="Possible Matches found for this Customers" severity="warning" strength="3" rendered="{!IF(OR(searchCustomerSize>0, searchUpsSize>0), true, false)}"/>
+       		<apex:pageMessages />
+			<apex:pageblocksection columns="1">
+				<apex:pageBlockSectionItem >
+					<apex:outputLabel for="firstName" value="First Name" />
+					<apex:outputPanel >
+						<apex:inputCheckbox value="{!searchOptions.inFirstName}" />
+						<apex:inputText value="{!searchOptions.firstName}" id="firstName" />
+					</apex:outputPanel>
+				</apex:pageBlockSectionItem>
+				<apex:pageBlockSectionItem >
+					<apex:outputLabel for="lastName" value="Last Name" />
+					<apex:outputPanel >
+						<apex:inputCheckbox value="{!searchOptions.inLastName}" />
+						<apex:inputText value="{!searchOptions.lastName}" id="lastName" />
+					</apex:outputPanel>
+				</apex:pageBlockSectionItem>
+				<apex:pageBlockSectionItem >
+					<apex:outputLabel for="phone" value="Phone" />
+					<apex:outputPanel >
+						<apex:inputCheckBox value="{!searchOptions.inPhone}" id="phone"/>
+						<apex:inputText value="{!searchOptions.upPhone}" />
+					</apex:outputPanel>
+				</apex:pageBlockSectionItem>
+				<apex:pageBlockSectionItem >
+					<apex:outputLabel for="mobile" value="Mobile" />
+					<apex:outputPanel >
+						<apex:inputCheckBox value="{!searchOptions.inMobile}" id="mobile" />
+						<apex:inputText value="{!searchOptions.upMobile}" />
+					</apex:outputPanel>
+				</apex:pageBlockSectionItem>				
+				<apex:pageBlockSectionItem >
+					<apex:outputLabel for="email" value="Email" />
+					<apex:outputPanel >
+						<apex:inputCheckBox value="{!searchOptions.inEmail}" id="email" />
+						<apex:inputText value="{!searchOptions.upEmail}" />
+					</apex:outputPanel>
+				</apex:pageBlockSectionItem>				
+				
+			</apex:pageblocksection>
+		</apex:pageBlock>
+		
+		<apex:pageBlock title="Matching Customers" tabStyle="Contact">
+		<apex:pageBlockButtons >
+				<apex:commandButton value="Merge Duplicates" action="{!mergeRecords}"
+				 oncomplete="dateValidation()">
+				</apex:commandButton>
+			</apex:pageBlockButtons>
+			<apex:pageBlockTable value="{!activeContacts}" var="scr">
+			
+				<apex:column headerValue="Action">
+					
+				<apex:inputCheckbox value="{!scr.isChecked}" styleClass="selectedId"/>
+			
+				</apex:column>
+				<apex:column ><apex:facet name="header">Customer</apex:facet><apex:outputLink value="/{!scr.JunctionRecord.Id}"><apex:outputField value="{!scr.JunctionRecord.Name}" /></apex:outputLink></apex:column>
+				<apex:column headerValue="Phone" value="{!scr.JunctionRecord.Phone}" />
+				<apex:column headerValue="Mobile" value="{!scr.JunctionRecord.MobilePhone}" />
+				<apex:column headerValue="Email" value="{!scr.JunctionRecord.Email}" />
+				<apex:column >
+				
+					<apex:facet name="header">Address</apex:facet>
+					<apex:outputText rendered="{!NOT(ISBLANK(scr.JunctionRecord.MailingStreet))}">
+					<apex:outputField value="{!scr.JunctionRecord.MailingStreet}" /><br />
+					<apex:outputField value="{!scr.JunctionRecord.MailingCity}" />,&nbsp;
+					<apex:outputField value="{!scr.JunctionRecord.MailingState}" />&nbsp;
+					<apex:outputField value="{!scr.JunctionRecord.MailingPostalCode}" />
+					</apex:outputText> 
+				</apex:column>
+			</apex:pageBlockTable>
+		</apex:pageBlock>
+		<!--   
+		<apex:pageBlock title="Matching Ups">
+		<apex:pageBlockButtons >
+				<apex:commandButton value="Merge Duplicates" action="{!mergeRecords}"
+				 oncomplete="dateValidation()">
+				</apex:commandButton>
+			</apex:pageBlockButtons>
+			<apex:pageBlockTable value="{!activeSalesup}" var="sur">
+			<apex:column >
+			<apex:inputCheckbox value="{!sur.isChecked}" styleClass="selectedId"/>
+			</apex:column>
+			
+				<apex:column >
+					<apex:facet name="header">Sales Up</apex:facet>
+					<apex:outputLink value="/{!sur.junctionRecord.Id}" styleClass="btn"><apex:outputField value="{!sur.junctionRecord.Name}" /></apex:outputLink>
+				</apex:column>
+				<apex:column headerValue="Lead Date" value="{!sur.junctionRecord.Lead_Date__c}" />
+				<apex:column headerValue="Make" value="{!sur.junctionRecord.Make__c}" />
+				<apex:column headerValue="Model" value="{!sur.junctionRecord.Model__c}" />
+				<apex:column headerValue="Salesperson 1" value="{!sur.junctionRecord.Salesperson_1__c}" />
+				<apex:column headerValue="Status" value="{!sur.junctionRecord.Lead_Status__c}" />
+				<apex:column headerValue="Type" value="{!sur.junctionRecord.Lead_Type__c}" />
+			</apex:pageBlockTable>
+		</apex:pageBlock>
+		-->
+		<apex:pageBlock id="hiddenBlock" rendered="false"></apex:pageBlock>
+	</apex:form>
+</apex:page>

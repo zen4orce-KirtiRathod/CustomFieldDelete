@@ -1,0 +1,16 @@
+<apex:page standardController="dealer__Service_Appointment__c" extensions="dealer.ConvertSAtoRO" action="{!autorun}">
+<head>
+<script> $.noConflict();</script>
+<script>
+window.onload = new function() 
+      { 
+      	returnRO();
+      };
+      function returnRO()
+      {
+      	window.location = '/{!RepairOrderID}'
+     	
+      }
+</script>
+</head>
+</apex:page>

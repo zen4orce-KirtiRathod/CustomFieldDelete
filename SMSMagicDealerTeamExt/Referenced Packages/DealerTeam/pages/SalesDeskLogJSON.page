@@ -1,0 +1,3 @@
+<apex:page contentType="text/json" applyHtmlTag="false" applyBodyTag="false" showChat="false" showHeader="false" controller="dealer.SalesDeskLogV2">
+    {!deskLogJSON}
+</apex:page>

@@ -1,0 +1,199 @@
+<apex:page id="printPartsLabel" standardController="dealer__Parts_Inventory__c" extensions="dealer.DYMOLabelWriter" title="Label Print" tabStyle="dealer__Parts_Inventory__c">
+    <apex:includeScript value="{!$Resource.dealer__DYMOJS}"/>
+    
+    <div style="padding-bottom:6px">
+    	<!--
+        <apex:outputLink value="{!URLFOR($Action.Contact.View, $CurrentPage.parameters.id)}">
+            Back to {!paObject.Contact.FirstName} {!paObject.Contact.LastName} detail page
+        </apex:outputLink>
+       	-->
+    </div>
+    
+    <apex:form id="dl">
+        <apex:inputhidden id="PreviewImageSrc" value="{!paObject.imageSrc}"/>
+  
+        <apex:pageBlock id="EditorBlock" title="Part Label">
+        	<apex:pageBlockButtons location="bottom" id="actionButtons">	
+            <apex:commandButton id="ButtonUpdate" value="Update" rerender="PreviewPanel"          
+                onclick="updatePreview('{!paObject.addressLabelXml}')"/>
+
+
+            <apex:commandButton value="Print Label"
+                title="Prints label on selected DYMO LabelWriter printer"
+                onclick="printLabel('{!paObject.addressLabelXml}');"/>
+        	</apex:pageBlockButtons>
+        	<apex:pageBlockSection >
+        		<apex:outputText id="partName" value="{!paObject.partFullName}" label="Part#" />
+        		<apex:outputText id="partDescription" value="{!paObject.partDescription}" label="Description" />
+        	</apex:pageBlockSection>
+        </apex:pageBlock>
+
+        <apex:pageBlock id="PrintersBlock" title="Select Printer">
+        	<apex:pageBlockSection id="printSection">
+            	<apex:selectList id="Printers" size="1" label="Printer" onchange="setDefaultPrinter();" />
+            	<apex:inputText value="{!paObject.labelQuantity}" id="labelCount" label="Label Quantity" html-type="number" />
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+
+        <script type="text/javascript">
+            var PrintersCtrl = document.getElementById("{!$Component.PrintersBlock.printSection.Printers}");
+            var partName = '{!paObject.partFullName}';
+            var partDesc = '{!paObject.partDescription}';
+            // var BarcodeCheckbox = document.getElementById("{!$Component.EditorBlock.BarcodeCheckbox}");
+            var PreviewImageSrc = document.getElementById("{!$Component.PreviewImageSrc}");
+            var ButtonUpdate = document.getElementById("{!$Component.EditorBlock.actionButtons.ButtonUpdate}");
+            var labelQTY = document.getElementById("{!$Component.PrintersBlock.printSection.labelCount}");
+        </script>
+   
+    </apex:form>
+    
+    <apex:outputPanel id="PreviewPanel">
+    	<div>
+    		<b>Label Preview</b>
+    		<br />
+    		<br />
+    	</div>
+        <div>
+            <apex:image id="previewImage" url="{!paObject.imageSrc}"/>
+        </div>
+    
+            <!--
+            Name: {!paObject.Contact.FirstName} {!paObject.Contact.LastName}<br/>
+            Address: {!paObject.formattedAddress}<br/>
+            Print barcode: {!paObject.printBarcode}<br/>
+            -->
+ 
+    </apex:outputPanel>    
+ 
+    <script type="text/javascript">
+    
+        function enumPrinters()
+        {
+            var plist = new Array();
+            var printers = dymo.label.framework.getPrinters();
+            if (printers.length == 0)
+            {
+                alert("No DYMO printers are installed. Install DYMO printers.");
+            }
+            else
+            {
+                for (var i = 0; i < printers.length; i++)
+                {
+                    if (printers[i].printerType == "LabelWriterPrinter")
+                        plist[i] = printers[i].name;
+                }             
+            }
+            return plist;
+        }
+        
+        function updatePreview(template)
+        {
+            try
+            {
+                var partNameLabel = partName;
+                var partDescLabel = partDesc;
+                var label = dymo.label.framework.openLabelXml(template);
+
+                label.setObjectText('PARTNAME', partDescLabel);
+                label.setObjectText('BARCODE', partNameLabel);
+                // barcode - show it or not
+                /*
+                if (!BarcodeCheckbox.checked)
+                    label.setAddressBarcodePosition(0, dymo.label.framework.AddressBarcodePosition.Suppress);
+                */
+                var pngData = label.render();
+                PreviewImageSrc.value = "data:image/png;base64," + pngData;
+            }
+            catch(e)
+            {
+
+                alert(e.message);
+            }
+        }
+        
+        function printLabel(template)
+        {
+            try
+            {
+                var partNameLabel = partName;
+                var partDescLabel = partDesc;
+                var printer = PrintersCtrl.value;
+                var qty = labelQTY.value;
+                var label = dymo.label.framework.openLabelXml(template);
+                 
+                label.setObjectText('PARTNAME', partDescLabel);
+                label.setObjectText('BARCODE', partNameLabel);
+
+                if(qty==1) {
+                	label.print(printer);
+                } else {
+                	// For Loop the print job...
+                	for (i = 0; i <= qty; i++) { 
+					    label.print(printer);
+					}
+                }
+            }
+            catch(e)
+            {
+                alert(e.message);
+            }
+        }
+
+        function setDefaultPrinter() {
+        	// Get selected printer name
+        	var printerName = PrintersCtrl.value;
+        	// Save to the application cache using VFRemote
+        	dealer.DYMOLabelWriter.setDefaultPrinter(printerName, function(result, event) {
+                if(event.status) {
+                    // Action Results
+                    //console.log(result); 
+                }
+            });
+
+        }
+
+		function setSelectedIndex(s, v) {
+			for ( var i = 0; i < s.options.length; i++ ) {
+				if ( s.options[i].text == v ) {
+				s.options[i].selected = true;
+				}
+			}
+		}        
+     
+        window.onload = new function()
+        {
+            var plist = enumPrinters();
+
+            var defaultPrinter = '{!paObject.defaultPrinterName}';
+
+            /*
+            if(defaultPrinter != '') {
+            	console.log('Settings defaultPrinter to '+defaultPrinter);
+            	var option_default = document.createElement("OPTION");
+            	option_default.text = defaultPrinter;
+            	option_default.value= defaultPrinter;
+            	PrintersCtrl.options.add(option_default);
+            }           
+            
+			*/
+            if (plist.length > 0)
+            {
+                // populate combo-box control with a list of printers
+
+                for (var i = 0; i < plist.length; i++)
+                {
+                    var option = document.createElement("OPTION");
+                    option.text = plist[i];
+                    option.value = plist[i];
+                    PrintersCtrl.options.add(option);
+                }
+            }
+            ButtonUpdate.click();
+
+            if(defaultPrinter!='') {
+            	setSelectedIndex(PrintersCtrl, defaultPrinter);
+           	}            
+        }
+
+    </script>
+</apex:page>

@@ -1,0 +1,26 @@
+<apex:page standardController="dealer__Sales_Up__c" recordSetVar="SalesUps" extensions="dealer.RoundRobinSalesUps" > 
+	<apex:sectionHeader title="Re-Assign Sales Ups" subtitle="Re-assign sales ups to another associate"/>
+	<apex:form >
+	<apex:pageMessages />
+		<apex:pageBlock >
+			<apex:pageBlockButtons >
+                <apex:commandButton action="{!ReAssign}" value="Re-Assign to Selected"/>
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection columns="1">
+            	<apex:outputText >You are about to re-assign <b>{!HTMLENCODE(TEXT(reassignUpsListSize))}</b> Sales Ups</apex:outputText>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection > 
+            	<apex:inputCheckBox value="{!updateContactRecord}" label="Set Salesperson to Customer Owner?"/>
+            	<apex:inputCheckBox value="{!notifyRecipient}" label="Email me a list of changes." />
+            </apex:pageBlockSection>
+			<apex:pageBlockSection columns="1">
+			<c:MultiSelectPickList leftLabel="Available Users" 
+		                leftOptionsAttr="{!allUsers}"
+		                rightLabel="Selected Users"
+		                rightOptionsAttr="{!selectedUsers}"
+		                size="{!HTMLENCODE(TEXT(userListSize))}"
+		                width="150px"/>
+		    </apex:pageBlockSection>
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>

@@ -1,0 +1,320 @@
+<apex:page controller="smagicinteract.SMSMagicConfigController" tabStyle="SMS_Magic_Settings__tab" >
+<apex:includeScript value="/soap/ajax/15.0/connection.js"/>
+<apex:includeScript value="/soap/ajax/15.0/apex.js"/>
+<apex:includeScript value="{!$Resource.smagicinteract__BulkSMSJS}"/>
+<apex:includeScript value="{!$Resource.smagicinteract__jquery}" />
+  
+<script >
+
+   $(document).ready(function(){    
+   updatemeter();
+   });
+
+    function collapseSection(blockId){
+   
+        var divDisplayVal =  document.getElementById(blockId).style.display;
+        if(divDisplayVal == "block")
+            document.getElementById(blockId).style.display = "none";
+        if(divDisplayVal == "none")
+            document.getElementById(blockId).style.display = "block";
+    }
+           
+    function updatemeter() { 
+
+     var stepComplete = document.getElementById('{!$Component.stepcomplete}').innerHTML;              
+     if( stepComplete == 6 ) { 
+       document.getElementById('progressbar-container').style.visibility = "hidden" ; 
+     }  
+     else {                                   
+       document.getElementById('stepinfotext').innerHTML = stepComplete ;
+       var complete = (stepComplete/6)*150 ;
+       document.getElementById('iprogressbar').style.width = complete + 'px'  ;                
+     }              
+    }
+    
+    function toggle(elmchkbox) {
+        elmchkbox.checked = false;
+    }
+
+    function confirmRest(){
+        var confirmMessage = "It will reset your all security settings.\nAfter refresting this you need to register again to use system.";
+        var confirmResult = confirm(confirmMessage);
+        console.log("confirmResult : "+confirmResult);
+        if(confirmResult == true){
+            refreshFunction();
+        }
+        return confirmResult;
+    }
+    
+</script>
+
+<style type="text/css">
+        .custPopup{
+            background-color: white;
+            border-width: 1px;
+            border-style: solid;
+            border-color: #000000;
+            z-index: 9999;
+            padding:10px;
+            position: absolute;
+            width: 350px;
+            left:40%;
+            top:250px;
+        }
+        .popupBackground{
+            background-color:black;
+            opacity: 0.20;
+            filter: alpha(opacity = 20);
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 9998;
+        }
+        
+        #progressbar {
+          background-color: #fff; 
+          border: solid 1px grey;
+          padding: 0px;
+          width:150px;    
+        }
+        
+        #iprogressbar {
+           background-color: #2AABAB ;
+           width: 00px; /* Adjust with JavaScript */
+           height: 15px;   
+        }    
+
+</style>
+
+<c:Expired_Message_Component isPanelVisible="{! NOT(isVisible) }"/>
+	<apex:pageMessages id="pageMsg" escape="false"/>
+<apex:outputPanel rendered="{!isVisible}" > 
+<apex:sectionHeader title="{!$Label.SMHOME_PAGE_SECTION_TITLE} - {!$User.FirstName} {!$User.LastName}" subtitle="{!$Label.SMS_MAGIC_CONFIGURATION_LABEL}" />
+
+<apex:outputtext value="{!stepComplete}" id="stepcomplete"   style="display:none"   /> 
+		<div id="progressbar-container" >
+       			<a href="/apex/SetupWizard">
+        			<div id="progressbar" style="float:right;width:150px">
+            			<div id="iprogressbar"></div>
+        			</div>
+        			<span style="float:right;margin-right:20px;vertical-align:middle;"> {!$Label.SETP_WIZRD_STEPS_COMPLTN_MSG} <span id="stepinfotext"></span> {!$Label.SETP_WIZRD_STEPS_COMPLTN_MSG1}</span>&nbsp;&nbsp; 
+        			<div style="clear:both;"></div>
+       		 	</a>
+    		</div>
+       <br/>          
+           
+<apex:pageBlock id="main">
+
+    <apex:pageBlockButtons location="top">
+    <apex:form >
+
+<apex:outputPanel styleClass="popupBackground" rendered="{!isConfigurationDone}" />
+<apex:outputPanel styleClass="custPopup" layout="block" rendered="{!isConfigurationDone}"  >
+    <div id="popupMessageHeader" style="width:100%; height:10%; background-color:#8BBEC1;">
+           <div title="" style="color:white; text-align:left; font-family:sans-serif; font-weight:bold; vertical-align: middle; padding-top: 5px; padding-bottom: 5px; padding-left: 5px;"> {!$Label.PENDING_CONFIGURATION_MSG_HEADER}  </div> 
+    </div> 
+    <br /><br />
+    <apex:outputPanel style="font-size:15px;">
+            {!$Label.PENDING_CONFIGURATION_MSG_BODY} <br/><br/><br/><br/>
+    </apex:outputPanel>
+    <apex:outputPanel style="margin-left:40%">
+            <apex:commandButton title="OK" value="  OK  " action="{!openSetUpWizard}"/>
+    </apex:outputPanel>
+</apex:outputPanel>
+
+        <apex:commandButton title="{!$Label.BASIC_SETTINGS_LABEL}" value="{!$Label.BASIC_SETTINGS_LABEL}" immediate="true" onclick="redirectTo('/apex/SMSMagicConfig?show=basicSettings','');return false;" disabled="{! IF(showBasicSettings, true, false)}"/>
+        <apex:commandButton title="{!$Label.CONFIGURE_TEMPLATE_TYPE_LABEL}" value="{!$Label.CONFIGURE_TEMPLATE_TYPE_LABEL}" immediate="true" onclick="redirectTo('/apex/SMSMagicConfig?show=configureTemplateTypes','');return false;" disabled="{! IF(showTemplateType, true, false)}"/>
+        <apex:commandButton title="{!$Label.CONFIGURE_ACTION_ON_INCOMING_SMS_LABEL}" value="{!$Label.CONFIGURE_ACTION_ON_INCOMING_SMS_LABEL}" immediate="true" onclick="redirectTo('/apex/SMSMagicConfig?show=configureActionOnIncoming','');return false;" disabled="{! IF(showActionOnIncoming, true, false)}"/>
+        <apex:commandButton title="{!$Label.INCOMING_SMS_SETTINGS_LABEL}" value="{!$Label.INCOMING_SMS_SETTINGS_LABEL}" immediate="true" onclick="redirectTo('/apex/SMSMagicConfig?show=incomingSMSSettings','');return false;" disabled="{! IF(showIncomingSettings, true, false)}"/>
+    </apex:form>
+    </apex:pageBlockButtons>
+    </apex:pageBlock>   
+
+   
+    <apex:pageBlock title="{!$Label.BASIC_SETTINGS_LABEL}" helpTitle="{!$Label.PAGE_HELP_TITLE}" helpUrl="/apex/SMSMagicHelp?from=SMSMagicConfig" rendered="{!showBasicSettings}">
+            <apex:form id="sec3FormId">
+            <apex:pageBlockSection id="section3" columns="3" Rendered="{!$Permission.smagicinteract__AllowToViewSMSSettings}">
+            <apex:facet name="header">{!$Label.DEFAULT_COUNTRY_CODE_CONFIG_SECTION}</apex:facet>
+                <apex:outputPanel rendered="{!IF (isSave,true, false)}">
+                    <apex:selectList size="1"  value="{!countryCode}" multiselect="false"  >
+                        <apex:selectOptions value="{!items}"></apex:selectOptions>
+                    </apex:selectList>
+                    <apex:commandButton value="{!$Label.SAVE_BUTTON}" action="{!saveCountry}" reRender="section3,pageMsg" title="{!$Label.SAVE_COUNTRY_BUTTON_TITLE}"/>
+                    <apex:commandButton value="{!$Label.CANCEL_BUTTON_TITLE}" action="{!cancelConfiguration}" reRender="section3,pageMsg" title="{!$Label.CANCEL_BUTTON_TITLE}"/>
+                </apex:outputPanel>
+                <apex:pageBlockSectionItem rendered="{!IF (isEdit,true, false)}" >
+                    <apex:outputLabel >{!countryName}</apex:outputLabel>
+                    <apex:commandButton value="{!$Label.EDIT_TITLE}" action="{!edit}" reRender="section3" title="{!$Label.EDIT_COUNTRY_BUTTON_TITLE}" disabled="{! !hasPermissionForEditSMSSetting}"/>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockSection id="section4" columns="1" Rendered="{!$Permission.smagicinteract__AllowToViewSMSSettings}">
+            <apex:facet name="header">{!$Label.API_KEY_CONFIGURATION_SECTION}</apex:facet>
+                <apex:pageBlockSectionItem rendered="{!IF (isApiKeyEdit,true, false)}">
+                    <apex:outputText style="font-weight:bold; ">{!$Label.SETUP_STEP_2_API_KEY_LABEL}: ****************************** </apex:outputText> 
+                    <apex:commandButton value="{!$Label.EDIT_TITLE}" action="{!editApiKey}" reRender="section4" style="left-right:200px;" title="{!$Label.EDIT_API_KEY_BUTTON_TITLE}" disabled="{! !hasPermissionForEditSMSSetting}"/>
+                </apex:pageBlockSectionItem>
+                <apex:outputPanel rendered="{!IF (isApiKeySave,true, false)}">
+                <apex:inputSecret value="{!apiKey}" id="apiKey" maxlength="32" />
+                    <apex:commandButton value="{!$Label.SAVE_BUTTON}" action="{!updateApiKey}" style="left-margin:-20px;" title="{!$Label.UPDATE_API_KEY_BUTTON_TITLE}"/>
+                    <apex:commandButton value="{!$Label.CANCEL_BUTTON_TITLE}" action="{!cancelConfiguration}" reRender="section3,pageMsg" title="{!$Label.CANCEL_BUTTON_TITLE}"/>
+                </apex:outputPanel>
+                <apex:pageBlockSectionItem rendered="{!IF (isApiKeyEdit,true, false)}">
+                    <apex:outputText style="font-weight:bold; ">{!$Label.REFRESH_SECURITY_SETTINGS_LABEL} </apex:outputText> 
+                    <apex:commandButton value="{!$Label.REFRESH_TITLE}" onclick="confirmRest();" reRender="section4" style="left-right:200px;" title="{!$Label.REFRESH_SECURITY_SETTINGS_BUTTON_TITLE}" disabled="{! !hasPermissionForEditSMSSetting}"/>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            <apex:actionFunction action="{!resetSecuritySettings}" id="refreshFunction" name="refreshFunction"/>
+            </apex:form>
+            
+        
+            <apex:pageBlockSection id="section1" onClick="collapseSection('senderIdList')" rendered="{!isSenderIdAccessible}">
+            <apex:facet name="header">{!$Label.SENDER_IDS_SECTION}</apex:facet>
+            </apex:pageBlockSection>
+            <div  id="senderIdList" style="display:block;" >
+            
+            <apex:ListViews type="smagicinteract__SMS_SenderId__c" rendered="{!isSenderIdAccessible}"/>    
+            </div> 
+    </apex:pageBlock>
+    
+    <apex:pageBlock title="{!$Label.CONFIGURE_TEMPLATE_TYPE_LABEL}" helpTitle="{!$Label.PAGE_HELP_TITLE}" helpUrl="/apex/SMSMagicHelp?from=SMSMagicConfig" rendered="{!isSmsTemplateTypeAccessible}">
+        <apex:pageBlockSection id="section2" >
+            <apex:facet name="header">{!$Label.CONFIGURE_TEMPLATE_TYPE_LABEL}</apex:facet>
+            <apex:ListViews type="smagicinteract__SMS_Template_Type__c" rendered="{!isSmsTemplateTypeAccessible}"/>
+        </apex:pageBlockSection>
+    </apex:pageBlock>
+    
+    <apex:pageBlock id="actionOnIncoming" title="{!$Label.CONFIGURE_ACTION_ON_INCOMING_SMS_LABEL}" helpTitle="{!$Label.PAGE_HELP_TITLE}" helpUrl="/apex/SMSMagicHelp?from=SMSMagicConfig" rendered="{!showActionOnIncoming}">
+        
+        <apex:pageBlockSection id="optoutSection" rendered="{!isOptoutSettingsAccessible}">
+        <apex:facet name="header">{!$Label.OPTOUT_SETTINGS_SECTION}</apex:facet>
+        <apex:ListViews type="smagicinteract__Optout_Settings__c" rendered="{!isOptoutSettingsAccessible}" /><br/><br/>
+        </apex:pageBlockSection>
+        
+        <apex:pageBlockSection id="section3" rendered="{!isAllowableForPkg1}">
+         <apex:facet name="header">{!$Label.KEYWORD_BASED_ALERTS_SECTION}</apex:facet>
+        <apex:pageBlockSectionItem id="section3item" rendered="{!showForwardConfig}">
+            <apex:outputPanel id="listViewPanel"> 
+                <apex:ListViews type="smagicinteract__forward_config__c" rendered="{!isForwardConfigAccessible}"/>               
+                <apex:form id="alertform">        
+                    <apex:outputPanel id="enableAlertPanel">
+                        <apex:outputPanel rendered="{!showEnableAlertPanel}"  >        
+                            <apex:pageMessage severity="warning" >{!$Label.ALERT_DISABLED_WARNING_MSG}</apex:pageMessage>       
+                            <apex:inputcheckbox id="echkbx" onclick="toggle(this);enablealert()" > {!$Label.ALERT_ENABLE_CHECKBOX} </apex:inputcheckbox>        
+                        </apex:outputPanel>    
+                    </apex:outputPanel>    
+                    <apex:actionFunction name="enablealert" action="{!enableAlert}" rerender="dchkbx, listViewPanel, disableAlertPanel,enableAlertPanel,pageMsg"  />        
+                    <apex:outputPanel id="disableAlertPanel" >                              
+                        <apex:inputcheckbox id="dchkbx" onclick="toggle(this);disablealert()" rendered="{!showDisableAlertPanel}" > 
+                        {!$Label.ALERT_DISABLE_CHECKBOX} </apex:inputcheckbox>
+                    </apex:outputPanel>        
+                    <apex:actionFunction name="disablealert" action="{!disableAlert}" rerender="echkbx, listViewPanel, disableAlertPanel,enableAlertPanel,pageMsg"   />
+                </apex:form>
+            </apex:outputPanel>
+        </apex:pageBlockSectionItem>    
+       </apex:pageBlockSection>
+       
+                
+        <apex:pageBlockSection id="section6">
+        <apex:facet name="header">{!$Label.CONFIGURE_ACTION_ON_INCOMING_SMS_LABEL}</apex:facet>
+            <apex:outputPanel id="step1" style="color: #4A4A56; padding-top: 5px; padding-bottom: 5px; padding-left: 2px; text-align: right; font-size: 91%; font-weight: bold;">
+                {!$Label.ACTION_ON_INCOMING_STEP_1_PART_1} (<a href="http://screen-magic.com/resources/incoming-sms/incoming-sms-related-list/" target="_blank">{!$Label.ACTION_ON_INCOMING_STEP_1_PART_2}</a>).
+            </apex:outputPanel><br/>
+            <apex:outputPanel id="step2" style="color: #4A4A56; padding-top: 5px; padding-bottom: 5px; padding-left: 2px; text-align: right; font-size: 91%; font-weight: bold;">
+                {!$Label.ACTION_ON_INCOMING_STEP_2_PART_1}
+            </apex:outputPanel><br/>
+            
+            <apex:ListViews type="smagicinteract__incoming_lookup_config__c" rendered="{!isIncomingLookupConfigAccessible}"/><br/>
+            
+            <apex:outputPanel id="step3b" style="color: #4A4A56; padding-top: 5px; padding-bottom: 5px; padding-left: 2px; text-align: right; font-size: 91%; font-weight: bold;">
+               {!$Label.ACTION_ON_INCOMING_STEP_2_PART_2}
+            </apex:outputPanel><br/>
+            
+            <apex:outputPanel rendered="{!isAllowableForPkg3}">
+            <apex:outputPanel id="step3" style="color: #4A4A56; padding-top: 5px; padding-bottom: 5px; padding-left: 2px; text-align: right; font-size: 91%; font-weight: bold;">
+                {!$Label.ACTION_ON_INCOMING_STEP_3_PART_1}
+            </apex:outputPanel><br/>
+            <apex:outputPanel style="color: #4A4A56; padding-top: 5px; padding-bottom: 5px; padding-left: 2px; text-align: right; font-size: 91%; font-weight: bold;">
+                {!$Label.ACTION_ON_INCOMING_STEP_3_PART_2}
+            </apex:outputPanel><br/>
+            
+            <apex:ListViews type="smagicinteract__lookup_config__c" rendered="{!isLookupConfigAccessible}"/><br/><br/>
+            </apex:outputPanel>
+            
+        </apex:pageBlockSection>
+    </apex:pageBlock>
+    
+    <apex:pageBlock id="incomingSMSSettings" title="{!$Label.INCOMING_SMS_SETTINGS_LABEL}" helpTitle="{!$Label.PAGE_HELP_TITLE}" helpUrl="/apex/SMSMagicHelp?from=SMSMagicConfig" rendered="{!showIncomingSettings}">
+    
+    <apex:form id="incomingSettingForm" Rendered="{!$Permission.smagicinteract__AllowToViewSMSSettings}">
+    <apex:pageBlockSection id="oauthSection" columns="1" onclick="collapseSection('oauthSectionDiv');">
+        <apex:facet name="header">{!$Label.OAUTH_SECTION_TITLE}</apex:facet>
+    </apex:pageBlockSection>
+        <div id="oauthSectionDiv" style="display:block;">
+            <apex:outputLabel value="{!$Label.OAUTH_APPROVAL_LABEL}" for="oauthUrl" />
+            &nbsp;&nbsp;&nbsp;<apex:outputLink id="oauthUrl" value="{!$Label.Production_OAuth_Url}" target="framename" disabled="{! !hasPermissionForEditSMSSetting}">{!$Label.PRODUCTION_LABEL} </apex:outputLink>
+            |&nbsp;<apex:outputLink id="oauthUrl1" value="{!$Label.Sanbox_OAuth_Url}" target="_blank" disabled="{! !hasPermissionForEditSMSSetting}">{!$Label.SANDBOX_LABEL} </apex:outputLink>
+        </div>
+     <apex:pageBlockSection id="section4" columns="1" onclick="collapseSection('{!$Component.pullAuthSection}');">
+        <apex:facet name="header">{!$Label.PULL_AUTH_ACCESS_TITLE}</apex:facet>
+     </apex:pageBlockSection>
+        <apex:outputPanel id="pullAuthSection" style="display:block;">
+            <table id="buttonsTable">
+            <tr>
+            <td>
+                <apex:outputLabel value="{!$Label.LOGIN_LABEL}" for="login"/>
+            </td>
+            <td>
+                <apex:outputPanel id="requiredLoginId" styleClass="requiredInput" layout="block">
+                <apex:outputPanel styleClass="requiredBlock" layout="block"/>
+                <apex:inputText value="{!login}" id="login" disabled="{!IF (isAuthSave,true, false)}" maxlength="50" />
+                </apex:outputPanel>
+            </td>
+            </tr>
+            <tr>
+                <td>
+                    <apex:outputLabel value="{!$Label.PASSWORD_LABEL}" for="password"/>
+                </td>
+                <td>
+                    <apex:outputPanel id="requiredPassId" styleClass="requiredInput" layout="block">
+                        <apex:outputPanel styleClass="requiredBlock" layout="block"/>
+                        <apex:inputSecret value="{!password}" id="password" redisplay="true" disabled="{!IF (isAuthSave,true, false)}" maxlength="50" />
+                    </apex:outputPanel>
+                </td>
+            </tr>
+            <tr>
+                <td>        
+                <apex:outputLabel value="{!$Label.SECURITY_TOKEN_LABEL}" for="secToken"/>
+                </td>
+                <td>
+                <apex:outputPanel id="requiredTokenId"  styleClass="requiredInput" layout="block">
+                <apex:outputPanel styleClass="requiredBlock" layout="block"/>
+                <apex:inputSecret value="{!securityToken}" id="secToken" redisplay="true" disabled="{!IF (isAuthSave,true, false)}" maxlength="50" />
+                </apex:outputPanel>
+                </td>
+            </tr>
+            <tr>
+                <td> 
+                <table>
+                    <tr>
+                        <td>
+                            <apex:commandButton value="{!$Label.SAVE_BUTTON}" action="{!saveAuthAccess}" rendered="{!IF (isAuthSave,false, true)}" title="{!$Label.SAVE_BUTTON}"/>
+                        </td>
+                        <td>
+                            <apex:commandButton value="{!$Label.EDIT_TITLE}" action="{!editAuthAccess}" rendered="{!IF (isAuthSave,true, false)}" title="{!$Label.EDIT_TITLE}" disabled="{! !hasPermissionForEditSMSSetting}"/>        
+                        </td>
+                    </tr>
+                </table>
+                </td>
+            </tr>
+        </table>
+        </apex:outputPanel>
+        
+
+    </apex:form>
+    </apex:pageBlock>
+
+</apex:outputPanel>
+</apex:page>

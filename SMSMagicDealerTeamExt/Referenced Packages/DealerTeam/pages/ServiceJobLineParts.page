@@ -1,0 +1,403 @@
+<apex:page title="Parts Invoice: {!HTMLENCODE(roData.Name)}" id="partInvoice" tabStyle="dealer__Parts_Invoice__c" standardController="dealer__Parts_Invoice__c" extensions="dealer.PartsInvoice_EXT" showchat="true">
+<apex:includeScript value="{!URLFOR($Resource.dealer__jQuery_UI_1820, 'js/jquery-1.7.2.min.js')}" />
+<apex:includeScript value="{!URLFOR($Resource.dealer__jQuery_UI_1820, 'js/jquery-ui-1.8.20.custom.min.js')}" />
+<apex:includeScript value="{!$Resource.dealer__jsHashTable}" />
+<apex:includeScript value="{!$Resource.dealer__jQueryNumberFormatting}" />
+<apex:includeScript value="{!$Resource.dealer__jQueryTools}" />
+<apex:includeScript value="{!$Resource.dealer__jsEncoder}" />
+
+<apex:stylesheet value="{!URLFOR($Resource.dealer__jqGrid, 'ui.jqgrid.css')}" />
+<apex:includeScript value="{!URLFOR($Resource.dealer__jqGrid, 'grid.locale-en.js')}" />
+<apex:includeScript value="{!URLFOR($Resource.dealer__jqGrid, 'jquery.jqGrid.min.js')}" />
+
+<!-- FONT-AWESOME -->
+<apex:stylesheet value="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"/>
+
+<script type="text/javascript">
+	
+    	Visualforce.remoting.timeout = 120000;
+    
+	var pageMode 			   = "";
+	// Elements used in Page Logic
+	<apex:outputText rendered="{!NOT(ISBLANK(dealer__Parts_Invoice__c.Id))}">
+		pageMode			   = "edit";
+	</apex:outputText>
+	<apex:outputText rendered="{!ISBLANK(dealer__Parts_Invoice__c.Id)}">
+		pageMode			   = "create";
+	</apex:outputText>
+	
+	var countermanName 		   = "{!CounterManName}";
+	var countermanId   		   = "{!CounterMan}";
+	var invoiceId			   = "{!JSENCODE(Parts_Invoice__c.Id)}";
+	var invoiceName			   = "{!JSENCODE(Parts_Invoice__c.Name)}";
+	var invoiceDateTime 	   = "{!JSENCODE(TEXT(Parts_Invoice__c.Invoice_Date_Time__c))}";
+	
+	var partId_element		   = "partInvoice:partsInvoiceForm:partid";
+	var partName_element	   = "partInvoice:partsInvoiceForm:partid:partCommandBar:partnamejs";
+	var partQuantity_element   = "partInvoice:partsInvoiceForm:partid:partCommandBar:partQTY";
+	var partCommandBar_element = "partInvoice:partsInvoiceForm:partid:partCommandBar";
+	
+	var serviceRepairOrder	   	= 	"";
+	var serviceJobNumber		=	"";
+    var initPL_ID              = "{!defaultPriceLevel.Id}";
+    var initPL_Method          = "{!defaultPriceLevel.dealer__Method__c}";
+    var initPL_Percent         = "{!defaultPriceLevel.dealer__Parts_Variable_Amount__c}";
+
+	<apex:outputText >
+		serviceRepairOrder		=	"{!JSENCODE(Parts_Invoice__c.Service_Repair_Order__c)}";
+	</apex:outputText>
+	
+	
+	// Default Selected Line
+	var selectedLineId 			=	"{!JSENCODE(jobLineId)}";
+	
+	var j$ = jQuery.noConflict();
+	j$(document).ready(function() {
+
+		if(invoiceId=="" || selectedLineId=="") {
+			
+			j$(esc(partName_element)).prop('disabled', true);
+    		j$(esc(partQuantity_element)).prop('disabled', true);
+    	}
+    	
+    	if(selectedLineId!="") {
+    		j$(function() {
+    			j$('#jobLineSelect').val('{!JSENCODE(jobLineId)}');
+    		});
+    	}
+    	
+    	//
+    	
+    	j$('#jobLineSelect').change(function() {
+    		var selectedJobindex = j$(this).val();
+    		selectedLineId = j$(this).val();
+    		if(j$(this).val()!='') {
+    		    		j$(esc(partName_element)).prop('disabled', '');
+    					//j$(esc(partQuantity_element)).prop('disabled', '');	
+    		}
+    		cLog('Select Id-'+selectedJobindex);
+    		j$('#partList tr').each(function() {
+    			if(j$(this).attr('jid')==selectedJobindex) {
+    				
+    				j$(this).css('background-color', '');
+    					j$(esc(partName_element)).prop('disabled', '');
+    					//j$(esc(partQuantity_element)).prop('disabled', '');
+    			} else {
+    				j$(this).css('background-color', '#EEE');
+    			}
+    		});
+    	});
+    	
+    	// Load Service History
+    	<apex:outputText rendered="{!ISBLANK(roData.dealer__Invoiced_Date_Time__c)}">
+		j$("#serviceHistory").jqGrid({
+			data: svcHistory,
+			datatype: "local",
+			height: 'auto',
+			rowNum: 30,
+			rowList: [10,20,30],
+			colNames:['RO No', 'Date', 'Advisor', 'Job#', 'Labor', 'Parts', 'Operation','Labor Type','Concern', 'Cause','Correction'],
+		   	colModel:[
+		   		{name:'ronumber',index:'ronumber', width:60, sorttype:"int", formatter: 'showLink', formatOptions: { baseLinkUrl: '/', target:'_blank'}},
+		   		{name:'opendate',index:'opendate', width:70, sortable:false, formatter:"date"},
+		   		{name:'advisor',index:'advisor', width:100, sortable:false},
+		   		{name:'joblinenumber', index:'joblinenumber', width:30, sortable:false}, 
+		   		{name:'laborcharges',index:'laborcharges', width:80, align:"right",sortable:false, formatter:"number"},
+		   		{name:'partscharges',index:'partscharges', width:80, align:"right",sortable:false, formatter:"number"},
+		   		{name:'operation',index:'opeartion', width:100, sortable:false},
+		   		{name:'paytype',index:'paytype', width:30, sortable:false},	
+		   		{name:'concern',index:'concern', width:175, sortable:false},
+		   		{name:'cause',index:'cause', width:175, sortable:false},
+		   		{name:'correction',index:'correction', width:175, sortable:false}		
+		   	],
+		   	pager: "#pageHistory",
+		   	viewrecords: true,
+		   	sortname: 'ronumber',
+		   	grouping:true,
+		   	groupingView : {
+		   		groupField : ['ronumber'],
+		   		groupColumnShow : [true],
+		   		groupText : ['<b>{0} - {1} Item(s)</b>'],
+		   		groupCollapse : false,
+				groupOrder: ['desc']   		
+		   	},
+		   	caption: "Service History"
+		}); 
+		</apex:outputText>    	
+    	
+	});
+	
+	// <apex:outputText value="{!roData.dealer__Invoiced_Date_Time__c}" />
+	<apex:outputText rendered="{!ISBLANK(roData.dealer__Invoiced_Date_Time__c)}">
+		var svcHistory = {!ServiceHistoryJSON};
+	</apex:outputText>
+</script>
+<apex:includeScript value="{!$Resource.dealer__PartsInvoiceJS}" />
+
+<apex:stylesheet value="{!URLFOR($Resource.dealer__jQuery_UI_1820,'css/Aristo/Aristo.css')}"/>
+<apex:stylesheet value="{!$Resource.dealer__PartsCSS}"/> 
+<style type="text/css">
+  .tooltip {
+    display:none;
+    background:transparent url({!$Resource.dealer__PartsInvoiceBlackArrowCommands});
+    font-size:12px;
+    height:70px;
+    width:160px;
+    padding:25px;
+    color:#eee;
+  }
+  
+  .createSPInvoice {
+	height: 20px;
+	line-height: 20px;
+	font-size: 1.0em;
+	display: inline-block;
+	min-width: 110px;
+	vertical-align: middle;
+	position: relative;
+	font-weight: bold;
+	background: #e8e8e9 url('/img/alohaSkin/btn_sprite.png') repeat-x 0 -180px;
+	border-radius: 3px;
+  }
+
+    [id$="partid"]{
+    position: relative;
+    }
+
+    #loader {
+    position: absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    background-color: #fff;
+    background-color: rgba(255,255,255,0.7);
+
+    font-size: 3.5em;
+    color: gray;
+    }
+
+    #loader .fa-spinner {
+    position: absolute; 
+    top: 30%;
+    left: 45%;
+    }
+
+</style>
+
+        
+	<apex:sectionHeader title="Repair Order Parts Sales" subtitle="{!roData.Name}" id="invoiceHeader" />           
+	<chatter:feedWithFollowers entityId="{!dealer__Parts_Invoice__c.Id}" rendered="{!NOT(ISBLANK(dealer__Parts_Invoice__c.Id))}"/>
+	
+	<apex:form id="partsInvoiceForm"> 
+
+            <apex:inputHidden id="initPL_ID" value="{!defaultPriceLevel.Id}" />
+            <apex:inputHidden id="initPL_Method" value="{!defaultPriceLevel.dealer__Method__c}" />
+            <apex:inputHidden id="initPLPercent" value="{!defaultPriceLevel.dealer__Parts_Variable_Amount__c}" />
+            
+            <apex:pageBlock id="headBlock" title="Parts Invoice Detail" mode="maindetail" >
+                <apex:pageBlockButtons location="top" id="commandButtonBlock">
+                    <apex:outputPanel style="width:200px;">
+                    <apex:commandButton action="{!save}" value="Save" rendered="{!ISBLANK(dealer__Parts_Invoice__c.dealer__Invoice_Date_Time__c)}" />
+                    </apex:outputPanel>
+                    <apex:commandButton onClick="window.open('/apex/PartsPickTicket?id={!dealer__Parts_Invoice__c.Id}')" value="Print Pick Ticket" reRender="renderPanel" />
+                	
+                	<apex:outputPanel style="width: 350px; text-align: right; font-size: 16px; font-weight: bold; float:right;">
+                		<apex:outputText value="RO Status: Open" rendered="{!ISBLANK(dealer__Parts_Invoice__c.dealer__Invoice_Date_Time__c)}" />
+                		<apex:outputText value="RO Status: At Cashier" rendered="{!AND(NOT(ISBLANK(dealer__Parts_Invoice__c.dealer__Invoice_Date_Time__c)), ISBLANK(dealer__Parts_Invoice__c.dealer__Post_Date_Time__c))}" />
+                		<apex:outputText value="RO Status: Closed" rendered="{!NOT(ISBLANK(dealer__Parts_Invoice__c.dealer__Post_Date_Time__c))}" />
+                	</apex:outputPanel>
+                </apex:pageBlockButtons>
+            <apex:pageMessages />
+            <apex:pageBlockSection id="headSection">
+            
+                <apex:outputField value="{!roData.dealer__Customer_Contact__c}" rendered="{!ISBLANK(roData.dealer__Customer__c)}" />
+              	
+              	<apex:pageBlockSectionItem >
+              		<apex:outputLabel for="roLink" value="Repair Order" />
+              		<apex:outputLink value="{!URLFOR('/apex/ServiceRepairOrder', roData.Id, [Id=roData.Id])}" id="roLink">
+              			<apex:outputText value="{!roData.Name}" />
+              		</apex:outputLink>
+              	</apex:pageBlockSectionItem>
+              	
+              	<apex:outputField value="{!roData.dealer__Customer__c}" 
+                	rendered="{!IF(roData.Customer_Contact__r.Name != roData.Customer__r.Name, true, false)}"/>
+               	<apex:outputText rendered="{!IF(roData.Customer_Contact__r.Name != roData.Customer__r.Name, false, true)}" />
+               	
+               	
+                
+                <apex:outputField value="{!roData.dealer__Create_Date_Time__c}" />
+           		<apex:outputText />
+           		
+                <apex:outputField value="{!roData.dealer__Comments__c}" />
+                
+        		<apex:outputField value="{!roData.dealer__Vehicle__c}" />
+                
+                <!-- Repeat PL -->
+                <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Price Level" for="selectPL"/>
+                <apex:outputText rendered="{!ISBLANK(dealer__Parts_Invoice__c.dealer__Invoice_Date_Time__c)}">
+                <select id="PLselect" onChange="setPL(invoiceId);">
+                    <apex:repeat value="{!PriceLevels}" var="pl" id="selectPL">
+                    	<apex:outputText rendered="{!IF(pl.Id==dealer__Parts_Invoice__c.dealer__Wholesale_Pricing_Strategy__c, true, false)}">
+                       		<option value="{!pl.Id}" selected="selected">{!pl.Name}</option>
+                        </apex:outputText>
+                        <apex:outputText rendered="{!IF(pl.Id==dealer__Parts_Invoice__c.dealer__Wholesale_Pricing_Strategy__c, false, true)}">
+                        	<option value="{!pl.Id}">{!pl.Name}</option>
+                        </apex:outputText>
+                    </apex:repeat>
+                </select>
+                </apex:outputText>
+                </apex:pageBlockSectionItem>
+                
+                <apex:outputField value="{!roData.dealer__Service_Advisor__c}" />
+                
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="System Information" collapsible="true" id="sysinfo">
+                <apex:pageBlockSectionItem >
+                	<apex:outputText >
+                		Created By
+                	</apex:outputText>
+                	<apex:outputText >
+                		<apex:outputField value="{!dealer__Parts_Invoice__c.CreatedById}" />&nbsp;
+                		<apex:outputField value="{!dealer__Parts_Invoice__c.CreatedDate}" />
+                	</apex:outputText>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                	<apex:outputText >
+                		Last Modified By
+                	</apex:outputText>
+                	<apex:outputText >
+                    	<apex:outputField value="{!dealer__Parts_Invoice__c.LastModifiedById}" />&nbsp;
+                    	<apex:outputField value="{!dealer__Parts_Invoice__c.LastModifiedDate}" />
+                    </apex:outputText>	
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>            
+         
+        <apex:pageBlockSection title="Totals" collapsible="true" id="totalsSection">
+        <apex:outputText >
+        <div id="totals" style="width: 100%;margin: auto;display:block;float:left;">
+            <table cellspacing="0" cellpadding="0">
+                <tr>
+                    <td width="75"><b>Price:</b> </td>
+                    <td width="150"><div id="totalprice" style="float:right;clear:both;"></div></td>
+                </tr>
+                <tr>    
+                    <td width="75"><b>Tax:</b> </td>
+                    <td width="150"><div id="totaltax" style="float:right;clear:both;"></div></td>
+                </tr>
+                <tr>
+                    <td width="75"><b>Total:</b></td>
+                    <td width="150"><div id="totalinvoice" style="float:right;clear:both;"></div></td>
+                </tr>
+            </table>
+        </div>  
+        </apex:outputText>
+
+        </apex:pageBlockSection>
+        </apex:pageBlock>  
+        <div id="log-js"> </div>
+        <div id="errors-js"> </div>
+        
+        <apex:outputText rendered="{!ISBLANK(roData.dealer__Parts_Invoice__c)}">
+        	<div style="text-align: center;height: 45px;">
+        		<apex:commandButton action="{!createInvoicefromRO}" value="Create Parts Invoice for this Repair Order" styleClass="btn" rendered="{!ISBLANK(roData.dealer__Parts_Invoice__c)}"/>
+                <input type="text" maxlength="1" />
+        	</div>
+        </apex:outputText>
+        
+        <apex:pageBlock id="partid" title="Part Lines">
+         <apex:pageBlockButtons location="top" id="partCommandBar">
+                         
+                <apex:outputPanel layout="block" id="functionBar" style="width: 600px; float: left;">
+                    
+                    <b>Active Job Line</b>
+                	<select id="jobLineSelect">
+                	<option value="" selected="selected">    Select A Job Line</option>
+	                <apex:repeat var="jlS" value="{!roData.Job_Lines__r}">
+	                	<option value="{!jlS.Id}">
+	                		<apex:outputText value="{0, number, ####}"><apex:param value="{!jlS.dealer__Line_Number__c}" /></apex:outputText>
+	                		.&nbsp;&nbsp;<apex:outputText value="{!jlS.Name}" />
+	                	</option>
+	                </apex:repeat>
+	                </select>
+	                
+                 <b>Lookup Part(s):</b> <apex:inputText id="partnamejs" onkeypress="return noenter(event);"/>&nbsp;<b>QTY Overide:</b>&nbsp;<apex:inputText id="partQTY" size="4" maxlength="4" disabled="true" />
+                     <c:AutoComplete objectname="dealer__Parts_Inventory__c" 
+                		additionalfield="dealer__Description__c,dealer__UPC__c,dealer__Raw_Part_Number__c" 
+                		resultfields="dealer__Part_No__c,dealer__Description__c" 
+                		autocomplete_textbox="{!$Component.partnamejs}" />
+                </apex:outputPanel>
+                
+                <script type="text/javascript">
+                
+                </script>
+
+                
+         </apex:pageBlockButtons>
+		 <table class="list" border="0" cellpadding="0" cellspacing="0" id="partList">
+		 	<tr class="headerRow">
+		 		<th class="actionColumn" scope="col">Action</th>
+		 		<th scope="col" class=" zen-deemphasize" id="jobLineHeader">Job#</th>
+		 		<th scope="col" class=" zen-deemphasize">Part</th>
+		 		<th scope="col" class=" zen-deemphasize">Bin/Source</th>
+		 		<th scope="col" class=" zen-deemphasize">DS</th>
+		 		<th scope="col" class=" zen-deemphasize">QTY/Avail</th>
+		 		<th scope="col" class=" zen-deemphasize">PL</th>
+		 		<th scope="col" class="CurrencyElement zen-deemphasize">List</th>
+		 		<th scope="col" class="CurrencyElement zen-deemphasize">Net</th>
+		 		<th scope="col" class="CurrencyElement zen-deemphasize">Ext</th>
+		 	</tr>
+		 </table>
+    </apex:pageBlock>
+    <!--
+    <apex:pageBlock title="Service History" rendered="{!ISBLANK(roData.dealer__Invoiced_Date_Time__c)}">
+        	<apex:pageBlockSection columns="1">
+        		<table id="serviceHistory" style="width:100%;" ></table>
+        		<div id="pageHistory" style="width:100%;" ></div>
+        	</apex:pageBlockSection>
+    </apex:pageBlock>
+    -->
+    
+	<c:PartsInvoiceSubDialogs id="subDialog" />
+	<div id="menuActions">
+	    <div id="triangle"></div>
+	    <div id="tooltip_menu">
+	        <a href="#" class="menu_top" id="menuActionPricing">
+	            Update Pricing
+	        </a>
+	        <a href="#" id="menuActionQuantity">
+	            Change Quantity
+	        </a>
+	        <a href="#" class="menu_bottom" id="menuActionRemove">
+	            Remove Part
+	        </a>
+	    </div>
+	</div>
+ 	<div id="ShippingAddressOverride" title="Modify Shipping Address" style="display:none;">
+               <table border="0">
+            <tbody>
+            <tr><td class="labelCol"><label >Shipping Street</label></td>
+                <td>
+                    <textarea id="shippingStreet">{!HTMLEncode(Parts_Invoice__c.Customer_ShipTo_Street__c)}</textarea>
+                </td></tr>
+            <tr><td class="labelCol"><label >Shipping City</label></td>
+                <td><input id="shippingCity" value="{!HTMLEncode(Parts_Invoice__c.Customer_ShipTo_City__c)}" maxlength="25"/></td>
+            </tr>
+            <tr><td class="labelCol"><label >Shipping State/Province</label></td>
+                <td><input id="shippingState" value="{!HTMLEncode(Parts_Invoice__c.Customer_ShipTo_State__c)}"  maxlength="48" size="10"/></td></tr>
+            <tr><td class="labelCol"><label >Shipping Zip/Postal Code</label></td>
+                <td><input id="shippingZip" value="{!HTMLEncode(Parts_Invoice__c.Customer_ShipTo_Zip__c)}" maxlength="15" size="15" /></td></tr>
+            <tr><td class="labelCol"><label >Shipping Country</label></td>
+                <td><input id="shippingCountry" value="{!HTMLEncode(Parts_Invoice__c.Customer_ShipTo_Country__c)}" maxlength="25" /></td></tr>
+            </tbody>
+        </table>
+    </div>     	
+   	<apex:outputPanel id="renderPanel"></apex:outputPanel>
+   	
+    </apex:form>
+    <apex:relatedList list="Parts_Orders__r" id="OrderRelatedList" />
+    <apex:relatedList list="NotesAndAttachments" />
+    <apex:relatedList list="OpenActivities" />
+    <apex:relatedList list="ActivityHistories" />
+</apex:page>

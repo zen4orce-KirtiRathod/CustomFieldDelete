@@ -1,0 +1,449 @@
+<apex:page id="dl" standardController="dealer__Traffic_Log__c" title="Desk Log" label="Desk Log" recordSetVar="trafficlog" extensions="dealer.DeskLog_EXT" showChat="true">
+    <head>
+        <apex:includeScript value="{!URLFOR($Resource.dealer__jQuery_UI_1820, 'js/jquery-1.7.2.min.js')}" />
+        <apex:includeScript value="{!URLFOR($Resource.dealer__jQuery_UI_1820, 'js/jquery-ui-1.8.20.custom.min.js')}" />
+        <apex:includeScript value="{!$Resource.dealer__jQueryBlockUI}" />
+        <apex:includeScript value="{!$Resource.dealer__jQueryDraggable}" />
+        <apex:styleSheet value="{!$Resource.dealer__DraggableCSS}" />
+        <style type="text/css">
+            /*
+            * This code is for Internal Salesforce use only, and subject to change without notice.
+            * Customers shouldn't reference this file in any web pages.
+            */
+            .deskLogTabPanel{margin-top:.75em !important;background-color:#8e9dbe;padding-top:2px}.theTabPanel img{margin:0}.activeTab{background-image:url(/img/tab/miniTab_on.gif);border:1px solid #747e96;border-bottom:2px solid #fff;font-weight:bold}.inactiveTab{background:url(/img/tab/miniTab_off.gif);border:1px solid #747e96;border-bottom:2px solid #8e9dbe;font-weight:bold}.tabContent{background:#fff}.dr-tbpnl-cntnt{font-size:.91em}.apexp .totalRow{background-color:#fff;border-bottom:medium none;border-top:1px solid #e3deb8;padding-bottom:10px;padding-top:10px}.classDefTypeHeader{font-size:91%;font-weight:bold;margin-bottom:2px;margin-top:8px;overflow:hidden;padding:2px 2px 2px 5px;background-color:#ebecf2;color:#333}.classDefBody{padding-top:12px;padding-right:12px;padding-left:12px;padding-bottom:0}.classDefBodyName{padding-bottom:8px}.acSizeLimitMessageWrapper .message{margin-bottom:15px}.apexClassDetailTabPanelWrapper{margin-top:20px}.classDef .codeGroupHeader .codeGroupHeaderSig{font-size:1.45em;font-weight:bold}.customSettingEditWrapper .requiredInput,.editCSDataPageWrapper .requiredInput{display:inline-block}.manageSettingDefaultOrgValuesWrapper{margin-top:10px;margin-bottom:30px}body .theTabPanel{background-color:transparent}body .rich-tab-bottom-line,body .rich-tabpanel-content,body .rich-tabpanel-content-position,body .rich-tabhdr-side-cell,body .rich-tab-header,body .rich-tab-active,body .dr-tbpnl-tb-dsbl,body .dr-tbpnl-tb-dsbld,body .rich-tab-inactive,body .dr-tbpnl-tb-sel,body .rich-tabhdr-side-border,body .dr-tbpnl-tbcell-dsbld,body .rich-tabhdr-cell-inactive{border:0 none;padding:0;background:transparent none;font-size:1em}body .rich-tabpanel-content{border:1px solid #d4dadc;border-top:3px solid #747e96;-moz-border-radius:4px;-webkit-border-radius:4px;background-color:#f8f8f8;padding:6px}body .activeTab,body .inactiveTab{font-weight:bold;color:#333;text-decoration:none}body .rich-tabhdr-cell-active>table[id$="shifted"] td.rich-tabhdr-side-cell{padding-right:9px}body .rich-tabhdr-cell-inactive>table[id$="shifted"] td.rich-tabhdr-side-cell{padding-right:4px}body .rich-tabhdr-cell-active>table[id$="shifted"] td.rich-tabhdr-side-cell,body .rich-tabhdr-cell-inactive>table[id$="shifted"] td.rich-tabhdr-side-cell,body .rich-tabhdr-cell-active>table[id$="shifted"] td.rich-tabhdr-side-cell td.rich-tab-active,body .rich-tabhdr-cell-inactive>table[id$="shifted"] td.rich-tabhdr-side-cell td.rich-tab-inactive{background:transparent url('/img/alohaSkin/subtab_sprite.png') no-repeat right -299px !important;cursor:pointer}body .rich-tabhdr-cell-active>table[id$="shifted"] td.rich-tabhdr-side-cell{background-position:right -100px !important}body .rich-tabhdr-cell-active>table[id$="shifted"] td.rich-tabhdr-side-cell td.rich-tab-active{padding:8px 2px 4px 11px;background-position:left top !important}body .rich-tabhdr-cell-inactive>table[id$="shifted"] td.rich-tabhdr-side-cell td.rich-tab-inactive{padding:8px 4px 4px 8px;background-position:left -199px !important}body table[id$="connectionTab_shifted"],body table[id$="apexClassTab_shifted"],body table[id$="classCodeTab_shifted"],body table[id$="apexTriggerTab_shifted"],body table[id$="emailContentTab_shifted"],body table[id$="visualforceMarkupTab_shifted"]{margin-left:1px}body table[id$="templateTab_shifted"],body table[id$="versionSettingsTab_shifted"],body table[id$="classDocTab_shifted"],body table[id$="traceSettingsTab_shifted"]{margin-left:-6px}body .rich-tabhdr-cell-active>table[id$="shifted"]{top:0 !important;margin-bottom:-3px;height:29px !important;z-index:1}body .rich-tabhdr-cell-inactive>table[id$="shifted"]{height:24px !important}body.setupTab a.acDownloadLink{text-decoration:none;padding:3px 5px 4px}body.setupTab a.acDownloadLink:hover{color:#333;text-decoration:none}.compRefLink{margin-left:5px}.newSpacer{padding:5px}.vfPageDetailWrapper{margin-top:15px;margin-bottom:15px}
+        </style> 
+        <script type="text/javascript"> 
+            $j = jQuery.noConflict(); 
+            $j(document).ready(function() {
+                $j('#deskLogTable').dragtable();
+            });
+            
+            function blockPage(){   
+               $j.blockUI({ message: '<img src="/img/loading32.gif" /><h1> Loading...</h1>',   
+                 css: {   
+                  border: 'none',   
+                  padding: '15px',   
+                  '-webkit-border-radius': '10px',   
+                  '-moz-border-radius': '10px',   
+                  opacity: .9  
+                 }   
+               });   
+               return false;  
+             }  
+             //function to unblock the page  
+             function unblockPage(){  
+               $j.unblockUI();  
+             }  
+        </script>
+        <style type="text/css">
+            .smry {
+                padding: 15px;
+                font-weight: bold;
+            }
+            .toolBar {
+                padding: 10px;
+            }
+            
+            .dealRows { 
+                background-color: #D6EBD6;
+            }
+            .dealRows:hover {
+            	background-color: #C2E0C2;
+            } 
+            
+            .leadRows { 
+                background-color: #FFEBCC;
+            }
+            .leadRows:hover {
+            	background-color: #FFE0B2;
+            }
+            
+            .apptRows {
+                background-color: #FFFFCC;
+            }
+            .apptRows:hover { 
+            	background-color: #FFFFB2;	
+            }
+            
+            .trafficRows {
+                background-color: #FFFFFF;
+            }
+        </style>
+
+    </head>
+    
+    <apex:sectionHeader id="sH" title="Home" subtitle="Desk Log"/>
+    <apex:form id="f">
+        <apex:pageMessages id="errors" />
+        <apex:actionStatus onstart="blockPage()" onstop="unblockPage()" id="blockUI"/>  
+        
+        <apex:tabPanel switchType="client" tabClass="deskLogTabPanel" selectedTab="cws" id="tabSettings">
+        <apex:tab label="Desk Log" id="cws" name="cwsTab">    
+        <apex:pageBlock mode="maindetail" id="Log">
+                <div class="toolBar">
+                    <apex:inputText size="1" style="border: 0px;width: 2px;"  /> 
+                    <apex:outputLabel value="Sales Ups" for="leadToggle" /> 
+                    <apex:inputCheckbox value="{!filterLeads}" onClick="filterLog()" label="Sales Ups" selected="true" id="leadToggle"/>
+                    <apex:outputLabel value="Deals" for="dealToggle"/>
+                    <apex:inputCheckbox value="{!filterDeals}" onClick="filterLog()" label="Deals" selected="true" id="dealToggle"/>
+                    <apex:outputLabel value="Appt" for="appointmentToggle"/>
+                    <apex:inputCheckbox value="{!filterAppointments}" onClick="filterLog()" label="Appointments" selected="true" id="appointmentToggle"/>
+                    <apex:outputLabel value="Phone" for="phoneToggle"/>
+                    <apex:inputCheckbox value="{!filterTraffic}" onClick="filterLog()" label="Phone" selected="true" id="phoneToggle"/>
+                    
+                    <!--  Code change by commented out as not the desired approach - Jarrett Kuljis 8/16
+                    <apex:outputLabel value="Company Number" for="CompanyNumber"/>
+                    <apex:selectList id="CompanyNumber" size="1" multiselect="false" value="{!CompanyNumber}" onChange="filterLog()">
+                    <apex:selectOptions Value="{!CompanyNumbers}" ></apex:selectOptions> 
+                    </apex:selectList>
+                    -->
+                    <apex:outputLabel value="In Store Only" for="inStoreToggle"/>
+                    <apex:inputCheckbox value="{!filterInStore}" onClick="filterLog()" label="In Store Only" selected="false" id="inStoreToggle"/>
+                    <apex:inputField value="{!ProxyDate.dealer__Custom_Search_Start_Date__c}" label="Date" onchange="filterLog();" />   
+                                    
+                    <apex:outputPanel style="padding-left: 1em;">
+                    <div class="menuButton" id="Sales1"><apex:outputPanel layout="none">
+                            <div class="menuButtonButton" id="Sales1Button"><span class="menuButtonLabel" id="Sales1Label">Primary Salesperson</span></div>
+                     
+                            <div class="menuButtonMenu" id="Sales1Menu"><apex:outputPanel layout="none">
+                                <apex:repeat value="{!s1List}" var="s1Key">
+                                    <apex:outputLink value="#" rendered="{!NOT(ISBLANK(s1List))}" onClick="filterByUser('{!JSENCODE(s1Key)}', 'S1')">
+                                        <apex:outputText value="{!s1List[s1Key]}" rendered="{!NOT(ISNULL(s1Key))}" />
+                                    </apex:outputLink>
+                                </apex:repeat>
+                            </apex:outputPanel></div>
+                        </apex:outputPanel></div>
+                    </apex:outputPanel>
+                    
+
+                    <apex:outputPanel style="padding-left: 1em;">
+                    <div class="menuButton" id="Sales2"><apex:outputPanel layout="none"><div class="menuButtonButton" id="Sales2Button"><span class="menuButtonLabel" id="Sales2Label">Secondary Salesperson</span></div><div class="menuButtonMenu" id="Sales2Menu"><apex:outputPanel layout="none">
+                                <apex:repeat value="{!s2List}" var="s2Key">
+                                    <apex:outputLink value="#" rendered="{!NOT(ISBLANK(s2List))}" onClick="filterByUser('{!JSENCODE(s2Key)}', 'S2')">
+                                        <apex:outputText value="{!s2List[s2Key]}" rendered="{!NOT(ISNULL(s2Key))}" />
+                                    </apex:outputLink>
+                                </apex:repeat>
+                            </apex:outputPanel></div>
+                        </apex:outputPanel></div>
+                    </apex:outputPanel>
+                    
+                    <apex:outputPanel style="padding-left: 1em;">
+                    <div class="menuButton" id="Manager"><apex:outputPanel layout="none">
+                            <div class="menuButtonButton" id="ManagerButton"><span class="menuButtonLabel" id="ManagerLabel">Manager</span></div><div class="menuButtonMenu" id="ManagerMenu"><apex:outputPanel layout="none">
+                                <apex:repeat value="{!manager}" var="mKey">
+                                    <apex:outputLink value="#" rendered="{!NOT(ISBLANK(manager))}" onClick="filterByUser('{!JSENCODE(mKey)}', 'SM')">
+                                        <apex:outputText value="{!manager[mKey]}" rendered="{!NOT(ISNULL(manager))}" />
+                                    </apex:outputLink>
+                                </apex:repeat>
+                            </apex:outputPanel></div>
+                        </apex:outputPanel>
+                    </div>
+                    </apex:outputPanel>
+                    <span style="width:10px;"></span>
+                    <apex:commandButton action="{!generateDeskLog}" value="Refresh Log" />
+                                         
+                    <script type="text/javascript">new MenuButton('Manager', false);</script>
+                    <script type="text/javascript">new MenuButton('Sales1', false);</script>
+                    <script type="text/javascript">new MenuButton('Sales2', false);</script>
+                </div>
+                
+                <div id="summaryItems">
+                    <apex:outputPanel layout="inline" styleClass="smry" rendered="{!IF(AND(leadCount>0, filterLeads==true),true,false)}" >Sales Ups:&nbsp;<apex:outputText value="{!leadCount}" /></apex:outputPanel>
+                    <apex:outputPanel layout="inline" styleClass="smry" rendered="{!IF(AND(apptCount>0, filterAppointments==true),true,false)}" >Appointments:&nbsp;<apex:outputText value="{!apptCount}" /></apex:outputPanel>
+                    <apex:outputPanel layout="inline" styleClass="smry" rendered="{!IF(AND(trafficCount>0, filterTraffic==true),true,false)}" >Inbound Phone:&nbsp;<apex:outputText value="{!trafficCount}" /></apex:outputPanel>
+                    <apex:outputPanel layout="inline" styleClass="smry" rendered="{!IF(AND(dealCount>0, filterDeals==true),true,false)}" >
+                        Deals:&nbsp;<apex:outputText value="{!dealCount}" />
+                    </apex:outputPanel>
+                    <apex:outputPanel layout="inline" styleClass="smry" rendered="{!IF(AND(dealCount>0, filterDeals==true),true,false)}">
+						FE:&nbsp;<apex:outputText value="{0,number,$#,###,###}"><apex:param value="{!frontEndGross}" /> </apex:outputText>
+					</apex:outputPanel>
+					<apex:outputPanel layout="inline" styleClass="smry" rendered="{!IF(AND(dealCount>0, filterDeals==true),true,false)}">	
+                        BE:&nbsp;<apex:outputText value="{0,number,$#,###,###}"><apex:param value="{!backEndGross}" /> </apex:outputText>
+                    </apex:outputPanel>
+                    <apex:outputPanel layout="inline" styleClass="smry" rendered="{!IF(AND(dealCount>0, filterDeals==true),true,false)}">	    
+                        TG:&nbsp;<apex:outputText value="{0,number,$#,###,###}"><apex:param value="{!totalGross}" /> </apex:outputText>
+                    </apex:outputPanel>
+                    <apex:outputPanel layout="block" style="padding:5px;" />
+                </div>
+                
+                <apex:actionFunction name="callFilter" onComplete="" action="{!activateFilter}" rerender="Log" status="blockUI" />
+                <apex:actionFunction action="{!userFilter}" name="filterByUser" rerender="Log" status="blockUI">
+                    <apex:param name="firstParam" assignTo="{!filteruserID}" value="" />
+                    <apex:param name="secondParam" assignTo="{!filterUserType}" value="" />
+                </apex:actionFunction>
+                <table id="deskLogTable" cellpadding="2" cellspacing="0" class="list" style="border: 0px;">
+                    <tr class="headerRow">
+                        <th class=" zen-deemphasize">Visit</th>
+                        <th class=" zen-deemphasize">Type</th>
+                        <th class=" zen-deemphasize">Customer</th>
+                        <th class=" zen-deemphasize">Vehicle/Trade</th>
+                        <th class=" zen-deemphasize">Status</th>
+                        <th class=" zen-deemphasize">Steps</th>
+                        <th class=" zen-deemphasize">Source</th>
+                        <th class=" zen-deemphasize">Audit</th>
+                    </tr>
+                    <apex:repeat value="{!deskEntries}" var="desk">
+                        
+                            <!-- Leads -->
+                            <apex:repeat value="{!desk.up}" var="up" rendered="{!IF(desk.deskEntryType=='Sales Up', true, false)}">
+                            <tr class="leadRows dataRow">
+                            <td>
+                                <apex:outputLink value="/{!up.Id}" title="{!up.Name}">
+                                    <apex:image value="/img/icon/form16.png" />
+                                    <apex:outputText value="{!desk.deskEntryType}" />
+                                </apex:outputLink><br />
+                                        <span style="font-size:10px;"><apex:outputText value="{!desk.localDateTime}" /></span><br />
+                                <span style="font-size:10px;color:blue;">
+                                    <apex:outputText rendered="{!NOT(ISBLANK(up.dealer__Salesperson_1__c))}">
+                                    S1:&nbsp;<apex:outputField value="{!up.dealer__Salesperson_1__c}" />
+                                    </apex:outputText>
+                                    <apex:outputText rendered="{!NOT(ISBLANK(up.dealer__Salesperson_2__c))}">
+                                    <br />
+                                    S2:&nbsp;<apex:outputField value="{!up.dealer__Salesperson_2__c}" />
+                                    </apex:outputText>
+                                    <apex:outputText >
+                                    <br />
+                                    SM:&nbsp;<apex:outputField value="{!up.dealer__Desk_Manager_User__c}" rendered="{!NOT(ISBLANK(up.dealer__Desk_Manager_User__c))}" />
+                                    <apex:outputText rendered="{!ISBLANK(up.dealer__Desk_Manager_User__c)}" style="color:orange;">Unassigned</apex:outputText>
+                                    </apex:outputText>
+                                </span>
+                            </td>
+                            <td><apex:outputText value="{!up.dealer__Lead_Type__c}" /></td>
+                            <td>
+                                <apex:outputField value="{!up.dealer__Buyer_Contact__c}" />
+                                <apex:outputText rendered="{!IF(up.dealer__In_Store__c, true, false)}">
+                                <br /><br />
+                                <apex:image value="/img/icon/people16.png" />&nbsp;
+                                In Store Now</apex:outputText>
+                            </td>
+                            <td>
+                                <apex:outputField value="{!up.dealer__Desired_Stock_Num__c}" /><br />
+                                <apex:outputText rendered="{!AND(ISBLANK(up.dealer__Desired_Stock_Num__c), NOT(ISBLANK(up.dealer__Model__c)))}">
+                                	<apex:outputField value="{!up.dealer__Year_High__c}" />&nbsp;
+                                	<apex:outputField value="{!up.dealer__Make__c}" />&nbsp;
+                                	<apex:outputField value="{!up.dealer__Model__c}" />&nbsp;
+                                	<apex:outputField value="{!up.dealer__Trim__c}" />
+                                	
+                                </apex:outputText>
+                                
+                                <apex:outputText rendered="{!NOT(ISBLANK(up.dealer__Trade_Year__c))}">
+                                <br />Trade:&nbsp;
+                                <apex:outputField value="{!up.dealer__Trade_Year__c}" />&nbsp;
+                                <apex:outputField value="{!up.dealer__Trade_Make__c}" />&nbsp;
+                                <apex:outputField value="{!up.dealer__Trade_Model__c}" /><br />
+                                <apex:outputField value="{!up.dealer__Trade_VIN__c}" /><br />
+                                <apex:outputField value="{!up.dealer__Trade_Comments__c}" />
+                                </apex:outputText>
+                            </td> 
+                            <td><apex:outputField value="{!up.dealer__Lead_Status__c}" /></td>
+                            <td>
+                                <a href="#" title="Greet/Meet">G:&nbsp;<apex:outputField value="{!up.dealer__Greet_Meet__c}" title="Greet & Meet"/></a>
+                                <a href="#" title="Present Vehicle">P:&nbsp;<apex:outputField value="{!up.dealer__Present_Vehicle__c}" title="Present Vehicle"/></a>
+                                <a href="#" title="Demo Drive">D:&nbsp;<apex:outputField value="{!up.dealer__Demo__c}" title="Demo"/></a>
+                                <a href="#" title="Write-Up">W:&nbsp;<apex:outputField value="{!up.dealer__Write_Up__c}" title="Write-Up"/></a>
+                                
+                                
+                            </td>
+                            <td><apex:outputField value="{!up.dealer__Source__c}" /></td>
+                            <td valign="bottom">
+                                <span style="font-size:10px;display:inline-block; vertical-align:bottom">
+                                    Created By:&nbsp;<apex:outputField value="{!up.CreatedById}" />&nbsp;<apex:outputField value="{!up.CreatedDate}" />
+                                </span><br />
+                                <span style="font-size:10px;display:inline-block; vertical-align:bottom">
+                                    LastModified By:&nbsp;<apex:outputField value="{!up.LastModifiedById}" />&nbsp;<apex:outputField value="{!up.LastModifiedDate}" />
+                                </span>
+                                </td>
+                            </tr>
+                            </apex:repeat>
+                            
+                            <!-- Appointments -->
+                            <apex:repeat value="{!desk.appt}" var="apt" rendered="{!IF(desk.deskEntryType=='Appointment', true, false)}">
+                            <tr class="apptRows dataRow">
+                            <td>
+                                <apex:outputLink value="/{!apt.Id}" title="{!apt.Name}">
+                                    <apex:image value="/img/icon/campaignmember16.png" />
+                                    <apex:outputText value="{!desk.deskEntryType}" />
+                                </apex:outputLink><br />
+                                <span style="font-size:10px;"><apex:outputText value="{!desk.localDateTime}" /></span><br />
+                                <span style="font-size:10px;color:blue;">
+                                    &nbsp;&nbsp;<apex:outputField value="{!apt.dealer__Assigned_To__c}" />
+                                </span>
+                            </td>
+                            <td>&nbsp;</td>
+                            <td><apex:outputField value="{!apt.dealer__Customer__c}" /></td>
+                            <td><apex:outputField value="{!apt.dealer__Vehicle__c}" /></td>
+                            <td>
+                                <apex:outputText rendered="{!IF(apt.dealer__Confirmed__c==true, false, true)}">Not Confirmed</apex:outputText>
+                                <apex:outputText rendered="{!IF(apt.dealer__Confirmed__c==true, true, false)}">Confirmed</apex:outputText>
+                                
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>
+                                <span style="font-size:10px;">
+                                    Created By:&nbsp;<apex:outputField value="{!apt.CreatedById}" />&nbsp;<apex:outputField value="{!apt.CreatedDate}" />
+                                </span><br />
+                                <span style="font-size:10px;display:inline-block; vertical-align:bottom">
+                                    LastModified By:&nbsp;<apex:outputField value="{!apt.LastModifiedById}" />&nbsp;<apex:outputField value="{!apt.LastModifiedDate}" />
+                                </span>         
+                            </td>
+                            </tr>
+                            </apex:repeat>
+                            
+                            <!-- Car Deals -->
+                            <apex:repeat value="{!desk.deal}" var="deal" rendered="{!IF(desk.deskEntryType=='Deal', true, false)}">
+                            <tr class="dealRows dataRow">
+                            <td>
+                                <apex:outputLink value="/{!deal.Id}" title="{!deal.Name}">
+                                    <apex:image value="/img/icon/cash16.png" />
+                                    <apex:outputText value="{!desk.deskEntryType}" />
+                                </apex:outputLink><br />
+                                <span style="font-size:10px;"><apex:outputText value="{!desk.localDateTime}" /></span><br />
+                                <span style="font-size:10px;color:blue;">
+                                    <apex:outputText rendered="{!NOT(ISBLANK(deal.dealer__Salesperson_1__c))}">
+                                    S1:&nbsp;<apex:outputField value="{!deal.dealer__Salesperson_1__c}" />
+                                    </apex:outputText>
+                                    <apex:outputText rendered="{!NOT(ISBLANK(deal.dealer__Salesperson_2__c))}">
+                                    <br />
+                                    S2:&nbsp;<apex:outputField value="{!deal.dealer__Salesperson_2__c}" />
+                                    </apex:outputText>
+                                </span>
+                            </td>
+                            <td>
+                                <apex:outputField value="{!deal.dealer__Deal_Category__c}" />
+                            </td>
+                            <td>
+                                <apex:outputField value="{!deal.dealer__Buyer_Contact__c}" />
+                                <apex:outputText rendered="{!NOT(ISBLANK(deal.dealer__Co_Buyer_Contact__c))}">
+                                    <br />
+                                    <apex:outputField value="{!deal.dealer__Co_Buyer_Contact__c}"/>
+                                </apex:outputText>
+                            </td>
+                            <td>
+                                <apex:outputField value="{!deal.dealer__Vehicle__c}" />
+                                <apex:repeat value="{!deal.Trade_Ins__r}" var="trades">
+                                    <br />
+                                    Trade:&nbsp;<apex:outputField value="{!trades.Name}" /> 
+                                </apex:repeat>
+                            </td>
+                            <td>
+                                <apex:outputField value="{!deal.dealer__Status__c}" />
+                                <br />
+                                FE:&nbsp;<apex:outputField value="{!deal.dealer__Front_End_Gross__c}" />
+                                <br />
+                                BE:&nbsp;<apex:outputField value="{!deal.dealer__Back_End_Gross__c}" />
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>
+                                <span style="font-size:10px;">
+                                    Created By:&nbsp;<apex:outputField value="{!deal.CreatedById}" />&nbsp;<apex:outputField value="{!deal.CreatedDate}" />
+                                </span>
+                            </td>
+                            </tr>
+                            </apex:repeat>  
+                            
+                            <!-- Traffic -->
+                            <apex:repeat value="{!desk.traffic}" var="traffic" rendered="{!IF(desk.deskEntryType=='Traffic', true, false)}">
+                            <tr class="trafficRows dataRow">
+                            <td>
+                                <apex:outputLink value="/{!traffic.Id}" title="{!traffic.Name}">
+                                    <apex:image value="/img/icon/orderBell16.png" />
+                                    <apex:outputText value="{!desk.deskEntryType}" />
+                                </apex:outputLink><br />
+                                <span style="font-size:10px;"><apex:outputText value="{!desk.localDateTime}" /></span><br />
+                                <span style="font-size:10px;color:blue;">
+                                    <apex:outputText rendered="{!NOT(ISBLANK(traffic.dealer__Salesperson_1__c))}">
+                                    S1:&nbsp;<apex:outputField value="{!traffic.dealer__Salesperson_1__c}" />
+                                    </apex:outputText>
+                                    <apex:outputText rendered="{!NOT(ISBLANK(traffic.dealer__Salesperson_2__c))}">
+                                    <br />
+                                    S2:&nbsp;<apex:outputField value="{!traffic.dealer__Salesperson_2__c}" />
+                                    </apex:outputText>
+                                </span>
+                            </td>
+                            <td><apex:outputField value="{!traffic.dealer__Type__c}" /></td>
+                            <td>
+                                <apex:outputField value="{!traffic.dealer__Customer_Contact__c}" />
+                                <apex:outputText rendered="{!ISBLANK(traffic.dealer__Customer_Contact__c)}">
+                                    <apex:outputField value="{!traffic.dealer__Caller_Id_FirstName__c}" />&nbsp;
+                                    <apex:outputField value="{!traffic.dealer__Caller_Id_LastName__c}" /><br />
+                                    <apex:outputField value="{!traffic.dealer__Calling_Number__c}" />
+                                </apex:outputText>
+                            </td>
+                            <td>
+                                <apex:outputField value="{!traffic.dealer__Call_Profile_Link__c}" /> <br />
+                                <apex:outputField value="{!traffic.dealer__Conversation_Start__c}" />
+                                    <apex:outputText rendered="{!AND(NOT(ISBLANK(traffic.dealer__Conversation_Start__c)), NOT(ISBLANK(traffic.dealer__Conversation_End__c)))}">&nbsp;-&nbsp;</apex:outputText>
+                                <apex:outputField value="{!traffic.dealer__Conversation_End__c}" />
+                                &nbsp;
+                    			<apex:outputField value="{!traffic.Name}" rendered="{!IF(ISBLANK(traffic.dealer__Call_Profile_Link__c), true, false)}" />
+                            </td>
+                            <td>
+                            &nbsp;
+                            </td>
+                            <td>&nbsp;</td> 
+                            <td>
+                                <apex:outputField value="{!traffic.dealer__Source__c}" />
+                            </td>
+                            <td>
+                                <span style="font-size:10px;">
+                                    Created By:&nbsp;<apex:outputField value="{!traffic.CreatedById}" />&nbsp;<apex:outputField value="{!traffic.CreatedDate}" />
+                                </span><br />
+                           		<span style="font-size:10px;display:inline-block; vertical-align:bottom">
+                                    LastModified By:&nbsp;<apex:outputField value="{!traffic.LastModifiedById}" />&nbsp;<apex:outputField value="{!traffic.LastModifiedDate}" />
+                                </span>
+                            </td>
+                            </tr>
+                            </apex:repeat>                                  
+                    </apex:repeat>
+                </table>
+         </apex:pageBlock>
+        </apex:tab>
+        <apex:tab label="Sales Rotation" id="rotate" name="rotationTab">
+            <apex:pageBlock mode="maindetail" id="rotateBlock">
+            		<!--  Code change by commented out as not the desired approach - Jarrett Kuljis 8/16
+           		 	<apex:outputLabel value="Company Number" for="CompanyNumber"/>
+            		
+                    <apex:selectList id="CompanyNumber" size="1" multiselect="false" value="{!CompanyNumber1}" onChange="filterLog1()">
+                    <apex:selectOptions Value="{!CompanyNumbers}" ></apex:selectOptions> 
+                    </apex:selectList>
+                    -->
+               <apex:actionFunction name="callFilter1" onComplete="" action="{!rotationLogGenerate}" rerender="rotateBlock" status="blockUI" />
+             <apex:pageBlockSection columns="1">
+				 <apex:pageBlockTable value="{!upBoard}" var="sp">
+                     <apex:column >
+                         <apex:image value="{!sp.salesperson.SmallPhotoUrl}" />
+                     </apex:column>
+                     <apex:column value="{!sp.salesperson.Name}" />                  
+                         <apex:column value="{!sp.salesperson.LastLoginDate}" />    
+                     <apex:column value="{!sp.salesperson.dealer__With_Customer__c}" />  
+                     <apex:column >
+                         <apex:outputLink value="/{!sp.salesup.Id}">
+                             <apex:outputField value="{!sp.salesup.Name}" />
+                         </apex:outputLink>    
+                     </apex:column>
+                     <apex:column >
+                         <apex:outputText rendered="{!IF(sp.salesperson.dealer__With_Customer__c, true, false)}" >
+                         <apex:commandButton value="Set Salesperson to Available" action="{!dropActiveSalesperson}" rerender="rotateBlock">
+                            <apex:param name="salespersonResetId"
+                                value="{!sp.salesperson.Id}"
+                                assignTo="{!salespersonResetId}"/>
+                        </apex:commandButton>
+                        </apex:outputText>            
+                     </apex:column>    
+                 </apex:pageBlockTable>
+             </apex:pageBlockSection>
+            </apex:pageBlock>
+        </apex:tab>
+		</apex:tabPanel>
+    </apex:form>
+    <script>
+        function filterLog() {
+            callFilter();
+        }
+        function filterLog1() {
+            callFilter1();
+        }
+    </script>
+</apex:page>

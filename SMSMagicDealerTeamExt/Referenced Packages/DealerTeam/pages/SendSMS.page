@@ -1,0 +1,59 @@
+<apex:page id="ssms" showChat="true" title="Task: Send Text Message" tabStyle="Task" controller="dealer.SMS">
+	
+	<head>
+		<link rel="stylesheet" href="{!URLFOR($Resource.BootstrapNS, 'bootstrap/css/bootstrap.css')}" media="all" />
+		<apex:includeScript value="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" /> 
+		<apex:includeScript value="{!URLFOR($Resource.dealer__BootstrapNS, 'bootstrap/js/bootstrap.min.js')}" />
+	</head>
+
+  	<apex:sectionHeader title="Task" description="Send your customer a text message" subtitle="Send Text Message" />
+  	<apex:pageMessages id="messages" />
+    <apex:form id="f">
+	    <apex:pageBlock title="Edit Text" id="pb">
+	            <apex:pageBlockButtons >
+	                  <apex:commandButton action="{!send}" value="Send" rendered="{!IF(sendStatus==false, true, false)}"/>
+	                  <apex:commandButton action="{!cancel}" value="Cancel" />
+	            </apex:pageBlockButtons>
+	       <apex:pageBlockSection columns="1" collapsible="false" showHeader="true" id="pbs">
+	       		<apex:outputField value="{!c.Name}" />
+	       		<apex:outputField value="{!c.MobilePhone}" />
+	       		<apex:pageBlockSectionItem >
+	       		<apex:outputLabel value="Message Template" for="mTemplate" />
+	       		<apex:selectList size="1" value="{!selectedTemplate}" id="mTemplate">
+	       			<apex:selectOptions value="{!templateSelect}" />
+	       		</apex:selectList>
+	       		</apex:pageBlockSectionItem>
+	       		<apex:inputTextarea value="{!message}" disabled="{!IF(sendStatus==true, true, false)}" label="Text Message" id="sms_message" style="width:450px;height:250px;"/>
+	       </apex:pageBlockSection>   
+	    </apex:pageBlock>	
+    </apex:form>
+
+		<div class="bs">
+
+	       		<apex:repeat value="{!messageHistory}" var="m">
+	       			<!--
+	       			<apex:outputText rendered="{!if(m.Subject=='Outbound Text', true, false)}" style="float:right"/><b>{!m.Owner.FirstName +' '+ m.Owner.LastName}</b> : {!m.Description}"</apex:outputText>
+	       			<apex:outputText value="{!m.Description}" rendered="{!if(m.Subject=='Inbound Text', true, false)}" style="float:left"/>
+	       			-->
+
+	       			<blockquote class="{!if(m.Type=='Outbound Text', '', 'blockquote-reverse')}">
+	       				<p><apex:outputText >{!m.Description}</apex:outputText></p>
+	       				<footer><apex:outputText value="{!m.Owner.FirstName}" /></footer>
+	       			</blockquote>
+	       		</apex:repeat>
+
+	</div>    
+
+    <script type="text/javascript">
+    	$dt = jQuery.noConflict();
+		$dt( '[id$="mTemplate"]' ).change(function () {
+		    var id = $dt(this).children(":selected").attr("value");
+		    console.log(id);
+
+		    // Get JSON Data of the compiled form
+		    var message = $dt.getJSON('/apex/smsTemplateCompiler?tid=' + id + '&wid={!WhatId}', function(data) {
+		    	$dt('[id$="sms_message"]').val(data.template).focus();
+		    });
+		 });
+    </script>
+</apex:page>

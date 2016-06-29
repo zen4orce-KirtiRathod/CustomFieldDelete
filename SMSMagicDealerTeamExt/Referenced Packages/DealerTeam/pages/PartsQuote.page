@@ -1,0 +1,117 @@
+<apex:page title="Parts Quote" tabStyle="dealer__Parts_Quote__c" standardController="dealer__Parts_Quote__c" extensions="dealer.PartsQuote_EXT" showChat="true">
+<apex:includeScript value="{!URLFOR($Resource.dealer__jQuery_UI_1820, 'js/jquery-1.7.2.min.js')}" />
+<apex:includeScript value="{!URLFOR($Resource.dealer__jQuery_UI_1820, 'js/jquery-ui-1.8.20.custom.min.js')}" />
+<apex:includeScript value="{!$Resource.dealer__jsHashTable}" />
+<apex:includeScript value="{!$Resource.dealer__jQueryNumberFormatting}" />
+<apex:includeScript value="{!$Resource.dealer__jQueryTools}" />
+<apex:stylesheet value="{!URLFOR($Resource.dealer__jQuery_UI_1820,'css/Aristo/Aristo.css')}"/>
+<apex:stylesheet value="{!$Resource.dealer__PartsCSS}"/>
+
+
+<script type="text/javascript">
+var j$ = jQuery.noConflict();
+
+j$(document).ready(function() {
+    
+});
+</script>   
+    
+    <apex:sectionHeader title="Parts Quote" subtitle="{!dealer__Parts_Quote__c.Name}"  />
+    <chatter:feedWithFollowers entityId="{!dealer__Parts_Quote__c.Id}" />
+       
+    <apex:form id="PartsQuoteForm">
+    <apex:pageBlock title="Parts Quote Detail"  mode="maindetail" >
+    	<apex:pageBlockButtons location="top">
+    		<apex:commandButton value="Save" action="{!save}" rendered="{!IF(ISBLANK(dealer__Parts_Quote__c.dealer__Parts_Invoice__c),true,false)}"/>
+            <apex:commandButton value="Delete" action="{!delete}" rendered="{!IF(ISBLANK(dealer__Parts_Quote__c.dealer__Parts_Invoice__c),true,false)}"/>
+    		<apex:commandButton value="Email Quote" action="{!emailQuote}"/>
+    		<apex:commandButton onClick="window.open('/apex/PartsQuotePDF?id={!dealer__Parts_Quote__c.Id}')" value="Print Quote" reRender="renderPanel" />
+           
+    		<apex:commandButton value="Convert to Invoice" action="{!ConvertToInvoice}" rendered="{!IF(ISBLANK(dealer__Parts_Quote__c.dealer__Parts_Invoice__c),true,false)}" immediate="true"/>
+    	</apex:pageBlockButtons>
+    	<apex:pageMessages />
+        <apex:pageBlockSection >
+            <apex:outputField value="{!quote.dealer__Customer_Contact__c}">
+                <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                        hideOnEdit="editButton" event="ondblclick" 
+                        changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>
+            </apex:outputField>
+            <apex:outputField value="{!quote.dealer__Counterman__c}">
+                <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                        hideOnEdit="editButton" event="ondblclick" 
+                        changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>
+            </apex:outputField>
+            <apex:outputField value="{!quote.dealer__Comments__c}">
+                <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                        hideOnEdit="editButton" event="ondblclick" 
+                        changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>
+            </apex:outputField>
+            <apex:outputField value="{!quote.dealer__Status__c}">
+                <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                        hideOnEdit="editButton" event="ondblclick" 
+                        changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>
+            </apex:outputField>   
+            <apex:outputText />
+            <apex:outputField value="{!quote.dealer__Misc_Fee__c}">
+                <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                        hideOnEdit="editButton" event="ondblclick" 
+                        changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>
+            </apex:outputField>
+            <apex:outputText />
+            <apex:outputField value="{!quote.dealer__Shipping_Charges__c}">
+                <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                        hideOnEdit="editButton" event="ondblclick" 
+                        changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>
+            </apex:outputField>
+            <apex:outputField value="{!quote.dealer__Items__c}" />
+            <apex:outputField value="{!quote.dealer__Total_Parts_Price__c}" />
+            <apex:outputField value="{!quote.dealer__Tax_Exempt__c}">
+            	<apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                        hideOnEdit="editButton" event="ondblclick" 
+                        changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>
+            </apex:outputField>
+            <apex:outputField value="{!quote.dealer__Tax__c}" />
+            <apex:outputText />
+            <apex:outputField value="{!quote.dealer__Total_Quote_Price__c}" />
+            <!--
+             <apex:inputText id="vehicleCode" label="Vehicle"/>
+             <c:AutoComplete objectname="dealer__VehicleModel__c" 
+                        additionalfield="dealer__Year__c,dealer__Make__c,dealer__Model__c,dealer__Trim__c" 
+                        resultfields="" 
+                        autocomplete_textbox="{!$Component.vehicleCode}" />
+            -->
+            <apex:outputText />
+        </apex:pageBlockSection> 
+        <apex:pageBlockSection title="System Information" collapsible="true">
+                <apex:pageBlockSectionItem >
+                	<apex:outputText >
+                		Created By
+                	</apex:outputText>
+                	<apex:outputText >
+                		<apex:outputField value="{!dealer__Parts_Quote__c.CreatedById}" />&nbsp;
+                		<apex:outputField value="{!dealer__Parts_Quote__c.CreatedDate}" />
+                	</apex:outputText>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                	<apex:outputText >
+                		Last Modified By
+                	</apex:outputText>
+                	<apex:outputText >
+                    	<apex:outputField value="{!dealer__Parts_Quote__c.LastModifiedById}" />&nbsp;
+                    	<apex:outputField value="{!dealer__Parts_Quote__c.LastModifiedDate}" />
+                    </apex:outputText>	
+                </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>                           
+    </apex:pageBlock>   
+        
+    <div id="log-js"> </div>
+    <div id="errors-js"> </div>
+    <apex:outputPanel id="renderPanel"></apex:outputPanel>
+    </apex:form>
+   
+    <apex:relatedList list="dealer__Parts_Quote_Lines__r" />
+    
+    <apex:relatedList list="OpenActivities" />
+    <apex:relatedList list="ActivityHistories" />
+    <apex:relatedList list="NotesAndAttachments" />    
+</apex:page>

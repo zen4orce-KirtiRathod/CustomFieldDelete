@@ -1,0 +1,16 @@
+<apex:page showHeader="true" sidebar="true" controller="dealer.FormControl" tabStyle="dealer__Deal__c" title="New Form">
+	<apex:sectionHeader title="New Form" subtitle="Create New Impact Form" />
+	<apex:form >
+		<apex:pageBlock mode="maindetail">
+			<apex:pageBlockButtons location="top">
+				<apex:commandButton value="Create" action="{!saveNewForm}" />
+			</apex:pageBlockButtons>
+			<apex:pageBlockSection title="Form Details" collapsible="false">
+				<apex:inputField value="{!newForm.Name}" />
+				<apex:inputField value="{!newForm.dealer__Form_ID__c}" />
+				<apex:outputText />
+				<apex:inputField value="{!newForm.dealer__Sequence__c}" />
+			</apex:pageBlockSection>
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>

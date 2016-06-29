@@ -1,0 +1,132 @@
+<apex:page standardController="dealer__Service_Repair_Order__c" extensions="dealer.ServiceRepairOrder_EXT" id="ServiceROInit">
+<apex:stylesheet value="{!$Resource.dealer__ServiceCSS}"/>
+<script type="text/javascript">
+function noenter(ev) {
+     if (window.event && window.event.keyCode == 13 || ev.which == 13)
+     {  
+         return false;
+     }
+     else
+     {
+         return true;
+     }
+}
+</script>
+	<apex:sectionHeader title="New Repair Order" subtitle="Search for Customer or Vehicle" />
+    <apex:form id="searchForm">
+    	
+        <apex:pageBlock id="SearchBlock">
+            <apex:pageBlockSection title="Search by Customer (Name, Phone)" id="SearchCustomerBlock" columns="1">
+                	<apex:outputPanel >
+                	<apex:inputText value="{!searchCustomerInput}" onkeypress="return noenter(event);" />
+                 	<apex:commandButton value="Search" action="{!SearchCustomer}" 
+                                      rerender="SearchCustomerBlock" status="status"/>
+                    <apex:outputText >&nbsp;&nbsp;</apex:outputText>
+                    <apex:commandButton value="Add Customer" action="{!addCustomer}" />
+                                      
+                    </apex:outputPanel>                  
+                <apex:pageMessages /> 	                     
+           		<apex:pageBlockTable value="{!customers}" var="c" id="CustomersTable" columnsWidth="150px, 200px, 100px, 75px, 525px">
+						<apex:column style="vertical-align:top;">
+							<apex:facet name="header">Customer Name</apex:facet>
+							<apex:outputLink value="/{!c.Id}">
+							<apex:outputField value="{!c.Name}" />
+							</apex:outputLink>
+						</apex:column>
+						<apex:column style="vertical-align:top;">
+							<apex:facet name="header">Address</apex:facet>
+							<apex:outputText value="{!c.MailingStreet}" />&nbsp;<br />
+							<apex:outputText value="{!c.MailingCity}" />&nbsp;<apex:outputText value="{!c.MailingState}" />&nbsp;<apex:outputText value="{!c.MailingPostalCode}" />
+						</apex:column>
+						<apex:column style="vertical-align:top;">
+							<apex:facet name="header">Phone(s)</apex:facet>
+							<apex:outputText value="{!c.Phone}" />
+							<apex:outputText rendered="{!IF(NOT(ISBLANK(c.MobilePhone)), true, false)}"><br /></apex:outputText>
+							<apex:outputText value="{!c.MobilePhone}" />
+						</apex:column>
+						<apex:column style="vertical-align:top;">
+							<apex:outputLink styleClass="btn" value="{!URLFOR('/apex/ServiceVehicleNew', null, [owner=c.Id])}">Add Vehicle</apex:outputLink>
+						</apex:column>
+						<apex:column >
+							<apex:facet name="header">Vehicle(s)</apex:facet>
+							<apex:pageBlockTable value="{!c.Service_Vehicles__r}" var="v" columnsWidth="75px, 150px, 100px, 100px, 100px">
+								<apex:column >
+									<apex:outputLink styleClass="btn" value="{!URLFOR('/apex/ServiceRepairOrderCreate', null, [customer=c.Id, vehicle=v.Id])}">
+										<apex:outputText >New RO</apex:outputText>
+									</apex:outputLink>
+								</apex:column>
+								<apex:column headerValue="Vehicle">
+									<apex:outputLink value="/{!v.Id}">
+										<apex:outputText value="{!v.Name}" />
+									</apex:outputLink>
+								</apex:column>	
+								<apex:column headerValue="Last 6">
+									<apex:outputText value="{!v.dealer__Last_6__c}"/>
+								</apex:column>
+								<apex:column headerValue="Last Service">
+									<apex:outputPanel >
+										<apex:outputText value="{!v.dealer__Last_Service__c}" rendered="{!IF(v.dealer__Open_Repair_Orders__c==0, true, false)}"/>
+										<apex:outputText value="Open RO" rendered="{!IF(v.dealer__Open_Repair_Orders__c==0, false, true)}" style="color:green;"/>
+									</apex:outputPanel>
+								</apex:column>
+								<apex:column headerValue="Last Odometer">
+									<apex:outputPanel style="text-align:right;">
+									<apex:outputText value="{0, number, #,###,###}">
+										<apex:param value="{!v.dealer__Last_Odometer__c}"/>
+									</apex:outputText>
+									</apex:outputPanel>
+								</apex:column>
+							</apex:pageBlockTable>
+						</apex:column>
+           		</apex:pageBlockTable>
+            </apex:pageBlockSection>    
+            <apex:pageBlockSection title="Search by Vehicle (Last 6 of Vin, Licence, Stock#)" id="SearchVehicleBlock" columns="1">
+            	<apex:outputPanel >
+                <apex:inputText value="{!searchVehicleInput}" onkeypress="return noenter(event);"/>
+                 <apex:commandButton value="Search" action="{!SearchVehicle}" 
+                                      rerender="SearchVehicleBlock" status="status"/>
+                </apex:outputPanel>                      
+                 <apex:pageMessages /> 
+                
+                 <apex:pageBlockTable value="{!vehicles}" var="s">
+                 
+                 		<apex:column >
+                 			<apex:outputLink value="{!URLFOR('/apex/ServiceRepairOrderCreate', null, [customer=s.dealer__Veh_Owner_Contact__c, vehicle=s.Id])}" styleClass="btn">New Repair Order</apex:outputLink>
+                 		</apex:column>
+                 	
+                 		<apex:column headerValue="Customer">
+                 			<apex:outputLink value="/{!s.dealer__Veh_Owner_Contact__c}">
+                 				<apex:outputField value="{!s.Veh_Owner_Contact__r.Name}" />
+                 			</apex:outputLink>
+                 		</apex:column>
+                 		
+                  		<apex:column headerValue="Vehicle">			
+                 		<apex:outputLink value="/{!s.Id}">
+                 			<apex:outputField value="{!s.Name}" />
+                 		</apex:outputLink>
+	                 	</apex:column>
+	                 	
+	                 	<apex:column headerValue="VIN Last 6">
+	                 		<apex:outputText value="{!s.dealer__Last_6__c}" />
+	                 	</apex:column>
+	                 	
+	                 	<apex:column >
+	                 		<apex:outputText value="{!s.dealer__Stock_Number__c}" />
+	                 	</apex:column>
+	                 	
+	                 	<apex:column headerValue="License">
+	                 		<apex:outputText value="{!s.dealer__Licence__c}" />
+	                 	</apex:column>
+	                 	
+	                 	<apex:column headerValue="Last Odometer">
+	                 		<apex:outputText value="{!s.dealer__Last_Odometer__c}" />
+	                 	</apex:column>
+	                 	
+	                 	<apex:column headerValue="Last Service">
+	                 		<apex:outputField value="{!s.dealer__Last_Service__c}" />
+	                 	</apex:column>
+                 </apex:pageBlockTable>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

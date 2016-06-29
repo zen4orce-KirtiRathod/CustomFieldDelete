@@ -1,0 +1,17 @@
+<apex:page showHeader="true" sidebar="true" standardController="dealer__Parts_Master__c" extensions="dealer.PartsMaster_EXT" title="Supersede Part">
+	<apex:sectionHeader title="Part Master" subtitle="Supersede Part {!dealer__Parts_Master__c.Name}" />
+	<apex:form >	
+		<apex:pageMessages />
+		<apex:pageBlock mode="edit">
+			<apex:pageBlockButtons location="top">
+				<apex:commandButton action="{!supercede}" value="Supersede" />
+				<apex:commandButton action="{!cancel}" value="Cancel" />
+			</apex:pageBlockButtons>
+
+			<apex:pageBlockSection collapsible="false">
+				<apex:outputField value="{!dealer__Parts_Master__c.Name}" />
+				<apex:inputText value="{!newPartNumber}" label="New Part#" required="true" />
+			</apex:pageBlockSection>
+		</apex:pageBlock>
+	</apex:form>	
+</apex:page>

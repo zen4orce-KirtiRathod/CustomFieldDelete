@@ -1,0 +1,26 @@
+<apex:page id="success_documentation_tab" showHeader="false" controller="dealer.SuccessDocumentation" applyBodyTag="false">
+    <head>
+        <script>
+			var successmeta = {!successDocumentationContent};
+			var objects = {!ObjectKeys};
+			var referrer = document.referrer;
+			var a=document.createElement('a');
+				a.href=document.referrer;
+		
+			    // if document.referrer is blank, direct client to the success page.	
+                if(document.referrer=='') {
+                    window.location.replace('https://success.dealerteam.com');
+                }
+        
+        		// Else customer reaching this URL from specific source.  Get the first 4 chars of the path and attempt to match Object Name
+        		var objectKey = a.pathname.substr(1,3);
+        
+		        // Lookup URL Based on Custom Metadata
+        		if(objects.hasOwnProperty(objectKey) && successmeta.hasOwnProperty(objects[objectKey])){
+                   	window.location.replace(successmeta[objects[objectKey]]);
+                } else {
+                    window.location.replace('https://success.dealerteam.com');   
+                }
+        </script>
+    </head>
+</apex:page>

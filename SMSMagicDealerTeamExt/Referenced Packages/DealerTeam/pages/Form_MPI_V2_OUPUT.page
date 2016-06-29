@@ -1,0 +1,994 @@
+<apex:page renderAs="pdf" applyHtmlTag="false" showHeader="false" showChat="false" standardStylesheets="false" standardController="dealer__Inspection_Report__c">
+  <html>
+    <head>
+      <apex:stylesheet value="//fonts.googleapis.com/css?family=PT+Sans" />
+      
+      <style type="text/CSS">
+
+        body {
+          font-family: 'PT Sans', Dialog;
+          font-size: 9px;
+        }
+        
+        body table {
+          border: none;
+        }
+        
+        table {
+          font-family: 'PT Sans', Dialog;
+          /* border-spacing: 10px; */
+          width: 100%;
+        }
+
+        .col {
+          width: 48%;
+          margin: 0 4% 0 0;
+          float: left;
+        }
+
+        .col.last {
+          margin-right: 0; 
+        }
+        
+        .col > table {
+          border: 1px solid #6D6E71;
+          padding: 0;
+          margin: 0 0 20px;
+        }
+
+        .col > table thead {
+          margin: 0 0 5px 0;
+        }
+
+        .col > table th {
+          background-color: #0094BF;
+          padding: 7px 5px;
+          font-size: 13px;
+          color: #fff;
+          font-weight: normal;
+        }
+
+        .col > table th.inverted {
+          background-color: #ffffff;
+          color: #0094BF;
+        }
+
+        .col > table td {
+          padding: 5px 3px;
+        }
+
+        .col > table td.columned {
+          padding: 0px;
+        }
+
+        .no_border {
+          border: 0 !important;
+        }
+
+        td {
+          font-family:  'PT Sans', Dialog;
+        }
+
+        th {
+          font-family:  'PT Sans', Dialog;
+        }
+
+        .branded-text {
+          color: #0094BF;
+        }
+
+        h1 {
+          font-size: 23px;
+          font-weight: normal;
+        }
+
+        h2 {
+          font-size: 14px;
+          font-weight: normal;
+          margin: 0;
+        }
+        
+        .border_bottom td {
+          border-bottom: 1px solid transparent;
+        }
+        
+        .wide_border td {
+          border-bottom-width: 0;
+        }
+        
+        #head_table {
+          font-size: 10px;
+        }
+
+        .box {
+          display: inline-block;
+          margin-right: 0;
+          height: 12px;
+          width: 12px;
+          border: 1px solid #6D6E71;
+        }
+
+        .box.note {
+          width: 19px;
+        }
+
+        .box i {
+          position: relative;
+          border-width: 1px;
+          border-style: solid;
+          display: block;
+          width: 10px;
+          height: 10px;
+          border-color: #fff;
+          line-height: 1;
+        }
+
+        .box.column {
+          height: 25px;
+          width: 23px;
+          border: 0;
+          display: block;
+          float: left;
+          opacity: .75;
+        }
+
+        .box.column i {
+          height: 23px;
+          width: 21px;
+        }
+
+        .ok i{ border-color: #A3CD3A; }
+        .reccomended i{ border-color: #FEE616; }
+        .immediate i { border-color: #EE3424; }
+        .na i { border-color: #cccccc; }
+
+        .ok.column i{ background-color: #A3CD3A; }
+        .reccomended.column i{ background-color: #FEE616; }
+        .immediate.column i { background-color: #EE3424; }
+        .na.column i { background-color: #cccccc; }
+
+        .legend .ok i{ background-color: #A3CD3A; }
+        .legend .reccomended { background-color: #FEE616; }
+        .legend .immediate { background-color: #EE3424; }
+
+        ul.legend {
+          list-style-type: none;
+          margin: 10px 0;
+          padding: 0;
+          overflow: hidden;
+        }
+
+        ul.legend li{
+          list-style-type: none;
+          margin: 0 20px 0 0;
+          padding: 0;
+          display: block;
+          float: left;
+        }
+        .footer {
+          text-align: center;
+          color: #0094BF;
+          clear: both;
+          display: block;
+          width: 100%;
+          margin: 0;
+        }
+
+        .col > table.collapsed-top {
+          
+        }
+
+        .col > table.collapsed-lower {
+          border-top: 0;
+          margin-top: -20px; 
+        }
+
+        @page {
+          /* Landscape orientation */
+          size:portrait;
+          margin: 0.25in;
+        }
+      </style>
+    </head>
+    <body>
+      <table cellspacing="0" ><!-- DOCUMENT HEADER -->
+        <tr>
+          <td width="50%">
+            <apex:image url="{!$Resource.dealer__CrownLogo}" width="30%" height="40%"/>
+          </td>
+          <td width="50%" align="right">
+            <h1 class="branded-text">
+              Multi-Point Vehicle Inspection
+            </h1>
+          </td>
+        </tr>
+      </table>
+      
+      <table cellspacing="0" id="head_table"><!-- Header Form -->
+        <tr style="height:30px;" class="border_bottom wide_border">
+          <td width="40%" colspan="2" style="border-bottom: 1px solid #000; color:#000;">
+          </td>
+          <td width="20%" valign="bottom" style="border-bottom: 1px solid #000; color:#000;">
+            DATE:<apex:outputText rendered="true" value="{0, date, MMMM d','  yyyy}"><apex:param value="{!NOW()}" /></apex:outputText>
+          </td>
+          <td width="20%" valign="bottom" style="border-bottom: 1px solid #000; color:#000;">
+              <apex:outputText rendered="true">ORDER#:&nbsp;<apex:outputField value="{!dealer__Inspection_Report__c.dealer__Repair_Order_Number__c}" /></apex:outputText>
+          </td>
+          <td width="20%" style="border-bottom: 1px solid #000; color:#000;">
+          </td>
+        </tr>
+        
+        <tr style="height:30px;"  class="border_bottom">
+          <td width="" colspan="2"  valign="bottom" style="border-bottom: 1px solid #000; color:#000;">
+              <apex:outputText rendered="true">NAME:&nbsp;<apex:outputField value="{!dealer__Inspection_Report__c.dealer__Customer_Name__c}" /></apex:outputText>
+          </td>
+          <td width="40%" valign="bottom" colspan="2" style="border-bottom: 1px solid #000; color:#000;">
+              <apex:outputText rendered="true">EMAIL: &nbsp;<apex:outputField value="{!dealer__Inspection_Report__c.dealer__Email__c}" /></apex:outputText>
+          </td>
+          <td width="20%" valign="bottom" style="border-bottom: 1px solid #000; color:#000;">
+              <apex:outputText rendered="true">PHONE:  &nbsp;<apex:outputField value="{!dealer__Inspection_Report__c.dealer__Phone__c}" /></apex:outputText>
+          </td>
+        </tr>
+        
+        <tr style="height:30px;" class="border_bottom">
+          <td width="20%" valign="bottom" style="border-bottom: 1px solid #000; color:#000;">
+              <apex:outputText rendered="true">YEAR: &nbsp;<apex:outputField value="{!dealer__Inspection_Report__c.dealer__Year__c}"/>
+            </apex:outputText>
+          </td>
+          <td width="20%" valign="bottom" style="border-bottom: 1px solid #000; color:#000;" colspan="2">
+              <apex:outputText rendered="true">MAKE/MODEL: &nbsp; <apex:outputField value="{!dealer__Inspection_Report__c.dealer__Make__c}"/> &nbsp; <apex:outputField value="{!dealer__Inspection_Report__c.dealer__Model__c}"/> 
+            </apex:outputText>
+          </td>
+          <td width="20%" valign="bottom" style="border-bottom: 1px solid #000; color:#000;">
+              <apex:outputText rendered="true">VIN:<apex:outputField value="{!dealer__Inspection_Report__c.dealer__VIN_Number__c}"/></apex:outputText>
+          </td>
+          <td width="20%" style="border-bottom: 1px solid #000; color:#000;">
+          </td>
+        </tr>
+        
+        <tr style="height:30px;" class="border_bottom">
+          <td width="20%" valign="bottom" style="border-bottom: 1px solid #000; color:#000;">
+              <apex:outputText rendered="false">CURRENT MILEAGE: <apex:outputField value="{!dealer__Inspection_Report__c.dealer__Mileage__c}"/></apex:outputText>
+          </td>
+          <td width="20%" style="border-bottom: 1px solid #000; color:#000;">
+          </td>
+          <td width="20%" valign="bottom" colspan="3" style="border-bottom: 1px solid #000; color:#000;">
+            SERVICE TECHNICIAN:&nbsp;<apex:outputField rendered="true" value="{!dealer__Inspection_Report__c.dealer__Service_Advisor__c}" />
+          </td>
+        </tr>
+      </table>
+      
+      <ul class="legend">
+        <li><span class="box ok"><i>&nbsp;</i></span> Checked and Ok</li>
+        <li><span class="box reccomended"><i>&nbsp;</i></span> Recommended future</li>
+        <li><span class="box immediate"><i>&nbsp;</i></span> Requires Immediate Attention</li>
+      </ul>
+      
+      <div class="col">
+
+        <table cellspacing="0">
+          <thead>
+          <tr>
+            <th colspan="4">
+              Interior Components
+            </th>
+          </tr>
+          </thead>
+          <tr>
+            <td align="center" class="columned">
+                <apex:outputText value="{!dealer__Inspection_Report__c.dealer__Widshield_Wipers_Ok__c}" rendered="false" />
+                <span class="box column ok"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Widshield_Wipers_Ok__c=='G','X',' ')}" />&nbsp;</i></span>
+                <span class="box column reccomended"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Widshield_Wipers_Ok__c=='Y','X',' ')}" />&nbsp;</i></span>
+                <span class="box column immediate"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Widshield_Wipers_Ok__c=='R','X',' ')}" />&nbsp;</i></span>
+            </td>
+            <td align="left" valign="middle">
+              
+              Wiper Operation
+            </td>
+            <td align="center" class="columned">
+                <apex:outputText value="{!dealer__Inspection_Report__c.dealer__Turn_Signals__c}" rendered="false" />
+                <span class="box column ok"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Turn_Signals__c=='G','X',' ')}" />&nbsp;</i></span>
+                <span class="box column reccomended"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Turn_Signals__c=='Y','X',' ')}" />&nbsp;</i></span>
+                <span class="box column immediate"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Turn_Signals__c=='R','X',' ')}" />&nbsp;</i></span>
+            </td>
+            <td align="left" valign="middle">
+              
+              Turn Signals / Hazards 
+            </td>
+          </tr>
+          
+          <tr>
+            
+            <td align="center" class="columned">
+                <apex:outputText value="{!dealer__Inspection_Report__c.dealer__Horn__c}" rendered="false" />
+                <span class="box column ok"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Horn__c=='G','X',' ')}" />&nbsp;</i></span>
+                <span class="box column reccomended"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Horn__c=='Y','X',' ')}" />&nbsp;</i></span>
+                <span class="box column immediate"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Horn__c=='R','X',' ')}" />&nbsp;</i></span>
+            </td>
+            <td align="left" valign="middle">
+              
+              Horn 
+              
+            </td>
+            <td align="center" class="columned">
+                <apex:outputText value="{!dealer__Inspection_Report__c.dealer__Interior_Lights__c}" rendered="false" />
+                <span class="box column ok"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Interior_Lights__c=='G','X',' ')}" />&nbsp;</i></span>
+                <span class="box column reccomended"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Interior_Lights__c=='Y','X',' ')}" />&nbsp;</i></span>
+                <span class="box column immediate"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Interior_Lights__c=='R','X',' ')}" />&nbsp;</i></span>
+            </td>
+            <td align="left" valign="middle">
+              Interior Lights 
+            </td>
+          </tr>
+          <tr>
+            
+            
+            <td align="center" class="columned">
+                <apex:outputText value="{!dealer__Inspection_Report__c.dealer__Head_Lights__c}" rendered="false" />
+                <span class="box column ok"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Head_Lights__c=='G','X',' ')}" />&nbsp;</i></span>
+                <span class="box column reccomended"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Head_Lights__c=='Y','X',' ')}" />&nbsp;</i></span>
+                <span class="box column immediate"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Head_Lights__c=='R','X',' ')}" />&nbsp;</i></span>
+            </td>
+            <td align="left" valign="middle">
+              
+              Headlights 
+            </td>
+            <td align="center" class="columned">
+                <apex:outputText value="{!dealer__Inspection_Report__c.dealer__Parking_Brake__c}" rendered="false" />
+                <span class="box column ok"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Parking_Brake__c=='G','X',' ')}" />&nbsp;</i></span>
+                <span class="box column reccomended"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Parking_Brake__c=='Y','X',' ')}" />&nbsp;</i></span>
+                <span class="box column immediate"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Parking_Brake__c=='R','X',' ')}" />&nbsp;</i></span>
+            </td>
+            <td align="left" valign="middle">
+              Parking Brake  
+            </td>
+          </tr>
+          <tr>
+            <td align="center" class="columned">
+                <apex:outputText value="{!dealer__Inspection_Report__c.dealer__Brake_Lights__c}" rendered="false" />
+                <span class="box column ok"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Brake_Lights__c=='G','X',' ')}" />&nbsp;</i></span>
+                <span class="box column reccomended"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Brake_Lights__c=='Y','X',' ')}" />&nbsp;</i></span>
+                <span class="box column immediate"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Brake_Lights__c=='R','X',' ')}" />&nbsp;</i></span>
+            </td>
+            <td align="left" valign="middle">
+              Brake Lights 
+            </td>
+            <td align="center" class="columned">
+              <span class="box column ok"><i>&nbsp;</i></span>
+              <span class="box column reccomended"><i>&nbsp;</i></span>
+              <span class="box column immediate"><i>&nbsp;</i></span>
+            </td>
+            <td>
+              &nbsp;
+            </td>
+          </tr>
+        </table>
+        
+        <table cellspacing="0"><!-- Under The Hood -->
+          <thead>
+          <tr>
+            <th colspan="4" >
+              Under the Hood
+            </th>
+          </tr>
+          </thead>
+          <tr>
+            <td align="center" class="columned">
+                <apex:outputText value="{!dealer__Inspection_Report__c.dealer__Battery_1_Status__c}" rendered="false" />
+                <span class="box column ok"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Battery_1_Status__c=='G','X',' ')}" />&nbsp;</i></span>
+                <span class="box column reccomended"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Battery_1_Status__c=='Y','X',' ')}" />&nbsp;</i></span>
+                <span class="box column immediate"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Battery_1_Status__c=='R','X',' ')}" />&nbsp;</i></span>
+            </td>
+            
+            <td align="left" valign="middle">
+              Battery Health
+            </td>
+            <td align="center" class="columned">
+                <apex:outputText value="{!dealer__Inspection_Report__c.dealer__Under_Hood_General_Condition__c}" rendered="false" />
+                <span class="box column ok"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Under_Hood_General_Condition__c=='G','X',' ')}" />&nbsp;</i></span>
+                <span class="box column reccomended"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Under_Hood_General_Condition__c=='Y','X',' ')}" />&nbsp;</i></span>
+                <span class="box column immediate"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Under_Hood_General_Condition__c=='R','X',' ')}" />&nbsp;</i></span>
+            </td>
+            
+            <td align="left" valign="middle">
+              General Conditions 
+            </td>
+          </tr>
+          
+          <tr>
+            
+            <td align="center" class="columned">
+                <apex:outputText value="{!dealer__Inspection_Report__c.dealer__Drive_Belts__c}" rendered="false" />
+                <span class="box column ok"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Drive_Belts__c=='G','X',' ')}" />&nbsp;</i></span>
+                <span class="box column reccomended"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Drive_Belts__c=='Y','X',' ')}" />&nbsp;</i></span>
+                <span class="box column immediate"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Drive_Belts__c=='R','X',' ')}" />&nbsp;</i></span>
+            </td>
+            
+            <td align="left" valign="middle">
+              Belts 
+            </td>
+            
+            <td align="center" class="columned">
+                <apex:outputText value="{!dealer__Inspection_Report__c.dealer__Engine_Air_Filter__c}" rendered="false" />
+                <span class="box column ok"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Engine_Air_Filter__c=='G','X',' ')}" />&nbsp;</i></span>
+                <span class="box column reccomended"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Engine_Air_Filter__c=='Y','X',' ')}" />&nbsp;</i></span>
+                <span class="box column immediate"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Engine_Air_Filter__c=='R','X',' ')}" />&nbsp;</i></span>
+            </td>
+            <td align="left" valign="middle">
+              Engine Air Filters 
+            </td>
+            
+          </tr>
+          <tr>
+            
+            <td align="center" class="columned">
+                <apex:outputText value="{!dealer__Inspection_Report__c.dealer__Hoses_Check__c}" rendered="false" />
+                <span class="box column ok"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Hoses_Check__c=='G','X',' ')}" />&nbsp;</i></span>
+                <span class="box column reccomended"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Hoses_Check__c=='Y','X',' ')}" />&nbsp;</i></span>
+                <span class="box column immediate"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Hoses_Check__c=='R','X',' ')}" />&nbsp;</i></span>
+            </td>
+            <td align="left" valign="middle">
+              
+              Hoses 
+              
+            </td>
+            
+            <td align="center" class="columned">
+                <apex:outputText value="{!dealer__Inspection_Report__c.dealer__Cabin_Air_Filter__c}" rendered="false" />
+                <span class="box column ok"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Cabin_Air_Filter__c=='G','X',' ')}" />&nbsp;</i></span>
+                <span class="box column reccomended"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Cabin_Air_Filter__c=='Y','X',' ')}" />&nbsp;</i></span>
+                <span class="box column immediate"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Cabin_Air_Filter__c=='R','X',' ')}" />&nbsp;</i></span>
+            </td>
+            <td align="left" valign="middle">
+              Cabin Air Filter 
+            </td>
+          </tr>
+        </table>
+        
+        <table cellspacing="0">
+          <thead>
+            <tr>
+              <th colspan="4" >
+                Fluids
+              </th>
+            </tr>
+          </thead>
+          <tr>
+            <td align="left" class="columned">
+              Ok &nbsp;  &nbsp;
+              Filled
+            </td>
+            <td>
+            </td>
+            <td align="left" class="columned">
+              Ok  &nbsp;  &nbsp;
+              Filled  &nbsp; 
+              N/A
+            </td>
+            <td>
+            </td>
+          </tr>
+          <tr>
+            <td align="center" class="columned">
+                <apex:outputText value="{!dealer__Inspection_Report__c.dealer__Windshield_Washer_Fluid__c}" rendered="false" />
+                <span class="box column ok"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Windshield_Washer_Fluid__c=='G','X',' ')}" />&nbsp;</i></span>
+                <span class="box column reccomended"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Windshield_Washer_Fluid__c=='Y','X',' ')}" />&nbsp;</i></span>
+            </td>
+            <td align="left" valign="middle">
+              Window Washer
+            </td>
+            <td align="center" class="columned">
+                <apex:outputText value="{!dealer__Inspection_Report__c.dealer__Transmission_Fluid__c}" rendered="false" />
+                <span class="box column ok"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Transmission_Fluid__c=='G','X',' ')}" />&nbsp;</i></span>
+                <span class="box column reccomended"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Transmission_Fluid__c=='Y','X',' ')}" />&nbsp;</i></span>
+            </td>
+            <td align="left" valign="middle">
+              Transmission
+            </td>
+          </tr>
+          <tr>
+            <td align="center" class="columned">
+                <apex:outputText value="{!dealer__Inspection_Report__c.dealer__Cooling_System__c}" rendered="false" />
+                <span class="box column ok"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Cooling_System__c=='G','X',' ')}" />&nbsp;</i></span>
+                <span class="box column reccomended"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Cooling_System__c=='Y','X',' ')}" />&nbsp;</i></span>
+            </td>
+            <td align="left" valign="middle">
+              Coolant
+            </td>
+            <td align="center" class="columned">
+                <apex:outputText value="{!dealer__Inspection_Report__c.dealer__Clutch_Fluid__c}" rendered="false" />
+                <span class="box column ok"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Clutch_Fluid__c=='G','X',' ')}" />&nbsp;</i></span>
+                <span class="box column reccomended"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Clutch_Fluid__c=='Y','X',' ')}" />&nbsp;</i></span>
+                <span class="box column na"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Clutch_Fluid__c=='N','X',' ')}" />&nbsp;</i></span>
+            </td>
+            <td align="left" valign="middle">
+              Clutch
+            </td>
+          </tr>
+          <tr>
+            
+            <td align="center" class="columned">
+                <apex:outputText value="{!dealer__Inspection_Report__c.dealer__Brake_Fluid__c}" rendered="false" />
+                <span class="box column ok"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Brake_Fluid__c=='G','X',' ')}" />&nbsp;</i></span>
+                <span class="box column reccomended"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Brake_Fluid__c=='Y','X',' ')}" />&nbsp;</i></span>
+            </td>
+            <td align="left" valign="middle">
+              
+              Brake Fluid
+              
+            </td>
+            
+            <td align="center" class="columned">
+                <apex:outputText value="{!dealer__Inspection_Report__c.dealer__Rear_Differential__c}" rendered="false" />
+                <span class="box column ok"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Rear_Differential__c=='G','X',' ')}" />&nbsp;</i></span>
+                <span class="box column reccomended"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Rear_Differential__c=='Y','X',' ')}" />&nbsp;</i></span>
+                <span class="box column na"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Rear_Differential__c=='N','X',' ')}" />&nbsp;</i></span>
+            </td>
+            <td align="left" valign="middle">
+              Differential
+            </td>
+          </tr>
+          
+          <tr>
+            
+            <td align="center" class="columned">
+                <apex:outputText value="{!dealer__Inspection_Report__c.dealer__Power_Steering_Fluid__c}" rendered="false" />
+                <span class="box column ok"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Power_Steering_Fluid__c=='G','X',' ')}" />&nbsp;</i></span>
+                <span class="box column reccomended"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Power_Steering_Fluid__c=='Y','X',' ')}" />&nbsp;</i></span>
+            </td>
+            <td align="left" valign="middle">
+              
+              Power Steering
+              
+            </td>
+            
+            <td align="center" class="columned">
+                <apex:outputText value="{!dealer__Inspection_Report__c.dealer__Transfer_Case__c}" rendered="false" />
+                <span class="box column ok"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Transfer_Case__c=='G','X',' ')}" />&nbsp;</i></span>
+                <span class="box column reccomended"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Transfer_Case__c=='Y','X',' ')}" />&nbsp;</i></span>
+                <span class="box column na"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Transfer_Case__c=='N','X',' ')}" />&nbsp;</i></span>
+            </td>
+            <td align="left" valign="middle">
+              Transfer Case
+            </td>
+          </tr>
+        </table>
+
+        <table cellspacing="0" >
+          <thead>
+          <tr>
+            <th colspan="4" >
+              Under Vehicle Components
+            </th>
+          </tr>
+          </thead>
+          <tr>
+            <td align="center" class="columned">
+                <apex:outputText value="{!dealer__Inspection_Report__c.dealer__Steering_Linkages__c}" rendered="false" />
+                <span class="box column ok"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Steering_Linkages__c=='G','X',' ')}" />&nbsp;</i></span>
+                <span class="box column reccomended"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Steering_Linkages__c=='Y','X',' ')}" />&nbsp;</i></span>
+                <span class="box column immediate"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Steering_Linkages__c=='R','X',' ')}" />&nbsp;</i></span>
+            </td>
+            <td align="left" valign="middle">
+              Steering Linkage/Free-play
+            </td>
+            <td align="center" class="columned">
+                <apex:outputText value="{!dealer__Inspection_Report__c.dealer__U_Joints_CV_Boots_Output_Shaft_Seals__c}" rendered="false" />
+                <span class="box column ok"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__U_Joints_CV_Boots_Output_Shaft_Seals__c=='G','X',' ')}" />&nbsp;</i></span>
+                <span class="box column reccomended"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__U_Joints_CV_Boots_Output_Shaft_Seals__c=='Y','X',' ')}" />&nbsp;</i></span>
+                <span class="box column immediate"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__U_Joints_CV_Boots_Output_Shaft_Seals__c=='R','X',' ')}" />&nbsp;</i></span>
+            </td>
+            <td align="left" valign="middle">
+              
+              Axles and Boots
+            </td>
+          </tr>
+          
+          <tr>
+            
+            <td align="center" class="columned">
+                <apex:outputText value="{!dealer__Inspection_Report__c.dealer__Shocks_Struts_Suspension__c}" rendered="false" />
+                <span class="box column ok"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Shocks_Struts_Suspension__c=='G','X',' ')}" />&nbsp;</i></span>
+                <span class="box column reccomended"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Shocks_Struts_Suspension__c=='Y','X',' ')}" />&nbsp;</i></span>
+                <span class="box column immediate"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Shocks_Struts_Suspension__c=='R','X',' ')}" />&nbsp;</i></span>
+            </td>
+            <td align="left" valign="middle">
+              
+              Suspension Components
+            </td>
+            <td align="center" class="columned">
+                <apex:outputText value="{!dealer__Inspection_Report__c.dealer__Brake_Lines_Hoses__c}" rendered="false" />
+                <span class="box column ok"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Brake_Lines_Hoses__c=='G','X',' ')}" />&nbsp;</i></span>
+                <span class="box column reccomended"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Brake_Lines_Hoses__c=='Y','X',' ')}" />&nbsp;</i></span>
+                <span class="box column immediate"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Brake_Lines_Hoses__c=='R','X',' ')}" />&nbsp;</i></span>
+            </td>
+            <td align="left" valign="middle">
+              Brake System Leaks
+            </td>
+          </tr>
+          <tr>
+            
+            <td align="center" class="columned">
+                <apex:outputText value="{!dealer__Inspection_Report__c.dealer__Drive_Shaft__c}" rendered="false" />
+                <span class="box column ok"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Drive_Shaft__c=='G','X',' ')}" />&nbsp;</i></span>
+                <span class="box column reccomended"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Drive_Shaft__c=='Y','X',' ')}" />&nbsp;</i></span>
+                <span class="box column immediate"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Drive_Shaft__c=='R','X',' ')}" />&nbsp;</i></span>
+            </td>
+            <td align="left" valign="middle">
+              
+              Driveshaft
+            </td>
+            <td align="center" class="columned">
+                <apex:outputText value="{!dealer__Inspection_Report__c.dealer__Fuel_Lines__c}" rendered="false" />
+                <span class="box column ok"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Fuel_Lines__c=='G','X',' ')}" />&nbsp;</i></span>
+                <span class="box column reccomended"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Fuel_Lines__c=='Y','X',' ')}" />&nbsp;</i></span>
+                <span class="box column immediate"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Fuel_Lines__c=='R','X',' ')}" />&nbsp;</i></span>
+            </td>
+            <td align="left" valign="middle">
+              Fuel Lines/ Connections
+            </td>
+          </tr>
+          <tr>
+            <td align="center" class="columned">
+                <apex:outputText value="{!dealer__Inspection_Report__c.dealer__Exhaust_System__c}" rendered="false" />
+                <span class="box column ok"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Exhaust_System__c=='G','X',' ')}" />&nbsp;</i></span>
+                <span class="box column reccomended"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Exhaust_System__c=='Y','X',' ')}" />&nbsp;</i></span>
+                <span class="box column immediate"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Exhaust_System__c=='R','X',' ')}" />&nbsp;</i></span>
+            </td>
+            <td align="left" valign="middle">
+              Exhaust System
+            </td>
+
+            <td align="center" class="columned">
+              <span class="box column ok"><i>&nbsp;</i></span>
+              <span class="box column reccomended"><i>&nbsp;</i></span>
+              <span class="box column immediate"><i>&nbsp;</i></span>
+            </td>
+            <td>
+              &nbsp;
+            </td>
+          </tr>
+        </table>
+
+        <table cellspacing="0" >
+          <thead>
+          <tr>
+            <th class="inverted" colspan="4"  >
+              <div>Comments</div>
+              <div>
+                  &nbsp;
+              </div>
+            </th>
+          </tr>
+          </thead>
+          <tr>
+            
+            <td colspan="4" style="height:60px;">
+              <div style="overflow: hidden; font-size: 1em; color: #000; max-height: 85px;">
+                  <apex:outputField value="{!dealer__Inspection_Report__c.dealer__Customer_Comments__c}" />
+              </div>
+            </td>
+            
+          </tr>
+        </table>
+      </div>
+
+      <div class="col last">
+        <!-- Right Col -->
+        <table cellspacing="0" class="collapsed-top" align="top">
+          <thead>
+          <tr>
+            <th colspan="3">
+              Tire Tread Depth
+            </th>
+          </tr>
+          </thead>
+          <tr>
+            <td style = "height:40px">
+              Driver Front
+              <br/>
+          
+                <apex:outputText value="{!dealer__Inspection_Report__c.dealer__Tire_Tread_DF__c}" rendered="false" />
+                <span class="box ok"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Tire_Tread_DF__c=='G','X',' ')}" />&nbsp;</i></span>
+                <span class="box reccomended"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Tire_Tread_DF__c=='Y','X',' ')}" />&nbsp;</i></span>
+                <span class="box immediate"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Tire_Tread_DF__c=='R','X',' ')}" />&nbsp;</i></span>
+                <span class="box note"><i><apex:outputText value="{!(dealer__Inspection_Report__c.dealer__Tire_MMS_DF__c)}" />&nbsp;</i></span>
+              /32
+            </td>
+            <td rowspan="2" style = "height:40px" align="center">
+              <apex:image url="{!$Resource.dealer__Tire}" width="60" height="80" />
+            </td>
+            <td style = "height:40px">
+              Passenger Front
+              <br/>
+          
+                <apex:outputText value="{!dealer__Inspection_Report__c.dealer__Tire_Tread_PF__c}" rendered="false" />
+                <span class="box ok"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Tire_Tread_PF__c=='G','X',' ')}" />&nbsp;</i></span>
+                <span class="box reccomended"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Tire_Tread_PF__c=='Y','X',' ')}" />&nbsp;</i></span>
+                <span class="box immediate"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Tire_Tread_PF__c=='R','X',' ')}" />&nbsp;</i></span>
+                 <span class="box note"><i><apex:outputText value="{!(dealer__Inspection_Report__c.dealer__Tire_MMS_PF__c)}" />&nbsp;</i></span>
+              /32
+            </td>
+          </tr>
+          <tr>
+            <td style = "height:40px">
+              Driver Rear
+              <br/>
+          
+                <apex:outputText value="{!dealer__Inspection_Report__c.dealer__Tire_Tread_DR__c}" rendered="false" />
+                <span class="box ok"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Tire_Tread_DR__c=='G','X',' ')}" />&nbsp;</i></span>
+                <span class="box reccomended"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Tire_Tread_DR__c=='Y','X',' ')}" />&nbsp;</i></span>
+                <span class="box immediate"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Tire_Tread_DR__c=='R','X',' ')}" />&nbsp;</i></span>
+                 <span class="box note"><i><apex:outputText value="{!(dealer__Inspection_Report__c.dealer__Tire_MMS_DR__c)}" />&nbsp;</i></span>
+              /32
+            </td>
+            
+            <td style = "height:40px">
+              Passenger Rear
+              <br/>
+          
+                <apex:outputText value="{!dealer__Inspection_Report__c.dealer__Tire_Tread_PR__c}" rendered="false" />
+                <span class="box ok"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Tire_Tread_PR__c=='G','X',' ')}" />&nbsp;</i></span>
+                <span class="box reccomended"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Tire_Tread_PR__c=='Y','X',' ')}" />&nbsp;</i></span>
+                <span class="box immediate"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Tire_Tread_PR__c=='R','X',' ')}" />&nbsp;</i></span>
+                 <span class="box note"><i><apex:outputText value="{!(dealer__Inspection_Report__c.dealer__Tire_MMS_PR__c)}" />&nbsp;</i></span>
+              /32
+            </td>
+          </tr>
+        </table>
+        
+        <table cellspacing="0" class="collapsed-lower"  align="top">
+          <tr>
+            <td class="branded-text" colspan="5" align="center">
+              <h2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Tire Air Pressure</h2>
+            </td>
+            <td class="branded-text">
+              <h2>Tire Condition</h2>
+            </td>
+          </tr>
+          <tr>
+            <td width="">
+            </td>
+            <td width="10%" align="center" style="font-size: 7px;">
+              CURRENT
+            </td>
+            <td width="23" align="center" style="font-size: 7px;">
+              OK
+            </td>
+            <td width="23" align="center" style="font-size: 7px;">
+              FILLED
+            </td>
+            <td width="10%" align="center" style="font-size: 7px;">
+              SET TO
+            </td>
+            <td width="30%" align="center">
+            </td>
+            
+          </tr>
+          <tr>
+            <td>
+              Driver Front
+            </td>
+            <td align="center">
+                    <span class="box note"><i>&nbsp;<apex:outputText value="{!(dealer__Inspection_Report__c.dealer__Tire_PSI_DF_Pre_Inspection__c)}" /></i></span>
+            </td>
+            <td align="center" class="columned">
+                <apex:outputText value="{!dealer__Inspection_Report__c.dealer__Tire_Tread_DF__c}" rendered="false" />
+                <span class="box column ok"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Tire_DF_Under_Inflated__c=='G','X',' ')}" />&nbsp;</i></span>
+            </td>
+            <td align="center" class="columned">
+                <span class="box column reccomended"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Tire_DF_Under_Inflated__c=='Y','X',' ')}" />&nbsp;</i></span>
+            </td>
+            <td align="center">
+              <span class="box note"><i>&nbsp;</i></span>
+            </td>
+            <td align="center" class="columned"  style="padding-left: 15px">
+        
+                <apex:outputText value="{!dealer__Inspection_Report__c.dealer__Widshield_Wipers_Ok__c}" rendered="false" />
+                <span class="box column ok"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Widshield_Wipers_Ok__c=='G','X',' ')}" />&nbsp;</i></span>
+                <span class="box column reccomended"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Widshield_Wipers_Ok__c=='Y','X',' ')}" />&nbsp;</i></span>
+                <span class="box column immediate"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Widshield_Wipers_Ok__c=='R','X',' ')}" />&nbsp;</i></span>
+            </td>
+            
+          </tr>
+          
+          <tr>
+            <td>
+              Driver Rear
+            </td>
+            <td align="center">
+                    <span class="box note"><i>&nbsp;<apex:outputText value="{!(dealer__Inspection_Report__c.dealer__Tire_PSI_DR_Pre_Inspection__c)}" /></i></span>
+            </td>
+            <td align="center" class="columned">
+                <apex:outputText value="{!dealer__Inspection_Report__c.dealer__Tire_Tread_DR__c}" rendered="false" />
+                <span class="box column ok"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Tire_DR_Under_Inflated__c=='G','X',' ')}" />&nbsp;</i></span>
+            </td>
+            <td align="center" class="columned">
+                <span class="box column reccomended"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Tire_DR_Under_Inflated__c=='Y','X',' ')}" />&nbsp;</i></span>
+            </td>
+            <td align="center">
+                    <span class="box note"><i>&nbsp;<apex:outputText value="{!(dealer__Inspection_Report__c.dealer__Tire_PSI_DR__c)}" /></i></span>
+            </td>
+            <td align="center" class="columned"  style="padding-left: 15px">
+        
+                <apex:outputText value="{!dealer__Inspection_Report__c.dealer__Widshield_Wipers_Ok__c}" rendered="false" />
+                <span class="box column ok"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Widshield_Wipers_Ok__c=='G','X',' ')}" />&nbsp;</i></span>
+                <span class="box column reccomended"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Widshield_Wipers_Ok__c=='Y','X',' ')}" />&nbsp;</i></span>
+                <span class="box column immediate"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Widshield_Wipers_Ok__c=='R','X',' ')}" />&nbsp;</i></span>
+            </td>
+            
+          </tr>
+          <tr>
+            <td>
+              Passenger Rear
+            </td>
+            <td align="center">
+                    <span class="box note"><i>&nbsp;<apex:outputText value="{!(dealer__Inspection_Report__c.dealer__Tire_PSI_PR_Pre_Inspection__c)}" /></i></span>
+            </td>
+            <td align="center" class="columned">
+                <apex:outputText value="{!dealer__Inspection_Report__c.dealer__Tire_Tread_PR__c}" rendered="false" />
+                <span class="box column ok"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Tire_PR_Under_Inflated__c=='G','X',' ')}" />&nbsp;</i></span>
+            </td>
+            <td align="center" class="columned">
+                <span class="box column reccomended"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Tire_PR_Under_Inflated__c=='Y','X',' ')}" />&nbsp;</i></span>
+            </td>
+            <td align="center">
+                    <span class="box note"><i>&nbsp;<apex:outputText value="{!(dealer__Inspection_Report__c.dealer__Tire_PSI_PR__c)}" /></i></span>
+            </td>
+            <td align="center" class="columned"  style="padding-left: 15px">
+        
+                <apex:outputText value="{!dealer__Inspection_Report__c.dealer__Widshield_Wipers_Ok__c}" rendered="false" />
+                <span class="box column ok"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Widshield_Wipers_Ok__c=='G','X',' ')}" />&nbsp;</i></span>
+                <span class="box column reccomended"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Widshield_Wipers_Ok__c=='Y','X',' ')}" />&nbsp;</i></span>
+                <span class="box column immediate"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Widshield_Wipers_Ok__c=='R','X',' ')}" />&nbsp;</i></span>
+            </td>
+            
+          </tr>
+          <tr>
+            <td>
+              Passenger Front
+            </td>
+            <td align="center">
+                    <span class="box note"><i>&nbsp;<apex:outputText value="{!(dealer__Inspection_Report__c.dealer__Tire_PSI_PF_Pre_Inspection__c)}" /></i></span>
+            </td>
+            <td align="center" class="columned">
+                <span class="box column ok"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Tire_PF_Under_Inflated__c=='G','X',' ')}" />&nbsp;</i></span>
+            </td>
+            <td align="center" class="columned">
+                <span class="box column reccomended"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Tire_PF_Under_Inflated__c=='Y','X',' ')}" />&nbsp;</i></span>
+            </td>
+            <td align="center">
+              <span class="box note"><i>&nbsp;</i></span>
+            </td>
+            <td align="center" class="columned" style="padding-left: 15px">
+        
+                <apex:outputText value="{!dealer__Inspection_Report__c.dealer__Widshield_Wipers_Ok__c}" rendered="false" />
+                <span class="box column ok"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Widshield_Wipers_Ok__c=='G','X',' ')}" />&nbsp;</i></span>
+                <span class="box column reccomended"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Widshield_Wipers_Ok__c=='Y','X',' ')}" />&nbsp;</i></span>
+                <span class="box column immediate"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Widshield_Wipers_Ok__c=='R','X',' ')}" />&nbsp;</i></span>
+            </td>
+            
+          </tr> 
+        </table>
+
+        <table cellspacing="0" class="collapsed-lower"  align="top">
+          <tr> 
+            <td  align="center" class="columned">
+        
+                <apex:outputText value="{!dealer__Inspection_Report__c.dealer__Rotation_Recommended__c}" rendered="false" />
+                <span class="box column ok"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Rotation_Recommended__c=='G','X',' ')}" />&nbsp;</i></span>
+                <span class="box column reccomended"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Rotation_Recommended__c=='Y','X',' ')}" />&nbsp;</i></span>
+              Rotation Needed
+            </td>
+            <td  align="center" class="columned">
+        
+                <apex:outputText value="{!dealer__Inspection_Report__c.dealer__Alignment__c}" rendered="false" />
+                <span class="box column ok"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Alignment__c=='G','X',' ')}" />&nbsp;</i></span>
+                <span class="box column reccomended"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Alignment__c=='Y','X',' ')}" />&nbsp;</i></span>
+              Alignment Needed
+            </td>
+            
+          </tr>
+          <tr>
+            
+            <td  align="center" class="columned">
+        
+                <apex:outputText value="{!dealer__Inspection_Report__c.dealer__Balance_Recommended__c}" rendered="false" />
+                <span class="box column ok"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Balance_Recommended__c=='G','X',' ')}" />&nbsp;</i></span>
+                <span class="box column reccomended"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Balance_Recommended__c=='Y','X',' ')}" />&nbsp;</i></span>
+              Balance Needed
+            </td>
+            <td  align="center" class="columned">
+              <span class="box column column ok"><i>&nbsp;</i></span>
+              <span class="box column column reccomended"><i>&nbsp;</i></span>
+            </td>
+            
+          </tr>
+        </table>
+
+        <table cellspacing="0"  align="top">
+          <tr>
+            <th colspan="3">
+              Inspect Brakes
+            </th>
+          </tr>
+          <tr>
+            <td style = "height:40px">
+              Driver Front
+              <br/>
+          
+                <apex:outputText value="{!dealer__Inspection_Report__c.dealer__Brake_DF__c}" rendered="false" />
+                <span class="box ok"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Brake_DF__c=='G','X',' ')}" />&nbsp;</i></span>
+                <span class="box reccomended"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Brake_DF__c=='Y','X',' ')}" />&nbsp;</i></span>
+                <span class="box immediate"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Brake_DF__c=='R','X',' ')}" />&nbsp;</i></span>
+                    <span class="box note"><i><apex:outputText value="{!(dealer__Inspection_Report__c.dealer__Brake_Wear_DF__c)}" />&nbsp;</i></span>
+              mm
+            </td>
+            <td rowspan="2" align="center">
+              <apex:image url="{!$Resource.dealer__Brake}" width="60" height="80" style="visibility:hidden;" />
+            </td>
+            <td style = "height:40px">
+              Passenger Front
+              <br/>
+          
+                <apex:outputText value="{!dealer__Inspection_Report__c.dealer__Brake_PF__c}" rendered="false" />
+                <span class="box ok"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Brake_PF__c=='G','X',' ')}" />&nbsp;</i></span>
+                <span class="box reccomended"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Brake_PF__c=='Y','X',' ')}" />&nbsp;</i></span>
+                <span class="box immediate"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Brake_PF__c=='R','X',' ')}" />&nbsp;</i></span>
+                    <span class="box note"><i><apex:outputText value="{!(dealer__Inspection_Report__c.dealer__Brake_Wear_PR__c)}" />&nbsp;</i></span>
+              mm
+            </td>
+          </tr>
+          <tr>
+            <td style = "height:40px">
+              Driver Rear
+              <br/>
+          
+                <apex:outputText value="{!dealer__Inspection_Report__c.dealer__Brake_DR__c}" rendered="false" />
+                <span class="box ok"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Brake_DR__c=='G','X',' ')}" />&nbsp;</i></span>
+                <span class="box reccomended"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Brake_DR__c=='Y','X',' ')}" />&nbsp;</i></span>
+                <span class="box immediate"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Brake_DR__c=='R','X',' ')}" />&nbsp;</i></span>
+                    <span class="box note"><i><apex:outputText value="{!(dealer__Inspection_Report__c.dealer__Brake_Wear_DR__c)}" />&nbsp;</i></span>
+              mm
+            </td>
+            
+            <td style = "height:40px">
+              Passenger Rear
+              <br/>
+          
+                <apex:outputText value="{!dealer__Inspection_Report__c.dealer__Brake_PR__c}" rendered="false" />
+                <span class="box ok"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Brake_PR__c=='G','X',' ')}" />&nbsp;</i></span>
+                <span class="box reccomended"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Brake_PR__c=='Y','X',' ')}" />&nbsp;</i></span>
+                <span class="box immediate"><i><apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Brake_PR__c=='R','X',' ')}" />&nbsp;</i></span>
+                    <span class="box note"><i><apex:outputText value="{!(dealer__Inspection_Report__c.dealer__Brake_Wear_PR__c)}" />&nbsp;</i></span>
+              mm
+            </td>
+          </tr> 
+        </table>
+        
+        <table class="no_border" cellspacing="0" align="bottom">
+          <tr>
+            <td colspan="2" height="160"></td>
+          </tr>
+          <tr>
+            <td style ="border-bottom-width:0.0133cm; border-bottom-style:solid;" valign="bottom">
+            </td>
+            <td style ="border-bottom-width:0.0133cm; border-bottom-style:solid;" valign="bottom">
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Customer Signature
+            </td>
+            <td>
+              Date
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <p class="footer">Crown Honda of Greensboro | Phone: 1-888-276-1064 | service.crownhondagreensboro.com</p>
+    </body>
+    
+  </html>
+</apex:page>

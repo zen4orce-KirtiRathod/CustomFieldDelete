@@ -1,0 +1,461 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <content>PartsMasterNewEntry</content>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Visualforce</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <customHelpPage>SuccessDocumentation_Tab</customHelpPage>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <deprecated>false</deprecated>
+    <description>Factory Master Parts Table</description>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableEnhancedLookup>true</enableEnhancedLookup>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <fields>
+        <fullName>Applications__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Application search string</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Searchable list of applications for this part.</inlineHelpText>
+        <label>Applications</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Catalog_Image__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Image of this part saved as a URL in a Long Text Field</description>
+        <externalId>false</externalId>
+        <label>Catalog Image</label>
+        <length>3200</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Html</type>
+        <visibleLines>10</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Core_Required__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Core Required</label>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Core_Value__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Core Value</label>
+        <precision>7</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Cost__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Current cost of the part.</description>
+        <externalId>false</externalId>
+        <label>Cost</label>
+        <precision>10</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Height__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Height dimension</description>
+        <externalId>false</externalId>
+        <label>Height</label>
+        <precision>10</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Jobber_Price__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Jobber price as determined by the part manufacturer</description>
+        <externalId>false</externalId>
+        <label>Jobber Price</label>
+        <precision>8</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Labor_Time__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Factory suggested labor time</inlineHelpText>
+        <label>Labor Time</label>
+        <precision>6</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Length__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Length Dimension</description>
+        <externalId>false</externalId>
+        <label>Length</label>
+        <precision>10</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>MAP__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Minimum Advertised Price (Min Sale Price MSP)</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Minimum Advertised Price (Min Sale Price MSP)</inlineHelpText>
+        <label>MAP</label>
+        <precision>9</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>MFG_Comments__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Comments for this part set by the manufacturer</inlineHelpText>
+        <label>MFG Comments</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Manufacturer__c</fullName>
+        <deprecated>false</deprecated>
+        <description>MFG of Part</description>
+        <externalId>false</externalId>
+        <inlineHelpText>MFG of this Part.  Used to determine unique part number.</inlineHelpText>
+        <label>Manufacturer</label>
+        <picklist>
+            <picklistValues>
+                <fullName>OT</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>FD</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>DO</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>HO</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Pack_QTY__c</fullName>
+        <defaultValue>1</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Pack QTY</label>
+        <precision>5</precision>
+        <required>true</required>
+        <scale>0</scale>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Part_Description__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>true</externalId>
+        <label>Part Description</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Part_No_Display__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>RIGHT(Part_No__c,  (LEN(Part_No__c)  - 3))</formula>
+        <label>Part Number</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Part_No__c</fullName>
+        <caseSensitive>false</caseSensitive>
+        <deprecated>false</deprecated>
+        <externalId>true</externalId>
+        <inlineHelpText>MFG:Part Number, unique number across all inventories.</inlineHelpText>
+        <label>Part MFG:No.</label>
+        <length>35</length>
+        <required>true</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>true</unique>
+    </fields>
+    <fields>
+        <fullName>Price_Tape_Date__c</fullName>
+        <deprecated>false</deprecated>
+        <description>The date the price tape was last updated.</description>
+        <externalId>false</externalId>
+        <label>Price Tape Last Updated</label>
+        <required>true</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Raw_Part_Number__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Part number without hyphens or other format related items</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Part number without hyphens or other format related items</inlineHelpText>
+        <label>Raw Part Number</label>
+        <length>25</length>
+        <required>true</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Retail_Price__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Current Retail (List) price from the MFG price database</description>
+        <externalId>false</externalId>
+        <label>Retail Price</label>
+        <precision>10</precision>
+        <required>true</required>
+        <scale>2</scale>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Return_Code__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Return Code</label>
+        <length>15</length>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Status__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Status</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Active</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Obsolete</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Obsolete w/ Inventory</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>UPC__c</fullName>
+        <deprecated>false</deprecated>
+        <description>UPC Code designated by the part mfg</description>
+        <externalId>false</externalId>
+        <label>UPC</label>
+        <length>18</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Warranty_Price__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Warranty Sale Price as required by the MFG</description>
+        <externalId>false</externalId>
+        <label>Warranty Price</label>
+        <precision>10</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Weight__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Weight</label>
+        <precision>6</precision>
+        <required>false</required>
+        <scale>1</scale>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Width__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Width measurement</description>
+        <externalId>false</externalId>
+        <label>Width</label>
+        <precision>10</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <label>Parts Master</label>
+    <listViews>
+        <fullName>All</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <nameField>
+        <label>Part Number</label>
+        <trackHistory>true</trackHistory>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Parts Master</pluralLabel>
+    <searchLayouts>
+        <customTabListAdditionalFields>Manufacturer__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Part_Description__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Cost__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Retail_Price__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Pack_QTY__c</customTabListAdditionalFields>
+        <lookupDialogsAdditionalFields>Manufacturer__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Part_Description__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Cost__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Retail_Price__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Pack_QTY__c</lookupDialogsAdditionalFields>
+        <lookupFilterFields>Manufacturer__c</lookupFilterFields>
+        <lookupFilterFields>Pack_QTY__c</lookupFilterFields>
+        <searchFilterFields>Manufacturer__c</searchFilterFields>
+        <searchFilterFields>Pack_QTY__c</searchFilterFields>
+        <searchResultsAdditionalFields>Manufacturer__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Part_Description__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Cost__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Retail_Price__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Pack_QTY__c</searchResultsAdditionalFields>
+    </searchLayouts>
+    <sharingModel>ReadWrite</sharingModel>
+    <webLinks>
+        <fullName>Supersession</fullName>
+        <availability>online</availability>
+        <description>Page to manage the part supersession</description>
+        <displayType>button</displayType>
+        <linkType>page</linkType>
+        <masterLabel>Supersession</masterLabel>
+        <openType>replace</openType>
+        <page>SupersedePart</page>
+        <protected>false</protected>
+    </webLinks>
+</CustomObject>

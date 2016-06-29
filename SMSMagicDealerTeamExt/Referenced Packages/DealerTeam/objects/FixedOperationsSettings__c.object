@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>Hierarchy</customSettingsType>
+    <description>Settings for the Fixed Operations users.</description>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>Appointment_Color_Chart__c</fullName>
+        <defaultValue>&quot;{\&quot;Customer Service\&quot;:\&quot;337ab7\&quot;,\&quot;Production\&quot;:\&quot;5cb85c\&quot;,\&quot;Reconditioning\&quot;:\&quot;f0ad4e\&quot;, \&quot;Training / Vacation\&quot;:\&quot;d9534f\&quot;}&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Color coding of appointment items</description>
+        <externalId>false</externalId>
+        <label>Appointment Color Chart</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Appointment_Durration__c</fullName>
+        <defaultValue>20</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Amount of time in minutes service appointments should default to</inlineHelpText>
+        <label>Appointment Durration</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>DO_NOT_Run_Managed_RO_Trigger__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Should the Managed ServiceRoCalc trigger not run?</description>
+        <externalId>false</externalId>
+        <label>DO NOT Run Managed RO Trigger?</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Default_Scheduler_Location__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Default Scheduler Location</label>
+        <length>18</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Enable_Actual_Times__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Actual times is a feature of tech clocking where the technician clocks their times directly in the job.  If this feature is not enabled the user is presented with a manual actual time input dialog.</description>
+        <externalId>false</externalId>
+        <label>Enable Actual Times</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Kit_Create_Part_Master__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Kit maintenance should or should not create the part master record and assign iteself</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Should the creation of a kit also define itself as a Part in the Parts Master?</inlineHelpText>
+        <label>Kit Create Part Master</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Label_Printer__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Dymo label printer name</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Dymo label printer name</inlineHelpText>
+        <label>Label Printer</label>
+        <length>80</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Legacy_Parts_Invoice__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Does this client use the legacy parts invoice screen (First version offered)</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Does this client use the legacy parts invoice screen (First version offered)</inlineHelpText>
+        <label>Legacy Parts Invoice</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Multi_Company_Mode__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Multi-Company mode will prefix the record name with the company location.  i.e. CR1-502659 v. 502659</description>
+        <externalId>false</externalId>
+        <label>Multi Company Mode</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>PartsReceiptPage__c</fullName>
+        <defaultValue>&quot;/apex/dealer__PurchaseOrder&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Page dedicated to return processing of Parts Receiving</inlineHelpText>
+        <label>Parts Receipt Page</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Parts_Inventory_Control_Method__c</fullName>
+        <defaultValue>&quot;LIFO&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Method must be LIFO / FIFO</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Method must be LIFO / FIFO</inlineHelpText>
+        <label>Parts Inventory Control Method</label>
+        <length>40</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Parts_Invoice_Tax_Exempt__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Default parts invoices as tax exempt</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Default parts invoices as tax exempt</inlineHelpText>
+        <label>Parts Invoice Tax Exempt</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>PurchaseOrderLineManager__c</fullName>
+        <deprecated>false</deprecated>
+        <description>IFrame application handle for managing the lines of a purchase order</description>
+        <externalId>false</externalId>
+        <label>PurchaseOrderLineManager</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PurchaseOrderPartsReceiptAddress__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Email Services handle for the receiving of parts (External Accounting Hook)</description>
+        <externalId>false</externalId>
+        <label>Purchase Order Parts Receipt Address</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Purchase_Order_PDF__c</fullName>
+        <defaultValue>&quot;/apex/dealer__PurchaseOrderPDF&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Custom Printable PDF for Purchase Orders</description>
+        <externalId>false</externalId>
+        <label>Purchase Order PDF</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Purchase_Order_Post_FF__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Non-managed Page name to hook to the Financial Force Accounting Engine</description>
+        <externalId>false</externalId>
+        <label>Purchase Order Post FF</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Repair_Order_Index__c</fullName>
+        <defaultValue>7000</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Repair Order Index</label>
+        <precision>12</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>SRO_Internal_Price_Control__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Should Internal Repair Order Parts Lines sale price include part cost as Sale Price?</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Should Internal Repair Order Parts Lines sale price include part cost as Sale Price?</inlineHelpText>
+        <label>SRO Internal Price Control</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>SRO_Warranty_Price_Control__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Should Warranty SRO Part Lines Sale Price use Part Cost?</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Should Warranty SRO Part Lines Sale Price use Part Cost?</inlineHelpText>
+        <label>SRO Warranty Price Control</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Selected_Advisors__c</fullName>
+        <deprecated>false</deprecated>
+        <description>A JSON store of selected Advisor IDs</description>
+        <externalId>false</externalId>
+        <label>Selected Advisors</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Stop_SRO_Managed_Sub_Calcs__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>DO NOT Run Managed RO Trigger Sub Charges (Misc, Line, Hazmat)</description>
+        <externalId>false</externalId>
+        <label>Stop SRO Managed Sub Calcs</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <label>FixedOperationsSettings</label>
+    <visibility>Public</visibility>
+</CustomObject>

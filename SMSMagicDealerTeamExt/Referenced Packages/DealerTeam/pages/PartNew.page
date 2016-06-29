@@ -1,0 +1,125 @@
+<apex:page id="PartNew" standardController="dealer__Parts_Inventory__c" extensions="dealer.PartsInventory_EXT" showChat="true" >
+<apex:includeScript value="{!URLFOR($Resource.dealer__jQuery_UI_1820, 'js/jquery-1.7.2.min.js')}" />
+<apex:includeScript value="{!URLFOR($Resource.dealer__jQuery_UI_1820, 'js/jquery-ui-1.8.20.custom.min.js')}" />
+<apex:includeScript value="{!$Resource.dealer__jsHashTable}" />
+<apex:includeScript value="{!$Resource.dealer__jQueryNumberFormatting}" />
+<apex:includeScript value="{!$Resource.dealer__jQueryTools}" />
+<apex:stylesheet value="{!URLFOR($Resource.dealer__jQuery_UI_1820,'css/Aristo/Aristo.css')}"/>
+
+<script type="text/javascript">
+var j$ = jQuery.noConflict();
+var searchresult;
+
+function partKeyDown() { 
+	j$('#PartAlreadyExists').remove();
+}
+
+function checkSave() {
+	var stockingGroup 	= j$('#PartNew\\:PartNewForm\\:pnfBlock\\:pnfS1\\:stockingGroup').val();
+	var partNumber		= j$('#PartNew\\:PartNewForm\\:pnfBlock\\:pnfS1\\:partnumber').val();
+	var partDescription	= j$('#PartNew\\:PartNewForm\\:pnfBlock\\:pnfS1\\:partDescription').val();
+	if(stockingGroup != '' && partNumber != '' && partDescription != '') {
+		j$('#PartNew\\:PartNewForm\\:pnfBlock\\:buttons\\:Savebutton').removeAttr('disabled');
+		j$('#PartNew\\:PartNewForm\\:pnfBlock\\:buttons\\:Savebutton').removeClass('btnDisabled');
+		j$('#PartNew\\:PartNewForm\\:pnfBlock\\:buttons\\:Savebutton').addClass('btn');
+	}		
+}
+
+function prefetchPart() {
+	j$('#PartAlreadyExists').remove();
+	var searchnumber = j$("#PartNew\\:PartNewForm\\:pnfBlock\\:pnfS1\\:partnumber").val();
+	if(searchnumber.length > 2) {
+		// Perform database search to see if part exists.
+		dealer.PartsInventory_EXT.searchExistingParts( searchnumber, function(result, event){
+            if (event.status) {  
+            	// Check for results, if we have results gray out additional input fields
+            	if(result[0]) {
+            		j$('<div>', {
+            			id: 'PartAlreadyExists',
+            			text: 'Error: this part already exists'
+            		}).appendTo('#PartNew\\:PartNewForm\\:pnfBlock\\:pnfS1');
+            		j$('<br>').appendTo('#PartAlreadyExists');
+            		j$('<a>', {
+            			'text': result[0].Name,
+            			'href': '/'+result[0].Id
+            		}).appendTo('#PartAlreadyExists');
+            	} else {
+            		// Search Parts Master and Pre-Populate
+            		dealer.PartsInventory_EXT.partsMasterSearch(searchnumber, function(result,event) {
+            			if(event.status) {
+            			// Set Fields from result
+            			console.log(result);
+            			if(result[0]) {
+	            			
+	            			j$('#PartNew\\:PartNewForm\\:pnfBlock\\:pnfS1\\:partDescription').val(result[0].dealer__Part_Description__c);
+	            			j$('#PartNew\\:PartNewForm\\:pnfBlock\\:pnfS2\\:Cost').val(result[0].dealer__Cost__c);
+	            			j$('#PartNew\\:PartNewForm\\:pnfBlock\\:pnfS2\\:List').val(result[0].dealer__Retail_Price__c);
+	            			j$('#PartNew\\:PartNewForm\\:pnfBlock\\:pnfS2\\:Jobber').val(result[0].dealer__Jobber_Price__c);
+			            	j$('#PartNew\\:PartNewForm\\:pnfBlock\\:pnfS2\\:PM_lkid').val(result[0].Id);
+			            	j$('#PartNew\\:PartNewForm\\:pnfBlock\\:pnfS2\\:PM').val(result[0].Name);
+			            	
+		            	 }
+		            	} else if (event.type === 'exception') {    
+		                	logError(event.message);
+		                } else {
+		                   logError(event.message);
+		                }
+		            }, 
+            		{escape:true});
+            	}
+            } else if (event.type === 'exception') {    
+                	logError(event.message);
+                } else {
+                   logError(event.message);
+                }
+            }, 
+        {escape:true});
+	} else {
+		return false;
+	}
+}
+
+function populateFromMaster() {
+	
+}
+
+function logError(msg) {
+	if(typeof window.console == 'object') {
+        console.log(msg);                  
+    }
+}
+</script>
+
+	<apex:form id="PartNewForm">
+		
+		<apex:pageBlock title="Add Part" mode="edit" id="pnfBlock">
+		<apex:pageMessages />
+			<apex:pageBlockButtons id="buttons">
+				<apex:commandButton action="{!save}" value=" Save " id="Savebutton"  />
+				<apex:commandButton action="{!cancel}" value=" Cancel " />
+			</apex:pageBlockButtons>
+				<apex:pageBlockSection columns="1" id="pnfS1">
+					<apex:inputField value="{!dealer__Parts_Inventory__c.dealer__Stocking_Group__c}" id="stockingGroup" required="true"/>
+					<apex:inputField value="{!dealer__Parts_Inventory__c.Name}" id="partnumber" style="width:350px;" onBlur="prefetchPart();" onkeydown="partKeyDown();" label="Part Number" required="true" />
+					<apex:inputField value="{!dealer__Parts_Inventory__c.dealer__Description__c}" style="width:350px;" id="partDescription" onBlur="checkSave();" required="true"/>
+				</apex:pageBlockSection>
+				<apex:pageBlockSection id="pnfS2"> 
+					<apex:inputField value="{!dealer__Parts_Inventory__c.dealer__Status__c}" id="stockingStatus"/>
+					<apex:inputField value="{!dealer__Parts_Inventory__c.dealer__Bin__c}" id="BIN" />
+					
+					<apex:inputField value="{!dealer__Parts_Inventory__c.dealer__Cost__c}" id="Cost" />
+					<apex:inputField value="{!dealer__Parts_Inventory__c.dealer__Source_List__c}" id="Source" />
+					
+					<apex:inputField value="{!dealer__Parts_Inventory__c.dealer__List__c}" id="List" />
+					<apex:inputField value="{!dealer__Parts_Inventory__c.dealer__Entry_Date__c}" id="EntryDate" />
+					
+					<apex:inputField value="{!dealer__Parts_Inventory__c.dealer__Jobber__c}" id="Jobber" />
+					<apex:inputField value="{!dealer__Parts_Inventory__c.dealer__Location__c}" id="dealer_location" />
+					
+					<apex:inputField value="{!dealer__Parts_Inventory__c.dealer__Parts_Master__c}" id="PM" required="true"/>
+					<apex:inputField value="{!dealer__Parts_Inventory__c.dealer__MFG__c}" id="pmfg" required="true" />
+				</apex:pageBlockSection>
+				
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>

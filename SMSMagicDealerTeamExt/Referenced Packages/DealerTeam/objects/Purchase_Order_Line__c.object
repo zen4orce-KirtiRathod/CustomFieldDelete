@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <customHelpPage>SuccessDocumentation_Tab</customHelpPage>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <deprecated>false</deprecated>
+    <description>Lines against purchase order</description>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableEnhancedLookup>true</enableEnhancedLookup>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableReports>false</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <fields>
+        <fullName>Account__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Account</label>
+        <referenceTo>GL_Accounts__c</referenceTo>
+        <relationshipLabel>Purchase Order Line</relationshipLabel>
+        <relationshipName>Purchase_Order_Line</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Amount__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Amount</label>
+        <precision>9</precision>
+        <required>true</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Customer_Total__c</fullName>
+        <defaultValue>0</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Total charges to the customer</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Total charges to the customer</inlineHelpText>
+        <label>Customer Total</label>
+        <precision>14</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Description__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Description</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Drop_Ship_Address__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Drop Ship address for this line item on this purchase order</inlineHelpText>
+        <label>Drop Ship Address</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Drop_Ship_To__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Drop ship name for label</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Drop ship to name on label (address is a separate field)</inlineHelpText>
+        <label>Drop Ship To</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Item_Value__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>IF(Part_Quantity__c &gt; 0, Amount__c /  Part_Quantity__c, Amount__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Item Value</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Part_Cost__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>Parts_Master__r.Cost__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Part Cost</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Part_Quantity_Outstanding__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Formula representing the outstanding parts on order (Shorts and overages)</description>
+        <externalId>false</externalId>
+        <formula>Part_Quantity_Received__c -  Part_Quantity__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Part Quantity Outstanding</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Part_Quantity_Received__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Part Quantity Received</label>
+        <precision>6</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Part_Quantity__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Quantity of the part ordered to be received.</inlineHelpText>
+        <label>Part Quantity</label>
+        <precision>6</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Part__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>Part to be purchased on this PO</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Part being purchased on this PO</inlineHelpText>
+        <label>Part</label>
+        <lookupFilter>
+            <active>true</active>
+            <errorMessage>Part Status must be ACTIVE to add to a purchase order.  If you feel this part should be in ACTIVE status contact your Parts Manager or Inventory Control Manager.</errorMessage>
+            <filterItems>
+                <field>Parts_Inventory__c.Status__c</field>
+                <operation>equals</operation>
+                <value>Active</value>
+            </filterItems>
+            <isOptional>false</isOptional>
+        </lookupFilter>
+        <referenceTo>Parts_Inventory__c</referenceTo>
+        <relationshipLabel>Purchase Order Line</relationshipLabel>
+        <relationshipName>Purchase_Order_Line</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Parts_Invoice__c</fullName>
+        <deleteConstraint>Restrict</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>Invoice this parts line was ordered against.  For use on purchase order pertaining to more than one invoice.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Invoice this parts line was ordered against.  For use on purchase order pertaining to more than one invoice.</inlineHelpText>
+        <label>Parts Invoice</label>
+        <referenceTo>Parts_Invoice__c</referenceTo>
+        <relationshipLabel>Purchase Order Line</relationshipLabel>
+        <relationshipName>Purchase_Order_Line</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Parts_Line__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>Parts Invoice Line the Part received was ordered for.</description>
+        <externalId>false</externalId>
+        <label>Parts Line</label>
+        <referenceTo>Parts_Invoice_Line__c</referenceTo>
+        <relationshipLabel>Purchase Order Line</relationshipLabel>
+        <relationshipName>PurchaseOrderPartsInvoiceLine</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Parts_Master__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>Lookup to the parts master for ordering parts on a purchase order.</description>
+        <externalId>false</externalId>
+        <label>Parts Master</label>
+        <lookupFilter>
+            <active>true</active>
+            <filterItems>
+                <field>Parts_Master__c.Status__c</field>
+                <operation>equals</operation>
+                <value>Active</value>
+            </filterItems>
+            <infoMessage>Parts must be ACTIVE status to be placed on Purchase Orders.  If you are having trouble finding a Part look to see that it is ACTIVE</infoMessage>
+            <isOptional>true</isOptional>
+        </lookupFilter>
+        <referenceTo>Parts_Master__c</referenceTo>
+        <relationshipLabel>Purchase Order Line</relationshipLabel>
+        <relationshipName>POLinePartsMaster</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Purchase_Order_Accepted_Date__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>Purchase_Order__r.Accepted_DateTime__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Purchase Order Accepted Date</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Purchase_Order__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Purchase Order</label>
+        <referenceTo>Purchase_Order__c</referenceTo>
+        <relationshipLabel>Lines</relationshipLabel>
+        <relationshipName>Purchase_Order_Line</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>true</reparentableMasterDetail>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <fields>
+        <fullName>RecordType__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>Purchase_Order__r.RecordType.DeveloperName</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>RecordType</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Returned_to_Vendor__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If this part was returned to vendor, this box will be checked.</description>
+        <externalId>false</externalId>
+        <label>Returned to Vendor</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Service_Job_Line__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Service Job Line</label>
+        <referenceTo>Service_Job__c</referenceTo>
+        <relationshipLabel>Purchase Order Line</relationshipLabel>
+        <relationshipName>Purchase_Order_Line</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Special_Instructions__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Special Instructions</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <label>Purchase Order Line</label>
+    <nameField>
+        <displayFormat>{YY}{MM}{DD}{0000}</displayFormat>
+        <label>Purchase Order Line Name</label>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Purchase Order Line</pluralLabel>
+    <searchLayouts>
+        <lookupDialogsAdditionalFields>Purchase_Order__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Description__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Part__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Part_Quantity__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Amount__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Service_Job_Line__c</lookupDialogsAdditionalFields>
+        <lookupFilterFields>Account__c</lookupFilterFields>
+        <lookupFilterFields>Parts_Master__c</lookupFilterFields>
+        <searchFilterFields>Account__c</searchFilterFields>
+        <searchFilterFields>Parts_Master__c</searchFilterFields>
+    </searchLayouts>
+    <sharingModel>ControlledByParent</sharingModel>
+    <validationRules>
+        <fullName>PartQuantityCheck</fullName>
+        <active>true</active>
+        <description>If the Part# is present ensure we have a valid order quantity</description>
+        <errorConditionFormula>AND(NOT(ISBLANK( Part__c )), ISBLANK( Part_Quantity__c ))</errorConditionFormula>
+        <errorDisplayField>Part_Quantity__c</errorDisplayField>
+        <errorMessage>When purchasing a part a valid quantity to be received must be entered.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>PartQuantity_must_be_positive</fullName>
+        <active>true</active>
+        <description>Don&apos;t allow purchase quantities less than one</description>
+        <errorConditionFormula>Part_Quantity__c &lt; 1</errorConditionFormula>
+        <errorMessage>You entered a Part Quantity less than one. If you want to delete this part off of the PO return to the PO (click the back button) and then choose &quot;view&quot; instead of &quot;edit&quot; on the PO line. Then click the &quot;Delete&quot; button.</errorMessage>
+    </validationRules>
+</CustomObject>

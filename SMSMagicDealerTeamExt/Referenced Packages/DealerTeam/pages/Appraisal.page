@@ -1,0 +1,5 @@
+<apex:page standardController="dealer__Sales_Up__c" docType="html-5.0">
+    <apex:form >
+       
+    </apex:form>
+</apex:page>

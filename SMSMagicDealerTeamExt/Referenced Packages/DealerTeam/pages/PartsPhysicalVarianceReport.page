@@ -1,0 +1,138 @@
+<apex:page standardController="dealer__PartPhysicalInventory__c" extensions="dealer.PartsPhysical_EXT" renderAs="PDF" showHeader="false" standardStylesheets="false" applyHtmlTag="false" applyBodyTag="false">
+<head>
+<style>
+
+    body {
+        font-family: DialogInput;
+    	font-size: 12px;
+    }
+
+    td {
+    	border-bottom: 1px solid #E3E3E3;
+    }
+
+	@page {
+    /* Landscape orientation */
+    size:landscape;
+    margin: 0.25in;
+
+    	@top-left {
+    		width: 600px;
+    		font-family: DialogInput;
+    		font-size: 14px;
+    		content : "Parts Physical Variance Report {!PartPhysicalInventory__c.Name}";
+    	}
+
+    	@top-right {
+	    	width: 200px;
+	    	font-family: DialogInput;
+	    	font-size: 14px;
+	    	content: "Page " counter(page) " of " counter(pages);    		
+    	}
+
+    	@bottom-left {
+    		width: 600px;
+    		font-family: DialogInput;
+    		font-size: 12px;
+    		content: "Parts Physical Variance Report {!PartPhysicalInventory__c.Name}";
+    	}
+    	@bottom-right {
+	    	width: 200px;
+	    	font-size: 12px;
+	    	font-family: DialogInput;
+	    	content: "Page " counter(page) " of " counter(pages);
+    	}
+    }
+
+</style>
+</head>
+
+<!-- Display total variance in dollars / count -->
+<table width="80%">
+	<tr>
+		<td colspan="2">
+			<strong>Physical Variance Report</strong>
+		</td>
+	</tr>
+	<tr>
+		<td width="20%"><strong>Inventory Value</strong></td>
+		<td align="right">
+			<apex:outputText value="{0, number, ###,###,##0.00}">
+				<apex:param value="{!dealer__PartPhysicalInventory__c.dealer__Inventory_Value__c}" />
+			</apex:outputText>
+		</td>
+	</tr>
+	<tr>
+		<td width="20%"><strong>Number of Parts</strong></td>
+		<td align="right">
+			<apex:outputText value="{0, number, ###,##0}">
+				<apex:param value="{!dealer__PartPhysicalInventory__c.dealer__Part_Count__c}" />
+			</apex:outputText>
+		</td>
+	</tr>
+	<tr>
+		<td width="20%"><strong>Dealer NET Variance</strong></td>
+		<td align="right">
+			<apex:outputText value="${0, number, ###,###,##0.00}">
+				<apex:param value="{!dealer__PartPhysicalInventory__c.dealer__Variance_Value__c}" />
+			</apex:outputText>
+		</td>
+	</tr>
+
+	<tr>
+		<td width="20%"><strong>LIFO/FIFO Variance</strong></td>
+		<td align="right">
+			<apex:outputText value="${0, number, ###,###,##0.00}">
+				<apex:param value="{!GLVariance}" />
+			</apex:outputText>
+		</td>
+	</tr>
+
+	<tr>
+		<td width="20%"><strong>Unit Variance</strong></td>
+		<td align="right">
+			<apex:outputText value="{0, number, ###,##0}">
+				<apex:param value="{!dealer__PartPhysicalInventory__c.dealer__Variance_Part_Count__c}" />
+			</apex:outputText>
+		</td>
+	</tr>
+
+	<tr>
+		<td colspan="2">
+			<hr />
+		</td>
+	</tr>
+</table>
+
+<!-- Begin Variance listing -->
+<table width="100%"> 
+
+<tr>
+		<th>MFG</th>
+		<th>Part Number</th>
+		<th>Description</th>
+		<th style="text-align: right;">NET</th>
+		<th style="text-align: right;">Variance Value</th>
+		<th style="text-align: right;">On Hand</th>
+		<th style="text-align: right;">Total Count</th>
+		<th style="text-align: right;">Count Variance</th>
+</tr>
+
+<apex:repeat value="{!detail_records}" var="d">
+	<apex:outputText rendered="{!IF(d.dealer__Count_Variance__c!=0,true,false)}">
+	<tr>
+		<td><apex:outputText value="{!d.dealer__Part__r.dealer__MFG__c}" /></td>
+		<td><apex:outputText value="{!d.dealer__Part__r.dealer__Part_Number__c}" /></td>
+		<td><apex:outputText value="{!d.dealer__Part__r.dealer__Description__c}" /></td>
+		<td style="text-align: right;"><apex:outputText value="{!d.dealer__Net__c}" /></td>
+		<td style="text-align: right;"><apex:outputText value="{!d.dealer__Variance_Value__c}" /></td>
+		<td style="text-align: right;"><apex:outputText value="{!d.dealer__Initial_Quantity__c}" /></td>
+		<td style="text-align: right;"><apex:outputText value="{!d.dealer__Count__c}" /></td>
+		<td style="text-align: right;"><apex:outputText value="{!d.dealer__Count_Variance__c}" /></td>
+	</tr>
+	</apex:outputText>
+</apex:repeat>
+</table>
+
+
+</apex:page>

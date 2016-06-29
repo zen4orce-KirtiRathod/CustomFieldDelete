@@ -1,0 +1,636 @@
+<apex:page standardController="dealer__Service_Repair_Order__c" extensions="dealer.ServiceRepairOrder_EXT" id="ServiceROCreate">
+<apex:includeScript value="{!URLFOR($Resource.dealer__jQuery_UI_1820, 'js/jquery-1.7.2.min.js')}" />
+<apex:includeScript value="{!URLFOR($Resource.dealer__jQuery_UI_1820, 'js/jquery-ui-1.8.20.custom.min.js')}" />
+<apex:includeScript value="{!$Resource.dealer__jsHashTable}" />
+<apex:includeScript value="{!$Resource.dealer__jQueryNumberFormatting}" />
+<apex:includeScript value="{!$Resource.dealer__jQueryTools}" />
+<apex:includeScript value="{!$Resource.dealer__jQuery_TimePicker}" />
+<apex:stylesheet value="{!URLFOR($Resource.dealer__jQuery_UI_1820,'css/Aristo/Aristo.css')}"/>
+<apex:stylesheet value="{!$Resource.dealer__ServiceCSS}"/>
+
+<apex:stylesheet value="{!URLFOR($Resource.dealer__jqGrid, 'ui.jqgrid.css')}" />
+<apex:includeScript value="{!URLFOR($Resource.dealer__jqGrid, 'grid.locale-en.js')}" />
+<apex:includeScript value="{!URLFOR($Resource.dealer__jqGrid, 'jquery.jqGrid.min.js')}" />
+ 
+ <script type="text/javascript">
+ var j$ = jQuery.noConflict();
+ j$(document).ready(function() {
+     // Set Service AdvisorInput field
+     j$(esc('ServiceROCreate:CreateServiceRepairOrder:roHeaderBlock:roHeaderBlockSection:ServiceAdvisorInput')).val('{!UserName}');
+     j$(esc('ServiceROCreate:CreateServiceRepairOrder:roHeaderBlock:roHeaderBlockSection:ServiceAdvisorInput_lkid')).val('{!UserId}');
+     j$(esc('ServiceROCreate:CreateServiceRepairOrder:roHeaderBlock:roHeaderBlockSection:ServiceAdvisorInput_lkold')).val('{!UserName}');
+     
+     j$("#timePromisedInput").timepicker({
+         showPeriod: true,
+         onHourShow: OnHourShowCallback,
+         onMinuteShow: OnMinuteShowCallback,
+         onClose: copyTimeOut
+     });
+     
+	// Load Service History
+	j$("#serviceHistory").jqGrid({
+		data: svcHistory,
+		datatype: "local",
+		height: 'auto',
+		rowNum: 30,
+		rowList: [10,20,30],
+		colNames:['RO No', 'Date', 'Advisor', 'Job#', 'Labor', 'Parts', 'Operation','Labor Type','Concern','Cause','Correction'],
+	   	colModel:[
+	   		{name:'ronumber',index:'ronumber', width:60, sorttype:"int", formatter: 'showLink', formatOptions: { baseLinkUrl: '/', target:'_blank'}},
+	   		{name:'opendate',index:'opendate', width:70, sortable:false, formatter:"date"},
+	   		{name:'advisor',index:'advisor', width:100, sortable:false},
+	   		{name:'joblinenumber', index:'joblinenumber', width:30, sortable:false}, 
+	   		{name:'laborcharges',index:'laborcharges', width:80, align:"right",sortable:false, formatter:"number"},
+	   		{name:'partscharges',index:'partscharges', width:80, align:"right",sortable:false, formatter:"number"},
+	   		{name:'operation',index:'opeartion', width:100, sortable:false},
+	   		{name:'paytype',index:'paytype', width:30, sortable:false},	
+	   		{name:'concern',index:'concern', width:175, sortable:false},
+	   		{name:'cause',index:'cause', width:175, sortable:false},
+	   		{name:'correction',index:'correction', width:175, sortable:false}		
+	   	],
+	   	pager: "#pageHistory",
+	   	viewrecords: true,
+	   	sortname: 'ronumber',
+	   	grouping:true,
+	   	groupingView : {
+	   		groupField : ['ronumber'],
+	   		groupColumnShow : [true],
+	   		groupText : ['<b>{0} - {1} Item(s)</b>'],
+	   		groupCollapse : false,
+			groupOrder: ['desc']   		
+	   	},
+	   	caption: "Service History"
+	});        
+ });
+
+// Stateful logic   
+var lineNumber  = 0;
+var pObj        = new Object();
+pObj.data       = new Array();  
+
+function jobLine(opstring) {
+    dealer.ServiceRepairOrder_EXT.getOpCode(opstring, function(result, event) {
+        if(event.status) {
+            showLineDialog(result, null);
+        } else if (event.type === 'exception') {    
+            logError(event.message);
+        } else {
+           logError(event.message);
+        }
+    }, {escape:true});
+}
+
+function DOM_addJobLine(a) {
+    
+    // Job Line
+    if(a == "add") {
+    	cLog('Adding Service Line');
+        lineNumber++;
+    }
+    // Get jl elements
+    var lineDetail = {
+                        "lId" : j$("#jlId").val()+"-"+lineNumber,
+                        "Id" : j$("#jlId").val(),
+                        "OpCode" : j$("#jlOpCode").text(),
+                        "Description" : j$("#jlOpCodeDesc").val(),
+                        "Concern" : j$("#jlComplaint").val(),
+                        "PayMethod" : j$("#jlPaymentMethod option:selected").val(),
+                        "BookTime" : j$("#jlBookTime").val(),
+                        "Est" : j$("#jlEstimatedCost").val(),
+                        "LineNumber" : lineNumber 
+                     };     
+    
+    if(a == "add") {
+        pObj.data.push(lineDetail);
+       	createLine(lineDetail.Id, lineDetail);
+       	action='';
+    } else if(a == "update") {
+        var indexIDC = 0;
+        var indexID  = 0;
+        j$.each(pObj.data, function(key, value) {
+            if(lineDetail.lId == value.lId) {
+                indexID = indexIDC;
+            }
+            
+            indexIDC++; 
+        });
+        pObj.data.splice(indexID, 1, lineDetail);
+        createLine(lineDetail.Id, lineDetail);
+        
+    }
+    
+    updateEstimate();
+}
+
+function showLineDialog(d, id) {
+
+	j$("#jlId").val('');
+	j$("#jlOpCode").text('');
+	j$("#jlOpCodeDesc").val('');
+	j$("#jlOpCodeDescDisplay").val('');
+	j$("#jlComplaint").val('');
+	j$("#jlPaymentMethod").val('');
+	j$("#jlBookTime").val('');
+	j$("#jlEstimatedCost").val('');
+
+	buttonText = "";
+	action     = "";
+	
+	if(d != null && d != '') {
+	    obj = d;   
+	    j$("#jlId").val(obj.Id);
+	    j$("#jlOpCode").text(Encoder.htmlDecode(obj.Name));
+	    j$("#jlOpCodeDesc").val(obj.dealer__Op_Code_Description__c);
+	    j$("#jlOpCodeDescDisplay").text(Encoder.htmlDecode(obj.dealer__Op_Code_Description__c));
+	    j$("#jlComplaint").val(Encoder.htmlDecode(obj.dealer__Concern__c));
+	    j$("#jlPaymentMethod").val(obj.dealer__Pay_Type__c);
+	    j$("#jlBookTime").val(obj.dealer__Book_Time__c).formatNumber({format:"#,##0.0", local:"us"});
+	    j$("#jlEstimatedCost").val(obj.dealer__Estimate__c).formatNumber({format:"#,###.00", local:"us"});
+	    buttonText = "Add Job Line";
+	    action = "add";
+	} else {
+	    j$.each(pObj.data, function(key, value) {
+	        if(value.Id == id) {
+	            obj = value;
+	            j$("#jlId").val(obj.Id);
+	            j$("#jlOpCode").text(obj.OpCode);
+	            j$("#jlOpCodeDesc").val(obj.Description);
+	            j$("#jlComplaint").val(obj.Concern);
+	            j$("#jlPaymentMethod").val(obj.PayMethod);
+	            j$("#jlBookTime").val(obj.BookTime).formatNumber({format:"#,##0.0", local:"us"});
+	            j$("#jlEstimatedCost").val(obj.Est).formatNumber({format:"#,###.00", local:"us"});
+	            buttonText = "Update Job Line";     
+	            action = "update";      
+	        }
+	    });
+	}
+	
+	j$("#jlDialog").dialog({ 
+	                    modal: true,
+	                    width: 650,
+	                    height: 350,
+	                    resizable: false,
+	                    draggable: false,
+	                    buttons: [
+	                        {
+	                            text: buttonText,
+	                            click: function() {
+	                                DOM_addJobLine(action);
+	                                j$(this).dialog("close");
+	                            }   
+	                        }
+	                    ]
+	                });
+}
+////////////////////////////////////////////
+// Support & Action Functions   
+function esc(myid) {
+   return '#' + myid.replace(/(:|\.)/g,'\\\\$1');
+}
+
+function noenter(ev) {
+     if (window.event && window.event.keyCode == 13 || ev.which == 13)
+     {  
+        //alert(j$(esc('ServiceROCreate:CreateServiceRepairOrder:lopinputBlock:lopinputBlockButtons:opCodejs')).val());
+         if(j$(esc('ServiceROCreate:CreateServiceRepairOrder:lopinputBlock:lopinputBlockButtons:opCodejs')).val() != null) {
+            jobLine(j$(esc('ServiceROCreate:CreateServiceRepairOrder:lopinputBlock:lopinputBlockButtons:opCodejs')).val());
+            j$(esc('ServiceROCreate:CreateServiceRepairOrder:lopinputBlock:lopinputBlockButtons:opCodejs')).val('');
+         }
+         return false;
+     }
+     else
+     {
+         return true;
+     }
+}
+
+function createLine(id, obj)
+{
+	cLog('Create Line called');
+	// Main Wrapper (If exists, do not recreate, this is how we update lines)
+	if(j$('#jobDiv-'+id).length == 0) {
+	cLog('New line');
+	j$('<div>', {
+			id: 'jobDiv-'+id
+		}).appendTo('#jobLinesDiv').addClass("RORowWrapper");
+	
+		// Command container & input
+		
+		j$('<div></div>', {
+				text: ''
+			})
+			.attr('id', 'CommandDiv-'+id)
+			.appendTo('#jobDiv-'+id).addClass("c1");
+			
+		j$('<span>', {
+				id: 'LineNumber-'+obj.lId
+			})
+			.css('display', 'none')
+			.appendTo('#jobDiv-'+id);		
+		/*
+		
+		j$('<input>', {
+			id: 'CommandInput-'+id,
+			type: 'text',
+			size: 3,
+			title: ' '
+		})
+		.keypress(function(event) {
+			if ( event.which == 13 ) {
+		     event.preventDefault();
+		   	}
+		   	var code = (event.keyCode ? event.keyCode : event.which);
+		   	commandInputExec(code, id);
+		})
+		.tooltip({
+		      position: "top left",
+		      offset: [-1, 120],
+		      effect: "fade",
+		      opacity: 0.9
+		})
+		.appendTo('#CommandDiv-'+id);
+		*/
+		
+		// Action Menu
+			j$('<a>', { id:'actionMenu-'+id, href:'#', text:'Action', 'class':'bt btleft btmiddle btright', 'style' : 'text-decoration: none;'}).append(
+				j$('<span>', { html:'&#9660;' })
+			).click(function(event) { event.preventDefault(); 
+				if(j$('#actionMenu-'+id).hasClass('bt')) {
+					j$('#actionMenu-'+id).removeClass('bt');
+					j$('#actionMenu-'+id).addClass("clicked");
+					var currentOffset = j$('#actionMenu-'+id).offset();
+					j$('#menuActions').css('position', 'absolute').css('top', (currentOffset.top - 90)).css('z-index', '4000');
+					j$('#menuActions').show(); 
+					j$('#menuActionChange').click(function(event) { 
+						event.preventDefault(); 
+						showLineDialog('', id);
+						j$('#menuActions').hide(); 
+						j$('#actionMenu-'+id).addClass('bt'); 
+						j$('#actionMenu-'+id).removeClass("clicked");						
+					});
+					j$('#menuActionRemove').click(function(event) { 
+						event.preventDefault(); 
+						confirmDeleteLine(obj.OpCode, id);
+						j$('#menuActions').hide(); 
+						j$('#actionMenu-'+id).addClass('bt'); 
+						j$('#actionMenu-'+id).removeClass("clicked"); 
+					});
+				} else {
+					j$('#menuActions').hide();
+					j$('#actionMenu-'+id).addClass('bt'); 
+					j$('#actionMenu-'+id).removeClass("clicked");
+					
+				}
+			}).appendTo('#CommandDiv-'+id);
+	
+	j$(esc('ServiceROCreate:CreateServiceRepairOrder:lopinputBlock')).css('height','auto');
+	j$(esc('ServiceROCreate:CreateServiceRepairOrder:lopinputBlock:lopinputBlockButtons:opCodejs')).focus();		
+	} else {
+		j$("#JobOpCode-"+id).remove();
+		j$("#JobNumber-"+id).remove();
+        j$("#JobOpConcern-"+id).remove();
+        j$("#JobPayType-"+id).remove();
+        j$("#JobStatus-"+id).remove();
+        j$("#JobBookTime-"+id).remove();
+        j$("#JobEstimate-"+id).remove();
+        j$("#JobTotal-"+id).remove();
+        j$("#JobClear-"+id).remove();
+	}
+	
+	// Line#
+	j$('<div>', {
+		id: 'JobNumber-'+id,
+		text: obj.LineNumber
+	}).appendTo('#jobDiv-'+id).addClass("c2");	
+	
+	// Op Code
+	j$('<div>', {
+		id: 'JobOpCode-'+id,
+		text: obj.OpCode+' '+obj.Description
+	}).appendTo('#jobDiv-'+id).addClass("c3");
+		// Div layer for Concern
+			j$('<div>', {
+				id: 'JobOpConcern-'+id,
+				text: obj.Concern
+			}).appendTo('#JobOpCode-'+id).addClass("cRow");
+	
+	//Type
+	j$('<div>', {
+		id: 'JobPayType-'+id,
+		text: obj.PayMethod
+	}).appendTo('#jobDiv-'+id).addClass("c4");
+	
+	// Status Container
+	j$('<div>', {
+		id: 'JobStatus-'+id
+	})
+	.appendTo('#jobDiv-'+id)
+	.addClass("c5");
+	
+	// Book Time
+	j$('<div>', {
+		id: 'JobBookTime-'+id,
+		text: obj.BookTime
+	})
+	.appendTo('#jobDiv-'+id)
+	.addClass("c6")
+	.formatNumber({format:"###0.0", local:"us"});
+	
+	// Esimated Cost
+	j$('<div>', {
+		id: 'JobEstimate-'+id,
+		text: obj.Est
+	})
+	.appendTo('#jobDiv-'+id)
+	.addClass("c7")
+	.formatNumber({format:"#,###.00", local:"us"});
+	
+	// Total Charges
+	j$('<div>', {
+		id: 'JobTotal-'+id,
+		text: ''
+	})
+	.appendTo('#jobDiv-'+id)
+	.addClass("c8")	
+	.formatNumber({format:"#,###.00", local:"us"});
+	
+	j$('<div>').attr('id', 'JobClear-'+id).css('clear', 'both').appendTo('#jobDiv-'+id);
+	
+	j$(esc('ServiceROCreate:CreateServiceRepairOrder:lopinputBlock')).css('height','auto');
+	j$(esc('ServiceROCreate:CreateServiceRepairOrder:lopinputBlock:lopinputBlockButtons:opCodejs')).focus();
+	 		
+}  
+
+function confirmDeleteLine(dsc, id) {
+	
+	if(j$('#jobDiv-'+id).length>0) {
+		var answer = confirm("Remove Line "+dsc+"?");
+		if(answer) {
+			j$('#jobDiv-'+id).remove();
+			lineNumber--;
+		} else {
+			return false;
+		}
+	} 
+}
+
+function createItem(type) {
+	// Check values
+	if(j$(esc('ServiceROCreate:CreateServiceRepairOrder:roHeaderBlock:roHeaderBlockSection:Mileage')).val()=='') {
+		j$(esc('ServiceROCreate:CreateServiceRepairOrder:roHeaderBlock:roHeaderBlockSection:Mileage')).focus();
+		j$(esc('ServiceROCreate:CreateServiceRepairOrder:roHeaderBlock:roHeaderBlockSection:Mileage')).css('background', '#FFFFCC');
+		logError('Mileage required');
+		return false;
+	}
+	
+    if(type=='ro') {
+        pObj.Advisor = j$(esc('ServiceROCreate:CreateServiceRepairOrder:roHeaderBlock:roHeaderBlockSection:ServiceAdvisorInput_lkid')).val();
+        pObj.Customer= j$(esc('ServiceROCreate:CreateServiceRepairOrder:roHeaderBlock:roHeaderBlockSection:Customer_lkid')).val();
+        pObj.Vehicle = j$(esc('ServiceROCreate:CreateServiceRepairOrder:roHeaderBlock:roHeaderBlockSection:Vehicle_lkid')).val();
+        pObj.Tag = j$(esc('ServiceROCreate:CreateServiceRepairOrder:roHeaderBlock:roHeaderBlockSection:Tag')).val();
+        pObj.Mileage = j$(esc('ServiceROCreate:CreateServiceRepairOrder:roHeaderBlock:roHeaderBlockSection:Mileage')).val();
+        pObj.PromiseDate = j$(esc('ServiceROCreate:CreateServiceRepairOrder:roHeaderBlock:roHeaderBlockSection:PromiseDate')).val();
+        pObj.PromiseTime = j$("#timePromisedInput").val();
+        pObj.Comments	 = j$(esc('ServiceROCreate:CreateServiceRepairOrder:roHeaderBlock:roHeaderBlockSection:Comments')).val();
+        
+        cLog(j$(esc('ServiceROCreate:CreateServiceRepairOrder:roHeaderBlock:roHeaderBlockSection:Waiter')).attr('checkd'));
+        if(j$(esc('ServiceROCreate:CreateServiceRepairOrder:roHeaderBlock:roHeaderBlockSection:Waiter')).attr('checked')!=undefined) {
+        	pObj.Waiter = 'true';
+        } else {
+        	pObj.Waiter = 'false';
+        }
+        
+        cLog(JSON.stringify(pObj));
+        
+        dealer.ServiceRepairOrder_EXT.CreateRepairOrder(JSON.stringify(pObj), function(result, event) {
+            if(event.status) {
+                window.location.href=result;
+            } else if (event.type === 'exception') {    
+             logError(event.message);
+            } else {
+               logError(event.message);
+            }
+        },{escape:true});
+    }
+    else {
+    	pObj.Advisor = j$(esc('ServiceROCreate:CreateServiceRepairOrder:roHeaderBlock:roHeaderBlockSection:ServiceAdvisorInput_lkid')).val();
+        pObj.Customer= j$(esc('ServiceROCreate:CreateServiceRepairOrder:roHeaderBlock:roHeaderBlockSection:Customer_lkid')).val();
+        pObj.Vehicle = j$(esc('ServiceROCreate:CreateServiceRepairOrder:roHeaderBlock:roHeaderBlockSection:Vehicle_lkid')).val();
+        pObj.Tag = j$(esc('ServiceROCreate:CreateServiceRepairOrder:roHeaderBlock:roHeaderBlockSection:Tag')).val();
+        pObj.Mileage = j$(esc('ServiceROCreate:CreateServiceRepairOrder:roHeaderBlock:roHeaderBlockSection:Mileage')).val();
+        pObj.PromiseDate = j$(esc('ServiceROCreate:CreateServiceRepairOrder:roHeaderBlock:roHeaderBlockSection:PromiseDate')).val();
+        pObj.PromiseTime = j$("#timePromisedInput").val();
+        pObj.Comments	 = j$(esc('ServiceROCreate:CreateServiceRepairOrder:roHeaderBlock:roHeaderBlockSection:Comments')).val();
+        
+        cLog(j$(esc('ServiceROCreate:CreateServiceRepairOrder:roHeaderBlock:roHeaderBlockSection:Waiter')).attr('checkd'));
+        if(j$(esc('ServiceROCreate:CreateServiceRepairOrder:roHeaderBlock:roHeaderBlockSection:Waiter')).attr('checked')!=undefined) {
+        	pObj.Waiter = 'true';
+        } else {
+        	pObj.Waiter = 'false';
+        }
+        
+        cLog(JSON.stringify(pObj));
+        
+        dealer.ServiceRepairOrder_EXT.CreateServiceEstimate(JSON.stringify(pObj), function(result, event) {
+            if(event.status) {
+                window.location.href=result;
+            } else if (event.type === 'exception') {    
+             logError(event.message);
+            } else {
+               logError(event.message);
+            }
+        },{escape:true});
+    
+    }
+} 
+
+function updateEstimate() {
+    var Est = parseFloat(0);
+    j$.each(pObj.data, function(key, value) {
+        if(value.PayMethod == "C") {
+            Est += parseFloat(value.Est);
+        }
+    });
+    j$(esc('ServiceROCreate:CreateServiceRepairOrder:roHeaderBlock:roHeaderBlockSection:repairEstimate')).text("$"+Est);
+}
+
+ function OnHourShowCallback(hour) {
+     if ((hour > 22) || (hour < 6)) {
+         return false; // not valid
+     }
+     return true; // valid
+ }
+ function OnMinuteShowCallback(hour, minute) {
+     if ((hour == 22) && (minute >= 30)) { return false; } // not valid
+     if ((hour == 6) && (minute < 30)) { return false; }   // not valid
+     return true;  // valid
+ }
+ 
+ function copyTimeOut() {
+   j$(esc('ServiceROCreate:CreateServiceRepairOrder:roHeaderBlock:hiddenPromiseTime')).text(j$("#timePromisedInput").text());
+ }
+        
+function logError(msg) {
+
+    if(typeof window.console == 'object') {
+        console.log(msg);                  
+    }
+            
+	j$('#errors-js').text(msg);
+}
+
+function cLog(msg) {
+    if(typeof window.console == 'object') {
+        console.log(msg);                  
+    }
+}
+
+var svcHistory = {!ServiceHistoryJSON};
+ </script>
+ 	<apex:sectionHeader title="Service Repair Order" subtitle="New Repair Order" />
+    <apex:form id="CreateServiceRepairOrder">
+        
+        <apex:pageBlock title="Service Repair Order" id="roHeaderBlock" mode="maindetail">
+            <apex:pageBlockButtons location="top">
+                <input type="button" value="Create Repair Order" accesskey="R" onClick="createItem('ro');" class="btn" /> 
+                <input type="button" value="Create Service Estimate" accesskey="s" onClick="createItem('se');" class="btn" />
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection columns="2" showHeader="false" id="roHeaderBlockSection">
+                <apex:outputText ></apex:outputText>
+                <apex:inputField value="{!dealer__Service_Repair_Order__c.dealer__Service_Advisor__c}" required="true" id="ServiceAdvisorInput"/>
+                <apex:inputField value="{!dealer__Service_Repair_Order__c.dealer__Customer__c}" id="Customer"  required="true"/>
+                <apex:inputField value="{!dealer__Service_Repair_Order__c.dealer__Vehicle__c}" id="Vehicle" required="true" style="width:165px;" />
+                <apex:inputField value="{!dealer__Service_Repair_Order__c.dealer__Mileage_In__c}" id="Mileage" />
+                <apex:pageBlockSectionItem >
+                	<apex:outputText value="VIN" />
+                	<apex:outputLink value="/{!dealer__Service_Repair_Order__c.dealer__Vehicle__c}" id="VIN" target="_blank"><apex:outputText value="{!vehicleVIN}" /></apex:outputLink>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Last Odometer" for="LastMileage" />
+                <apex:outputPanel >
+                <apex:outputText value="{0, number, ###,###,###}" id="LastMileage" label="Last Mileage">
+                	<apex:param value="{!vehicleMiles}"/>
+                </apex:outputText>
+                <apex:outputText value="{0, date, MM'/'dd'/'yyyy}" id="LastServiceDate" style="color:#335CAD;">
+                	<apex:param value="{!vehicleLastService}" />
+                </apex:outputText>
+                </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:inputField value="{!dealer__Service_Repair_Order__c.dealer__Tag__c}" id="Tag" />
+                <apex:inputField value="{!dealer__Service_Repair_Order__c.dealer__Promise_Date__c}" id="PromiseDate" />
+                <apex:outputText />
+                <apex:pageBlockSectionItem id="promiseTime">
+                	<apex:outputLabel value="Promise Time" for="timePromsiedInput" />
+                	<input type="text" id="timePromisedInput" name="timePromisedInput" />
+                </apex:pageBlockSectionItem>
+                <apex:inputField value="{!dealer__Service_Repair_Order__c.dealer__Comments__c}" id="Comments" />
+  
+                <apex:inputField value="{!dealer__Service_Repair_Order__c.dealer__Waiting__c}" id="Waiter" />
+                <apex:outputText id="repairEstimate" label="Estimate" ></apex:outputText>
+            </apex:pageBlockSection>
+            <apex:inputHidden value="{!dealer__Service_Repair_Order__c.dealer__Promise_Time__c}" id="hiddenPromiseTime" />
+		</apex:pageBlock>
+        <div id="errors-js"> </div> 
+        <apex:pageBlock id="lopinputBlock" title="Job Lines">
+            <apex:pageBlockButtons location="top" id="lopinputBlockButtons">
+                <div id="functionBar" style="width: 500px; float: left;">
+                    <b>Labor Operation - Quick Lookup</b>&nbsp;<apex:inputText id="opCodejs" onkeypress="return noenter(event);" />&nbsp;
+                     <c:AutoComplete objectname="dealer__StandardOpCode__c" 
+                		additionalfield="dealer__Op_Code_Description__c" 
+                		resultfields="dealer__Op_Code_Description__c" 
+                		autocomplete_textbox="{!$Component.opCodejs}" />
+                		
+                		
+                </div>
+                <div>
+                	<c:ServiceOperationCodeLookup />
+                </div>
+            </apex:pageBlockButtons>
+        <div id="jobLineHeader">
+            <div class="RORowWrapper">
+                 <div class="c1H"><b>Opt</b>
+                 </div>
+                 <div class="c2H"><b>Line#</b>
+                 </div>
+                 <div class="c3H"><b>Op / Desc</b>
+                 </div>
+                 <div class="c4H"><b>Type</b>
+                 </div>
+                 <div class="c5H">&nbsp;
+                 </div>
+                 
+                 <div class="c6H"><b>Time</b>
+                 </div>
+                 <div class="c7H"><b>Est/Net</b>
+                 </div>
+                 <div class="c8H"><b>Total</b>
+                 </div>
+             </div> 
+			<br />
+        </div>
+        <div id="jobLinesDiv"></div>
+        </apex:pageBlock>
+
+        <apex:pageBlock title="Service History">
+        	<apex:pageBlockSection columns="1">
+        		<table id="serviceHistory" ></table>
+        		<div id="pageHistory"></div>
+        	</apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+   	<div id="menuActions" style="display: none;">
+	    <div id="triangle"></div>
+	    <div id="tooltip_menu">
+	        <a href="#" class="menu_top" id="menuActionChange">
+	            Update Line
+	        </a>
+	        <a href="#" class="menu_bottom" id="menuActionRemove">
+	            Remove Line
+	        </a>
+	    </div>
+	</div>
+        <div id="jlDialog" title="Job Line Detail" style="display:none;">
+        <table cellspacing="0" cellpadding="6" border="0">
+            <tr>
+                <td align="right" style="border:bottom 1px solid;"><b>Op Code</b></td>
+                <td style="border:bottom 1px solid;">
+                    <input type="hidden" id="jlId" />
+                    <input type="hidden" id="jlOpCodeDesc" />
+                    <div id="jlOpCode"></div>
+                </td>
+            </tr>
+            <tr>
+                <td align="right" style="border:bottom 1px solid;"><b>Deafult Concern</b></td>
+                <td style="border:bottom 1px solid;">
+                    <span id="jlOpCodeDescDisplay"></span>
+                </td>
+            </tr>
+            <tr>
+                <td align="right" style="border:bottom 1px solid;"><b>Concern</b></td>
+                <td style="border:bottom 1px solid;">
+                    <textarea id="jlComplaint" cols="60"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td align="right" style="border:bottom 1px solid;"><b>Payment Method</b></td>
+                <td style="border:bottom 1px solid;">
+                	<select id="jlPaymentMethod">
+                		<option value="C" selected="selected">C</option>
+                		<option value="W">W</option>
+                		<option value="I">I</option>
+                		<option value="S">S</option>
+                	</select>
+                </td>
+            </tr>
+            <tr>
+                <td align="right" style="border:bottom 1px solid;"><b>Estimated Hours</b></td>
+                <td style="border:bottom 1px solid;"><input type="text" id="jlBookTime" size="6" maxlength="5" /></td>
+                
+            </tr>   
+            <tr>
+                <td align="right" style="border:bottom 1px solid;"><b>Estimated Cost</b></td>
+                <td style="border:bottom 1px solid;"><input type="text" id="jlEstimatedCost" size="7" maxlength="5" /></td>
+            </tr>                                       
+        </table>
+    </div>
+</apex:page>

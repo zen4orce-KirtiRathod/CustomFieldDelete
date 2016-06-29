@@ -1,0 +1,20 @@
+<apex:page standardController="dealer__Vehicle_Inventory__c" recordSetVar="VehicleInventory" extensions="dealer.RefreshVehicles" > 
+    <apex:sectionHeader title="Refresh Vehicle Inventory" subtitle="Sync information from DMS to Vehicle Inventory"/>
+    <apex:form >
+    <apex:pageMessages />
+        <apex:pageBlock >
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!SyncVehicles}" value="Refresh Selected Vehicles"/>
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection columns="1"> 
+                <apex:outputText >You are about to refresh <b>{!HTMLENCODE(TEXT(vehicleListSize))}</b> Vehicle Inventory records</apex:outputText>
+            </apex:pageBlockSection>
+
+            <apex:pageBlockTable value="{!selected}" var="Vehicle_Inventory__c">
+                <apex:column value="{!dealer__Vehicle_Inventory__c.Name}"/>
+                <apex:column value="{!dealer__Vehicle_Inventory__c.dealer__Days_in_Stock__c}"/>
+                <apex:column value="{!dealer__Vehicle_Inventory__c.dealer__Status_Code__c}"/> 
+            </apex:pageBlockTable> 
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

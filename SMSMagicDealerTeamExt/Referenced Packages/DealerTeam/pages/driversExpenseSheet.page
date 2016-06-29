@@ -1,0 +1,109 @@
+<apex:page showHeader="false" renderAs="PDF" standardController="dealer__Dealer_Trade__c">
+<head>
+<style type="text/css">
+  @page
+  {
+
+    /* Landscape orientation */
+    size:portrait;
+  }
+  .bb { 
+      border-bottom: solid thin;
+  }
+</style>
+</head>
+<apex:form >
+<table width="100%" border="0" cellspacing="8" cellpadding="0">
+  <tr>
+    <td colspan="4" height="55"><div align="center"><b>DRIVERS EXPENSE / PAYROLL SHEET</b> </div></td>
+  </tr>
+  <tr>
+    <td width="275"><div align="right">Driver:</div></td>
+    <td width="375" class="bb">{!dealer__Dealer_Trade__c.Driver__c}&nbsp;</td>
+    <td width="275"><div align="right">Date:</div></td>
+    <td width="375" class="bb">{!MONTH(dealer__Dealer_Trade__c.Date__c)}/{!DAY(dealer__Dealer_Trade__c.Date__c)}/{!YEAR(dealer__Dealer_Trade__c.Date__c)}</td>
+  </tr>
+  <tr>
+    <td><div align="right">Drove To: </div></td>
+    <td class="bb">{!dealer__Dealer_Trade__c.Dealer__r.ShippingCity} {!dealer__Dealer_Trade__c.Dealer__r.ShippingState}&nbsp;</td>
+    <td><div align="right">Stock Number: </div></td>
+    <td class="bb">{!dealer__Dealer_Trade__c.Stock_No_Inbound__c}&nbsp;</td>
+  </tr>
+  <tr>
+    <td><div align="right">Time Left: </div></td>
+    <td class="bb">&nbsp;</td>
+    <td><div align="right">VIN:</div></td>
+    <td class="bb">{!dealer__Dealer_Trade__c.VIN_Inbound__c}&nbsp;</td>
+  </tr>
+  <tr>
+    <td><div align="right">Time Returned: </div></td>
+    <td class="bb">&nbsp;</td>
+    <td><div align="right"></div></td>
+    <td class="bb">&nbsp;</td>
+  </tr>
+  <tr>
+    <td><div align="right">Total Time: </div></td>
+    <td class="bb">&nbsp;</td>
+    <td><div align="right">Total Fee: $ </div></td>
+    <td class="bb">&nbsp;</td>
+  </tr>
+  <tr>
+    <td><div align="right"></div></td>
+    <td>&nbsp;</td>
+    <td><div align="right"></div></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><div align="right">Gas / Tolls: $ </div></td>
+    <td class="bb">&nbsp;</td>
+    <td><div align="right">Miles Out: </div></td>
+    <td class="bb">&nbsp;</td>
+  </tr>
+  <tr>
+    <td><div align="right">$</div></td>
+    <td class="bb">&nbsp;</td>
+    <td><div align="right">Miles There: </div></td>
+    <td class="bb">&nbsp;</td>
+  </tr>
+  <tr>
+    <td><div align="right">$</div></td>
+    <td class="bb">&nbsp;</td>
+    <td><div align="right">Miles on Theirs: </div></td>
+    <td class="bb">&nbsp;</td>
+  </tr>
+  <tr>
+    <td><div align="right">Total Gas&nbsp; / Tolls: $ </div></td>
+    <td class="bb">&nbsp;</td>
+    <td><div align="right">Miles on Return: </div></td>
+    <td class="bb">&nbsp;</td>
+  </tr>
+  <tr>
+    <td><div align="right">Rental Car Used</div></td>
+    <td>
+        <apex:outputText rendered="{!IF(dealer__Dealer_Trade__c.dealer__Rental_Car_Used__c, true, false)}"><img src="http://web.crownmotors.biz/pic/c-checkbox.png" alt="Check Checkbox" width="75" height="75" /></apex:outputText>
+        <apex:outputText rendered="{!IF(dealer__Dealer_Trade__c.dealer__Rental_Car_Used__c, false, true)}"><img src="http://web.crownmotors.biz/pic/un-checkbox.png" alt="Un-Checked" width="50" height="50"  /></apex:outputText>
+    </td>
+    <td><div align="right"></div></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><div align="right"></div></td>
+    <td>&nbsp;</td>
+    <td><div align="right"></div></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td height="75"><div align="right">Driver's Signature:</div></td>
+    <td colspan="3">_____________________________________________</td>
+  </tr>
+  <tr>
+    <td height="75"><div align="right">Approved By: </div></td>
+    <td colspan="3">_____________________________________________</td>
+  </tr>
+  <tr>
+    <td height="75"><div align="right">Initiated by: </div></td>
+    <td colspan="3">{!dealer__Dealer_Trade__c.CreatedBy.Name}</td>
+  </tr>  
+</table>
+</apex:form>
+</apex:page>

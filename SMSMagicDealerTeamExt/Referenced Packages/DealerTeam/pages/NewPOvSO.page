@@ -1,0 +1,39 @@
+<apex:page title="Parts Order - Purchase Order Entry" tabstyle="dealer__Purchase_Order__c" controller="dealer.PurchaseOrderfromStockOrder">
+	<apex:form id="poform">
+		<apex:sectionHeader title="Purchase Order Entry" subtitle="Create PO from Parts Order List" />
+		<apex:pageMessages />
+		<apex:pageBlock id="headBlock" title=""  mode="maindetail">
+			<apex:pageBlockSection id="headSection">
+				<apex:outputField value="{!so.Name}" label="Order Name" />
+				<apex:outputField value="{!so.CreatedDate}" label="Created" />
+				<apex:outputField value="{!so.dealer__Status__c}" label="Order Status"/>
+				<apex:outputField value="{!so.dealer__Description__c}" label="Description" />
+				<apex:outputText value="{!lineCount}" label="Lines" />
+				<apex:outputText value="{!orderValue}" label="Value" />
+				
+			</apex:pageBlockSection>
+			<apex:pageBlockSection >
+				<apex:inputField value="{!po.dealer__Vendor__c}" label="Vendor" />
+			</apex:pageBlockSection>
+		</apex:pageBlock>
+		<apex:pageBlock id="detailBlock" title="Line Items">
+			<apex:pageBlockButtons >
+				<apex:commandButton action="{!createWithSelected}" value="Create Purchase Order with Selected Items" />
+			</apex:pageBlockButtons>
+			<apex:pageBlockSection columns="1">
+					<apex:pageblocktable var="ol" value="{!poLines}">
+					<apex:column >
+						<apex:inputCheckbox value="{!ol.checked}" />
+					</apex:column>
+					<apex:column headerValue="Order Number"><apex:outputField value="{!ol.oline.Name}" /></apex:column>
+					<apex:column headerValue="Invoice"><apex:outputField value="{!ol.oline.dealer__Parts_Invoice__c}" /></apex:column>
+					<apex:column headerValue="Part"><apex:outputField value="{!ol.oline.dealer__Parts_Inventory__c}" /></apex:column>
+					<apex:column headerValue="Quantity Ordered"><apex:outputField value="{!ol.oline.dealer__Quantity_Ordered__c}" /></apex:column>
+					<apex:column headerValue="Value"><apex:outputField value="{!ol.oline.dealer__Value__c}" /></apex:column>
+					<apex:column headerValue="Order Date"><apex:outputField value="{!ol.oline.dealer__Order_Date__c}" /></apex:column>
+					<apex:column headerValue="Requested By"><apex:outputField value="{!ol.oline.dealer__Requested_By__c}" /></apex:column>
+				</apex:pageblocktable>
+			</apex:pageBlockSection>
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>

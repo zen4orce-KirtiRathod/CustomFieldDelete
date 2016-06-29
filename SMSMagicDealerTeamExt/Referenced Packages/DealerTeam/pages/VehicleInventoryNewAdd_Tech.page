@@ -1,0 +1,122 @@
+<apex:page id="VehicleInventoryNewRecord" standardController="dealer__Vehicle_Inventory__c" extensions="dealer.VINDecoder_EXT_Tech" title="Inventory Record">
+   
+    <apex:includeScript value="{!URLFOR($Resource.dealer__jQuery_UI_1820, 'js/jquery-1.7.2.min.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.dealer__DropItMenu, 'dropit/dropit.js')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.dealer__DropItMenu,'dropit/dropit.css')}"/>
+    <script type="text/javascript">
+        var j$ = jQuery.noConflict();
+        j$(document).ready(function() {
+            j$('.menu').dropit();
+        });
+    </script>
+    
+    <!-- To Do: Fix the Purchase Date to default to the inventory date -->
+    
+    <apex:sectionHeader title="Vehicle Inventory" subtitle="Inventory Record" />
+    <apex:form id="CreateVehicleInventoryRecord">
+    <apex:pageBlock title="Vehicle Record" id="vir">
+    <apex:pageMessages />
+     <apex:pageBlockButtons >
+        <apex:commandButton action="{!save}" value="Save"/>
+     </apex:pageBlockButtons>
+            <apex:pageBlockSection title="Vehicle Information" collapsible="false" showHeader="false" id="vpbs">
+            <apex:inputField value="{!dealer__Vehicle_Inventory__c.dealer__Stock_Number__c}" taborderhint="1" />
+            <apex:inputField value="{!dealer__Vehicle_Inventory__c.dealer__In_Stock__c}" />
+            <apex:inputField value="{!dealer__Vehicle_Inventory__c.RecordTypeId}" />
+            <apex:inputField value="{!dealer__Vehicle_Inventory__c.dealer__VIN__c}" style="width:165px;"/>
+            <apex:outputText />
+
+            <apex:inputField value="{!dealer__Vehicle_Inventory__c.dealer__Status_Code__c}" taborderhint="2"/>            
+            <apex:inputField value="{!dealer__Vehicle_Inventory__c.dealer__Year__c}" />
+            <apex:inputField value="{!dealer__Vehicle_Inventory__c.dealer__Purchase_Date__c}" required="true" taborderhint="3" />
+            <apex:inputField value="{!dealer__Vehicle_Inventory__c.dealer__Make__c}" />
+            <apex:inputField value="{!dealer__Vehicle_Inventory__c.dealer__Inventory_Date__c}" required="true" taborderhint="4"/>
+            <apex:inputField value="{!dealer__Vehicle_Inventory__c.dealer__Model__c}" />
+            <apex:outputText />
+            
+            <apex:inputField value="{!dealer__Vehicle_Inventory__c.dealer__Model_Code__c}" />
+            <apex:inputField value="{!dealer__Vehicle_Inventory__c.dealer__Mileage__c}" taborderhint="6"/>
+            <apex:inputField value="{!dealer__Vehicle_Inventory__c.dealer__Trim_Level__c}" />
+            <apex:inputField value="{!dealer__Vehicle_Inventory__c.dealer__Odometer_Code__c}" />
+            <apex:inputField value="{!dealer__Vehicle_Inventory__c.dealer__Body_Type__c}" />
+            <apex:inputField value="{!dealer__Vehicle_Inventory__c.dealer__License__c}" taborderhint="7"/>
+            <apex:inputField value="{!dealer__Vehicle_Inventory__c.dealer__Body_Style__c}" />
+            <apex:inputField value="{!dealer__Vehicle_Inventory__c.dealer__License_Exp__c}" taborderhint="8"/>  
+            
+            <apex:inputField value="{!dealer__Vehicle_Inventory__c.dealer__City_MPG__c}" taborderhint="9" />
+            <apex:inputField value="{!dealer__Vehicle_Inventory__c.dealer__Invoice_Price__c}" taborderhint="11" />
+            <apex:inputField value="{!dealer__Vehicle_Inventory__c.dealer__Highway_MPG__c}" taborderhint="10" />
+            <apex:inputField value="{!dealer__Vehicle_Inventory__c.dealer__MSRP__c}" taborderhint="12"/>
+
+            <apex:inputField value="{!dealer__Vehicle_Inventory__c.dealer__Location__c}" label="Location (Memo)" />
+            <apex:inputField value="{!dealer__Vehicle_Inventory__c.dealer__Store_Location__c}" label="Store Location" />
+            
+        </apex:pageBlockSection>
+        <apex:inputHidden value="{!dealer__Vehicle_Inventory__c.dealer__VIN_Decode_Id__c}" />
+        <apex:inputHidden value="{!dealer__Vehicle_Inventory__c.dealer__Style_Id__c}" />
+        <!--
+        <apex:inputHidden value="{!Vehicle_Inventory__c.Engine_Id__c}" />
+        <apex:inputHidden value="{!Vehicle_Inventory__c.Transmission_Id__c}" />
+        <apex:inputHidden value="{!Vehicle_Inventory__c.Engine_Description__c}" />
+        <apex:inputHidden value="{!Vehicle_Inventory__c.Engine_Displacement__c}" />
+        <apex:inputHidden value="{!Vehicle_Inventory__c.Transmission_Type__c}" />
+        -->
+
+    <!--
+    <apex:pageBlockSection title="Color (Exterior / Interior)" collapsible="false" showheader="true">
+
+    </apex:pageBlockSection>
+    -->
+
+    <apex:pageBlockSection title="Engine / Transmission" collapsible="false" showheader="true">
+        <apex:pageBlockSectionItem >
+        <apex:outputLabel value="Engine" for="engineSelectElement" />
+        <apex:selectList value="{!selectedEngine}" multiselect="false" size="1" id="engineSelectElement">
+            <apex:selectOptions value="{!engineSelect}" />
+        </apex:selectList>
+        </apex:pageBlockSectionItem>
+
+        <apex:pageBlockSectionItem >
+        <apex:outputLabel value="Transmission" for="transSelectElement" />
+        <apex:selectList value="{!selectedTransmission}" multiselect="false" size="1" id="transSelectElement">
+            <apex:selectOptions value="{!transmissionSelect}" />
+        </apex:selectList>
+        </apex:pageBlockSectionItem>
+    </apex:pageBlockSection>    
+    
+    <apex:pageBlockSection title="Installed Equipment" collapsible="true" showheader="true" columns="1">
+        <apex:pageBlockTable value="{!InstalledEquipment}" var="ie" id="installedEquipmentTable">
+            <apex:column headerValue="Selected"><apex:inputCheckBox value="{!ie.selected}" /></apex:column>
+            <apex:column value="{!ie.category}" headerValue="Category"/>
+            <apex:column value="{!ie.name}" headerValue="Name"/>
+            <apex:column value="{!ie.description}" headerValue="Desc"/>
+        </apex:pageBlockTable>
+    </apex:pageBlockSection>
+    
+    <apex:repeat value="{!mapTempByEquip}" var="key">
+    <apex:pageBlockSection title="{!key} Equipment" collapsible="true" showheader="true" columns="1">
+       
+        <apex:pageBlockTable value="{!mapTempByEquip[key]}" var="opts" id="LstTemplateEquipmentTable"  >
+            
+            <apex:column headerValue="Selected"><apex:inputCheckBox value="{!opts.selected}"  /></apex:column>
+            <apex:column headerValue="Category"><apex:outputText value="{!opts.category}"  /></apex:column>
+            <apex:column headerValue="Name"><apex:outputText value="{!opts.name}" /></apex:column>
+            <apex:column headerValue="Description"><apex:outputText value="{!opts.description}" /></apex:column>
+            <apex:column headerValue="Installed Id"><apex:outputText value="{!opts.installedBy}" /></apex:column>
+            <apex:column headerValue="Order Code"><apex:outputText value="{!opts.orderCode}" /></apex:column>
+            <apex:column headerValue="Option Id"><apex:outputText value="{!opts.optionId}" /></apex:column>
+            
+        </apex:pageBlockTable>
+    
+    </apex:pageBlockSection> 
+    </apex:repeat>
+    
+    
+    <apex:pageBlockSection showheader="false">
+        <apex:inputfield value="{!dealer__Vehicle_Inventory__c.dealer__Equipment_Verified__c}" />
+        <apex:outputText >*This checkbox indicates that you have verified the selected options are present on this vehicle.</apex:outputText>
+    </apex:pageBlockSection>
+    
+    </apex:pageBlock>
+    </apex:form>
+</apex:page>

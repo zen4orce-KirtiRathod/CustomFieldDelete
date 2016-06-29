@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomTab xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customObject>true</customObject>
+    <description>Forms to be printed for the customer.  These forms support Deals, Service Repair Orders and Parts Invoices.</description>
+    <icon>DealerTeam_Icons/Forms_Tab.png</icon>
+    <mobileReady>false</mobileReady>
+    <motif>Custom354: TV Widescreen</motif>
+</CustomTab>

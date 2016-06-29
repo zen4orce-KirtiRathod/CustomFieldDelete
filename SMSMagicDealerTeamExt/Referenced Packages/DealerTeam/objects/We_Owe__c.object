@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <customHelpPage>SuccessDocumentation_Tab</customHelpPage>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <deprecated>false</deprecated>
+    <description>We-Owe and Due-Bill Items</description>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableEnhancedLookup>true</enableEnhancedLookup>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <fields>
+        <fullName>Car_Deal__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>Deal associated with this due-bill line</description>
+        <externalId>false</externalId>
+        <label>Car Deal</label>
+        <referenceTo>Deal__c</referenceTo>
+        <relationshipLabel>We-Owe</relationshipLabel>
+        <relationshipName>We_Owe</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Change_Status__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Change Status</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Closed_Date__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Date/Time the we-owe line was marked closed</description>
+        <externalId>false</externalId>
+        <label>Closed Date</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Code__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Dealer defined code for we-owe</description>
+        <externalId>false</externalId>
+        <label>Code</label>
+        <length>25</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Cost__c</fullName>
+        <defaultValue>0</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Invoice cost to the deal for this we-owe line item</description>
+        <externalId>false</externalId>
+        <label>Cost</label>
+        <precision>14</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Deal_Key__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Deal key used for looking up car deal record.</description>
+        <externalId>false</externalId>
+        <label>Deal Key</label>
+        <length>40</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Description__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Description of we-owe item</description>
+        <externalId>false</externalId>
+        <label>Description</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>External_Id__c</fullName>
+        <deprecated>false</deprecated>
+        <description>External DMS System Id</description>
+        <externalId>true</externalId>
+        <label>External Id</label>
+        <length>25</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Parts_Department_Reviewed__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Flag to represent if the parts department has reviewed this ticket</description>
+        <externalId>false</externalId>
+        <label>Parts Department Reviewed</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>RetailPrice__c</fullName>
+        <defaultValue>0</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Retail price of this we-owe line</description>
+        <externalId>false</externalId>
+        <label>Retail Price</label>
+        <precision>14</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Satisfied_By__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>User of record who satisfied this we-owe</description>
+        <externalId>false</externalId>
+        <label>Satisfied By</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>We_Owe</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Service_Department_Reviewed__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Flag to measure if the service department has reviewed this we-owe</description>
+        <externalId>false</externalId>
+        <label>Service Department Reviewed</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Service_Repair_Order__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Service Repair Order</label>
+        <referenceTo>Service_Repair_Order__c</referenceTo>
+        <relationshipLabel>We-Owe</relationshipLabel>
+        <relationshipName>We_Owe</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Status__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Status of the we-owe in the system</description>
+        <externalId>false</externalId>
+        <label>Status</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Open</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Pending</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Closed</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <label>We-Owe</label>
+    <listViews>
+        <fullName>All</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <nameField>
+        <displayFormat>W-{0}</displayFormat>
+        <label>We-Owe</label>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>We-Owe</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ReadWrite</sharingModel>
+    <validationRules>
+        <fullName>We_Owe_Status_Should_Not_Change</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND( NOT(ISBLANK( Service_Repair_Order__c ) ), ISCHANGED( Status__c ), 
+NOT(Change_Status__c))</errorConditionFormula>
+        <errorDisplayField>Status__c</errorDisplayField>
+        <errorMessage>RO is controlling We-Owe Status</errorMessage>
+    </validationRules>
+    <webLinks>
+        <fullName>Create_Repair_Order</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Sync Repair Order</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>{!REQUIRESCRIPT(&apos;/soap/ajax/29.0/connection.js&apos;)} 
+sforce.connection.sessionId = &quot;{!$Api.Session_ID}&quot;; 
+
+var locationQuery = &quot;SELECT Name,dealer__Car_Deal__r.dealer__Store_Location__c FROM dealer__We_Owe__c WHERE Id = &apos;&quot;+ &apos;{!We_Owe__c.Id}&apos; +&quot;&apos; LIMIT 1&quot;;
+
+var location = sforce.connection.query(locationQuery);
+var records = location.getArray(&quot;records&quot;); 
+
+if(records[0].dealer__Car_Deal__r.dealer__Store_Location__c == null ){
+  alert(&apos;Please enter the Store Location to Deal&apos;);
+}else {
+  var weowe = &apos;/apex/dealer__repair_Order?weOweId={!We_Owe__c.Id}&apos;;
+window.location.href = weowe;
+}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Refresh_WeOwe_from_ADP</fullName>
+        <availability>online</availability>
+        <description>Refreshes a WeOwe from ADP.</description>
+        <displayType>button</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Refresh from ADP</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>var interval; 
+	var sfId = &quot;{!We_Owe__c.Id}&quot;;
+	var did	 = &quot;540&quot;;
+	
+	// PLEASE CHANGE THIS FOR PRODUCTION
+	var baseUrl = &apos;https://development.dealerteam.com/&apos;; 
+
+	function appendScript() { 
+	
+		//We want to use jQuery as well as the UI elements, so first lets load the stylesheet by injecting it into the dom. 
+		var head= document.getElementsByTagName(&apos;head&apos;)[0]; 
+		var v_css = document.createElement(&apos;link&apos;); 
+		v_css.rel = &apos;stylesheet&apos; 
+		v_css.type = &apos;text/css&apos;; 
+		v_css.href = &apos;https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/themes/base/minified/jquery-ui.min.css&apos;; 
+		head.appendChild(v_css); 
+
+		//Okay, now we need the core jQuery library, lets fetch that and inject it into the dom as well 
+		var script= document.createElement(&apos;script&apos;); 
+		script.type= &apos;text/javascript&apos;; 
+		script.src= &apos;https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js&apos;; 
+		head.appendChild(script); 
+
+		//And of course we need the jQuery UI elements 
+		var scriptUI = document.createElement(&apos;script&apos;); 
+		scriptUI.type = &apos;text/javascript&apos;; 
+		scriptUI.src = &apos;https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js&apos;; 
+		head.appendChild(scriptUI); 
+
+		interval=self.setInterval(function() { 
+
+			if(jQuery) { 
+				window.clearInterval(interval); 
+
+				//create a div in the body which we will use for our dialog. 
+				$(document.getElementsByTagName(&apos;body&apos;)[0]).append(&apos;&lt;div id=dealdialog&gt;&lt;div id=&quot;iframeLoader&quot; style=&quot;position: absolute;text-align: center;width: 470px;padding-top: 90px;&quot;&gt;&lt;center&gt;&lt;img src=&quot;https://development.dealerteam.com/api/adp/sales/loading.gif&quot; /&gt;&lt;/center&gt;&lt;/div&gt;&lt;br /&gt;&lt;iframe style=&quot;position:absolute;margin-top:-20px;&quot; id=&quot;dIframe&quot; src=&quot;&quot; width=&quot;470&quot; height=&quot;230&quot; frameborder=&quot;0&quot; scrolling=&quot;auto&quot;&gt;&lt;/iframe&gt;&lt;/div&gt;&apos;); 
+
+				var cdURL = baseUrl+&apos;api/adp/sales/refreshWeOwe.php?did=&apos;+did+&apos;&amp;sfid=&apos;+sfId; 
+
+				$(&quot;#dIframe&quot;).attr(&apos;src&apos;,&apos;&apos;); 
+				$(&quot;#dIframe&quot;).html(&apos;Please Wait&apos;); 
+
+				$(&quot;#dealdialog&quot;).dialog({ 
+					autoOpen: true, 
+					modal: true, 
+					height: 350, 
+					width: 500, 
+					title: &apos;Refreshing We Owe from ADP.&apos;, 
+					buttons: [{ 
+						text: &quot;View Updated We Owe&quot;, 
+						click: function() { 
+							window.top.location.reload(); 
+						} 
+					}], 
+					open: function(ev, ui){ 
+						$(&apos;#dIframe&apos;).attr(&apos;src&apos;, cdURL); 
+					} 
+				}); 
+			} 
+		}, 300); 
+	}
+	 
+	appendScript();</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Schedule_Service_Appointment</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <height>600</height>
+        <linkType>url</linkType>
+        <masterLabel>Schedule Service Appointment</masterLabel>
+        <openType>noSidebar</openType>
+        <protected>false</protected>
+        <url>/apex/dealer__ServiceAppointmentNew?weoweid={!We_Owe__c.Id}</url>
+    </webLinks>
+</CustomObject>

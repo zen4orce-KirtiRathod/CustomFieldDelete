@@ -1,0 +1,205 @@
+<apex:page id="svcAppt" standardController="dealer__Service_Appointment__c" extensions="dealer.ServiceAppointment_EXT" tabStyle="dealer__Service_Appointment__c" SideBar="false" showChat="true">
+<apex:stylesheet value="{!URLFOR($Resource.dealer__fullCalendar, 'fullcalendar/fullcalendar.css')}" />
+<apex:stylesheet value="{!URLFOR($Resource.dealer__fullCalendar, 'fullcalendar/fullcalendar.print.css')}" />
+
+<apex:includeScript value="{!URLFOR($Resource.dealer__jQuery_UI_1820, 'js/jquery-1.7.2.min.js')}" />
+<apex:includeScript value="{!URLFOR($Resource.dealer__jQuery_UI_1820, 'js/jquery-ui-1.8.20.custom.min.js')}" />
+<apex:includeScript value="{!$Resource.dealer__jsHashTable}" />
+<apex:includeScript value="{!$Resource.dealer__jQueryNumberFormatting}" />
+<apex:includeScript value="{!$Resource.dealer__jQueryTools}" />
+<apex:includeScript value="{!$Resource.dealer__jQuery_TimePicker}" />
+<apex:stylesheet value="{!URLFOR($Resource.dealer__jQuery_UI_1820,'css/Aristo/Aristo.css')}"/>
+<apex:stylesheet value="{!$Resource.dealer__ServiceCSS}"/>
+
+<apex:stylesheet value="{!URLFOR($Resource.dealer__jqGrid, 'ui.jqgrid.css')}" />
+<apex:includeScript value="{!URLFOR($Resource.dealer__jqGrid, 'grid.locale-en.js')}" />
+<apex:includeScript value="{!URLFOR($Resource.dealer__jqGrid, 'jquery.jqGrid.min.js')}" />
+
+<apex:includeScript value="{!URLFOR($Resource.dealer__fullCalendar, 'fullcalendar/fullcalendar.min.js')}" />
+<script type="text/javascript">
+ var j$ = jQuery.noConflict();
+ j$(document).ready(function() {
+
+     j$("#appttime").timepicker({
+         showPeriod: true,
+         onHourShow: OnHourShowCallback,
+         onMinuteShow: OnMinuteShowCallback,
+         onClose: copyTimeOut
+     });
+     
+	// Load Service History
+	j$("#serviceHistory").jqGrid({
+		data: svcHistory,
+		datatype: "local",
+		height: 'auto',
+		rowNum: 30,
+		rowList: [10,20,30],
+		colNames:['RO No', 'Date', 'Advisor', 'Job#', 'Labor', 'Parts', 'Operation','Labor Type','Concern','Cause','Correction'],
+	   	colModel:[
+	   		{name:'ronumber',index:'ronumber', width:60, sorttype:"int", formatter: 'showLink', formatOptions: { baseLinkUrl: '/', target:'_blank'}},
+	   		{name:'opendate',index:'opendate', width:70, sortable:false, formatter:"date"},
+	   		{name:'advisor',index:'advisor', width:100, sortable:false},
+	   		{name:'joblinenumber', index:'joblinenumber', width:30, sortable:false}, 
+	   		{name:'laborcharges',index:'laborcharges', width:80, align:"right",sortable:false, formatter:"number"},
+	   		{name:'partscharges',index:'partscharges', width:80, align:"right",sortable:false, formatter:"number"},
+	   		{name:'operation',index:'opeartion', width:100, sortable:false},
+	   		{name:'paytype',index:'paytype', width:30, sortable:false},	
+	   		{name:'concern',index:'concern', width:175, sortable:false},
+	   		{name:'cause',index:'cause', width:175, sortable:false},
+	   		{name:'correction',index:'correction', width:175, sortable:false}		
+	   	],
+	   	pager: "#pageHistory",
+	   	viewrecords: true,
+	   	sortname: 'ronumber',
+	   	grouping:true,
+	   	groupingView : {
+	   		groupField : ['ronumber'],
+	   		groupColumnShow : [true],
+	   		groupText : ['<b>{0} - {1} Item(s)</b>'],
+	   		groupCollapse : false,
+			groupOrder: ['desc']   		
+	   	},
+	   	caption: "Service History"
+	});    
+	
+		
+		var date = new Date();
+		var d = date.getDate();
+		var m = date.getMonth();
+		var y = date.getFullYear();
+		
+		j$('#calendar').fullCalendar({
+			theme: true,
+			height: 650,
+			allDayText: 'Early Bird',
+			axisFormat: 'h(:mm)tt', 
+		    timeFormat: {
+		        agenda: 'h:mm{ - h:mm}'
+		    },
+		    defaultEventMinutes: 45,
+		    snapMinutes: 45,
+			aspectRatio: 1,
+			slotMinutes: 45,
+			maxTime: 18,
+			minTime: 8,
+			defaultView: 'agendaDay',
+			header: {
+				left: 'prev,next today',
+				center: 'title',
+				right: 'month,agendaWeek,agendaDay'
+			},
+			editable: true,
+			eventSources: ['/apex/dealer__ServiceAppointmentJSON?id={!JSENCODE(Service_Appointment__c.Id)}', { url: '/apex/dealer__ServiceAppointmentBlockJSON', color: "red", backgroundColor: "red" }]
+
+		}); 
+		    
+ });
+var svcHistory = ''; 
+<apex:outputText rendered="{!NOT(ISBLANK(ServiceHistoryJSON))}">    
+var svcHistory = {!ServiceHistoryJSON};
+</apex:outputText>
+var aDate;
+var aTime;
+
+ function OnHourShowCallback(hour) {
+     if ((hour > 22) || (hour < 6)) {
+         return false; // not valid
+     }
+     return true; // valid
+ }
+ function OnMinuteShowCallback(hour, minute) {
+     if ((hour == 22) && (minute >= 30)) { return false; } // not valid
+     if ((hour == 6) && (minute < 30)) { return false; }   // not valid
+     return true;  // valid
+ }
+ 
+ function copyTimeOut() {
+   j$(esc('svcAppt:saf:hiddenDateTime')).val(j$("#appttime").val());
+   var appTime = j$(esc('svcAppt:saf:hiddenDateTime')).val();
+   if(appTime!='') {
+    aTime = appTime;
+   	addEventToCalendar();
+   }
+ }
+     
+function esc(myid) {
+   return '#' + myid.replace(/(:|\.)/g,'\\\\$1');
+}     
+
+function goToDate() {
+	
+	var parts = j$(esc('svcAppt:saf:aptBlock:bs:apptDate')).val().split("/");
+	if(parts[0]!='') {
+		aDate = parts;
+		j$('#calendar').fullCalendar( 'gotoDate', parts[2], (parts[0] - 1), parts[1]);
+	}
+}
+
+function addEventToCalendar() {
+	//alert('action');
+	if(aDate[2]!='' && aTime!='') {
+	j$('#calendar').fullCalendar('addEventSource', { events: [{
+            title  : 'Service Appointment',
+            start  : new Date(aDate[2], (aDate[0] - 1), aDate[1], aTime.substring(0, 2), aTime.substring(3, 6)),
+            allDay : false
+        }]
+      });
+   }
+}
+     
+</script>    
+<apex:sectionHeader title="Service" subtitle="Service Appointment"/>
+<apex:pageMessages />
+<apex:form id="saf">
+	<apex:pageBlock id="aptBlock">
+		<apex:pageBlockButtons location="top">
+        	<apex:commandButton action="{!create}" value="Create"/>
+        	<apex:commandButton action="{!cancel}" value="Cancel" />
+        </apex:pageBlockButtons>
+		<apex:pageBlockSection id="bs">
+			<apex:inputField value="{!dealer__Service_Appointment__c.dealer__Customer__c}" />
+			<apex:inputField value="{!dealer__Service_Appointment__c.dealer__SA__c}" label="Service Advisor" />
+			<apex:outputText />
+			<apex:inputField value="{!dealer__Service_Appointment__c.dealer__Requested_Technician__c}" />
+			
+			<apex:pageBlockSectionItem >
+			<apex:outputPanel layout="inline"><apex:outputLabel value="Mileage" /> </apex:outputPanel>
+			<apex:outputPanel >
+			
+			<apex:inputField value="{!dealer__Service_Appointment__c.dealer__Mileage__c}" id="mileage"/>
+			<apex:outputField value="{!sv.dealer__Last_Odometer__c}" rendered="{!NOT(ISBLANK(sv.dealer__Last_Odometer__c))}" />&nbsp;
+			<apex:outputField value="{!sv.dealer__Last_Service__c}" rendered="{!NOT(ISBLANK(sv.dealer__Last_Odometer__c))}" style="color:blue;"/>
+			</apex:outputPanel>
+			</apex:pageBlockSectionItem>
+			
+			<apex:inputField value="{!dealer__Service_Appointment__c.dealer__Vehicle__c}" />
+			
+			<apex:inputField value="{!e.dealer__Custom_Search_Start_Date__c}" required="true" label="Appointment Date" onChange="goToDate()" id="apptDate" />
+			<apex:inputField value="{!dealer__Service_Appointment__c.dealer__Waiter__c}"/>
+			
+			<apex:pageBlocksectionitem id="si">
+			<apex:outputPanel layout="inline"><apex:outputLabel >Appointment Time</apex:outputLabel></apex:outputPanel>
+			<apex:outputPanel >
+			<div class="requiredInput"><div class="requiredBlock"></div><input type="text" id="appttime" name="appttime" /></div>
+			</apex:outputPanel>
+			</apex:pageBlocksectionitem> 
+			
+			
+			<apex:inputField value="{!dealer__Service_Appointment__c.dealer__Loaner_Requested__c}" label="Rental Requested" />
+		</apex:pageBlockSection>
+		<apex:pageBlockSection columns="1">
+			<apex:inputField value="{!dealer__Service_Appointment__c.dealer__Comments__c}" style="width:600px;" />
+		</apex:pageBlockSection>
+		
+	</apex:pageBlock>
+   <apex:inputHidden value="{!dealer__Service_Appointment__c.dealer__Appointment_Time__c}" id="hiddenDateTime"/>
+</apex:form>
+
+<apex:pageBlock title="Service History" rendered="{!NOT(ISBLANK(dealer__Service_Appointment__c.dealer__Vehicle__c))}">
+	<apex:pageBlockSection columns="1">
+		<table id="serviceHistory" ></table>
+		<div id="pageHistory"></div>
+	</apex:pageBlockSection>
+</apex:pageBlock>
+
+</apex:page>

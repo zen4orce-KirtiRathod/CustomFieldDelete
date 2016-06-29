@@ -1,0 +1,62 @@
+<apex:page standardcontroller="Contact" extensions="dealer.Re_assign_owners" id="Page" recordSetVar="contacts">
+	 <apex:sectionHeader title="Orphan Customer Transfer" subtitle="Re-Assign orphaned customers to an active associate."/>
+	<apex:form >
+	<apex:pageMessages />
+		<apex:pageBlock >
+			<apex:outputText value="Selected Orphan Customers are" style="font-weight: bold;"/>
+			<apex:pageBlockTable align="center" value="{!ContactList}" var="con"
+	                rowClasses="odd,even">
+	            <apex:column >
+	            	<apex:facet name="header">Contact Name</apex:facet>
+                    <apex:outputText value="{!con.Name}"></apex:outputText>  
+                </apex:column>                
+	            <apex:column >
+	            	<apex:facet name="header">Contact Owner</apex:facet>
+                    <apex:outputText value="{!con.Owner.Name}" ></apex:outputText>  
+                </apex:column>
+            </apex:pageBlockTable>            
+			<apex:pageBlockSection columns="1" title="Re-Assign Owners" collapsible="false" id="ressign" showHeader="false">
+			<center>
+	            <apex:panelGrid columns="3" style="vertical-align: middle;text-align: center;" id="selectionBlock">
+	                <apex:panelGroup id="pGroup1">
+	                    <apex:outputLabel value="Available Users" style="font-weight: bold;color: #333;"></apex:outputLabel><br/><br/>
+	                    <apex:selectList style="width:200px;vertical-align:bottom;" id="unselected_list" required="false" value="{!participant}" multiselect="true" size="4">
+	                        <apex:actionSupport event="ondblclick" action="{!addusers}"/>
+	                        <apex:selectOptions value="{!participants}"/>
+	                    </apex:selectList>
+	                </apex:panelGroup>
+	                <apex:panelGroup style="text-align: center;padding: 6px 4px;" id="pGroup2">
+	                    <apex:panelGrid columns="1" style="text-align: center;padding: 6px 4px;">
+	                        <apex:outputText value="Add"></apex:outputText>
+	                        <apex:image style="align:center" styleClass="rightArrowIcon" value="/s.gif">
+	                            <apex:actionSupport event="onclick" action="{!addusers}" />
+	                        </apex:image>
+	                    
+	                        <apex:image styleClass="leftArrowIcon" value="/s.gif"  >
+	                            <apex:actionSupport event="onclick" action="{!removeusers}"/> 
+	                        </apex:image>
+	                            
+	                        <apex:outputText value="Remove"></apex:outputText> 
+	                                
+	                    </apex:panelGrid>
+	                </apex:panelGroup>
+	                <apex:panelGroup id="pGroup3">
+	                    <apex:outputLabel value="Selected Users" style="font-weight: bold;color: #333;"></apex:outputLabel>
+	                    <br/><br/>
+	                    <apex:selectList id="selected_list" required="false" value="{!Addpart}" multiselect="true" size="4" style="width:200px">
+	                        <apex:actionSupport event="ondblclick" action="{!removeusers}"/>
+	                        <apex:selectOptions value="{!addParticipants}"/> 
+	                    </apex:selectList>                                                    
+	                </apex:panelGroup>   
+	            </apex:panelGrid>     
+	        </center>                       
+            </apex:pageBlockSection>
+			<apex:pageBlockButtons location="bottom">
+				<span class="alignment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <apex:commandButton value="Re-Assign" id="Submit" action="{!Submit}"/>&nbsp;&nbsp;&nbsp;&nbsp; 
+                    <apex:commandButton value="Cancel" id="Cancel" action="{!cancel}" /> 
+                </span>
+			</apex:pageBlockButtons>
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>

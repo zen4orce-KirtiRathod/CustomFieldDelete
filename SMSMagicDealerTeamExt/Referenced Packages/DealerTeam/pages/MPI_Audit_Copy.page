@@ -1,0 +1,155 @@
+<apex:page renderAs="pdf" standardController="dealer__Inspection_Report__c" extensions="dealer.MPI2_EXT" applyBodyTag="false" applyHtmlTag="false" showHeader="false">
+    <html>
+         <head>
+             <style>
+                 body {
+                     font-family: "Arial" "Sans-Serif";
+                     font-size: 12px;
+                 }
+
+                 #header-left {
+                     float: left;
+                 }
+                 
+                 #header-right {
+                     float: right;
+                     font-size: 18px;
+                     margin-top: 28.5px;
+                 }
+                 
+                 #signatureImage {
+                     float: right;
+                 }
+             </style>
+         </head>
+         
+         <body>
+             <div id="header-left">
+                 <apex:image url="/{!mpilogo}" height="75px" />
+             </div>
+             <div id="header-right">
+                <apex:outputText value="{0,date,MM'/'dd'/'yyyy}">
+                    <apex:param value="{!TODAY()}" /> 
+                </apex:outputText>
+             </div><br />
+             <table style="padding-top:70px;width:100%;">
+                 <thead>
+                     <tr>
+                         <th>Organization Name</th>
+                         <th></th>
+                     </tr>
+                 </thead>
+                 <tbody>
+                     <tr>
+                         <td>{!$Organization.Name}</td>
+                         <td>{!dealer__Inspection_Report__c.Name}</td>
+                     </tr>
+                 </tbody>
+             </table><br />
+             <h4>Customer Information</h4>
+             <table style="width:100%;">
+                 <thead>
+                     <tr>
+                         <th>Name</th>
+                         <th>Address</th>
+                         <th>City / State / Zip</th>
+                         <th>Phone</th>
+                         <th>Mobile</th>
+                         <th>Email</th>
+                     </tr>
+                 </thead>
+                 <tbody>
+                     <tr>
+                         <td>{!serviceVehicle.dealer__Veh_Owner_Contact__r.FirstName} {!serviceVehicle.dealer__Veh_Owner_Contact__r.LastName}</td>
+                         <td>{!serviceVehicle.dealer__Veh_Owner_Contact__r.MailingStreet}</td>
+                         <td>{!serviceVehicle.dealer__Veh_Owner_Contact__r.MailingCity}, {!serviceVehicle.dealer__Veh_Owner_Contact__r.MailingState} {!serviceVehicle.dealer__Veh_Owner_Contact__r.MailingPostalCode}</td>
+                         <td>{!serviceVehicle.dealer__Veh_Owner_Contact__r.Phone}</td>
+                         <td>{!serviceVehicle.dealer__Veh_Owner_Contact__r.MobilePhone}</td>
+                         <td>{!serviceVehicle.dealer__Veh_Owner_Contact__r.Email}</td>
+                     </tr>
+                 </tbody>
+             </table><br />
+             <h4>Vehicle Information</h4>
+             <table style="width:100%;">
+                 <thead>
+                     <tr>
+                         <th>YMM</th>
+                         <th>VIN</th>
+                         <th>Mileage</th>
+                         <th>Tag #</th>
+                         <th>Waiting?</th>
+                     </tr>
+                 </thead>
+                 <tbody>
+                     <tr>
+                         <td>{!dealer__Inspection_Report__c.dealer__Year__c} {!dealer__Inspection_Report__c.dealer__Make__c} {!dealer__Inspection_Report__c.dealer__Model__c}</td>
+                         <td>{!dealer__Inspection_Report__c.dealer__VIN__c}</td>
+                         <td>{!ROUND(dealer__Inspection_Report__c.dealer__Mileage__c,0)}</td>
+                         <td>{!dealer__Inspection_Report__c.dealer__Tag__c}</td>
+                         <td>
+                             <apex:outputText rendered="{!ServiceAppointment.dealer__Waiter__c}">Yes</apex:outputText>
+                             <apex:outputText rendered="{!NOT(ServiceAppointment.dealer__Waiter__c)}">No</apex:outputText>
+                         </td>
+                     </tr>
+                 </tbody>
+             </table><br />
+             <h4>Job Lines</h4>
+             <table style="width:100%;">
+                 <thead>
+                     <tr>
+                         <th>Op Code</th>
+                         <th>Description</th>
+                     </tr>
+                 </thead>
+                 <tbody>
+                    <apex:repeat value="{!ServiceAppointment.Service_Appointment_Lines__r}" var="sal">
+                        <tr>
+                            <td>{!sal.dealer__Op_Code__c}</td>
+                            <td>{!sal.dealer__Complaint__c}</td>
+                        </tr>
+                    </apex:repeat>
+                 </tbody>
+             </table><br />
+             <table style="width:100%;">
+                 <thead>
+                     <tr>
+                         <th>Existing Damage</th>
+                     </tr>
+                 </thead>
+                 <tbody>
+                     <tr>
+                         <td align="center">
+                            <apex:outputPanel rendered="{!ISBLANK(dealer__Inspection_Report__c.dealer__Body_Damage_URL__c)}">
+                                <img src="{!URLFOR($Resource.Customer_Check, 'img/vehicle-walkaround-bkg3.png')}" />
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!NOT(ISBLANK(dealer__Inspection_Report__c.dealer__Body_Damage_URL__c))}">
+                                <img src="{!dealer__Inspection_Report__c.dealer__Body_Damage_URL__c}" />
+                            </apex:outputPanel>
+                         </td>
+                     </tr>
+                 </tbody>
+             </table>
+             <br />
+             <div style="page-break-before:always;">
+             <h4>Terms and Conditions</h4>
+                 <small>
+                    <p>I hereby authorize the repair work herein set forth to be done and the necessary material to be used and agree that you are not responsible for loss or damage to vehicle or articles left in vehicle in case of fire, theft or any other cause beyond your control or for any delays caused by unavailability of parts or delay in parts shipments by the supplier or transporter. I hereby grant you and/or your employees permission to operate the vehicle herein described on streets, highways or elsewhere for the purpose of testing and/or inspection. An express mechanic's lien is hereby acknowledged on the above vehicle to secure the amount of repairs thereto. The repair shop is not responsible for damage from freezing due to lack of antifreeze.</p>
+                    
+                    <p>Having reviewed this estimate, I authorize the described repairs and diagnostic work. I understand that the original estimate may change, once diagnostic work is completed and/or repairs are begun. I agree to pay the repair shop in full for the work, provided the actual cost does not exceed the original estimate by more than ten percent (10%). If the actual cost will exceed the original written estimate by more than 10%, I or my authorized representative(s) will be notified and at that time may approve, modify or cancel the repair order. If I approve the revised estimate(s), I agree to pay the repair shop in full for the work completed, provided the actual cost does not exceed the sum total of the original estimate plus any subsequently approved estimate(s) by more than 10%. If I opt to cancel the repair order, the vehicle may, at my option, be reassembled (unless the reassembled vehicle would be unsafe), or retrieved unassembled. If I opt to cancel the repair order and have the vehicle reassembled, I agree to pay the cost of all authorized, completed repairs, diagnostic work and tear down, parts and labor to replace items destroyed by tear down, and reassembly of the component(s) or the vehicle. Should I fail to pick up my vehicle within 5 working days after notification to retrieve the vehicle or that the repairs have been completed, I will pay a $5.00 storage fee, along with all collection costs (including reasonable attorney's fees) for each additional day (weekends and holidays included) the vehicle remains at the shop.</p>
+                    
+                    <p>Understanding my right to receive a written repair estimate for repairs over S350 pursuant to G.S. 20-354. I nevertheless in good faith waive this right for a period of ___ days from the date below.</p>
+                    
+                    <p>I do/ do not desire the motor vehicle repair shop to retain any parts replaced during the repair for me to inspect and/or retain. I understand the shop will not return parts for which a warranty arrangement or exchange parts program exists.</p>
+                 </small>
+                 <h4>Customer Signature</h4>
+                 
+                            <apex:outputPanel rendered="{!ISBLANK(dealer__Inspection_Report__c.dealer__Customer_Signature_URL__c)}">
+                                <h2>Customer Signature Not On File</h2>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!NOT(ISBLANK(dealer__Inspection_Report__c.dealer__Customer_Signature_URL__c))}">
+                                <img src="{!dealer__Inspection_Report__c.dealer__Customer_Signature_URL__c}" id="signatureImage" />
+                            </apex:outputPanel>
+             </div>
+         </body>   
+    </html>
+</apex:page>

@@ -1,0 +1,87 @@
+<apex:page standardController="smagicinteract__incoming_lookup_config__c"  extensions="smagicinteract.IncomingLookupController" >
+<script>
+    function closeHelpMessage(){
+        document.getElementById('stepDiv').style.display = "none";
+    }
+</script>
+<apex:includeScript value="/soap/ajax/15.0/connection.js"/>
+<apex:includeScript value="/soap/ajax/15.0/apex.js"/>
+<apex:includeScript value="{!$Resource.smagicinteract__BulkSMSJS}"/>
+
+<apex:form id="formid">
+<apex:pageMessages id="pageMessagesSection"/>
+
+<apex:pageBlock title="{!$Label.INCOMING_LOOKUP_PAGE_TITLE}"  rendered="{!allowConfiguration }" >
+    
+    <apex:pageBlockSection id="pageBlockSection" collapsible="false" >
+    <apex:facet name="header">{!$Label.INCOMING_CONFIGURATION_PAGE_SECTION}</apex:facet>
+    </apex:pageBlockSection>
+ 
+    <div id="stepDiv" style="background-color:#ADD8E6; width: 60%; margin:10px auto;  display:block; line-height:200%; padding:5px;border:solid 1px #A9A9A9;">
+    <div id="clbtn" style="padding:0 2px 0 2px;line-height:11px;font-size:10px;color:black;cursor:pointer;float:right;margin-right:10px;border:solid 1px black;"  onClick="closeHelpMessage();" title="{!$Label.HELP_HIDE_TITLE}">x</div>
+    <b>{!$Label.QUICK_HELP_TITLE}</b><br/><table border="0">
+    <tr> <td>{!$Label.QUICK_HELP_BODY_STEP_1}</td> <td> {!$Label.QUICK_HELP_BODY_STEP_2}</td></tr> 
+    <tr> <td>{!$Label.QUICK_HELP_BODY_STEP_3}</td> <td>{!$Label.QUICK_HELP_BODY_STEP_4}</td></tr>
+    <tr> <td>{!$Label.QUICK_HELP_BODY_STEP_5}</td> <td>{!$Label.QUICK_HELP_BODY_STEP_6}<br/> {!$Label.QUICK_HELP_BODY_STEP_7}<br/> {!$Label.QUICK_HELP_BODY_STEP_8} <a href="http://screen-magic.com/resources/configuration-guide/configuring-sms-magic/view-incoming-sms-as-a-related-list">{!$Label.QUICK_HELP_BODY_STEP_9}</a> {!$Label.QUICK_HELP_BODY_STEP_10}
+    </td></tr>      </table>
+                
+    </div>
+     
+    <table border="0" style="margin-top:10px;">
+    <tr style="height:40px;">   
+        <td style="color: #4A4A56; padding-top: 5px; padding-bottom: 5px; padding-left: 2px; text-align: right; font-size: 91%; font-weight: bold;">{!$Label.OBJECT_NAME_LABEL} </td>
+        <td>    
+          <apex:selectList id="allObjectDropDown" value="{!selectedObjName}"  size="1">
+           <apex:actionSupport event="onchange" rerender="mobileFieldDropDown"/>
+                <apex:selectOption itemValue="" itemLabel="{!$Label.CHOOSE_OBJECT_LABEL}"/>
+                <apex:selectOptions value="{!lookupObjects}" />  
+          </apex:selectList>
+        </td>
+    </tr>
+      
+    <tr style="height:40px;">   
+        <td style="color: #4A4A56; padding-top: 5px; padding-bottom: 5px; padding-left: 2px; text-align: right; font-size: 91%; font-weight: bold;">{!$Label.MOBILE_FIELD_NAME_LABEL} </td>
+        <td>
+          <apex:selectList id="mobileFieldDropDown" value="{!mobileFieldName}" size="1">
+                <apex:selectOption itemValue="" itemLabel="{!$Label.CHOOSE_FIELD_LABEL}"/>
+                <apex:selectOptions value="{!mobileFieldsForSelectedObject}" />  
+          </apex:selectList>
+      </td>
+    </tr>
+     
+    <tr style="height:40px;">
+        <td style="color: #4A4A56; padding-top: 5px; padding-bottom: 5px; padding-left: 2px; text-align: right; font-size: 91%; font-weight: bold;">{!$Label.REFERENCE_FIELD_NAME_LABEL} </td>
+        <td>
+          <apex:selectList id="referenceFieldDropDown" value="{!referenceFieldName}" size="1">
+                <apex:selectOption itemValue="" itemLabel="{!$Label.CHOOSE_FIELD_LABEL}"/>
+                <apex:selectOptions value="{!referenceFieldsList}" />  
+          </apex:selectList>
+        </td>
+    </tr>
+    
+    <tr style="height:40px;">
+        <td style="color: #4A4A56; padding-top: 5px; padding-bottom: 5px; padding-left: 2px; text-align: right; font-size: 91%; font-weight: bold;">{!$Label.INCOMING_SMS_OWNER_LABEL} </td>
+        <td>
+          <apex:selectList id="incomingSMSOwner" value="{!incomingSMSOwner}" size="1">
+                <apex:selectOption itemValue="" itemLabel="{!$Label.NONE_LABEL}"/>
+                <apex:selectOption itemValue="recordowner" itemLabel="{!$Label.RECORD_OWNER_LABEL}"/>
+                <apex:selectOption itemValue="lastsender" itemLabel="{!$Label.LAST_SENDER_LABEL}"/>  
+          </apex:selectList>
+        </td>
+    </tr>
+    
+    <tr style="height:40px;">
+        <td style="color: #4A4A56; padding-top: 5px; padding-bottom: 5px; padding-left: 2px; text-align: right; font-size: 91%; font-weight: bold;">{!$Label.NOTIFY_OWNER_LABEL} </td>
+        <td>
+          <apex:inputCheckbox value="{!notifyRecordOwner}"/>
+        </td>
+    </tr>
+    </table>
+      
+    <apex:pageBlockButtons location="bottom">
+        <apex:commandButton action="{!save}" value="{!$Label.SAVE_BUTTON}" title="{!$Label.SAVE_BUTTON}"/>
+        <apex:commandButton action="{!Cancel}" value="{!$Label.CANCEL_BUTTON_TITLE}" title="{!$Label.CANCEL_BUTTON_TITLE}" />
+    </apex:pageBlockButtons>
+</apex:pageBlock>
+</apex:form>
+</apex:page>

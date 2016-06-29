@@ -1,0 +1,184 @@
+<apex:page standardController="smagicschedule__SMS_Schedule__c" extensions="smagicschedule.ScheduleConfigurationController" tabStyle="smagicschedule__SMS_Schedule__c" >
+<apex:includeScript value="/soap/ajax/15.0/connection.js"/>
+<apex:includeScript value="/soap/ajax/15.0/apex.js"/>
+
+<style type="text/css">
+        .custPopup{
+            background-color: white;
+            border-width: 1px;
+            border-style: solid;
+            border-color: #E6E6E6;
+            z-index: 9999;
+            padding:10px;
+            position: absolute;
+            width: 350px;
+            left:40%;
+            top:100px;
+        }
+        .campaignStats{
+            background-color: white;
+            border-width: 1px;
+            border-style: solid;
+            border-color: #E6E6E6;
+            z-index: 9999;
+            padding:10px;
+            position: absolute;
+            width: 350px;
+            left:40%;
+            top:100px;
+        }
+        .popupBackground{
+            background-color:black;
+            opacity: 0.20;
+            filter: alpha(opacity = 20);
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 9998;
+        }
+        .scrollPane{
+        	overflow:auto;
+        	height:100px;
+        }
+
+</style>
+<script type="text/javascript">
+
+	onkeyup = (function(e){
+		if(e.which == 27){		
+			var popupDisplayVal = document.getElementById('{!$Component.formId.main.statpopup}').style.display;
+			if(popupDisplayVal == "block")
+				document.getElementById('{!$Component.formId.main.statpopup}').style.display = "none";
+		}
+	});
+	
+	onload = (function(){
+		try{
+		
+			var showCampaignSMSTextVal = showCampaignSMSTextVal = document.getElementById('{!$Component.formId.main.showCampaignSMSText}').value;
+			if(showCampaignSMSTextVal != null && showCampaignSMSTextVal == 'true'){
+				document.getElementById('smsText').style.display = "none";
+				document.getElementById('contactSMSText').style.display = "block";
+				document.getElementById('leadSMSText').style.display = "block";
+			}
+			else{
+				document.getElementById('smsText').style.display = "block";
+				document.getElementById('contactSMSText').style.display = "none";
+				document.getElementById('leadSMSText').style.display = "none";
+			}
+		}catch(e){
+			alert("Exception "+e);
+		}
+	});
+</script>
+<apex:sectionHeader title="SMS Magic - {!$User.FirstName} {!$User.LastName}" subtitle="{!smagicschedule__SMS_Schedule__c.Name}" />
+
+<apex:form id="formId">
+<apex:pageBlock id="main" title="Schedule SMS" helpTitle="Help For this Page?" helpUrl="/apex/SchedulerHelpPage" >
+ 
+<table id="tableId">
+	<tr style="display:block; margin-left:20px;">
+		<td class="labelCol" style="width:100px;"><apex:outputLabel for="scheduleName">Name</apex:outputLabel></td>
+		<td ><apex:outputField id="scheduleName" value="{!smagicschedule__SMS_Schedule__c.smagicschedule__Schedule_Name__c}"/></td>
+	</tr>
+	<tr style="display:block; margin-left:20px;">
+		<td class="labelCol" style="width:100px;"><apex:outputLabel for="scheduleObject">Object</apex:outputLabel></td>
+		<td ><apex:outputField id="scheduleObject" value="{!smagicschedule__SMS_Schedule__c.smagicschedule__Object__c}"/></td>
+	</tr>
+	<tr style="display:block; margin-left:20px;">
+		<td class="labelCol" style="width:100px;"><apex:outputLabel for="scheduleStatus">Status</apex:outputLabel></td>
+		<td ><apex:outputField id="scheduleStatus" value="{!smagicschedule__SMS_Schedule__c.smagicschedule__Status__c}"/></td>
+	</tr>
+	
+	<tr id="contactSMSText" style="display:none; margin-left:20px;">
+		<td class="labelCol" style="width:100px;"><apex:outputLabel for="scheduleContactSMSText" rendered="{!showCampaignSMSText}">Contact SMS Text</apex:outputLabel></td>
+		<td ><apex:outputLabel id="scheduleContactSMSText" rendered="{!showCampaignSMSText}" value="{!contactSMSText}"/></td>
+	</tr>
+	<tr id="leadSMSText" style="display:none; margin-left:20px;">
+		<td class="labelCol" style="width:100px;"><apex:outputLabel for="scheduleLeadSMSText" rendered="{!showCampaignSMSText}">Lead SMS Text</apex:outputLabel></td>
+		<td ><apex:outputLabel id="scheduleLeadSMSText" rendered="{!showCampaignSMSText}" value="{!leadSMSText}"/></td>
+	</tr>
+	
+	<tr id="smsText" style="display:none; margin-left:20px;">
+		<td class="labelCol" style="width:100px;"><apex:outputLabel for="scheduleSMSText" rendered="{!showSObjectText}">SMS Text</apex:outputLabel></td>
+		<td ><apex:outputLabel id="scheduleSMSText" rendered="{!showSObjectText}" value="{!scheduleSMSText}"/></td>
+	</tr>
+	
+	<tr style="display:block; margin-left:20px;">
+		<td class="labelCol" style="width:100px;"><apex:outputLabel for="scheduleSenderId">Sender Id</apex:outputLabel></td>
+		<td ><apex:outputField id="scheduleSenderId" value="{!smagicschedule__SMS_Schedule__c.smagicschedule__SenderId__c}"/></td>
+	</tr>
+	<tr style="display:block; margin-left:20px;">
+		<td class="labelCol" style="width:100px;"><apex:outputLabel for="scheduleComments">Comments</apex:outputLabel></td>
+		<td ><apex:outputField id="scheduleComments" value="{!smagicschedule__SMS_Schedule__c.smagicschedule__Failure_Reason__c}"/></td>
+	</tr>
+	<tr style="display:block; margin-left:20px;">
+		<td class="labelCol" style="width:100px;"><apex:outputLabel for="campaignName" rendered="{!showCampaignSMSText}">Campaign Name</apex:outputLabel></td>
+		<td><apex:outputLabel id="campaignName" rendered="{!showCampaignSMSText}" value="{!campaignName}"/></td>
+	</tr>
+	<tr style="display:block; margin-left:20px;">
+		<td class="labelCol" style="width:100px;"><apex:outputLabel for="detailView" rendered="{!showCampaignSMSText}">View records</apex:outputLabel></td>
+		<td><apex:outputPanel id="detailView" rendered="{!showCampaignSMSText}"> <apex:commandLink action="{!showStats}" id="theCommandLink" rendered="{!showCampaignSMSText}" title="View Records">Click here</apex:commandLink></apex:outputPanel> </td>
+	</tr>
+</table>
+
+<apex:inputHidden value="{!showCampaignSMSText}" id="showCampaignSMSText" />
+<apex:inputHidden value="{!showSObjectText}" id="showSObjectText" />
+	
+<apex:outputPanel id="statpopup" style="display:block;">
+	  	<apex:outputPanel styleClass="popupBackground" layout="block" rendered="{!displayStats}"/>
+        <apex:outputPanel styleClass="campaignStats" layout="block" rendered="{!displayStats}">
+        	<div id="popupHeader" style="width:100%; height:10%; background-color:#8BBEC1;">
+        		<div title="Campaign Statistics" style="color:white; text-align:left; font-family:sans-serif; font-weight:bold; vertical-align: middle; padding-top: 5px; padding-bottom: 5px; padding-left: 5px;">Campaign Statistics</div> 
+        	</div> 
+        	<br /><br />
+        	<apex:outputPanel rendered="{!IF(havingValues, false, true)}" style="font-size:13px; font-family:sans-serif;">
+        		There are no records in Campaign now with selected status. <br />
+        	</apex:outputPanel>
+        	<apex:outputPanel rendered="{!havingValues}" style="font-size:13px; font-family:sans-serif;">
+        		Filtering Condition    : {!filteringCondition} <br /><br />
+        		Send To Optout Members : {!optOutFieldValue} <br />
+        	</apex:outputPanel>
+        	<br /> <br />
+        	<apex:outputPanel rendered="{!havingContactValues}">
+        		<apex:outputPanel rendered="{!havingContactValues}" style="font-size:13px; font-weight:bold; font-family:sans-serif;">
+        			Selected Contacts : {!totalContacts}
+        		</apex:outputPanel> <br />
+        		<div class="scrollPane">
+	        	<apex:pageBlockTable value="{!contactList}" var="contactIteam">
+					<apex:column value="{!contactIteam.Name}"/>
+					<apex:column value="{!contactIteam.MobilePhone}"/>
+				</apex:pageBlockTable>
+				</div>
+			</apex:outputPanel>
+				<br />
+			<apex:outputPanel rendered="{!havingLeadValues}"> 
+				<apex:outputPanel rendered="{!havingLeadValues}" style="font-size:13px; font-weight:bold; font-family:sans-serif;">
+					Selected Leads : {!totalLeads}
+				</apex:outputPanel> <br /> 
+				<div class="scrollPane">
+				<apex:pageBlockTable value="{!leadList}" var="leadIteam">
+					<apex:column value="{!leadIteam.Name}"/>
+					<apex:column value="{!leadIteam.MobilePhone}"/>
+				</apex:pageBlockTable>
+				</div>
+            </apex:outputPanel>
+        	<apex:outputPanel >
+            		<apex:commandButton value="Close" title="Close" action="{!closeStats}" rerender="statpopup" style="margin-left:40%"/>
+            </apex:outputPanel>
+		</apex:outputPanel>
+</apex:outputPanel>
+
+<apex:pageBlockButtons >
+	<apex:commandButton action="{!edit}" value="Edit" title="Edit"/>
+	<apex:commandButton action="{!autoRun}" value="Delete" title="Delete"/>
+</apex:pageBlockButtons>
+
+</apex:pageBlock>
+</apex:form>
+
+<apex:relatedList subject="{!smagicschedule__SMS_Schedule__c}"  list="OpenActivities" />
+<apex:relatedList subject="{!smagicschedule__SMS_Schedule__c}"  list="ActivityHistories" />
+</apex:page>

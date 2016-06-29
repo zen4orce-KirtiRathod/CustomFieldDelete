@@ -1,0 +1,497 @@
+<apex:page showHeader="{!showLink}" sidebar="{!showLink}" title="Advanced Vehicle Search" controller="dealer.VehicleAdvancedSearch" action="{!doSearch}" docType="html-5.0">
+    <apex:includeScript value="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" />
+    <!-- Bootsrap Includes -->
+    <apex:includeScript value="{!URLFOR($Resource.dealer__SDLResources,'/js/bootstrap.min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.dealer__SDLResources,'/js/typeahead-bundle.min.js')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.dealer__SDLResources,'/css/VFbootstrap.css')}"/>
+
+    <apex:stylesheet value="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" />
+    <!-- jQuery UI -->
+    <apex:stylesheet value="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" />
+    <apex:includeScript value="//code.jquery.com/ui/1.11.4/jquery-ui.js" loadOnReady="false" />
+    <!-- KENDO 2015.1.429 -->
+    <apex:includeScript value="{!URLFOR($Resource.dealer__KendoUiFULL2015,'/js/jszip.min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.dealer__KendoUiFULL2015,'/js/kendo.all.min.js')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.dealer__KendoUiFULL2015,'/styles/kendo.bootstrap.min.css')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.dealer__KendoUiFULL2015,'/styles/kendo.common-bootstrap.core.min.css')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.dealer__KendoUiFULL2015,'/styles/kendo.common-bootstrap.min.css')}"/>
+
+    <apex:includeScript value="{!URLFOR($Resource.dealer__MomentJS)}" />
+
+    <apex:sectionHeader description="Vehicle Inventory Advanced Search" subtitle="Vehicle Search" title="Vehicle" id="vehicleSectionHeader"/>
+
+    <apex:form id="force">
+        <apex:pageMessages id="messages" />
+        <apex:pageBlock mode="maindetail" id="vPB">
+
+            <apex:pageBlockButtons location="top">
+                <apex:commandButton id="doSearch" value="Search" action="{!doSearch}" reRender="vehTableWrap,messages" status="ajaxStatus">
+                    <apex:actionStatus id="ajaxStatus" onstart="startSearch();" onstop="completeSearch();" />
+                </apex:commandButton>
+                <apex:commandButton value="Reset" action="{!reset}" ></apex:commandButton>
+                <apex:commandButton action="{!returnToDeal}" value="Return To Proposal" rendered="{!NOT(ISBLANK(proposalId))}" />
+            </apex:pageBlockButtons>
+
+            <apex:pageBlockSection id="fieldSection" title="Search Vehicle Inventory" columns="2" collapsible="false">
+                <!-- <apex:pageBlockSectionItem /> -->
+
+                <apex:selectList label="Year" id="year" value="{!year}" size="1">
+                    <apex:selectOptions value="{!years}" />
+                </apex:selectList>
+                <apex:selectList label="Make" id="make" value="{!make}" size="1">
+                    <apex:selectOptions value="{!makes}" />
+                </apex:selectList>
+
+                <apex:inputText label="Model" id="model"  value="{!model}" size="30" />
+                <apex:inputText label="Trim" id="trim"  value="{!trim}" size="30" />
+
+                <apex:input label="Stock Number" id="stockNum" value="{!stockNum}" />
+                <apex:selectList label="Status" id="status"  value="{!status}" size="1">
+                    <apex:selectOptions value="{!StatusCodes}" />
+                </apex:selectList>
+
+                <apex:outputText />
+            
+                <apex:selectList label="Store Location" id="storeLocation" value="{!storeLocation}" size="1">
+                    <apex:selectOptions value="{!BranchLocations}"/>
+                </apex:selectList>              
+
+                <apex:selectList label="Vehicle Type" id="vehType" value="{!vehType}" size="1">
+                    <apex:selectOptions value="{!VehTypes}"/>
+                </apex:selectList>
+                <!--apex:selectList label="Record Type" id="recordType" value="{!recordType}" size="1">
+                    <apex:selectOptions value="{!RecordTypes}"/>
+                </apex:selectList-->
+                <apex:selectList label="Type: New/Used/Other" id="newUsedOther" value="{!newUsedOther}" size="1">
+                    <apex:selectOptions value="{!newUsedOthers}"/>
+                </apex:selectList>
+                <apex:input label="Min Price" id="minPrice" value="{!minPrice}" />
+                <apex:input label="Max Price" id="maxPrice" value="{!maxPrice}" />
+
+            </apex:pageBlockSection>
+
+            <!-- Advanced Fields -->
+            <apex:pageBlockSection id="fieldSection2" title="Advanced Fields" columns="2" collapsible="true">
+
+                <apex:pageBlockSectionItem dataStyleClass="secondary_separator" labelStyleClass="secondary_separator">
+                    <strong>Chassis Fields</strong>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem dataStyleClass="secondary_separator" labelStyleClass="secondary_separator">&nbsp;</apex:pageBlockSectionItem>
+
+                    <apex:input label="Exterior Color" id="extColor" value="{!extColor}" />
+                    <apex:input label="Interior Color" id="intColor" value="{!intColor}" />
+
+                    <apex:selectList label="Interior" id="interior" value="{!interior}" size="1">
+                        <apex:selectOptions value="{!Interiors}"/>
+                    </apex:selectList>
+                    <!-- <apex:input label="Interior Type" id="interior" value="{!interior}" /> -->
+                    <apex:pageBlockSectionItem />
+
+                    <apex:input label="Min Odometer" id="minOdometer" value="{!minOdometer}" />
+                    <apex:input label="Max Odometer" id="maxOdometer" value="{!maxOdometer}" />
+
+                    <!-- <apex:input label="Min Chassis Cost" id="minChassis" value="{!minChassis}" /> -->
+                    <!-- <apex:input label="Max Chassis Cost" id="maxChassis" value="{!maxChassis}" /> -->
+
+                <apex:pageBlockSectionItem dataStyleClass="secondary_separator" labelStyleClass="secondary_separator">
+                    <strong>Conversion Fields</strong>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem dataStyleClass="secondary_separator" labelStyleClass="secondary_separator">&nbsp;</apex:pageBlockSectionItem>
+
+                    <apex:selectList label="Conv MFG" id="convMfg" value="{!convMfg}" size="1">
+                        <apex:selectOptions value="{!Conversions}"/>
+                    </apex:selectList>
+                    <apex:selectList label="Conv Model" id="convModel" value="{!convModel}" size="1">
+                        <apex:selectOptions value="{!ConversionModels}"/>
+                    </apex:selectList>
+
+                    <apex:selectList label="Ramp Type" id="rampType" value="{!rampType}" size="1">
+                        <apex:selectOptions value="{!RampTypes}"/>
+                    </apex:selectList>
+                    <apex:selectList label="Ramp Operation" id="rampOperation" value="{!rampOperation}" size="1">
+                        <apex:selectOptions value="{!RampOperationItems}"/>
+                    </apex:selectList>
+
+                    <apex:selectList label="Ramp Location" id="rampLoc" value="{!rampLoc}" size="1">
+                        <apex:selectOptions value="{!RampLocations}"/>
+                    </apex:selectList>
+                    <apex:selectList label="Kneeling" id="kneel" value="{!kneel}" size="1">
+                        <apex:selectOption itemValue="All" itemLabel="All"/>
+                        <apex:selectOption itemValue="Yes" itemLabel="Yes"/>
+                        <apex:selectOption itemValue="No" itemLabel="No"/>
+                    </apex:selectList>
+
+                    <!-- <apex:input label="Min Conv Cost" id="minConv" value="{!minConv}" /> -->
+                    <!-- <apex:input label="Max Conv Cost" id="maxConv" value="{!maxConv}" /> -->
+
+            </apex:pageBlockSection>
+
+            <apex:pageBlockSection title="Search Results" columns="1" collapsible="false">
+            
+                <apex:outputPanel id="vehTableWrap">
+                    <apex:outputText value="{!QueryString}" rendered="{!IF(debugmode==true, true, false)}" />
+                    <div id="force" style="width:1600px;">
+                    <apex:pageblockTable id="result_table" value="{!VehResult}" var="v">
+                        <apex:column headerValue="Select" id="select_col">
+                            <apex:outputLink rendered="{!NOT(ISBLANK(proposalId))}" value="/apex/QuoteManager?id={!proposalId}&v={!v.Id}#sec_chassis" styleClass="btn btn-primary btn-xs">Select</apex:outputLink>
+                        </apex:column>
+                        <apex:column headerValue="Description">
+                            <!--<apex:outputLink target="_blank" rendered="{!(ISBLANK(proposalId))}" value="/{!v.Id}">{!v.Name}</apex:outputLink>
+                            <apex:outputText rendered="{!NOT(ISBLANK(proposalId))}" value="{!v.Name}" />-->
+                            <apex:outputLink target="_blank" rendered="{!(ISBLANK(proposalId)) && showLink==true}" value="/{!v.Id}">{!v.Name}</apex:outputLink>
+                            <apex:outputLink value="javascript:top.window.opener.lookupPick2('{!FormTag}','{!TextBox}_lkid','{!TextBox}','{!v.Id}','{!v.Name}', false)" rendered="{!NOT(ISNULL(v.Id)) && showLink==false }"  onclick="openTab();" >{!v.Name}</apex:outputLink>
+                        </apex:column>
+
+                        <!-- <apex:column headerValue="Stock #" value="{!v.dealer__Stock_Number__c}" />
+                        <apex:column headerValue="Year" value="{!v.dealer__Year__c}" />
+                        <apex:column headerValue="Make" value="{!v.dealer__Make__c}" />
+                        <apex:column headerValue="Model" value="{!v.dealer__Model__c}" /> -->
+                        
+                        <apex:column headerValue="Trim Level" value="{!v.dealer__Trim_Level__c}" />
+                        <apex:column headerValue="Mileage" value="{!v.dealer__Mileage__c}" />
+                        <apex:column headerValue="EXT Color" value="{!v.dealer__Exterior_Color__c}" />
+                        <!-- <apex:column headerValue="Conv. Mfg." value="{!v.Conv_MFG__c}" /> -->
+                        <apex:column headerValue="Conv. Model" value="{!v.dealer__Conversion_Model__c}" />
+                        <apex:column headerValue="Location" value="{!v.dealer__Store_Location__r.Name}" />
+                        <!-- BLLd apex : column headerValue="Retail Price" value="{!v.Suggested_Retail_Price__c}" / -->
+                        <apex:column headerValue="Retail Price" value="{!v.dealer__SuggestedRetailPrice__c}" />
+                        <!-- <apex:column headerValue="Sale Price" value="{!v.dealer__Coded_Cost__c}" /> -->
+                        <apex:column headerValue="Total Cost" value="{!v.dealer__Total_Vehicle_Cost__c}" />
+                        <apex:column headerValue="Status" value="{!v.dealer__Status_Code__c}" />
+                        <!-- 
+                        JG: bit of a conflict between RecordType.Name and New_Used_Other__c.  Using both for now.
+
+                        <apex:column headerValue="Type" value="{! IF(ISBLANK(v.New_Used_Other__c),(v.RecordType.Name), v.New_Used_Other__c)}"/>      
+                         -->
+
+                        <apex:column headerValue="Type" value="{!v.dealer__New_Used_Other__c}"/>
+
+                        <apex:column headerValue="Days In-Stock" value="{!v.dealer__Days_in_Stock__c}"/>
+
+                        <apex:column headerValue="Ramp Type" value="{!v.dealer__MV_Ramp_Type__c}"/>
+                        <apex:column headerValue="Ramp Operation" value="{!v.dealer__MV_Ranp_Operation__c}"/>
+                        <apex:column headerValue="Ramp Location" value="{!v.dealer__Ramp_Location__c}"/>
+
+                    </apex:pageblockTable>
+                    </div>
+                </apex:outputpanel>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+
+    </apex:form>    
+
+    <script type="text/javascript">
+        $dt = jQuery.noConflict();
+        var count = 0;
+        var timer = null;
+        var proposalId = '{!proposalId}';
+
+        $dt(document).ready(function() {
+
+            // default close
+            $dt('.hideListButton[id$="fieldSection2"]').trigger('click');
+
+            // Manipulate DOM with range fields
+            var price_field = new range_field('minPrice','maxPrice');
+            var odom_field = new range_field('minOdometer','maxOdometer');
+            var conv_field = new range_field('minConv','maxConv');
+            var chassis_field = new range_field('minChassis','maxChassis');
+
+            render_table();
+        });
+
+        // Range Field Object Contructor
+        var range_field = function(minId,maxId){
+            this.$_minObj = $dt('[id$="'+minId+'"]');
+            this.$_maxObj = $dt('[id$="'+maxId+'"]');
+            var _parent = this;
+
+            // Instantiate slider on the range field
+            this._slider = $dt('<div class="range"></div>').insertAfter( this.$_minObj ).slider({
+                range: true,
+                min: 5000,
+                max: 85000,
+                step: 500,
+                values: [ 0, 100000 ],
+                slide: function( event, ui ) {
+                    _parent.$_minObj.val( ui.values[ 0 ] );
+                    _parent.$_maxObj.val( ui.values[ 1 ] );
+                }
+            }).wrap('<div class="slide_wrap"></div>');
+
+
+            // Bind slider to field values
+            this.$_minObj.keyup(function(){ 
+                _parent._slider.slider( "values", 0, $dt(this).val() ); 
+            });
+
+            this.$_maxObj.keyup(function(){ 
+                _parent._slider.slider( "values", 1, _parent.$_maxObj.val() ); 
+            });
+        }
+
+        function startSearch() {
+            timer = setInterval(function(){
+                count++;
+                var dots = new Array(count % 4).join('.');
+                $dt('[id$="doSearch"]').val('Searching.' + dots);
+              }, 1000);
+        }
+
+        function completeSearch() {
+            clearInterval(timer);
+            $dt('[id$="doSearch"]').val('Search');
+
+            render_table();
+        }
+
+        function render_table() {
+            $dt('[id$="result_table"]').kendoGrid({
+                dataSource: {
+                    schema: {
+                        model: {
+                            // id: "vehicle",
+                            fields: {
+                                Select: { type: 'string', defaultValue: '-' },
+                                Description: {type: 'string' },
+                                Color: {type: 'string' },
+                                // ConvMfg: {type: 'string' },
+                                ConvModel: {type: 'string', defaultValue: '-' },
+                                Location: {type: 'string' },
+                                Mileage: {type: 'number' },
+                                RetailPrice: {type: 'number' },
+                                // AdvPrive: {type: 'number'},
+                                TotalCost: {type: 'number' },
+                                TrimLevel: {type: 'string' },
+                                Status: {type: 'string' },
+                                Type: {type: 'string'},
+                                DaysOld: {type: 'number', defaultValue: '-'},
+                                rampType: {type: 'string'},
+                                rampOP: {type: 'string'},
+                                rampLoc: {type: 'string'}
+                            }
+                        },
+                        parse: function(response) {
+                            console.log(response);
+                            var vehicles = [];
+                            for (var i = 0; i < response.length; i++) {
+                                // console.log( strip_span(response[i].Chassis).replace(/[^0-9-.]/g, ''));
+                                var veh = {
+                                    Select: response[i].Select,
+                                    Color: strip_span(response[i].Color),
+                                    // ConvMfg: strip_span(response[i].ConvMfg),
+                                    ConvModel: strip_span(response[i].ConvModel),
+                                    Description: response[i].Description,
+                                    Location: strip_span(response[i].Location),
+                                    Mileage: strip_span( response[i].Mileage ),
+                                    RetailPrice:  parse_currency(response[i].RetailPrice),
+                                    TotalCost:  parse_currency(response[i].TotalCost),
+                                    TrimLevel: strip_span( response[i].TrimLevel ),
+                                    Status: strip_span( response[i].Status ),
+                                    Type: strip_span( response[i].Type ),
+                                    DaysOld: strip_span( response[i].DaysOld ),
+                                    // AdvPrive: strip_span( response[i].AdvPrive ),
+                                    rampType: strip_span( response[i].rampType ),
+                                    rampOP: strip_span( response[i].rampOP ),
+                                    rampLoc: strip_span( response[i].rampLoc )
+                                };
+                                // console.log(veh);
+                                vehicles.push(veh);
+                            }
+                            return vehicles;
+                        }
+                    }
+                },
+                // height: 550,
+                sortable: true,
+                resizable: true,
+                // toolbar: ['pdf'],
+                toolbar: ['excel'],
+                excelExport: function(e) {
+                    // Dynamically set File Name
+                    e.workbook.fileName = "VehicleInventoryExport-"+moment().format('M/D/YYYY')+".xlsx";
+
+                    // Remove anchor from cell for export
+                    var sheet = e.workbook.sheets[0];
+                    for (var i = 1; i < sheet.rows.length; i++) {
+                        var row = sheet.rows[i];
+
+                        row.cells[0].value = ' '+strip_span(row.cells[0].value)+' ';
+                        row.cells[5].value = ' '+row.cells[5].value+' ';
+                        row.cells[6].value = ' '+row.cells[6].value+' ';
+                        row.cells[7].value = ' '+row.cells[7].value+' ';
+                        row.cells[8].value = ' '+row.cells[8].value+' ';
+                        row.cells[9].value = ' '+row.cells[9].value+' ';
+                    }
+                },      
+                columns: [
+                    { field: "Select", width: 50, hidden: (proposalId == '') ? true : false, sortable: false  },
+                    { field: "Description", width: 250, sortable: false },
+                    { field: "TrimLevel", width: 170, },
+                    { field: "Mileage", attributes : {style: "text-align: right;"} },
+                    { field: "Color", width: 150 },
+                    // { field: "ConvMfg" },
+                    { field: "ConvModel", width: 150 },
+                    { field: "Location" },
+                    { field: "RetailPrice", format: "{0:c2}", attributes : {style: "text-align: right;"}  },
+                    // { field: "AdvPrive", format: "{0:c2}" },
+                    { field: "TotalCost", format: "{0:c2}", attributes : {style: "text-align: right;"}  },
+                    { field: "Status", width: 150},
+                    { field: "Type", width: 100},
+                    { field: "DaysOld", width: 50, attributes : {style: "text-align: right;"} },
+                    { field: "rampType", width: 75},
+                    { field: "rampOP", width: 75},
+                    { field: "rampLoc", width: 75}
+                ]
+            });
+
+            if (proposalId == '') {
+                $dt('[id$="select_colheader"]').hide();
+            }
+        }
+
+        function strip_span(str) {
+            var span = $dt(str);
+            var text = span.text();
+            return text;
+        }
+
+        function strip_anchor(str) {
+            var span = $dt(str);
+            var text = span.text();
+            return text;
+        }
+
+        function parse_currency(str) {
+            if ( typeof str != undefined ) {
+                if ( str.length > 0 ) {
+                    return parseFloat( $dt(str).text().replace(/[^0-9-.]/g, '') );
+                } 
+            }
+            return '';
+        }
+
+        function destroy_table() {
+            var grid = $dt('[id$="result_table"]').data("kendoGrid");
+            grid.destroy();
+        }
+
+        function compare_text(a,b){
+            console.log(a);
+            console.log(b);
+
+            var aVal = $dt(a).find('span').text();
+            var bVal = $dt(b).find('span').text();
+
+            console.log(aVal);
+            console.log(bVal);
+
+            return aVal - bVal;
+        }
+
+        function compare_currency(a,b){
+
+        }
+        
+        /*  
+            ,
+            sortable: {
+                compare: function(a, b) {
+                    compare_text(a,b);
+                }
+            }
+
+            Chassis: "<span id="j_id0:force:vPB:j_id15:result_table:0:j_id42">$23,058.43</span>"
+            Color: "<span id="j_id0:force:vPB:j_id15:result_table:0:j_id39">Redline 2 Coat Pearl</span>"
+            ConvMfg: "<span id="j_id0:force:vPB:j_id15:result_table:0:j_id40">BraunAbility</span>"
+            ConvModel: ""
+            Conversion: "<span id="j_id0:force:vPB:j_id15:result_table:0:j_id41">$17,434.50</span>"
+            Description: "<a href="https://cs13.salesforce.com/a2PW00000007T29MAE">(670B) 2014 Dodge Grand Caravan</a>"
+            Location: ""
+            Mileage: "<span id="j_id0:force:vPB:j_id15:result_table:0:j_id38">288</span>"
+            RetailPrice: "<span id="j_id0:force:vPB:j_id15:result_table:0:j_id37">$49,550.00</span>"
+            TrimLevel: "<span id="j_id0:force:vPB:j_id15:result_table:0:j_id36">SXT</span>"
+            Type: "<span id="j_id0:force:vPB:j_id15:result_table:0:j_id43">Used</span>"
+        */
+    </script>
+
+    <style type="text/css">
+        /*
+            [id$="fieldSection"] .pbSubsection {
+                max-width: 600px
+            }
+        */
+
+        .dataCol {
+            position: relative;
+        }
+
+        .slide_wrap {
+            position: relative;
+            width: 226%;
+            left: 0;
+            display: block;
+            margin: 7px 5px;
+        }
+
+        .headerRow.k-header a > span {
+            float: right;
+        }
+
+        .headerRow.k-header a > div {
+            float: left;
+        }
+
+        .bPageBlock .detailList .dataCol {
+            width: auto;
+        }
+        .bPageBlock .detailList .labelCol {
+            width: auto;
+        }
+
+        [id$="force"] .secondary_separator {
+            /*text-align: center;*/
+            background-color: #f4f4f4;
+            padding: 3px 3px 3px 20px; 
+        }
+
+        .empty {
+            border-bottom: 1px solid #e3deb8;
+        }
+
+        .k-grid-header th.k-header, .k-filter-row th {
+            padding-left: .2em;
+            padding-right: .2em;
+        }
+
+        @media screen and (min-width: 861px) and (max-width: 1300px) {
+            .slide_wrap {
+                position: relative;
+                width: 150%;
+                left: 30%;
+                display: inline-block;
+                margin: 5px 2px 0px;
+            }
+        }
+        @media screen and (min-width: 1301px) and (max-width: 1600px)  {
+            .slide_wrap {
+                position: absolute;
+                width: 62%;
+                left: 58%;
+                display: inline-block;
+                margin-top: 3px;
+            }
+        }
+
+        @media screen and (min-width: 1601px) {
+            .slide_wrap {
+                position: absolute;
+                width: 75%;
+                left: 49%;
+                display: inline-block;
+                margin-top: 3px;
+            }
+        }
+
+    </style>
+</apex:page>

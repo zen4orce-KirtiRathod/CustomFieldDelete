@@ -1,0 +1,41 @@
+<apex:page Controller="dealer.TimeClock_AC" showHeader="false" sidebar="false">
+<style>
+body {
+   background-color: #CFEEF8; 
+}
+</style>
+	<apex:Form >
+	<!--  
+		<apex:OutputPanel id="counter"  rendered="{!!clockin1}">
+		<b><apex:outputtext Value="{!hours}" style="color:Green;font-size:20PX;"/> </b><Sup>hrs</Sup>
+		<b><apex:outputtext Value="{!mins}"   style="color:Green;font-size:20PX;"/> </b><Sup>mins</Sup>
+		<b><apex:outputtext Value="{!secs}"  style="color:Green;font-size:20PX;"/></b> <Sup>secs</Sup>
+	
+		</apex:OutputPanel>
+		<apex:actionPoller reRender="counter" Action="{!getDatetimer}" interval="5"/><br></br>-->
+		<apex:OutputPanel rendered="{!isClockIntime}">
+		<b><apex:outputtext Value="Check-In : " style="color:Green;font-size:10PX;"/> </b>
+		<b><apex:outputtext Value="{!ClockIntime}" style="font-size:10PX;"/> </b>
+		</apex:OutputPanel><br></br>
+		<apex:OutputPanel rendered="{!isLunchStartTime}">
+		<b><apex:outputtext Value="Lunch-In : " style="color:Green;font-size:10PX;"/> </b>
+		<b><apex:outputtext Value="{!LunchStartTime}" style="font-size:10PX;"/> </b>
+		</apex:OutputPanel><br></br>
+		<apex:OutputPanel rendered="{!isLunchEndTime}">
+		<b><apex:outputtext Value="Lunch-Out : " style="color:Green;font-size:10PX;"/> </b>
+		<b><apex:outputtext Value="{!LunchEndTime}" style="font-size:10PX;"/> </b>
+		</apex:OutputPanel><br></br>
+		<apex:OutputPanel rendered="{!isClockOutTime}">
+		<b><apex:outputtext Value="Check-Out : " style="color:Green;font-size:10PX;"/> </b>
+		<b><apex:outputtext Value="{!ClockOutTime}" style="font-size:10PX;"/> </b>
+		</apex:OutputPanel>
+		
+		<table align="Center">
+		<tr> <td><apex:CommandButton Value="Clock-In" rendered="{!clockin1}" Action="{!clockin}" /> </td></tr>
+		<tr> <td> <apex:CommandButton Value="Lunch Break Start" rendered="{!lunchstart1}" Action="{!lunchstart}"/></td></tr>
+		<tr> <td><apex:CommandButton Value="Lunch Break End" rendered="{!lunchend1}" Action="{!lunchend}"/> </td></tr>
+		<tr> <td><apex:CommandButton Value="Clock-Out" rendered="{!clockout1}" Action="{!clockout}"/> </td></tr>	
+			
+		</table>
+	</apex:Form>
+</apex:page>

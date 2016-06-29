@@ -1,0 +1,989 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <content>ServiceEstimateView</content>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Visualforce</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <customHelpPage>SuccessDocumentation_Tab</customHelpPage>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <deprecated>false</deprecated>
+    <description>Service Estimates tracking object</description>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableEnhancedLookup>true</enableEnhancedLookup>
+    <enableFeeds>true</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <fields>
+        <fullName>Appraisal_VIN__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>VIN Number for reference when saving Estimate without vehicle added to the inventory.</inlineHelpText>
+        <label>Appraisal VIN</label>
+        <length>17</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Appraisal__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>Appraisal for this service estimate to relate to.</description>
+        <externalId>false</externalId>
+        <label>Appraisal</label>
+        <referenceTo>Appraisal__c</referenceTo>
+        <relationshipLabel>Service Estimates</relationshipLabel>
+        <relationshipName>Service_Estimates</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Body_Type__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>Service_Vehicle__r.Body_Type__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Body Type</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Both_Keys_Fobs__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Does the vehicle have both keys and fobs (working and present)</inlineHelpText>
+        <label>Both Keys &amp; Fobs?</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Buy_Price__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>Suggested_Retail_Price__c - ( Estimate_Total__c +  Desired_Profit__c +  Estimated_Pack__c )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Calculated offer price based on suggested retail minus expense of pack, reconditioning and anticipated profit.</inlineHelpText>
+        <label>Buy Price</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Comapny_Number__c</fullName>
+        <deprecated>false</deprecated>
+        <description>This field is deprecated and should no longer be used.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This field is deprecated and should no longer be used.</inlineHelpText>
+        <label>cmpno</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Location 1</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Location 2</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Company_Number__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Company Number</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Location 1</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Location 2</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Company__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Company</label>
+        <referenceTo>Dealer_Location__c</referenceTo>
+        <relationshipLabel>Service Estimates (Company)</relationshipLabel>
+        <relationshipName>Service_Estimates1</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Cosmetic_Notes__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Cosmetic Notes</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Cosmetic_Total__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Cosmetic Total</label>
+        <summarizedField>Service_Estimate_Line__c.Cosmetic_Estimate__c</summarizedField>
+        <summaryForeignKey>Service_Estimate_Line__c.Service_Estimate__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Current_MMR__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Current Manheim Market Report Value</inlineHelpText>
+        <label>Current MMR</label>
+        <precision>7</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Current_Mileage__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Current Mileage</label>
+        <precision>8</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Customer_Contact__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Customer</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipLabel>Service Estimates (Contact)</relationshipLabel>
+        <relationshipName>Service_Estimates</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Customer__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Account</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Service Estimates (Account)</relationshipLabel>
+        <relationshipName>Service_Estimates</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Days__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>IF( ISNULL( Finish_Date__c  ), (TODAY() -  Inventory_Vehicle__r.Inventory_Date__c  ), ( Finish_Date__c -Inventory_Vehicle__r.Inventory_Date__c ))</formula>
+        <label>Days</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Desired_Profit__c</fullName>
+        <defaultValue>1500</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Desired front end gross profit for the sale of this vehicle.</inlineHelpText>
+        <label>Desired Profit</label>
+        <precision>6</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Detail__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Date the vehicle had it&apos;s Detail completed</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Date the vehicle had it&apos;s Detail completed</inlineHelpText>
+        <label>Detail</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Discount_Rate__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Discount Rates</description>
+        <externalId>false</externalId>
+        <label>Discount Rate</label>
+        <picklist>
+            <picklistValues>
+                <fullName>5%</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>10%</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>15%</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>20%</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>25%</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>30%</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Discount__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Discount Calculation</description>
+        <externalId>false</externalId>
+        <formula>(  Labor_to_Discount__c +  Parts_to_Discount__c ) * (VALUE(SUBSTITUTE(TEXT( Discount_Rate__c ), &apos;%&apos;, &apos;&apos;)) / 100)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Discount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>EmailApprover__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>EmailApprover</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Service_Estimates</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Estiamted_Profit__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>Desired_Profit__c -  Estimated_Pack__c -  Estimate_Total__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Estiamted Profit</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Estimate_Notes__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Estimate Notes</label>
+        <length>4200</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Estimate_Total__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>IF(
+    ISBLANK( TEXT(Discount_Rate__c)),
+       ( Total_Labor_Charges__c +  Total_Parts_Charges__c  +  Total_Sublet_Charges__c +  Cosmetic_Total__c  + Total_Tax__c ),
+       ( (Total_Labor_Charges__c +  Total_Parts_Charges__c  + Total_Sublet_Charges__c +  Cosmetic_Total__c + Total_Tax__c ) -  Discount__c )
+)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Estimate Total</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Estimated_Pack__c</fullName>
+        <defaultValue>499</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Estimated pack on</inlineHelpText>
+        <label>Estimated Pack</label>
+        <precision>7</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Finalized_By__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Finalized By</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>service_estimate_finalizedBy</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Finish_Date__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Finish Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Inventory_Vehicle_VIN__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>Inventory_Vehicle__r.VIN__c</formula>
+        <label>Inventory Vehicle VIN</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Inventory_Vehicle__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Inventory Vehicle</label>
+        <referenceTo>Vehicle_Inventory__c</referenceTo>
+        <relationshipLabel>Service Estimates</relationshipLabel>
+        <relationshipName>Service_Estimates</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Labor_to_Discount__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Sum of Labor Charges with discount check box selected.</inlineHelpText>
+        <label>Labor to Discount</label>
+        <summarizedField>Service_Estimate_Line__c.Labor__c</summarizedField>
+        <summaryFilterItems>
+            <field>Service_Estimate_Line__c.Discount_Labor__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Service_Estimate_Line__c.Service_Estimate__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Navigation_Disc_SD_Installed__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Navigation Disc/SD Installed?</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Vehicle Not Equipped</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Navigation Disc/SD Installed</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Missing NAV Disc/SD</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Owners_Manual__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Does the inventory item have the owners manual present?</inlineHelpText>
+        <label>Owners Manual?</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Parts_Sublet_Total__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>Total_Parts_Charges__c +  Total_Sublet_Charges__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Parts &amp; Sublet Total</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Parts_to_Discount__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Sum of Parts Charges with discount check box selected</inlineHelpText>
+        <label>Parts to Discount</label>
+        <summarizedField>Service_Estimate_Line__c.Parts__c</summarizedField>
+        <summaryFilterItems>
+            <field>Service_Estimate_Line__c.Discount_Parts__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Service_Estimate_Line__c.Service_Estimate__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Safety__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Date the vehicle had it&apos;s safety check completed</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Date the vehicle had it&apos;s safety check completed</inlineHelpText>
+        <label>Safety</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Service_Advisor__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Service Advisor</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Service_Estimates1</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Service_Repair_Order__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Service Repair Order</label>
+        <referenceTo>Service_Repair_Order__c</referenceTo>
+        <relationshipLabel>Service Estimates</relationshipLabel>
+        <relationshipName>Service_Estimates</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Service_Vehicle__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Service Vehicle</label>
+        <referenceTo>Service_Vehicle__c</referenceTo>
+        <relationshipLabel>Service Estimates</relationshipLabel>
+        <relationshipName>Service_Estimates</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Smog__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Date the vehicle had it&apos;s smog completed</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Date the vehicle had it&apos;s smog completed</inlineHelpText>
+        <label>Smog</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Status__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Status</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Open</fullName>
+                <default>true</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Accepted</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Revised</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Declined</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Finalized</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Store_Location__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Store Location</label>
+        <referenceTo>Dealer_Location__c</referenceTo>
+        <relationshipLabel>Service Estimates</relationshipLabel>
+        <relationshipName>Service_Estimates</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Suggested_Retail_Price__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Price suggested to list vehicle for retail sale.</inlineHelpText>
+        <label>Suggested Retail Price</label>
+        <precision>7</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Taxable__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Is this estimate for a customer who will pay tax, or is this for a non-tax paying entity such as government or municipality?</inlineHelpText>
+        <label>Taxable</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Total_Labor_Charges__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Roll-Up summary of the labor on estimate lines</description>
+        <externalId>false</externalId>
+        <label>Total Labor Charges</label>
+        <summarizedField>Service_Estimate_Line__c.Labor__c</summarizedField>
+        <summaryForeignKey>Service_Estimate_Line__c.Service_Estimate__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Total_Parts_Charges__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Roll-Up Summary of Parts Charges</description>
+        <externalId>false</externalId>
+        <label>Total Parts Charges</label>
+        <summarizedField>Service_Estimate_Line__c.Parts__c</summarizedField>
+        <summaryForeignKey>Service_Estimate_Line__c.Service_Estimate__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Total_Sublet_Charges__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Total Sublet Charges</label>
+        <summarizedField>Service_Estimate_Line__c.Sublet_Charges__c</summarizedField>
+        <summaryForeignKey>Service_Estimate_Line__c.Service_Estimate__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Total_Tax__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Sum of tax from estimate lines</description>
+        <externalId>false</externalId>
+        <label>Total Tax</label>
+        <summarizedField>Service_Estimate_Line__c.Tax__c</summarizedField>
+        <summaryForeignKey>Service_Estimate_Line__c.Service_Estimate__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Transport_Damage_Description__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Damage Description</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Transport_Damage__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Transport Damage?</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>VIN_Verified__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Have you verified the VIN on the Vehicle matches the inventory record?</inlineHelpText>
+        <label>VIN Verified?</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <label>Service Estimate</label>
+    <listViews>
+        <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>Inventory_Vehicle__c</columns>
+        <columns>CREATEDBY_USER</columns>
+        <columns>CREATED_DATE</columns>
+        <columns>UPDATEDBY_USER</columns>
+        <columns>LAST_UPDATE</columns>
+        <columns>OBJECT_ID</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <nameField>
+        <displayFormat>SE-{000000}</displayFormat>
+        <label>SE#</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Service Estimates</pluralLabel>
+    <recordTypeTrackFeedHistory>false</recordTypeTrackFeedHistory>
+    <recordTypes>
+        <fullName>Service_Estimate</fullName>
+        <active>true</active>
+        <description>Standard Repair Estimate</description>
+        <label>Service Estimate</label>
+        <picklistValues>
+            <picklist>Comapny_Number__c</picklist>
+            <values>
+                <fullName>Location 1</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Location 2</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Company_Number__c</picklist>
+            <values>
+                <fullName>Location 1</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Location 2</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Discount_Rate__c</picklist>
+            <values>
+                <fullName>10%25</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>15%25</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>20%25</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>25%25</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>30%25</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>5%25</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Navigation_Disc_SD_Installed__c</picklist>
+            <values>
+                <fullName>Missing NAV Disc%2FSD</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Navigation Disc%2FSD Installed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Vehicle Not Equipped</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Status__c</picklist>
+            <values>
+                <fullName>Accepted</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Declined</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Finalized</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Open</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Revised</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>X4_Square</fullName>
+        <active>true</active>
+        <description>Used Vehicle Reconditioning Estimate</description>
+        <label>Used Car Recon</label>
+        <picklistValues>
+            <picklist>Comapny_Number__c</picklist>
+            <values>
+                <fullName>Location 1</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Location 2</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Company_Number__c</picklist>
+            <values>
+                <fullName>Location 1</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Location 2</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Discount_Rate__c</picklist>
+            <values>
+                <fullName>10%25</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>15%25</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>20%25</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>25%25</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>30%25</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>5%25</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Navigation_Disc_SD_Installed__c</picklist>
+            <values>
+                <fullName>Missing NAV Disc%2FSD</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Navigation Disc%2FSD Installed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Vehicle Not Equipped</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Status__c</picklist>
+            <values>
+                <fullName>Accepted</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Declined</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Finalized</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Open</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Revised</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <searchLayouts>
+        <customTabListAdditionalFields>Inventory_Vehicle__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Estimate_Total__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Total_Labor_Charges__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Total_Parts_Charges__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Total_Sublet_Charges__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Cosmetic_Notes__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Estimate_Notes__c</customTabListAdditionalFields>
+        <searchResultsAdditionalFields>Estimate_Total__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>CREATED_DATE</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>CREATEDBY_USER</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>RECORDTYPE</searchResultsAdditionalFields>
+    </searchLayouts>
+    <sharingModel>ReadWrite</sharingModel>
+    <validationRules>
+        <fullName>PreventFinalizedEstimateModification</fullName>
+        <active>true</active>
+        <description>If a Service Estimate has a finished date and finalized user, prevent the record from modifications.</description>
+        <errorConditionFormula>AND(NOT(ISBLANK(PRIORVALUE(Finalized_By__c))), NOT(ISBLANK(Finalized_By__c)))</errorConditionFormula>
+        <errorMessage>Finalized service estimates may not be modified.</errorMessage>
+    </validationRules>
+</CustomObject>

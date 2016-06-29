@@ -1,0 +1,28 @@
+<apex:page id="ChartOfAccountsNew" standardController="dealer__Chart_of_Accounts__c" extensions="dealer.ChartOfAccounts_EXT">
+	<apex:form id="ChartOfAccountsForm">
+		
+		<apex:pageBlock title="New Account" mode="edit">
+		<apex:pageMessages />
+			<apex:pageBlockButtons >
+				<apex:commandButton action="{!save}" value=" Save " />
+				<apex:commandButton action="{!saveandnew}" value=" Save & New" />
+				<apex:commandButton action="{!cancel}" value=" Cancel " />
+			</apex:pageBlockButtons>
+			<apex:pageBlockSection columns="1"><apex:outputField value="{!dealer__Chart_of_Accounts__c.RecordTypeId}" /></apex:pageBlockSection>
+			<apex:pageblockSection >
+				<apex:inputField value="{!dealer__Chart_of_Accounts__c.Name}" required="true" />
+				<apex:inputField value="{!dealer__Chart_of_Accounts__c.dealer__Active__c}"/>
+			</apex:pageblockSection>
+			<apex:pageBlockSection columns="1">
+				<apex:inputField value="{!dealer__Chart_of_Accounts__c.dealer__Description__c}" style="width:650px;" />
+			</apex:pageBlockSection>
+			<apex:pageBlockSection >
+				<apex:inputField value="{!dealer__Chart_of_Accounts__c.dealer__Department__c}" />
+				<apex:inputField value="{!dealer__Chart_of_Accounts__c.dealer__Control_By__c}" />
+				<apex:outputText />
+				<apex:inputField value="{!dealer__Chart_of_Accounts__c.dealer__Typical_Balance__c}" />
+				
+			</apex:pageBlockSection>
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>

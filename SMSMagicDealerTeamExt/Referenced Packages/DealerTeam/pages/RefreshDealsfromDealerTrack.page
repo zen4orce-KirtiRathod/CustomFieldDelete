@@ -1,0 +1,21 @@
+<apex:page standardController="dealer__Deal__c" recordSetVar="Deal" extensions="dealer.RefreshDeals" > 
+    <apex:sectionHeader title="Refresh Deals" subtitle="Sync information from DMS to Deal"/>
+    <apex:form >
+    <apex:pageMessages />
+        <apex:pageBlock >
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!SyncDeals}" value="Refresh Selected Deals"/>
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection columns="1">
+                <apex:outputText >You are about to refresh <b>{!HTMLENCODE(TEXT(dealListSize))}</b> Deal records</apex:outputText>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection collapsible="false" columns="1">
+                <apex:pageBlockTable value="{!selected}" var="Deal__c" >
+                    <apex:column value="{!dealer__Deal__c.Name}"/>
+                    <apex:column value="{!dealer__Deal__c.dealer__Salesperson_1_Name__c}"/>
+                    <apex:column value="{!dealer__Deal__c.dealer__Deal_Date__c}"/>
+                </apex:pageBlockTable> 
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

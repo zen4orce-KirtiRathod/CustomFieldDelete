@@ -1,0 +1,312 @@
+<apex:page controller="dealer.SalesWorkPlanPDF" renderAs="pdf" showHeader="false" standardStylesheets="false">
+    <head>
+        <style>
+            @page{
+               margin:0.18in;
+               size:landscape;
+            
+                @bottom-right { content: "Page " counter(page) " of " counter(pages); }
+            }
+            @media print
+                {
+                table {page-break-inside:avoid}
+                }
+            
+            body,td,th {
+                font-family: Verdana, Geneva, sans-serif;
+                font-size: 12px;
+            }
+            .bT{    border-top:1px solid #000;    }
+            .bB{    border-bottom:1px solid #000;    }
+            .bR{    border-right:1px solid #000;    }
+            .bL{    border-left:1px solid #000;    }
+            .uLine {text-decoration:underline}
+            
+            .bcG { background-color:#ECECEC; }
+            .fI {font-style:italic}
+        </style>
+    </head>
+    <table width="100%" border="0" cellpadding="4" cellspacing="0">
+        <tr>
+            <td style="font-size:16px;"><b>Daily Workplan:&nbsp;{!UserName}</b></td>
+            <td class="fI" align="right">Printed:&nbsp;{!NOW()}</td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <table width="100%" border="0" cellpadding="2" cellspacing="0">
+                    <tr>
+                        <td align="left">My Stats:&nbsp;</td>
+                        <td align="center"><b>Ups</b></td>
+                        <td align="center"><apex:outputText rendered="false"><b>Turns</b></apex:outputText></td>
+                        <td align="center"><b>Demos</b></td>
+                        <td align="center"><b>Write-Ups</b></td>
+                        <td align="center"><b>Sales</b></td>
+                        <td align="center">Walk-In</td>
+                        <td align="center">Phone-Up</td>
+                        <td align="center">Email</td>
+                        <td align="center">Be-Back</td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td align="center">{!Ups}</td>
+                        <td align="center"><apex:outputText rendered="false">{!Turns}</apex:outputText></td>
+                        <td align="center">{!Demos}&nbsp;(<apex:outputText value="{0, number, 00.0}%" rendered="{!IF(Ups != 0, true, false)}"><apex:param value="{!(Demos / Ups) * 100}" /></apex:outputText>)</td>
+                        <td align="center">{!WriteUps}&nbsp;(<apex:outputText value="{0, number, 00.0}%" rendered="{!IF(Demos != 0, true, false)}"><apex:param value="{!(WriteUps / Demos) * 100}" /></apex:outputText>)</td>
+                        <td align="center">{!totalsales}&nbsp;(<apex:outputText value="{0, number, 00.0}%" rendered="{!IF(Ups != 0, true, false)}"><apex:param value="{!(totalsales / Ups) * 100}" /></apex:outputText>)</td>
+                        <td align="center">{!walkins}</td>
+                        <td align="center">{!phonepops}</td>
+                        <td align="center">{!emails}</td>
+                        <td align="center">{!bebacks}</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <apex:repeat value="{!Leads}" var="saleslead">
+        <table width="100%" border="0" cellpadding="4" cellspacing="0">
+          <tr>
+            <td class="bL bT bB bcG" width="300"><apex:image value="/img/icon/car16.png" width="16" height="16"/>&nbsp;Lead:&nbsp;(S1:{!saleslead.dealer__Salesperson_1__r.Name}<apex:outputText rendered="{!IF(saleslead.dealer__Salesperson_2__r.Name != null, true, false)}">&nbsp;/&nbsp;S2:&nbsp;{!saleslead.dealer__Salesperson_2__r.Name}</apex:outputText>)</td>
+            <td class="bL bT bB bcG" width="200">Contact Information&nbsp;</td>
+            <td class="bL bT bB bcG" width="200">Address&nbsp;</td>
+            <td class="bL bT bB bcG" width="200">Desired Vehicle&nbsp;</td>
+            <td class="bL bT bB bR bcG" width="200">Trade-In(s)&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="bL">
+                <apex:outputLink value="{!$Site.OriginalUrl}{!saleslead.Id}" target="_blank">{!saleslead.Name}</apex:outputLink><br />
+                Status:&nbsp;{!saleslead.dealer__Lead_Status__c}<br />
+                Source:&nbsp;{!saleslead.dealer__Source__c}<br />
+                Shopper:&nbsp;{!saleslead.dealer__Shopper__c}<br />
+                {!saleslead.CreatedDate}
+            </td>
+            <td class="bL" valign="top">
+                B:<apex:outputField value="{!saleslead.dealer__Buyer_Contact__c}" /><br />
+                <apex:outputText rendered="{!IF(NOT(ISBLANK(saleslead.dealer__Co_Buyer_Contact__c)), true, false)}">C:&nbsp;{!saleslead.dealer__Co_Buyer_Contact__c}<br /></apex:outputText>
+                <apex:outputText rendered="{!IF(NOT(ISBLANK(saleslead.dealer__Buyer_Contact__r.dealer__Related_Name__c)), true, false)}">R:{!saleslead.dealer__Buyer_Contact__r.Related_Name__c}<br /></apex:outputText>
+                <apex:outputText rendered="{!IF(NOT(ISBLANK(saleslead.dealer__Buyer_Contact__r.Phone)), true, false)}">P:{!saleslead.dealer__Buyer_Contact__r.Phone}<br /></apex:outputText>
+                <apex:outputText rendered="{!IF(NOT(ISBLANK(saleslead.dealer__Buyer_Contact__r.HomePhone)), true, false)}">H:{!saleslead.dealer__Buyer_Contact__r.HomePhone}<br /></apex:outputText>
+                <apex:outputText rendered="{!IF(NOT(ISBLANK(saleslead.dealer__Buyer_Contact__r.MobilePhone)), true, false)}">C:{!saleslead.dealer__Buyer_Contact__r.MobilePhone}<br /></apex:outputText>
+                <apex:outputText rendered="{!IF(NOT(ISBLANK(saleslead.dealer__Buyer_Contact__r.OtherPhone)), true, false)}">O:{!saleslead.dealer__Buyer_Contact__r.Phone}<br /></apex:outputText>
+                <apex:outputText rendered="{!IF(NOT(ISBLANK(saleslead.dealer__Buyer_Contact__r.Email)), true, false)}">E:{!saleslead.dealer__Buyer_Contact__r.Email}<br /></apex:outputText>
+            </td>
+            <td class="bL" valign="top">
+                <apex:outputText rendered="{!IF(NOT(ISBLANK(saleslead.dealer__Buyer_Contact__r.MailingStreet)), true, false)}">{!saleslead.dealer__Buyer_Contact__r.MailingStreet}<br /></apex:outputText>
+                <apex:outputText rendered="{!IF(NOT(ISBLANK(saleslead.dealer__Buyer_Contact__r.MailingCity)), true, false)}">{!saleslead.dealer__Buyer_Contact__r.MailingCity}&nbsp;</apex:outputText>
+                <apex:outputText rendered="{!IF(NOT(ISBLANK(saleslead.dealer__Buyer_Contact__r.MailingState)), true, false)}">{!saleslead.dealer__Buyer_Contact__r.MailingState}&nbsp;</apex:outputText>
+                <apex:outputText rendered="{!IF(NOT(ISBLANK(saleslead.dealer__Buyer_Contact__r.MailingPostalCode)), true, false)}">{!saleslead.dealer__Buyer_Contact__r.MailingPostalCode}<br /></apex:outputText>
+                &nbsp;
+            </td>
+            <td class="bL" valign="top">
+                <apex:outputField value="{!saleslead.dealer__Desired_Stock_Num__c}" rendered="{!IF(NOT(ISBLANK(saleslead.dealer__Desired_Stock_Num__c)), true, false)}" />
+                <apex:outputText rendered="{!IF(NOT(ISBLANK(saleslead.dealer__Year_High__c)), true, false)}">{!saleslead.dealer__Year_High__c}&nbsp;</apex:outputText>
+                <apex:outputText rendered="{!IF(NOT(ISBLANK(saleslead.dealer__Year_To__c)), true, false)}">{!saleslead.dealer__Year_To__c}</apex:outputText><br />
+                <apex:outputText rendered="{!IF(NOT(ISBLANK(saleslead.dealer__Make__c)), true, false)}">{!saleslead.dealer__Make__c}<br /></apex:outputText>
+                <apex:outputText rendered="{!IF(NOT(ISBLANK(saleslead.dealer__Model__c)), true, false)}">{!saleslead.dealer__Model__c}<br /></apex:outputText>
+                <apex:outputText rendered="{!IF(NOT(ISBLANK(saleslead.dealer__Price_High__c)), true, false)}">{!saleslead.dealer__Price_High__c}</apex:outputText>&nbsp;
+                <apex:outputText rendered="{!IF(NOT(ISBLANK(saleslead.dealer__Price_Low__c)), true, false)}">{!saleslead.dealer__Price_Low__c}</apex:outputText>
+                &nbsp;
+            </td>
+            <td class="bL bR">
+                <apex:outputText rendered="{!IF(NOT(ISBLANK(saleslead.dealer__Trade_Year__c)), true, false)}">{!saleslead.dealer__Trade_Year__c}&nbsp;<br /></apex:outputText>
+                <apex:outputText rendered="{!IF(NOT(ISBLANK(saleslead.dealer__Trade_Make__c)), true, false)}">{!saleslead.dealer__Trade_Make__c}&nbsp;</apex:outputText><br />
+                <apex:outputText rendered="{!IF(NOT(ISBLANK(saleslead.dealer__Trade_Model__c)), true, false)}">{!saleslead.dealer__Trade_Model__c}<br /></apex:outputText>
+                <apex:outputText rendered="{!IF(NOT(ISBLANK(saleslead.dealer__Trade_Mileage__c)), true, false)}">{!saleslead.dealer__Trade_Mileage__c}<br /></apex:outputText>
+                <apex:outputText rendered="{!IF(NOT(ISBLANK(saleslead.dealer__Trade_VIN__c)), true, false)}">{!saleslead.dealer__Trade_VIN__c}</apex:outputText>                
+                &nbsp;
+            </td>
+          </tr>
+          <tr>
+            <td colspan="5" class="bT bB bR bL">Comments:&nbsp;{!saleslead.dealer__Comments__c}&nbsp;</td>
+          </tr>
+          <tr>
+            <td colspan="5" class="bB bR bL">
+                <table width="100%" border="0" cellpadding="4" cellspacing="0">
+                  <tr>
+                    <td class="uLine" width="125">Date</td>
+                    <td class="uLine" width="125">Method</td>
+                    <td class="uLine" width="125">Status</td>
+                    <td class="uLine" width="225">Subject</td>
+                    <td class="uLine" width="425">Comments</td>
+                  </tr>
+                    <apex:repeat value="{!saleslead.Tasks}" var="tsk">        
+                      <tr>
+                        <td><apex:outputLink value="{!$Site.OriginalUrl}{!tsk.Id}"><apex:outputText value="{0,date,MM'/'dd'/'yyyy}"><apex:param value="{!tsk.ActivityDate}" /></apex:outputText></apex:outputLink>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>{!tsk.Status}&nbsp;</td>
+                        <td>{!tsk.Subject}&nbsp;</td>
+                        <td>{!tsk.Description}&nbsp;</td>
+                      </tr>
+                    </apex:repeat>
+                </table>
+            </td>
+          </tr>
+        </table>
+        <br />
+    </apex:repeat>
+    <apex:repeat value="{!Sales}" var="sold">
+        <table width="100%" border="0" cellpadding="4" cellspacing="0">
+          <tr>
+            <td class="bL bT bB bcG" width="200" colspan="2"><apex:image value="/img/icon/cash16.png" width="16" height="16"/>
+                &nbsp;Sold Follow-Up:&nbsp;(S1:{!sold.dealer__Salesperson_1__r.Name}
+                <apex:outputText rendered="{!IF(sold.dealer__Salesperson_2__r.Name != null, true, false)}">&nbsp;/&nbsp;S2:&nbsp;{!sold.dealer__Salesperson_2__r.Name}
+                </apex:outputText>)
+                <apex:outputText rendered="{!IF(AND(sold.dealer__Salesperson_1__r.Name != UserName, sold.dealer__Salesperson_2__r.Name != UserName), true, false)}">
+                    Customer Re-assigned to {!UserName}
+                </apex:outputText>
+            </td>
+            
+            <td class="bL bT bB bcG" width="200">Address&nbsp;</td>
+            <td class="bL bT bB bR bcG" width="200">Purchased Vehicle&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="bL" width="200">
+                B:<apex:outputLink value="{!$Site.OriginalUrl}{!sold.Id}" target="_blank"><apex:outputField value="{!sold.dealer__Buyer_Contact__c}" /></apex:outputLink><br />
+                <apex:outputText rendered="{!IF(NOT(ISBLANK(sold.dealer__Buyer_Contact__r.dealer__Related_Name__c)), true, false)}">R:{!sold.dealer__Buyer_Contact__r.Related_Name__c}<br /></apex:outputText>
+                <apex:outputText rendered="{!IF(NOT(ISBLANK(sold.dealer__Buyer_Contact__r.Phone)), true, false)}">P:{!sold.dealer__Buyer_Contact__r.Phone}<br /></apex:outputText>
+                <apex:outputText rendered="{!IF(NOT(ISBLANK(sold.dealer__Buyer_Contact__r.HomePhone)), true, false)}">H:{!sold.dealer__Buyer_Contact__r.HomePhone}<br /></apex:outputText>
+                <apex:outputText rendered="{!IF(NOT(ISBLANK(sold.dealer__Buyer_Contact__r.MobilePhone)), true, false)}">C:{!sold.dealer__Buyer_Contact__r.MobilePhone}<br /></apex:outputText>
+                <apex:outputText rendered="{!IF(NOT(ISBLANK(sold.dealer__Buyer_Contact__r.OtherPhone)), true, false)}">O:{!sold.dealer__Buyer_Contact__r.OtherPhone}<br /></apex:outputText>
+                <apex:outputText rendered="{!IF(NOT(ISBLANK(sold.dealer__Buyer_Contact__r.Email)), true, false)}">E:{!sold.dealer__Buyer_Contact__r.Email}<br /></apex:outputText>
+            </td>
+            <td class="bL" width="200">
+                C:<apex:outputLink value="{!$Site.OriginalUrl}{!sold.Id}" target="_blank"><apex:outputField value="{!sold.dealer__Co_Buyer_Contact__c}" /></apex:outputLink><br />
+                <apex:outputText rendered="{!IF(NOT(ISBLANK(sold.dealer__Co_Buyer_Contact__r.dealer__Related_Name__c)), true, false)}">R:{!sold.dealer__Co_Buyer_Contact__r.Related_Name__c}<br /></apex:outputText>
+                <apex:outputText rendered="{!IF(NOT(ISBLANK(sold.dealer__Co_Buyer_Contact__r.Phone)), true, false)}">P:{!sold.dealer__Co_Buyer_Contact__r.Phone}<br /></apex:outputText>
+                <apex:outputText rendered="{!IF(NOT(ISBLANK(sold.dealer__Co_Buyer_Contact__r.HomePhone)), true, false)}">H:{!sold.dealer__Co_Buyer_Contact__r.HomePhone}<br /></apex:outputText>
+                <apex:outputText rendered="{!IF(NOT(ISBLANK(sold.dealer__Co_Buyer_Contact__r.MobilePhone)), true, false)}">C:{!sold.dealer__Co_Buyer_Contact__r.MobilePhone}<br /></apex:outputText>
+                <apex:outputText rendered="{!IF(NOT(ISBLANK(sold.dealer__Co_Buyer_Contact__r.OtherPhone)), true, false)}">O:{!sold.dealer__Co_Buyer_Contact__r.OtherPhone}<br /></apex:outputText>
+                <apex:outputText rendered="{!IF(NOT(ISBLANK(sold.dealer__Co_Buyer_Contact__r.Email)), true, false)}">E:{!sold.dealer__Co_Buyer_Contact__r.Email}<br /></apex:outputText>
+            </td>           
+            <td class="bL" width="200">
+                <apex:outputText rendered="{!IF(NOT(ISBLANK(sold.dealer__Buyer_Contact__r.MailingStreet)), true, false)}">{!sold.dealer__Buyer_Contact__r.MailingStreet}<br /></apex:outputText>
+                <apex:outputText rendered="{!IF(NOT(ISBLANK(sold.dealer__Buyer_Contact__r.MailingCity)), true, false)}">{!sold.dealer__Buyer_Contact__r.MailingCity}&nbsp;</apex:outputText>
+                <apex:outputText rendered="{!IF(NOT(ISBLANK(sold.dealer__Buyer_Contact__r.MailingState)), true, false)}">{!sold.dealer__Buyer_Contact__r.MailingState}&nbsp;</apex:outputText>
+                <apex:outputText rendered="{!IF(NOT(ISBLANK(sold.dealer__Buyer_Contact__r.MailingPostalCode)), true, false)}">{!sold.dealer__Buyer_Contact__r.MailingPostalCode}<br /></apex:outputText>
+            </td>
+            <td class="bL bR" width="200">
+                <apex:outputText >{!sold.dealer__Year__c}</apex:outputText>&nbsp;
+                <apex:outputText >{!sold.dealer__Make__c}</apex:outputText>&nbsp;
+                <apex:outputText >{!sold.dealer__Model__c}</apex:outputText>
+            &nbsp;
+            </td>
+          </tr>
+          <tr>
+            <td colspan="4" class="bT bL bB bR">
+                <table width="100%" border="0" cellpadding="4" cellspacing="0">
+                  <tr>
+                    <td class="uLine" width="125">Date</td>
+                    <td class="uLine" width="125">Method</td>
+                    <td class="uLine" width="125">Status</td>
+                    <td class="uLine" width="225">Subject</td>
+                    <td class="uLine" width="425">Comments</td>
+                  </tr>
+                    <apex:repeat value="{!sold.Tasks}" var="tsk">         
+                      <tr>
+                        <td valign="top"><apex:outputLink value="{!$Site.OriginalUrl}{!tsk.Id}"><apex:outputText value="{0,date,MM'/'dd'/'yyyy}"><apex:param value="{!tsk.ActivityDate}" /></apex:outputText></apex:outputLink>&nbsp;</td>
+                        <td valign="top">&nbsp;</td>
+                        <td valign="top">{!tsk.Status}&nbsp;</td>
+                        <td valign="top">{!tsk.Subject}&nbsp;</td>
+                        <td valign="top">{!tsk.Description}&nbsp;</td>
+                      </tr>
+                    </apex:repeat>
+                </table>
+            </td>
+          </tr>
+        </table>
+        <br />
+    </apex:repeat>
+    <apex:repeat value="{!ServiceAppointments}" var="sa">   
+        <table width="100%" border="0" cellpadding="4" cellspacing="0">
+          <tr>
+            <td class="bL bT bB bcG" width="200"><apex:image value="/img/icon/custom51_100/chalkboard16.png" width="16" height="16"/>&nbsp;<apex:outputText >Service Appointments</apex:outputText></td>
+         
+            <td class="bL bT bB bcG" width="200">Time&nbsp;</td>
+            <td class="bL bT bB bR bcG" width="200">Vehicle&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="bL" width="200" valign="top">
+                <apex:outputLink value="{!$Site.OriginalUrl}{!sa.dealer__Customer_Contact__c}" target="_blank"><apex:outputField value="{!sa.dealer__Customer_Contact__r.Name}" /></apex:outputLink><br />
+            </td>
+            <td class="bL" width="200" valign="top">
+                <!-- Column Two -->
+                    <apex:outputField value="{!sa.dealer__Date_Time__c}"/>
+                &nbsp;          
+            </td>
+            <td class="bL bR" width="200" valign="top">
+                <apex:outputField value="{!sa.dealer__Vehicle__c}"/>
+            </td>
+          </tr>
+         <tr>
+            <td colspan="3" class="bT bL bB bR">
+                <table width="100%" border="0" cellpadding="4" cellspacing="0">
+                  <tr>
+                    <td class="uLine" width="125">ApptLine</td>
+                    <td class="uLine" width="125">CWI</td>
+                    <td class="uLine" width="225">Complaint</td>
+                    <td class="uLine" width="125">Operation</td>
+                  </tr>
+                    <apex:repeat value="{!sa.dealer__Service_Appointment_Lines__r}" var="sl">        
+                      <tr>
+                        <td valign="top"><apex:outputLink value="{!$Site.OriginalUrl}{!sl.Id}"><apex:outputText >{!sl.Name}</apex:outputText></apex:outputLink>&nbsp;</td>
+                        <td valign="top">{!sl.dealer__Pay_Type__c}&nbsp;</td>
+                        <td valign="top">{!sl.dealer__Complaint__c}&nbsp;</td>
+                        <td valign="top">&nbsp;</td>
+                      </tr>
+                    </apex:repeat>
+                </table>
+            </td>
+          </tr>
+         </table>       
+    </apex:repeat>
+    <apex:repeat value="{!Customers}" var="c">
+        <table width="100%" border="0" cellpadding="4" cellspacing="0">
+          <tr>
+            <td class="bL bT bB bcG" width="200"><apex:image value="/img/icon/perAccounts16.png" width="16" height="16"/>&nbsp;<apex:outputText >Customer Specific Follow-Up</apex:outputText></td>
+         
+            <td class="bL bT bB bcG" width="200">Address&nbsp;</td>
+            <td class="bL bT bB bR bcG" width="200">&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="bL" width="200" valign="top">
+                <apex:outputLink value="{!$Site.OriginalUrl}{!c.Id}" target="_blank"><apex:outputField value="{!c.Name}" /></apex:outputLink><br />
+                <apex:outputText rendered="{!IF(NOT(ISBLANK(c.dealer__Related_Name__c)), true, false)}">R:{!c.dealer__Related_Name__c}<br /></apex:outputText>
+                <apex:outputText rendered="{!IF(NOT(ISBLANK(c.Phone)), true, false)}">P:{!c.Phone}<br /></apex:outputText>
+                <apex:outputText rendered="{!IF(NOT(ISBLANK(c.HomePhone)), true, false)}">H:{!c.HomePhone}<br /></apex:outputText>
+                <apex:outputText rendered="{!IF(NOT(ISBLANK(c.MobilePhone)), true, false)}">C:{!c.MobilePhone}<br /></apex:outputText>
+                <apex:outputText rendered="{!IF(NOT(ISBLANK(c.OtherPhone)), true, false)}">O:{!c.OtherPhone}<br /></apex:outputText>
+                <apex:outputText rendered="{!IF(NOT(ISBLANK(c.Email)), true, false)}">E:{!c.Email}<br /></apex:outputText>
+            </td>
+            <td class="bL" width="200" valign="top">
+                <apex:outputText rendered="{!IF(NOT(ISBLANK(c.MailingStreet)), true, false)}">{!c.MailingStreet}<br /></apex:outputText>
+                <apex:outputText rendered="{!IF(NOT(ISBLANK(c.MailingCity)), true, false)}">{!c.MailingCity}&nbsp;</apex:outputText>
+                <apex:outputText rendered="{!IF(NOT(ISBLANK(c.MailingState)), true, false)}">{!c.MailingState}&nbsp;</apex:outputText>
+                <apex:outputText rendered="{!IF(NOT(ISBLANK(c.MailingPostalCode)), true, false)}">{!c.MailingPostalCode}<br /></apex:outputText>
+                &nbsp;          
+            </td>
+            <td class="bL bR" width="200" valign="top"></td>
+          </tr>
+         <tr>
+            <td colspan="3" class="bT bL bB bR">
+                <table width="100%" border="0" cellpadding="4" cellspacing="0">
+                  <tr>
+                    <td class="uLine" width="125">Date</td>
+                    <td class="uLine" width="125">Method</td>
+                    <td class="uLine" width="125">Status</td>
+                    <td class="uLine" width="225">Subject</td>
+                    <td class="uLine" width="425">Comments</td>
+                  </tr>
+                    <apex:repeat value="{!c.Tasks}" var="tsk">        
+                      <tr>
+                        <td valign="top"><apex:outputLink value="{!$Site.OriginalUrl}{!tsk.Id}"><apex:outputText value="{0,date,MM'/'dd'/'yyyy}"><apex:param value="{!tsk.ActivityDate}" /></apex:outputText></apex:outputLink>&nbsp;</td>
+                        <td valign="top">&nbsp;</td>
+                        <td valign="top">{!tsk.Status}&nbsp;</td>
+                        <td valign="top">{!tsk.Subject}&nbsp;</td>
+                        <td valign="top">{!tsk.Description}&nbsp;</td>
+                      </tr>
+                    </apex:repeat>
+                </table>
+            </td>
+          </tr>
+         </table>
+    </apex:repeat>
+</apex:page>

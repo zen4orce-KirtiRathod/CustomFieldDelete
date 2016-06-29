@@ -1,0 +1,1251 @@
+<apex:page sidebar="true" standardController="dealer__Deal__c" extensions="dealer.Deal_EXT" id="dealScreen" showChat="true">
+<apex:includeScript value="{!URLFOR($Resource.dealer__jQuery_UI_1820, 'js/jquery-1.7.2.min.js')}" />
+<apex:includeScript value="{!URLFOR($Resource.dealer__jQuery_UI_1820, 'js/jquery-ui-1.8.20.custom.min.js')}" />
+<apex:includeScript value="{!$Resource.dealer__jsHashTable}" />
+<apex:includeScript value="{!$Resource.dealer__jQueryNumberFormatting}" />
+<apex:includeScript value="{!$Resource.dealer__jQueryTools}" />
+<apex:includeScript value="{!$Resource.dealer__jsEncoder}" />
+<apex:includeScript value="{!$Resource.dealer__InterfaceJS}" />
+
+<apex:stylesheet value="{!URLFOR($Resource.dealer__jQuery_UI_1820,'css/Aristo/Aristo.css')}"/>
+
+<style type="text/css">
+/*
+ * This code is for Internal Salesforce use only, and subject to change without notice.
+ * Customers shouldn't reference this file in any web pages.
+ */
+.theTabPanel{margin-top:.75em !important;background-color:#8e9dbe;padding-top:2px}.theTabPanel img{margin:0}.activeTab{background-image:url(/img/tab/miniTab_on.gif);border:1px solid #747e96;border-bottom:2px solid #fff;font-weight:bold}.inactiveTab{background:url(/img/tab/miniTab_off.gif);border:1px solid #747e96;border-bottom:2px solid #8e9dbe;font-weight:bold}.tabContent{background:#fff}.dr-tbpnl-cntnt{font-size:.91em}.apexp .totalRow{background-color:#fff;border-bottom:medium none;border-top:1px solid #e3deb8;padding-bottom:10px;padding-top:10px}.classDefTypeHeader{font-size:91%;font-weight:bold;margin-bottom:2px;margin-top:8px;overflow:hidden;padding:2px 2px 2px 5px;background-color:#ebecf2;color:#333}.classDefBody{padding-top:12px;padding-right:12px;padding-left:12px;padding-bottom:0}.classDefBodyName{padding-bottom:8px}.acSizeLimitMessageWrapper .message{margin-bottom:15px}.apexClassDetailTabPanelWrapper{margin-top:20px}.classDef .codeGroupHeader .codeGroupHeaderSig{font-size:1.45em;font-weight:bold}.customSettingEditWrapper .requiredInput,.editCSDataPageWrapper .requiredInput{display:inline-block}.manageSettingDefaultOrgValuesWrapper{margin-top:10px;margin-bottom:30px}body .theTabPanel{background-color:transparent}body .rich-tab-bottom-line,body .rich-tabpanel-content,body .rich-tabpanel-content-position,body .rich-tabhdr-side-cell,body .rich-tab-header,body .rich-tab-active,body .dr-tbpnl-tb-dsbl,body .dr-tbpnl-tb-dsbld,body .rich-tab-inactive,body .dr-tbpnl-tb-sel,body .rich-tabhdr-side-border,body .dr-tbpnl-tbcell-dsbld,body .rich-tabhdr-cell-inactive{border:0 none;padding:0;background:transparent none;font-size:1em}body .rich-tabpanel-content{border:1px solid #d4dadc;border-top:3px solid #747e96;-moz-border-radius:4px;-webkit-border-radius:4px;background-color:#f8f8f8;padding:6px}body .activeTab,body .inactiveTab{font-weight:bold;color:#333;text-decoration:none}body .rich-tabhdr-cell-active>table[id$="shifted"] td.rich-tabhdr-side-cell{padding-right:9px}body .rich-tabhdr-cell-inactive>table[id$="shifted"] td.rich-tabhdr-side-cell{padding-right:4px}body .rich-tabhdr-cell-active>table[id$="shifted"] td.rich-tabhdr-side-cell,body .rich-tabhdr-cell-inactive>table[id$="shifted"] td.rich-tabhdr-side-cell,body .rich-tabhdr-cell-active>table[id$="shifted"] td.rich-tabhdr-side-cell td.rich-tab-active,body .rich-tabhdr-cell-inactive>table[id$="shifted"] td.rich-tabhdr-side-cell td.rich-tab-inactive{background:transparent url('/img/alohaSkin/subtab_sprite.png') no-repeat right -299px !important;cursor:pointer}body .rich-tabhdr-cell-active>table[id$="shifted"] td.rich-tabhdr-side-cell{background-position:right -100px !important}body .rich-tabhdr-cell-active>table[id$="shifted"] td.rich-tabhdr-side-cell td.rich-tab-active{padding:8px 2px 4px 11px;background-position:left top !important}body .rich-tabhdr-cell-inactive>table[id$="shifted"] td.rich-tabhdr-side-cell td.rich-tab-inactive{padding:8px 4px 4px 8px;background-position:left -199px !important}body table[id$="connectionTab_shifted"],body table[id$="apexClassTab_shifted"],body table[id$="classCodeTab_shifted"],body table[id$="apexTriggerTab_shifted"],body table[id$="emailContentTab_shifted"],body table[id$="visualforceMarkupTab_shifted"]{margin-left:1px}body table[id$="templateTab_shifted"],body table[id$="versionSettingsTab_shifted"],body table[id$="classDocTab_shifted"],body table[id$="traceSettingsTab_shifted"]{margin-left:-6px}body .rich-tabhdr-cell-active>table[id$="shifted"]{top:0 !important;margin-bottom:-3px;height:29px !important;z-index:1}body .rich-tabhdr-cell-inactive>table[id$="shifted"]{height:24px !important}body.setupTab a.acDownloadLink{text-decoration:none;padding:3px 5px 4px}body.setupTab a.acDownloadLink:hover{color:#333;text-decoration:none}.compRefLink{margin-left:5px}.newSpacer{padding:5px}.vfPageDetailWrapper{margin-top:15px;margin-bottom:15px}
+</style>   
+     
+<style type="text/css">
+    input { border:0px; height: 20px; background-color: #F8F8F8; }
+    input:focus { background-color: #F2F2F2;  }
+    #dealApp { font-size: 16px; }
+        .divLayer { border: 1px solid; }
+        .tFont { font-family: "Courier New", Courier, monospace; }
+        #dealHeader { height: 45px; }
+        #dealBody {  }
+        #dealBodyTable { width: 100%; background-color: #00274c; }
+        .dealBodyNumber { width: 25px; color: #757575; font-family: "Courier New", Courier, monospace; }
+        
+        .dealBodyValidate { width: 85px; font-family: "Courier New", Courier, monospace;  }
+        .dealBodyData { font-family: "Courier New", Courier, monospace; }
+        .dealBodyData input {
+            text-align: right;
+            width: 150px;
+        }
+        .dealBodyInt { font-family: "Courier New", Courier, monospace; }
+        .dealBodyInt input {
+            text-align: right;
+            width: 150px;
+        }
+        .dealBodyLabel { font-family: "Courier New", Courier, monospace; }
+        .dealBodyLabel label { /*color:#757575;*/  color:#ffcb05;  }
+        .inputBodyData { font-size: 16px; font-family: "Courier New", Courier, monospace; background-color:#00274c; color:#ffcb05;  }
+        .inputBodyInt { font-size: 16px; font-family: "Courier New", Courier, monospace; background-color:#00274c; color:#ffcb05; }
+        .inputBodyText { font-size: 16px; font-family: "Courier New", Courier, monospace; background-color:#00274c; color:#ffcb05;  }
+        
+        .w10 { width: 100px; }
+        .w15 { width: 250px; }
+        .w20 { width: 400px; }
+        .w30 { width: 500px; }
+        
+        .r { float:right; }
+        .ErrorMessage { height:35px; color:red; }
+</style>
+<script type="text/javascript">
+    var j$ = jQuery.noConflict();
+    
+        j$(document).ready(function() {
+
+	        j$('input').keydown(function(event){
+	            j$('#KeyLog').val(event.which);
+	        });
+	        
+	        // Set Deal Date to Default
+	        var currentTime = new Date();
+	        var day = currentTime.getDate();
+	        var month = currentTime.getMonth() + 1;
+	        var year = currentTime.getFullYear();
+	
+	        if(j$('#dealScreen\\:dealForm\\:dealBody\\:NoDDLinkComponent\\:NoDDLink\\:dealDate').val() == '') {
+	           j$('#dealScreen\\:dealForm\\:dealBody\\:NoDDLinkComponent\\:NoDDLink\\:dealDate').val(month + "/" + day + "/" + year);
+	        }
+	        
+            
+            /* Dock Tools */
+            j$('#dockTools').Fisheye(
+				{
+					maxWidth: 50,
+					items: 'a',
+					itemsText: 'span',
+					container: '.dockContainer',
+					itemWidth: 40,
+					proximity: 90,
+					halign : 'center'
+				}
+			);  
+        
+	        /*  Subscreens Hooks */
+	        j$('#dealScreen\\:dealForm\\:dealBody\\:tradeValue').keydown(function(event){
+	            if(event.which == 39) {
+	                j$('#trades').dialog({ 
+	                        height : 450,
+	                        width  : 850,
+	                        modal  : true
+	                    });
+	            }
+			});            
+
+        
+        ///////////////////////
+        // Load application
+        ///////////////////////
+        
+        j$('#commandInput').focus();
+        var screenfocus = 'purchase';
+        var editMode	= false;
+          
+        j$("input.inputBodyData, input.inputBodyInt, input.inputBodyText").keypress(function (evt) {
+            var charCode = evt.charCode || evt.keyCode;
+            if (charCode  == 13) {
+                calcLoan();
+                j$("#commandInput").focus();
+                return false;
+            }
+        });
+        
+        
+        
+        j$("#commandInput").keypress(function(evt) {
+               var commandIssued = j$(this).val();
+               var charCode = evt.charCode || evt.keyCode;
+               if(charCode == 13) {
+                   (j$(this).val() == 1) ? j$('#dealScreen\\:dealForm\\:dealBody\\:dealNumber').focus() : false;
+                   (j$(this).val() == 2) ? j$('#dealScreen\\:dealForm\\:dealBody\\:NoDDLinkComponent\\:NoDDLink\\:dealDate').focus() : false;
+                   (j$(this).val() == 3) ? j$('#dealScreen\\:dealForm\\:dealBody\\:StockNumber').focus() : false;
+                   (j$(this).val() == 4) ? j$('#dealScreen\\:dealForm\\:dealBody\\:Price').focus() : false;
+                   (j$(this).val() == 5) ? j$('#dealScreen\\:dealForm\\:dealBody\\:AfterMarket').focus() : false;
+                   (j$(this).val() == 6) ? j$('#dealScreen\\:dealForm\\:dealBody\\:Term').focus() : false;
+                   (j$(this).val() == 7) ? j$('#dealScreen\\:dealForm\\:dealBody\\:Rate').focus() : false;
+                   (j$(this).val() == 8) ? j$('#dealScreen\\:dealForm\\:dealBody\\:Days').focus() : false;
+                   (j$(this).val() == 9) ? j$('#dealScreen\\:dealForm\\:dealBody\\:PPY').focus() : false;
+                   (j$(this).val() == 10) ? j$('#dealScreen\\:dealForm\\:dealBody\\:PymntDate').focus() : false;
+                   
+                   (j$(this).val() == 11) ? j$('#dealScreen\\:dealForm\\:dealBody\\:tradeValue').focus() : false;
+                   (j$(this).val() == 12) ? j$('#dealScreen\\:dealForm\\:dealBody\\:Payoff').focus() : false;
+                   (j$(this).val() == 13) ? j$('#dealScreen\\:dealForm\\:dealBody\\:Deposit').focus() : false;
+                   (j$(this).val() == 14) ? j$('#dealScreen\\:dealForm\\:dealBody\\:DownPayment').focus() : false;
+                   (j$(this).val() == 15) ? j$('#dealScreen\\:dealForm\\:dealBody\\:Rebates').focus() : false;
+                   (j$(this).val() == 16) ? j$('#dealScreen\\:dealForm\\:dealBody\\:DeferredDown').focus() : false;
+                   (j$(this).val() == 17) ? j$('#dealScreen\\:dealForm\\:dealBody\\:State').focus() : false;
+                   (j$(this).val() == 18) ? j$('#dealScreen\\:dealForm\\:dealBody\\:County').focus() : false;
+                   (j$(this).val() == 19) ? j$('#dealScreen\\:dealForm\\:dealBody\\:CountyRate').focus() : false;
+               
+                   // Command Structure
+                   if(commandIssued.substring(0,1) == 'P' || commandIssued.substring(0,1) == 'p') {
+                   		screenfocus	=	'purchase';
+                   		RichFaces.switchTab('dealScreen:dealForm:dealBody:dealTabPanel','dealScreen:dealForm:dealBody:dealTab','deal_TAB');
+				   }
+                   
+                   if(commandIssued.substring(0,1) == 'T' && j$.isNumeric(commandIssued.substring(1, (commandIssued.length)))) {
+                       j$('#dealScreen\\:dealForm\\:dealBody\\:Term').val(commandIssued.substring(1, (commandIssued.length)));
+                   }
+                   
+                   if((commandIssued.substring(0,1) == 'T' || commandIssued.substring(0,1) == 't') && commandIssued.length==1) {
+                   		screenfocus	=	'trades';
+                   		RichFaces.switchTab('dealScreen:dealForm:dealBody:dealTabPanel','dealScreen:dealForm:dealBody:tradesTab','trades_Tab');
+                   }
+                   
+                   if(commandIssued.substring(0,1) == 'V' || commandIssued.substring(0,1) == 'v') {
+                       screenfocus = 'vehicle';
+                       RichFaces.switchTab('dealScreen:dealForm:dealBody:dealTabPanel','dealScreen:dealForm:dealBody:vehicleTab','vehicle_TAB');
+                   }
+                   
+                   if(commandIssued.substring(0,1) == 'C' || commandIssued.substring(0,1) == 'c') {
+                       screenfocus = 'customer';
+                       RichFaces.switchTab('dealScreen:dealForm:dealBody:dealTabPanel','dealScreen:dealForm:dealBody:customerTab','customer_TAB');
+                   }
+                   
+				   if(commandIssued.substring(0,1) == 'W' || commandIssued.substring(0,1) == 'w') {
+                       screenfocus = 'warranty';
+                       RichFaces.switchTab('dealScreen:dealForm:dealBody:dealTabPanel','dealScreen:dealForm:dealBody:warrantyTab','warranty_Tab');
+                   } 
+                   
+                   if(commandIssued.substring(0,1) == 'G' || commandIssued.substring(0,1) == 'g') {
+                       screenfocus = 'gap';
+                       RichFaces.switchTab('dealScreen:dealForm:dealBody:dealTabPanel','dealScreen:dealForm:dealBody:gapTab','gap_Tab');
+                   }   
+                   
+                   if(commandIssued.substring(0,1) == 'A' || commandIssued.substring(0,1) == 'a') {
+                   		screenfocus	=	'aftermarket';
+                   		RichFaces.switchTab('dealScreen:dealForm:dealBody:dealTabPanel','dealScreen:dealForm:dealBody:afternarketTab','aftermarket_Tab');
+                   }
+                           
+                   if(commandIssued.substring(0,1) == 'I' || commandIssued.substring(0,1) == 'i') {
+                   		screenfocus	=	'insurance';
+                   		RichFaces.switchTab('dealScreen:dealForm:dealBody:dealTabPanel','dealScreen:dealForm:dealBody:insuranceTab','insurance_Tab');
+                   }
+                   
+                   if(commandIssued.substring(0,1) == 'F' || commandIssued.substring(0,1) == 'f') {
+                   		if(screenfocus!='fees' && screenfocus!='forms') {
+                   			screenfocus='fees';
+                   			RichFaces.switchTab('dealScreen:dealForm:dealBody:dealTabPanel','dealScreen:dealForm:dealBody:feesTab','fees_Tab');
+                   		}                   		
+                   		if(screenfocus=='fees') {
+                   			screenfocus='forms';
+							RichFaces.switchTab('dealScreen:dealForm:dealBody:dealTabPanel','dealScreen:dealForm:dealBody:formsTab','forms_Tab');                   			
+                   		} 
+                   		if(screenfocus=='forms') {
+                   			screenfocus='fees';                   			
+                   			RichFaces.switchTab('dealScreen:dealForm:dealBody:dealTabPanel','dealScreen:dealForm:dealBody:feesTab','fees_Tab');
+                   		}
+                   }	
+                   	
+                   j$(this).val('');
+              
+               }  
+        });
+          
+        j$('input.inputBodyData, input.inputBodyInt, input.inputBodyText').focus(function() {
+              j$(this).css('border', '1px solid #757575');
+              j$(this).select();
+        });
+          
+        j$('input.inputBodyData').blur(function() {
+              j$(this).css('border', '0px');
+              if(j$.isNumeric(j$(this).val())) {
+                  j$(this).parseNumber({format:"####.00", locale:"us"});
+                  j$(this).formatNumber({format:"####.00", locale:"us"});
+              }
+        });
+        
+        j$('input.inputBodyInt').blur(function() {
+              j$(this).css('border', '0px');
+              if(j$.isNumeric(j$(this).val())) {
+                  j$(this).parseNumber({format:"####", locale:"us"});
+                  j$(this).formatNumber({format:"####", locale:"us"});
+              }
+        });
+        
+        j$('input.inputBodyText').blur(function() {
+              j$(this).css('border', '0px');
+        });
+        
+        // Format all strings based on load data
+        j$('input.inputBodyInt').each(function() {
+             j$(this).parseNumber({format:"####", locale:"us"});
+             j$(this).formatNumber({format:"####", locale:"us"});
+        });
+        
+        j$('input.inputBodyData').each(function() {
+            if(j$.isNumeric(j$(this).val())) {
+              j$(this).parseNumber({format:"####.00", locale:"us"});
+              j$(this).formatNumber({format:"####.00", locale:"us"});   
+            }
+        });            
+        
+        /* Remote Data Actions */
+        j$('#dealScreen\\:dealForm\\:dealBody\\:StockNumber').blur(function() {
+            
+            if(j$('#dealScreen\\:dealForm\\:dealBody\\:StockNumber').val().length > 3) {
+            dealer.Deal_EXT.selectStockNumber(j$(this).val(), function(result, event) {
+                if(event.status) {
+                	cLog(result);
+                	// Inventory Exists?
+                	if(result.length==0) {
+                		j$('#StockNumberDays').empty();
+                		j$('<img/>', { 'src':'/s.gif', 'class':'unresolvedIcon', 'alt':'No inventory item found for this stock number.' }).appendTo('#StockNumberDays');
+                		return false;
+                	}
+                	
+                    // Begin loading vehicle into deal screen(s) procedure
+                    j$('#StockNumberDays').text('('+result[0].dealer__Days_in_Stock__c+')');
+                    j$('#dealScreen\\:dealForm\\:dealBody\\:Price').val(result[0].dealer__Coded_Cost__c);
+                    j$('#dealScreen\\:dealForm\\:dealBody\\:MSRP').val(result[0].dealer__MSRP__c);
+                    j$('#labelYear').text(result[0].dealer__Year__c);
+                    j$('#labelMake').text(result[0].dealer__Make__c);
+                    j$('#labelModel').text(result[0].dealer__Model__c);
+                    j$('#labelVIN').text(result[0].dealer__VIN__c);
+                    // Deal Screen Numbers
+                    j$('#dealScreen\\:dealForm\\:dealBody\\:Price').val();
+                    
+                    // Vehicle Screen
+                    j$('#dealScreen\\:dealForm\\:dealBody\\:VehicleNUO').val(result[0].dealer__NUO__c);
+                    j$('#dealScreen\\:dealForm\\:dealBody\\:VehicleStockNumber').val(result[0].dealer__Stock_Number__c);
+                    j$('#dealScreen\\:dealForm\\:dealBody\\:VehicleList').val(result[0].dealer__MSRP__c);
+                    j$('#dealScreen\\:dealForm\\:dealBody\\:VehicleYear').val(result[0].dealer__Year__c);
+                    j$('#dealScreen\\:dealForm\\:dealBody\\:VehicleSalePrice').val(j$('#dealScreen\\:dealForm\\:dealBody\\:Price').val());
+                    j$('#dealScreen\\:dealForm\\:dealBody\\:VehicleMake').val(result[0].dealer__Make__c);
+                    j$('#dealScreen\\:dealForm\\:dealBody\\:VehicleInvoicePrice').val(result[0].dealer__Invoice_Price__c);
+                    j$('#dealScreen\\:dealForm\\:dealBody\\:VehicleModel').val(result[0].dealer__Model__c);
+                    j$('#dealScreen\\:dealForm\\:dealBody\\:VehicleHoldback').val(result[0].dealer__HoldBack__c);
+                    j$('#dealScreen\\:dealForm\\:dealBody\\:VehicleTrim').val(result[0].dealer__Trim_Level__c);
+                    j$('#dealScreen\\:dealForm\\:dealBody\\:VehiclePack').val(result[0].dealer__Pack__c);
+                    j$('#dealScreen\\:dealForm\\:dealBody\\:VehicleExtColor').val(result[0].dealer__Exterior_Color__c);
+                    j$('#dealScreen\\:dealForm\\:dealBody\\:VehicleBodyType').val(result[0].dealer__Body_Type__c);
+                    j$('#dealScreen\\:dealForm\\:dealBody\\:VehicleOdometer').val(result[0].dealer__Mileage__c);
+                    j$('#dealScreen\\:dealForm\\:dealBody\\:VehicleLicenceNo').val(result[0].dealer__License_Number__c);
+                    j$('#dealScreen\\:dealForm\\:dealBody\\:VehicleBicExpDate').val(result[0].dealer__License_Exp_Date__c);
+                    j$('#dealScreen\\:dealForm\\:dealBody\\:VehicleMemo1').val(result[0].dealer__Memo_One__c);
+                    j$('#dealScreen\\:dealForm\\:dealBody\\:VehicleTitleType').val(result[0].dealer__Title_Type__c);
+                    j$('#dealScreen\\:dealForm\\:dealBody\\:VehicleMemo2').val(result[0].dealer__Memo_Two__c);
+                    j$('#dealScreen\\:dealForm\\:dealBody\\:VehicleFuelType').val(result[0].dealer__Fuel_Type__c);
+                    j$('#dealScreen\\:dealForm\\:dealBody\\:VehicleKeyCode1').val(result[0].dealer__Ignition_Key_Code__c);
+                    j$('#dealScreen\\:dealForm\\:dealBody\\:VehicleTotalTires').val(result[0].dealer__New_Tires__c);
+                    j$('#dealScreen\\:dealForm\\:dealBody\\:VehicleKeyCode2').val(result[0].dealer__Ignition_Key_Code__c);
+                    
+                    
+                    
+                } else if (event.type === 'exception') {    
+                         document.getElementById("ErrorMesssage").innerHTML = event.message;
+                    } else {
+                       document.getElementById("ErrorMessage").innerHTML = event.message;
+                    }
+                }, {escape:true});
+           }
+        });
+    
+    });
+    
+    function calcLoan() {
+          Price                  =    j$('#dealScreen\\:dealForm\\:dealBody\\:Price').val();
+          DownPayment            =    j$('#dealScreen\\:dealForm\\:dealBody\\:DownPayment').val();
+          AnnualInterestRate     =    j$('#dealScreen\\:dealForm\\:dealBody\\:Rate').val() / 100;
+          MonthlyInterestRate    =    AnnualInterestRate / 12;
+          Term                   =    j$('#dealScreen\\:dealForm\\:dealBody\\:Term').val();
+          Principal              =    Price - DownPayment;
+          Days                   =    j$('#dealScreen\\:dealForm\\:dealBody\\:Days').val();
+          
+            var P = parseFloat(Principal);
+            var r = parseFloat(MonthlyInterestRate);
+            var N = parseFloat(Term);
+            var A = P*(r*Math.pow(1+r,N))/(Math.pow(1+r,N)-1);
+            var D = parseFloat(Days);
+            var i = AnnualInterestRate / 12;
+            
+            var an = 0;
+            var add= 0;
+            if(D > 30) {
+                an = (1 - 1 / Math.pow((1 + i), N)) / i;
+                an = an.toFixed(9);
+                add = an * (1 + i);
+                add = add.toFixed(9);
+                A = P * (1 + D / 30 * i) / add;
+                
+            }
+          // alert(i + ' ' +an+ ' ' + add + ' ' + A);
+          j$("#pmt").text(A.toFixed(2));
+    }
+    
+    function tabFocus() {
+    	j$('#commandInput').focus();
+    }
+    
+    function seek(el) {
+    	if(j$(el).length>0 && editMode==true) {
+    		j$(el).focus();
+    	} else {
+    		j$('#commandInput').focus();
+    	}
+    }
+    
+	function cLog(msg) {
+	    if(typeof window.console == 'object') {
+	        console.log(msg);                  
+	    }
+	}
+</script>
+
+<style type="text/css">
+/* dock - top */
+.dock {
+	position: relative; 
+	height: 50px; 
+	text-align: center;
+}
+.dockContainer {
+	position: absolute;
+	height: 50px;
+	padding-left: 20px;
+}
+a.dock-item {
+	display: block;
+	width: 40px;
+	color: #000;
+	position: absolute;
+	top: 0px;
+	text-align: center;
+	text-decoration: none;
+	font: bold 12px Arial, Helvetica, sans-serif;
+}
+.dock-item img {
+	border: none; 
+	margin: 5px 10px 0px; 
+	width: 100%; 
+}
+.dock-item span {
+	display: none; 
+	padding-left: 20px;
+}
+
+</style>
+<!--
+<table width="100%" cellpadding="0" cellspacing="0">
+	<tr>
+		<td width="50%" valign="top"><apex:sectionHeader title="Deal Screen" subtitle="{!Deal__c.Name}" /></td>
+		<td width="50%">
+			<div class="dock" id="dockToolsSet">
+				<div class="dockContainer">
+					<a class="dock-item" href="#"><span>New</span><img src="/img/icon/custom51_100/pencil64.png" alt="New" /></a>
+					<a class="dock-item" href="#"><span>Save</span><img src="/img/icon/service_contracts64.png" alt="Save" /></a>
+					<a class="dock-item" href="#"><span>Cap Deal</span><img src="/img/icon/hands64.png" alt="Cap Deal" /></a>
+					<a class="dock-item" href="#">&nbsp;&nbsp;&nbsp;</a>
+					<a class="dock-item" href="#"><span>Inventory Search</span><img src="/img/icon/car64.png" alt="Inventory Search" /></a>
+					<a class="dock-item" href="#"><span>Roll Payment</span><img src="/img/icon/campaignmember64.png" alt="Roll Payment" /></a>
+					<a class="dock-item" href="#"><span>Multi-Quote</span><img src="/img/icon/form64.png" alt="Multi-Quote" /></a>
+					<a class="dock-item" href="#"><span>Sales Analysis</span><img src="/img/icon/reports64.png" alt="Sales Analysis" /></a>
+				</div>
+			</div>
+		</td>
+	</tr>
+</table>
+!-->
+<apex:form id="dealForm">
+    <apex:pageBlock id="dealBody" mode="mainDetail">
+
+    <div id="dealApp">
+
+        
+
+        <div id="dealBody">
+        <apex:tabPanel switchType="client" selectedTab="dealTab" id="dealTabPanel">
+        
+        	<apex:tab label="Purchase" name="deal_TAB" id="dealTab" onTabEnter="tabFocus();">
+            
+            <div id="worksheet">
+            <table id="dealBodyTable">
+                <tr>
+                    <td  class="dealBodyNumber" style="color:#757575">1.</td>
+                    <td class="dealBodyLabel w15"><label for="dealNumber" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:dealNumber').focus();">DEAL #</label></td>
+                    <td class="dealBodyData w15"><span class="r"><apex:inputText id="dealNumber" value="{!dealer__Deal__c.dealer__Deal_ID__c}" styleClass="inputBodyInt" tabindex="2"/></span></td>
+                    <td class="dealBodyValidate"></td>
+                    <td  class="dealBodyNumber" style="color:#757575">11.</td>
+                    <td class="dealBodyLabel w15"><label for="tradeValue" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:tradeValue').focus();">TRADE</label></td>
+                    <td class="dealBodyData w15"><span class="r"><apex:inputText id="tradeValue" styleClass="inputBodyData" tabindex="12"/></span></td>
+                    <td class="dealBodyValidate"></td>
+                    <td  class="dealBodyNumber" style="color:#757575">20.</td>
+                    <td class="dealBodyLabel w15"><label for="dealTradeValue" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:docFee').focus();">DOC FEE</label></td>
+                    <td class="dealBodyData w15"><span class="r"><apex:inputText id="docFee" value="{!DocFee}" styleClass="inputBodyData" tabindex="21"/></span></td>
+                </tr>
+                
+                <tr>
+                    <td  class="dealBodyNumber" style="color:#757575">2.</td>
+                    <td class="dealBodyLabel w15"><label for="dealNumber"  onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:NoDDLinkComponent\\:NoDDLink\\:dealDate').focus();">DEAL DATE</label></td>
+                    <td class="dealBodyData w15"><span class="r"><c:NoDefaultDateLink id="NoDDLinkComponent"><apex:inputField id="dealDate" value="{!dealer__Deal__c.dealer__Deal_Date__c}" styleClass="inputBodyText" taborderhint="3"/></c:NoDefaultDateLink></span></td>
+                    <td class="dealBodyValidate"></td>
+                    <td  class="dealBodyNumber" style="color:#757575">12.</td>
+                    <td class="dealBodyLabel"><label for="tradeValue" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:Payoff').focus();">PAYOFF</label></td>
+                    <td class="dealBodyData"><span class="r"><apex:inputText id="Payoff" styleClass="inputBodyData"/></span></td>
+                    <td class="dealBodyValidate"></td>
+                    <td  class="dealBodyNumber" style="color:#757575">21.</td>
+                    <td class="dealBodyLabel"><label for="dealTradeValue" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:warrantyPremium').focus();">WARR PREM</label></td>
+                    <td class="dealBodyData"><span class="r"><apex:inputText id="warrantyPremium" styleClass="inputBodyData"/></span></td>
+                </tr>
+                
+                <tr>
+                    <td  class="dealBodyNumber" style="color:#757575">3.</td>
+                    <td class="dealBodyLabel w15"><label for="dealNumber" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:StockNumber').focus();">STOCK #</label></td>
+                    <td class="dealBodyData w15"><span class="r"><apex:inputText id="StockNumber" value="{!dealer__Deal__c.Vehicle__r.dealer__Stock_Number__c}" styleClass="inputBodyText"/></span></td>
+                    <td class="dealBodyValidate"><span id="StockNumberDays" class="inputBodyData"></span></td>
+                    <td  class="dealBodyNumber" style="color:#757575">13.</td>
+                    <td class="dealBodyLabel"><label for="tradeValue" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:Deposit').focus();">DEPOSIT</label></td>
+                    <td class="dealBodyData"><span class="r"><apex:inputText id="Deposit" styleClass="inputBodyData"/></span></td>
+                    <td class="dealBodyValidate"></td>
+                    <td  class="dealBodyNumber" style="color:#757575">22.</td>
+                    <td class="dealBodyLabel"><label for="dealTradeValue" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:MaintenancePremium').focus();">MAINT PREM</label></td>
+                    <td class="dealBodyData"><span class="r"><apex:inputText id="MaintenancePremium" styleClass="inputBodyData"/></span></td>
+                </tr> 
+                <tr>
+                    <td  class="dealBodyNumber" style="color:#757575"></td>
+                    <td class="dealBodyLabel w15"></td>
+                    <td class="dealBodyData w15"></td>
+                    <td class="dealBodyValidate"></td>
+                    <td  class="dealBodyNumber" style="color:#757575">14.</td>
+                    <td class="dealBodyLabel"><label for="tradeValue" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:DownPayment').focus();">DOWN PYMT</label></td>
+                    <td class="dealBodyData"><span class="r"><apex:inputText id="DownPayment" value="{!dealer__Deal__c.dealer__Down_Pymt__c}" styleClass="inputBodyData"/></span></td>
+                    <td class="dealBodyValidate"></td>
+                    <td  class="dealBodyNumber" style="color:#757575">23.</td>
+                    <td class="dealBodyLabel"><label for="dealTradeValue" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:GapPremium').focus();">GAP PREM</label></td>
+                    <td class="dealBodyData"><span class="r"><apex:inputText id="GapPremium" styleClass="inputBodyData"/></span></td>
+                </tr>  
+                <tr>
+                    <td  class="dealBodyNumber" style="color:#757575">4.</td>
+                    <td class="dealBodyLabel w15"><label for="Price" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:Price').focus();">PRICE</label></td>
+                    <td class="dealBodyData w15"><span class="r"><apex:inputText id="Price" styleClass="inputBodyData"/></span></td>
+                    <td class="dealBodyValidate"></td>
+                    <td  class="dealBodyNumber" style="color:#757575">15.</td>
+                    <td class="dealBodyLabel w15"><label for="Rebates" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:Rebates').focus();">REBATE(S)</label></td>
+                    <td class="dealBodyData w15"><span class="r"><apex:inputText id="Rebates" styleClass="inputBodyData"/></span></td>
+                    <td class="dealBodyValidate"></td>
+                    <td  class="dealBodyNumber" style="color:#757575"></td>
+                    <td class="dealBodyLabel w15"></td>
+                    <td class="dealBodyData w15"></td>
+                </tr>
+                <tr>
+                    <td  class="dealBodyNumber" style="color:#757575"></td>
+                    <td class="dealBodyLabel w15"><label for="MSRP" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:MSRP').focus();">MSRP</label></td>
+                    <td class="dealBodyData w15"><span class="r"><apex:inputText id="MSRP" styleClass="inputBodyData"/></span></td>
+                    <td class="dealBodyValidate"></td>
+                    <td  class="dealBodyNumber" style="color:#757575">16.</td>
+                    <td class="dealBodyLabel w15"><label for="DeferredDown" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:DeferredDown').focus();">DEF PMT(S)</label></td>
+                    <td class="dealBodyData w15"><span class="r"><apex:inputText id="DeferredDown" styleClass="inputBodyData"/></span></td>
+                    <td class="dealBodyValidate"></td>
+                    <td  class="dealBodyNumber" style="color:#757575"></td>
+                    <td class="dealBodyLabel w15"></td>
+                    <td class="dealBodyData w15"></td>
+                </tr> 
+                <tr>
+                    <td  class="dealBodyNumber" style="color:#757575"></td>
+                    <td class="dealBodyLabel w15"></td>
+                    <td class="dealBodyData w15"><span class="r"><apex:inputText id="TotalAftermarket" styleClass="inputBodyData"/></span></td>
+                    <td class="dealBodyValidate"></td>
+                    <td  class="dealBodyNumber" style="color:#757575"></td>
+                    <td class="dealBodyLabel w15"><label for="TotalDown" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:TotalDown').focus();">TOTAL DOWN</label></td>
+                    <td class="dealBodyData w15"><span class="r"><apex:inputText id="TotalDown" styleClass="inputBodyData"/></span></td>
+                    <td class="dealBodyValidate"></td>
+                    <td  class="dealBodyNumber" style="color:#757575">24.</td>
+                    <td class="dealBodyLabel w15"><label for="Balloon" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:Balloon').focus();">BALlOON</label></td>
+                    <td class="dealBodyData w15"><span class="r"><apex:inputText id="Balloon" styleClass="inputBodyData"/></span></td>
+                </tr>   
+   
+                <tr>
+                    <td  class="dealBodyNumber" style="color:#757575"></td>
+                    <td class="dealBodyLabel w15"></td>
+                    <td class="dealBodyData w15"></td>
+                    <td class="dealBodyValidate"></td>
+                    <td  class="dealBodyNumber" style="color:#757575"></td>
+                    <td class="dealBodyLabel w15"></td>
+                    <td class="dealBodyData w15"></td>
+                    <td class="dealBodyValidate"></td>
+                    <td  class="dealBodyNumber" style="color:#757575"></td>
+                    <td class="dealBodyLabel w15"><label for="AdjustedBallon">ADJ</label></td>
+                    <td class="dealBodyData w15"><span class="r"><apex:inputText id="AdjustedBalloon" styleClass="inputBodyData"/></span></td>
+                </tr> 
+                <tr>
+                    <td  class="dealBodyNumber" style="color:#757575">6.</td>
+                    <td class="dealBodyLabel w15"><label for="Term" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:Term').focus();">TERM</label></td>
+                    <td class="dealBodyData w15"><span class="r"><apex:inputText id="Term" styleClass="inputBodyInt" tabindex="7" value="{!Term}"/></span></td>
+                    <td class="dealBodyValidate"></td>
+                    <td  class="dealBodyNumber" style="color:#757575">17.</td>
+                    <td class="dealBodyLabel w15"><label for="State" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:State').focus();">STATE</label></td>
+                    <td class="dealBodyData w15"><span class="r"><apex:inputText id="State" styleClass="inputBodyData" tabindex="18"/></span></td>
+                    <td class="dealBodyValidate"></td>
+                    <td  class="dealBodyNumber" style="color:#757575"></td>
+                    <td class="dealBodyLabel w15"></td>
+                    <td class="dealBodyData w15"></td>
+                </tr>                         
+                <tr>
+                    <td  class="dealBodyNumber" style="color:#757575">7.</td>
+                    <td class="dealBodyLabel w15"><label for="Rate" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:Rate').focus();">RATE</label></td>
+                    <td class="dealBodyData w15"><span class="r"><apex:inputText id="Rate" styleClass="inputBodyData" value="{!Rate}"/></span></td>
+                    <td class="dealBodyValidate"></td>
+                    <td  class="dealBodyNumber" style="color:#757575">18.</td>
+                    <td class="dealBodyLabel"><label for="County" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:County').focus();">CNTY</label></td>
+                    <td class="dealBodyData"><span class="r"><apex:inputText id="County" styleClass="inputBodyData"/></span></td>
+                    <td class="dealBodyValidate"></td>
+                    <td  class="dealBodyNumber" style="color:#757575">22.</td>
+                    <td class="dealBodyLabel"><label for="AmtFinanced" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:AmountFinanced').focus();">AMT FIN</label></td>
+                    <td class="dealBodyData"><span class="r"><apex:inputText id="AmountFinanced" styleClass="inputBodyData"/></span></td>
+                </tr> 
+                <tr>
+                    <td  class="dealBodyNumber" style="color:#757575">8.</td>
+                    <td class="dealBodyLabel w15"><label for="Days" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:Days').focus();">DAYS</label></td>
+                    <td class="dealBodyData w15"><span class="r"><apex:inputText id="Days" styleClass="inputBodyInt" value="{!Days}"/></span></td>
+                    <td class="dealBodyValidate"></td>
+                    <td  class="dealBodyNumber" style="color:#757575">19.</td>
+                    <td class="dealBodyLabel"><label for="CountyRate" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:CountyRate').focus();">CNTY RATE</label></td>
+                    <td class="dealBodyData"><span class="r"><apex:inputText id="CountyRate" styleClass="inputBodyData"/></span></td>
+                    <td class="dealBodyValidate"></td>
+                    <td  class="dealBodyNumber" style="color:#757575"></td>
+                    <td class="dealBodyLabel"></td>
+                    <td class="dealBodyData"></td>
+                </tr>  
+                <tr>
+                    <td  class="dealBodyNumber" style="color:#757575">9.</td>
+                    <td class="dealBodyLabel w15"><label for="PPY" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:PPY').focus();">PAY / YEAR</label></td>
+                    <td class="dealBodyData w15"><span class="r"><apex:inputText id="PPY" styleClass="inputBodyInt" value="{!PPY}"/></span></td>
+                    <td class="dealBodyValidate"></td>
+                    <td  class="dealBodyNumber" style="color:#757575"></td>
+                    <td class="dealBodyLabel"><label for="GovFees" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:GovFees').focus();">FEES</label></td>
+                    <td class="dealBodyData"><span class="r"><apex:inputText id="GovFees" styleClass="inputBodyData"/></span></td>
+                    <td class="dealBodyValidate"></td>
+                    <td  class="dealBodyNumber" style="color:#757575"></td>
+                    <td class="dealBodyLabel"><label for="Ins">INS:</label></td>
+                    <td class="dealBodyData"><span class="r"><apex:inputText id="Ins" styleClass="inputBodyData"/></span></td>
+                </tr>                                                                                                    
+                <tr>
+                    <td  class="dealBodyNumber" style="color:#757575">10.</td>
+                    <td class="dealBodyLabel w15"><label for="PymtDate" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:PymtDate').focus();">PYMT DATE</label></td>
+                    <td class="dealBodyData w15"><span class="r"><apex:inputText id="PymtDate" styleClass="inputBodyText" value="{!DateofFirstPayment}"/></span></td>
+                    <td class="dealBodyValidate"></td>
+                    <td  class="dealBodyNumber" style="color:#757575"></td>
+                    <td class="dealBodyLabel"><label for="Taxes">TAXES</label></td>
+                    <td class="dealBodyData"><span class="r"><apex:inputText id="Taxes" styleClass="inputBodyData"/></span></td>
+                    <td class="dealBodyValidate"></td>
+                    <td  class="dealBodyNumber" style="color:#757575"></td>
+                    <td class="dealBodyLabel"><label for="ROCharges">RO/WIP</label></td>
+                    <td class="dealBodyData"><span class="r"><apex:inputText id="ROCharges" styleClass="inputBodyData"/></span></td>
+                </tr>            
+            </table>
+            </div>
+            </apex:tab>
+            
+            <apex:tab label="Vehicle" id="vehicleTab" name="vehicle_TAB" onTabEnter="tabFocus();" >
+            <div id="vehicle">
+                <table style="width: 100%">
+                    <tr>
+                        <td  class="dealBodyNumber" style="color:#757575">1.</td>
+                        <td class="dealBodyLabel w20"><label for="VehicleNUO" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:VehicleNUO').focus();">NEW/USED</label></td>
+                        <td class="dealBodyData w20"><span class="r"><apex:inputText id="VehicleNUO" styleClass="inputBodyText"/></span></td>
+                        <td class="dealBodyValidate"></td>
+                        <td  class="dealBodyNumber" style="color:#757575">14.</td>
+                        <td class="dealBodyLabel w20"><label for="DealType" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:DealType').focus();">DEAL TYPE</label></td>
+                        <td class="dealBodyData w20"><span class="r"><apex:inputText id="DealType" styleClass="inputBodyText"/></span></td>
+                        <td class="dealBodyValidate"></td>
+                    </tr>
+                    <tr>
+                        <td  class="dealBodyNumber" style="color:#757575">2.</td>
+                        <td class="dealBodyLabel w10"><label for="VehicleStockNumber" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:VehicleStockNumber').focus();">STOCK#</label></td>
+                        <td class="dealBodyData w20"><span class="r"><apex:inputText id="VehicleStockNumber" styleClass="inputBodyText"/></span></td>
+                        <td class="dealBodyValidate"></td>
+                        <td  class="dealBodyNumber" style="color:#757575">15.</td>
+                        <td class="dealBodyLabel w15"><label for="VehicleList" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:VehicleList').focus();">LIST</label></td>
+                        <td class="dealBodyData w15"><span class="r"><apex:inputText id="VehicleList" styleClass="inputBodyText"/></span></td>
+                        <td class="dealBodyValidate"></td>
+                    </tr>
+                    <tr>
+                        
+                        <td class="dealBodyNumber" style="color:#757575">3.</td>
+                        <td class="dealBodyLabel w10"><label for="VehicleYear" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:VehicleYear').focus();">YEAR</label></td>
+                        <td class="dealBodyData w20"><span class="r"><apex:inputText id="VehicleYear" styleClass="inputBodyText"/></span></td>
+                        <td class="dealBodyValidate"></td>
+                        <td class="dealBodyNumber" style="color:#757575">16.</td>
+                        <td class="dealBodyLabel w15"><label for="VehicleSalePrice" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:VehicleSalePrice').focus();">SALE PRICE</label></td>
+                        <td class="dealBodyData w15"><span class="r"><apex:inputText id="VehicleSalePrice" styleClass="inputBodyText"/></span></td>
+                        <td class="dealBodyValidate"></td>
+                        
+                    </tr>
+                    <tr>
+                        <td  class="dealBodyNumber" style="color:#757575">4.</td>
+                        <td class="dealBodyLabel w10"><label for="VehicleMake" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:VehicleMake').focus();">MAKE</label></td>
+                        <td class="dealBodyData w20"><span class="r"><apex:inputText id="VehicleMake" styleClass="inputBodyText"/></span></td>
+                        <td class="dealBodyValidate"></td>
+                        <td  class="dealBodyNumber" style="color:#757575">17.</td>
+                        <td class="dealBodyLabel w15"><label for="VehicleInvoicePrice" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:VehicleInvoicePrice').focus();">INVOICE</label></td>
+                        <td class="dealBodyData w15"><span class="r"><apex:inputText id="VehicleInvoicePrice" styleClass="inputBodyText"/></span></td>
+                        <td class="dealBodyValidate"></td>
+                    </tr>
+                    <tr>
+                        <td  class="dealBodyNumber" style="color:#757575">5.</td>
+                        <td class="dealBodyLabel w10"><label for="VehicleModel" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:VehicleModel').focus();">MODEL</label></td>
+                        <td class="dealBodyData w20"><span class="r"><apex:inputText id="VehicleModel" styleClass="inputBodyText"/></span></td>
+                        <td class="dealBodyValidate"></td>
+                        <td  class="dealBodyNumber" style="color:#757575">18.</td>
+                        <td class="dealBodyLabel w15"><label for="VehicleHoldback" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:VehicleHoldback').focus();">HOLDBACK</label></td>
+                        <td class="dealBodyData w15"><span class="r"><apex:inputText id="VehicleHoldback" styleClass="inputBodyText"/></span></td>
+                        <td class="dealBodyValidate"></td>
+                    </tr>
+                    <tr>
+                        <td  class="dealBodyNumber" style="color:#757575">6.</td>
+                        <td class="dealBodyLabel w10"><label for="VehicleTrim" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:VehicleTrim').focus();">TRIM</label></td>
+                        <td class="dealBodyData w20"><span class="r"><apex:inputText id="VehicleTrim" styleClass="inputBodyText"/></span></td>
+                        <td class="dealBodyValidate"></td>
+                        <td  class="dealBodyNumber" style="color:#757575">19.</td>
+                        <td class="dealBodyLabel w15"><label for="VehiclePack" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:VehiclePack').focus();">PACK</label></td>
+                        <td class="dealBodyData w15"><span class="r"><apex:inputText id="VehiclePack" styleClass="inputBodyText"/></span></td>
+                        <td class="dealBodyValidate"></td>
+                    </tr>
+                    <tr>
+                        <td  class="dealBodyNumber" style="color:#757575">7.</td>
+                        <td class="dealBodyLabel w10"><label for="VehicleExtColor" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:VehicleExtColor').focus();">COLOR</label></td>
+                        <td class="dealBodyData w20"><span class="r"><apex:inputText id="VehicleExtColor" styleClass="inputBodyText"/></span></td>
+                        <td class="dealBodyValidate"></td>
+                        <td  class="dealBodyNumber" style="color:#757575"></td>
+                        <td class="dealBodyLabel w15"></td>
+                        <td class="dealBodyData w15"></td>
+                        <td class="dealBodyValidate"></td>
+                    </tr>
+                    <tr>
+                        <td  class="dealBodyNumber" style="color:#757575">8.</td>
+                        <td class="dealBodyLabel w10"><label for="VehicleBodyType" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:VehicleBodyType').focus();">BODY TYPE</label></td>
+                        <td class="dealBodyData w20"><span class="r"><apex:inputText id="VehicleBodyType" styleClass="inputBodyText"/></span></td>
+                        <td class="dealBodyValidate"></td>
+                        <td  class="dealBodyNumber" style="color:#757575">20.</td>
+                        <td class="dealBodyLabel w15"><label for="VehicleOdometer" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:VehicleOdometer').focus();">ODOM</label></td>
+                        <td class="dealBodyData w15"><span class="r"><apex:inputText id="VehicleOdometer" styleClass="inputBodyText"/></span></td>
+                        <td class="dealBodyValidate"></td>
+                    </tr>
+                    <tr>
+                        <td  class="dealBodyNumber" style="color:#757575">9.</td>
+                        <td class="dealBodyLabel w10"><label for="VehicleLicenceNo" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:VehicleLicenceNo').focus();">LIC#</label></td>
+                        <td class="dealBodyData w20"><span class="r"><apex:inputText id="VehicleLicenceNo" styleClass="inputBodyText"/></span></td>
+                        <td class="dealBodyValidate"></td>
+                        <td  class="dealBodyNumber" style="color:#757575"></td>
+                        <td class="dealBodyLabel w15"></td>
+                        <td class="dealBodyData w15"></td>
+                        <td class="dealBodyValidate"></td>
+                    </tr>  
+                    <tr>
+                        <td  class="dealBodyNumber" style="color:#757575">10.</td>
+                        <td class="dealBodyLabel w10"><label for="VehicleLicExpDate" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:VehicleLicExpDate').focus();">LIC EXP DATE</label></td>
+                        <td class="dealBodyData w20"><span class="r"><apex:inputText id="VehicleLicExpDate" styleClass="inputBodyText"/></span></td>
+                        <td class="dealBodyValidate"></td>
+                        <td  class="dealBodyNumber" style="color:#757575">21.</td>
+                        <td class="dealBodyLabel w15"><label for="VehicleMemo1" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:VehicleMemo1').focus();">MEMO 1</label></td>
+                        <td class="dealBodyData w15"><span class="r"><apex:inputText id="VehicleMemo1" styleClass="inputBodyText"/></span></td>
+                        <td class="dealBodyValidate"></td>
+                    </tr>
+                    <tr>
+                        <td  class="dealBodyNumber" style="color:#757575">11.</td>
+                        <td class="dealBodyLabel w10"><label for="VehicleTitleType" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:VehicleTitleType').focus();">TITLE TYPE</label></td>
+                        <td class="dealBodyData w20"><span class="r"><apex:inputText id="VehicleTitleType" styleClass="inputBodyText"/></span></td>
+                        <td class="dealBodyValidate"></td>
+                        <td  class="dealBodyNumber" style="color:#757575">22.</td>
+                        <td class="dealBodyLabel w15"><label for="VehicleMemo2" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:VehicleMemo2').focus();">MEMO 2</label></td>
+                        <td class="dealBodyData w15"><span class="r"><apex:inputText id="VehicleMemo2" styleClass="inputBodyText"/></span></td>
+                        <td class="dealBodyValidate"></td>
+                    </tr>
+                    <tr>
+                        <td  class="dealBodyNumber" style="color:#757575">12.</td>
+                        <td class="dealBodyLabel w10"><label for="VehicleFuelType" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:VehicleFuelType').focus();">FUEL TYPE</label></td>
+                        <td class="dealBodyData w20"><span class="r"><apex:inputText id="VehicleFuelType" styleClass="inputBodyText"/></span></td>
+                        <td class="dealBodyValidate"></td>
+                        <td  class="dealBodyNumber" style="color:#757575">23.</td>
+                        <td class="dealBodyLabel w15"><label for="VehicleKeyCode1" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:VehicleKeyCode1').focus();">KEYCODE 1</label></td>
+                        <td class="dealBodyData w15"><span class="r"><apex:inputText id="VehicleKeyCode1" styleClass="inputBodyText"/></span></td>
+                        <td class="dealBodyValidate"></td>
+                    </tr> 
+                    <tr>
+                        <td  class="dealBodyNumber" style="color:#757575">13.</td>
+                        <td class="dealBodyLabel w10"><label for="VehicleTotalTires" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:VehicleTotalTires').focus();"># NEW TIRES</label></td>
+                        <td class="dealBodyData w20"><span class="r"><apex:inputText id="VehicleTotalTires" styleClass="inputBodyText"/></span></td>
+                        <td class="dealBodyValidate"></td>
+                        <td  class="dealBodyNumber" style="color:#757575">24.</td>
+                        <td class="dealBodyLabel w15"><label for="VehicleKeyCode2" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:VehicleKeyCode2').focus();">KEYCODE 2</label></td>
+                        <td class="dealBodyData w15"><span class="r"><apex:inputText id="VehicleKeyCode2" styleClass="inputBodyText"/></span></td>
+                        <td class="dealBodyValidate"></td>
+                    </tr>                                                                                                                                                                                                                                               
+                </table>
+            </div>
+            </apex:tab>
+            
+            <apex:tab label="Customer" id="customerTab" name="customer_Tab" onTabEnter="tabFocus();">
+            <div id="customer">
+                <table width="100%">
+                   <tr>
+                        <th colspan="4" class="dealBodyLabel">
+                            BUYER
+                        </th>
+                        <th colspan="3" class="dealBodyLabel">
+                            CO-BUYER
+                        </th>
+                    </tr>
+                    <tr>
+                        <td  class="dealBodyNumber" style="color:#757575">1.</td>
+                        <td class="dealBodyLabel w20"><label for="BuyerFirstName" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:BuyerFirstName').focus();">FIRST</label></td>
+                        <td class="dealBodyData w20"><span class="r"><apex:inputText id="BuyerFirstName" styleClass="inputBodyText"/></span></td>
+                        <td class="dealBodyValidate"></td>
+                        <td  class="dealBodyNumber" style="color:#757575">23.</td>
+                        <td class="dealBodyData w20"><span class="r"><apex:inputText id="CoBuyerFirstName" styleClass="inputBodyText"/></span></td>
+                        <td class="dealBodyValidate"></td>                       
+                    </tr>
+                    <tr>
+                        <td  class="dealBodyNumber" style="color:#757575">2.</td>
+                        <td class="dealBodyLabel w20"><label for="BuyerMiddleName" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:BuyerMiddleName').focus();">MIDDLE</label></td>
+                        <td class="dealBodyData w20"><span class="r"><apex:inputText id="BuyerMiddleName" styleClass="inputBodyText"/></span></td>
+                        <td class="dealBodyValidate"></td>
+                        <td  class="dealBodyNumber" style="color:#757575">24.</td>
+                        <td class="dealBodyData w20"><span class="r"><apex:inputText id="CoBuyerMiddleNamee" styleClass="inputBodyText"/></span></td>
+                        <td class="dealBodyValidate"></td>                       
+                    </tr>
+                    <tr>
+                        <td  class="dealBodyNumber" style="color:#757575">3.</td>
+                        <td class="dealBodyLabel w20"><label for="BuyerLastName" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:BuyerLastName').focus();">LAST</label></td>
+                        <td class="dealBodyData w20"><span class="r"><apex:inputText id="BuyerLastName" styleClass="inputBodyText"/></span></td>
+                        <td class="dealBodyValidate"></td>
+                        <td  class="dealBodyNumber" style="color:#757575">25.</td>
+                        <td class="dealBodyData w20"><span class="r"><apex:inputText id="CoBuyerBuyerLastNameName" styleClass="inputBodyText"/></span></td>
+                        <td class="dealBodyValidate"></td>                       
+                    </tr>
+                    <tr>
+                        <td  class="dealBodyNumber" style="color:#757575">4.</td>
+                        <td class="dealBodyLabel w20"><label for="ContractName" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:BuyerLastName').focus();">COMPANY NAME</label></td>
+                        <td colspan="4" class="dealBodyData w20"><span class="r"><apex:inputText id="ContractName" styleClass="inputBodyText"/></span></td>
+                        <td class="dealBodyValidate"></td>                       
+                    </tr>
+                    <tr>
+                        <td  class="dealBodyNumber" style="color:#757575">5.</td>
+                        <td class="dealBodyLabel w20"><label for="BuyerAddressLine1" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:BuyerAddressLine1').focus();">ADDRESS 1</label></td>
+                        <td class="dealBodyData w20"><span class="r"><apex:inputText id="BuyerAddressLine1" styleClass="inputBodyText"/></span></td>
+                        <td class="dealBodyValidate"></td>
+                        <td  class="dealBodyNumber" style="color:#757575">26.</td>
+                        <td class="dealBodyData w20"><span class="r"><apex:inputText id="CoBuyerAddressLine1" styleClass="inputBodyText"/></span></td>
+                        <td class="dealBodyValidate"></td>                       
+                    </tr> 
+                    <tr>
+                        <td  class="dealBodyNumber" style="color:#757575">6.</td>
+                        <td class="dealBodyLabel w20"><label for="BuyerAddressLine2" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:BuyerAddressLine2').focus();">ADDRESS 2</label></td>
+                        <td class="dealBodyData w20"><span class="r"><apex:inputText id="BuyerAddressLine2" styleClass="inputBodyText"/></span></td>
+                        <td class="dealBodyValidate"></td>
+                        <td  class="dealBodyNumber" style="color:#757575">27.</td>
+                        <td class="dealBodyData w20"><span class="r"><apex:inputText id="CoBuyerAddressLine2" styleClass="inputBodyText"/></span></td>
+                        <td class="dealBodyValidate"></td>                       
+                    </tr> 
+                    <tr>
+                        <td class="dealBodyNumber" style="color:#757575">7.</td>
+                        <td class="dealBodyLabel w20"><label for="BuyerCity" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:BuyerCity').focus();">CITY</label></td>
+                        <td class="dealBodyData w20"><span class="r"><apex:inputText id="BuyerCity" styleClass="inputBodyText"/></span></td>
+                        <td class="dealBodyValidate"></td>
+                        <td class="dealBodyNumber" style="color:#757575">28.</td>
+                        <td class="dealBodyData w20"><span class="r"><apex:inputText id="CoBuyerCity" styleClass="inputBodyText"/></span></td>
+                        <td class="dealBodyValidate"></td>                       
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            <table width="100%">
+                               <tr>
+                                    <td class="dealBodyNumber" style="color:#757575">8.</td>
+                                    <td class="dealBodyLabel w20"><label for="BuyerState" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:BuyerState').focus();">STATE</label></td>
+                                    <td class="dealBodyData w20"><span class="r"><apex:inputText id="BuyerState" styleClass="inputBodyText"/></span></td>
+                                    <td class="dealBodyValidate"></td>
+                                    <td class="dealBodyNumber" style="color:#757575">9.</td>
+                                    <td class="dealBodyLabel w20"><label for="BuyerZip" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:BuyerZip').focus();">ZIP</label></td>
+                                    <td class="dealBodyData w20"><span class="r"><apex:inputText id="BuyerZip" styleClass="inputBodyText"/></span></td>
+                                    <td class="dealBodyValidate"></td> 
+                               </tr>
+                            </table>
+                        </td> 
+                       <td colspan="3">
+                            <table width="100%">
+                               <tr>
+                                    <td class="dealBodyNumber" style="color:#757575">29.</td>
+                                    <td class="dealBodyData w20"><span class="r"><apex:inputText id="CoBuyerState" styleClass="inputBodyText"/></span></td>
+                                    <td class="dealBodyValidate"></td>
+                                    <td class="dealBodyNumber" style="color:#757575">30.</td>
+                                    <td class="dealBodyData w20"><span class="r"><apex:inputText id="CoBuyerZip" styleClass="inputBodyText"/></span></td>
+                                    <td class="dealBodyValidate"></td> 
+                               </tr>
+                            </table>
+                        </td>                        
+                    </tr>  
+                    <tr>
+                        <td class="dealBodyNumber" style="color:#757575">10.</td>
+                        <td class="dealBodyLabel w20"><label for="BuyerCounty" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:BuyerCounty').focus();">COUNTY</label></td>
+                        <td class="dealBodyData w20"><span class="r"><apex:inputText id="BuyerCounty" styleClass="inputBodyText"/></span></td>
+                        <td class="dealBodyValidate"></td>
+                        <td class="dealBodyNumber" style="color:#757575">31.</td>
+                        <td class="dealBodyData w20"><span class="r"><apex:inputText id="CoBuyerCounty" styleClass="inputBodyText"/></span></td>
+                        <td class="dealBodyValidate"></td>                       
+                    </tr>
+                     <tr>
+                        <td colspan="4">
+                            <table width="100%">
+                               <tr>
+                                    <td class="dealBodyNumber" style="color:#757575">11.</td>
+                                    <td class="dealBodyLabel w20"><label for="BuyerHomePhone" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:BuyerHomePhone').focus();">HOME #</label></td>
+                                    <td class="dealBodyData w20"><span class="r"><apex:inputText id="BuyerHomePhone" styleClass="inputBodyText"/></span></td>
+                                    <td class="dealBodyValidate"></td>
+                                    <td class="dealBodyNumber" style="color:#757575">12.</td>
+                                    <td class="dealBodyLabel w20"><label for="BuyerCellPhone" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:BuyerCellPhone').focus();">CELL #</label></td>
+                                    <td class="dealBodyData w20"><span class="r"><apex:inputText id="BuyerCellPhone" styleClass="inputBodyText"/></span></td>
+                                    <td class="dealBodyValidate"></td> 
+                               </tr>
+                            </table>
+                        </td> 
+                       <td colspan="3">
+                            <table width="100%">
+                               <tr>
+                                    <td class="dealBodyNumber" style="color:#757575">32.</td>
+                                    <td class="dealBodyData w20"><span class="r"><apex:inputText id="CoBuyerHomePhone" styleClass="inputBodyText"/></span></td>
+                                    <td class="dealBodyValidate"></td>
+                                    <td class="dealBodyNumber" style="color:#757575">33.</td>
+                                    <td class="dealBodyData w20"><span class="r"><apex:inputText id="CoBuyerCellPhone" styleClass="inputBodyText"/></span></td>
+                                    <td class="dealBodyValidate"></td> 
+                               </tr>
+                            </table>
+                        </td>                        
+                    </tr>  
+                     <tr>
+                        <td colspan="4">
+                            <table width="100%">
+                               <tr>
+                                    <td class="dealBodyNumber" style="color:#757575">13.</td>
+                                    <td class="dealBodyLabel w20"><label for="BuyerWorkPhone" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:BuyerWorkPhone').focus();">WORK #</label></td>
+                                    <td class="dealBodyData w20"><span class="r"><apex:inputText id="BuyerWorkPhone" styleClass="inputBodyText"/></span></td>
+                                    <td class="dealBodyValidate"></td>
+                                    <td class="dealBodyNumber" style="color:#757575">14.</td>
+                                    <td class="dealBodyLabel w20"><label for="BuyerWorkExt" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:BuyerWorkExt').focus();">EXT</label></td>
+                                    <td class="dealBodyData w20"><span class="r"><apex:inputText id="BuyerWorkExt" styleClass="inputBodyText"/></span></td>
+                                    <td class="dealBodyValidate"></td> 
+                               </tr>
+                            </table>
+                        </td> 
+                       <td colspan="3">
+                            <table width="100%">
+                               <tr>
+                                    <td class="dealBodyNumber" style="color:#757575">34.</td>
+                                    <td class="dealBodyData w20"><span class="r"><apex:inputText id="CoBuyerWorkPhone" styleClass="inputBodyText"/></span></td>
+                                    <td class="dealBodyValidate"></td>
+                                    <td class="dealBodyNumber" style="color:#757575">35.</td>
+                                    <td class="dealBodyData w20"><span class="r"><apex:inputText id="CoBuyerWorkExt" styleClass="inputBodyText"/></span></td>
+                                    <td class="dealBodyValidate"></td> 
+                               </tr>
+                            </table>
+                        </td>                        
+                    </tr>
+                    <tr>
+                        <td class="dealBodyNumber" style="color:#757575">15.</td>
+                        <td class="dealBodyLabel w20"><label for="BuyerEmail" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:BuyerEmail').focus();">EMAIL</label></td>
+                        <td class="dealBodyData w20"><span class="r"><apex:inputText id="BuyerEmail" styleClass="inputBodyText"/></span></td>
+                        <td class="dealBodyValidate"></td>
+                        <td class="dealBodyNumber" style="color:#757575">2.</td>
+                        <td class="dealBodyData w20"><span class="r"><apex:inputText id="CoBuyerEmail" styleClass="inputBodyText"/></span></td>
+                        <td class="dealBodyValidate"></td>                       
+                    </tr>   
+                     <tr>
+                        <td colspan="4">
+                            <table width="100%">
+                               <tr>
+                                    <td class="dealBodyNumber" style="color:#757575">16.</td>
+                                    <td class="dealBodyLabel w20"><label for="BuyerDOB" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:BuyerDOB').focus();">DOB</label></td>
+                                    <td class="dealBodyData w20"><span class="r"><apex:inputText id="BuyerDOB" styleClass="inputBodyText"/></span></td>
+                                    <td class="dealBodyValidate"></td>
+                                    <td class="dealBodyNumber" style="color:#757575">17.</td>
+                                    <td class="dealBodyLabel w20"><label for="BuyerAge" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:BuyerAge').focus();">AGE</label></td>
+                                    <td class="dealBodyData w20"><span class="r"><apex:inputText id="BuyerAge" styleClass="inputBodyText"/></span></td>
+                                    <td class="dealBodyValidate"></td> 
+                               </tr>
+                            </table>
+                        </td> 
+                       <td colspan="3">
+                            <table width="100%">
+                               <tr>
+                                    <td class="dealBodyNumber" style="color:#757575">36.</td>
+                                    <td class="dealBodyData w20"><span class="r"><apex:inputText id="CoBuyerDOB" styleClass="inputBodyText"/></span></td>
+                                    <td class="dealBodyValidate"></td>
+                                    <td class="dealBodyNumber" style="color:#757575">37.</td>
+                                    <td class="dealBodyData w20"><span class="r"><apex:inputText id="CoBuyerAge" styleClass="inputBodyText"/></span></td>
+                                    <td class="dealBodyValidate"></td> 
+                               </tr>
+                            </table>
+                        </td>                        
+                    </tr>  
+                     <tr>
+                        <td colspan="4">
+                            <table width="100%">
+                               <tr>
+                                    <td class="dealBodyNumber" style="color:#757575">18.</td>
+                                    <td class="dealBodyLabel w20"><label for="BuyerSSN" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:BuyerSSN').focus();">SSN</label></td>
+                                    <td class="dealBodyData w20"><span class="r"><apex:inputText id="BuyerSSN" styleClass="inputBodyText"/></span></td>
+                                    <td class="dealBodyValidate"></td>
+                                    <td class="dealBodyNumber" style="color:#757575">19.</td>
+                                    <td class="dealBodyLabel w20"><label for="BuyerSex" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:BuyerSex').focus();">M/F</label></td>
+                                    <td class="dealBodyData w20"><span class="r"><apex:inputText id="BuyerSex" styleClass="inputBodyText"/></span></td>
+                                    <td class="dealBodyValidate"></td> 
+                               </tr>
+                            </table>
+                        </td> 
+                       <td colspan="3">
+                            <table width="100%">
+                               <tr>
+                                    <td class="dealBodyNumber" style="color:#757575">38.</td>
+                                    <td class="dealBodyData w20"><span class="r"><apex:inputText id="CoBuyerSSN" styleClass="inputBodyText"/></span></td>
+                                    <td class="dealBodyValidate"></td>
+                                    <td class="dealBodyNumber" style="color:#757575">39.</td>
+                                    <td class="dealBodyData w20"><span class="r"><apex:inputText id="CoBuyerSex" styleClass="inputBodyText"/></span></td>
+                                    <td class="dealBodyValidate"></td> 
+                               </tr>
+                            </table>
+                        </td>                        
+                    </tr>   
+                    <tr>
+                        <td class="dealBodyNumber" style="color:#757575">20.</td>
+                        <td class="dealBodyLabel w20"><label for="BuyerLicenseNo" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:BuyerLicenseNo').focus();">DRIVERS LIC#</label></td>
+                        <td class="dealBodyData w20"><span class="r"><apex:inputText id="BuyerLicenseNo" styleClass="inputBodyText"/></span></td>
+                        <td class="dealBodyValidate"></td>
+                        <td class="dealBodyNumber" style="color:#757575">40.</td>
+                        <td class="dealBodyData w20"><span class="r"><apex:inputText id="CoBuyerLicenseNo" styleClass="inputBodyText"/></span></td>
+                        <td class="dealBodyValidate"></td>                       
+                    </tr> 
+                    <tr>
+                        <td class="dealBodyNumber" style="color:#757575">21.</td>
+                        <td class="dealBodyLabel w20"><label for="BuyerLicenseExpiration" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:BuyerLicenseExpiration').focus();">LIC EXP</label></td>
+                        <td class="dealBodyData w20"><span class="r"><apex:inputText id="BuyerLicenseExpiration" styleClass="inputBodyText"/></span></td>
+                        <td class="dealBodyValidate"></td>
+                        <td class="dealBodyNumber" style="color:#757575">41.</td>
+                        <td class="dealBodyData w20"><span class="r"><apex:inputText id="CoBuyerLicenseExpiration" styleClass="inputBodyText"/></span></td>
+                        <td class="dealBodyValidate"></td>                       
+                    </tr>
+                    <tr>
+                        <td class="dealBodyNumber" style="color:#757575">22.</td>
+                        <td class="dealBodyLabel w20"><label for="BuyerUpdate" onClick="j$('#dealScreen\\:dealForm\\:dealBody\\:BuyerUpdate').focus();">UPDATE CUSTOMER</label></td>
+                        <td class="dealBodyData w20"><span class="r"><apex:inputCheckbox selected="true" id="BuyerUpdate" styleClass="inputBodyText"/></span></td>
+                        <td class="dealBodyValidate"></td>
+                        <td class="dealBodyNumber" style="color:#757575">42.</td>
+                        <td class="dealBodyData w20"><span class="r"><apex:inputCheckbox selected="true" id="CoBuyerUpdate" styleClass="inputBodyText"/></span></td>
+                        <td class="dealBodyValidate"></td>                       
+                    </tr>                                                                                                                                               
+                </table>
+            </div>
+            </apex:tab>
+            
+            <apex:tab label="Trades" id="tradesTab" name="trades_Tab" onTabEnter="tabFocus();">
+            <div id="trades">
+  <table class="">
+            <tr><td colspan="5" align="center">Trade-In Value(s)</td></tr>
+            <tr>
+                <td class="tFont"></td>
+                <td class="tFont">Trade 1</td>
+                <td class="tFont">Trade 2</td>
+                <td class="tFont">Trade 3</td>
+                <td class="tFont">Total</td>
+            </tr>
+            <tr>
+                <td class="tFont">Allow</td>
+                <td class="tFont"><input type="text" value="" /></td>
+                <td class="tFont"><input type="text" value="" /></td>
+                <td class="tFont"><input type="text" value="" /></td>
+                <td class="tFont"><input type="text" value="" /></td>
+            </tr>
+            <tr>
+                <td class="tFont">Payoff</td>
+                <td class="tFont"><input type="text" value="" /></td>
+                <td class="tFont"><input type="text" value="" /></td>
+                <td class="tFont"><input type="text" value="" /></td>
+                <td class="tFont"><input type="text" value="" /></td>
+            </tr>
+            <tr>
+                <td class="tFont">Net</td>
+                <td class="tFont"><input type="text" value="" /></td>
+                <td class="tFont"><input type="text" value="" /></td>
+                <td class="tFont"><input type="text" value="" /></td>
+                <td class="tFont"><input type="text" value="" /></td>
+            </tr>
+            <tr>
+                <td class="tFont">ACV</td>
+                <td class="tFont"><input type="text" value="" /></td>
+                <td class="tFont"><input type="text" value="" /></td>
+                <td class="tFont"><input type="text" value="" /></td>
+                <td class="tFont"><input type="text" value="" /></td>
+            </tr>   
+            <tr>
+                <td class="tFont">Over/Under</td>
+                <td class="tFont"><input type="text" value="" /></td>
+                <td class="tFont"><input type="text" value="" /></td>
+                <td class="tFont"><input type="text" value="" /></td>
+                <td class="tFont"><input type="text" value="" /></td>
+            </tr>                                                         
+        </table>
+            </div>
+            </apex:tab>
+            
+            <apex:tab label="Warranty" id="warrantyTab" name="warranty_Tab" onTabEnter="tabFocus();">
+            <div id="warranty">
+            	<table width="100%">
+            		<tr>
+            			<td></td>
+            		</tr>
+            	</table>
+            </div>
+            </apex:tab>            
+
+            <apex:tab label="GAP" id="gapTab" name="gap_Tab" onTabEnter="tabFocus();">
+            <div id="gap">
+            	<table width="100%">
+            		<tr>
+            			<td></td>
+            		</tr>
+            	</table>
+            </div>
+            </apex:tab>
+            
+            <apex:tab label="After Market" id="afternarketTab" name="aftermarket_Tab" onTabEnter="tabFocus();">
+            <div id="aftermarket">
+            	<table width="100%">
+            		<tr>
+            			<td></td>
+            		</tr>
+            	</table>
+            </div>
+            </apex:tab>            
+            
+            <apex:tab label="Insurance" id="insuranceTab" name="insurance_Tab" onTabEnter="tabFocus();">
+            <div id="insurance">
+            	<table width="100%">
+            		<tr>
+            			<td></td>
+            		</tr>
+            	</table>
+            </div>
+            </apex:tab>      
+            
+            <apex:tab label="Fees" id="feesTab" name="fees_Tab" onTabEnter="tabFocus();">
+            <div id="fees">
+            	<table width="100%">
+            		<tr>
+            			<td>
+            			<table>
+            				<tr>
+            					<td>LICENSE</td>
+            					<td></td>
+            				</tr>
+            				<tr>
+            					<td>MISC LIC.</td>
+            					<td></td>
+            				</tr>
+            				<tr>
+            					<td>SMOG ABATE</td>
+            					<td></td>
+            				</tr>
+            				<tr>
+            					<td>SMOG FEE</td>
+            					<td></td>
+            				</tr>
+            				<tr>
+            					<td>SMOG CERT</td>
+            					<td></td>
+            				</tr>
+            				<tr>
+            					<td>TIRE FEE</td>
+            					<td></td>
+            				</tr>
+            				<tr>
+            					<td>ELEC FILING</td>
+            					<td></td>
+            				</tr>
+            				<tr>
+            					<td>CANCEL FEE</td>
+            					<td></td>
+            				</tr>
+            				<tr>
+            					<td>RESTOCK FEE</td>
+            					<td></td>
+            				</tr>
+            			</table>
+            			</td>
+            		</tr>
+            		<tr>
+            			<td>
+            			<table>
+            				<tr>
+            					<td>STATE TAX RATE</td>
+            					<td></td>
+            				</tr>
+            				<tr>
+            					<td>COUNTY TAX RATE</td>
+            					<td></td>
+            				</tr>
+            				<tr>
+            					<td>CITY TAX RATE</td>
+            					<td></td>
+            				</tr>
+            				<tr>
+            					<td>EXCISE RTE/AMT</td>
+            					<td></td>
+            				</tr>
+            			</table>
+            			</td>
+            		</tr>
+            	</table>
+            </div>
+            </apex:tab>                  
+            
+            <apex:tab label="Forms" id="formsTab" name="forms_Tab" onTabEnter="tabFocus();">
+            <div id="forms">
+            	<table width="100%">
+            		<tr>
+            			<td></td>
+            		</tr>
+            	</table>
+            </div>
+            </apex:tab> 
+            
+            </apex:tabPanel>
+           
+        </div>
+        <div id="dealFooter">
+            <div id="ErrorMessage"></div>
+            <table>
+                <tr>
+                    <th class="tFont">Line#, M=Modify, (?=Commands)</th>
+                    <th class="tFont"><input type="text" id="commandInput" class="inputBodyData" value="" tabindex="1" /><input type="text" value="" id="KeyLog" /></th>
+                </tr>
+            </table>
+            <table style="width:100%;">
+                <tr>
+                    <th class="tFont" style="width: 20%;">BANK: </th>
+                    <th style="width: 20%;"></th>
+                    <th style="width: 20%;"></th>
+                    <th class="tFont" style="width: 20%;">MONTHLY PYMT:</th>
+                    <th style="width: 20%;"><span id="pmt" class="inputBodyData"></span></th>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    </apex:pageBlock>
+    
+    
+    <!-- Sub Forms -->
+    <div id="TradeValueInput" title="Trade-In Value(s)" style="display:none;">
+    
+        <table class="">
+            <tr><td colspan="5" align="center">Trade-In Value(s)</td></tr>
+            <tr>
+                <td class="tFont"></td>
+                <td class="tFont">Trade 1</td>
+                <td class="tFont">Trade 2</td>
+                <td class="tFont">Trade 3</td>
+                <td class="tFont">Total</td>
+            </tr>
+            <tr>
+                <td class="tFont">Allow</td>
+                <td class="tFont"><input type="text" value="" /></td>
+                <td class="tFont"><input type="text" value="" /></td>
+                <td class="tFont"><input type="text" value="" /></td>
+                <td class="tFont"><input type="text" value="" /></td>
+            </tr>
+            <tr>
+                <td class="tFont">Payoff</td>
+                <td class="tFont"><input type="text" value="" /></td>
+                <td class="tFont"><input type="text" value="" /></td>
+                <td class="tFont"><input type="text" value="" /></td>
+                <td class="tFont"><input type="text" value="" /></td>
+            </tr>
+            <tr>
+                <td class="tFont">Net</td>
+                <td class="tFont"><input type="text" value="" /></td>
+                <td class="tFont"><input type="text" value="" /></td>
+                <td class="tFont"><input type="text" value="" /></td>
+                <td class="tFont"><input type="text" value="" /></td>
+            </tr>
+            <tr>
+                <td class="tFont">ACV</td>
+                <td class="tFont"><input type="text" value="" /></td>
+                <td class="tFont"><input type="text" value="" /></td>
+                <td class="tFont"><input type="text" value="" /></td>
+                <td class="tFont"><input type="text" value="" /></td>
+            </tr>   
+            <tr>
+                <td class="tFont">Over/Under</td>
+                <td class="tFont"><input type="text" value="" /></td>
+                <td class="tFont"><input type="text" value="" /></td>
+                <td class="tFont"><input type="text" value="" /></td>
+                <td class="tFont"><input type="text" value="" /></td>
+            </tr>                                                         
+        </table>
+    </div>
+    
+    </apex:form>
+</apex:page>

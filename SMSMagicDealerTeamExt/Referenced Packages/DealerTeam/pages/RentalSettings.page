@@ -1,0 +1,30 @@
+<apex:page controller="dealer.RentalSettings" title="Rental Department Settings" setup="true">
+	<apex:includeScript value="{!URLFOR($Resource.dealer__jQuery_UI_1820, 'js/jquery-1.7.2.min.js')}" />
+	<apex:includeScript value="{!URLFOR($Resource.dealer__jQuery_UI_1820, 'js/jquery-ui-1.8.20.custom.min.js')}" />
+    <script>
+		$j = jQuery.noConflict();
+  		$j(document).ready(function() {
+   			 
+   		});
+    
+    </script>
+    
+    <apex:form >
+    <apex:pageBlock title="Rental Department Settings">
+        <apex:pageBlockButtons >
+            <apex:commandButton action="{!save}" value="Save" id="saveBtn"/>
+        </apex:pageBlockButtons>
+        
+        <apex:pageBlockSection title="Rental Forms" columns="1" collapsible="false">
+        	<apex:inputField style="width:450px;" value="{!rs.dealer__ContractFormName__c}" />
+        	<apex:inputField style="width:450px;" value="{!rs.dealer__ReceiptFormName__c}" />
+        </apex:pageBlockSection>
+    
+    	<apex:pageBlockSection title="Default Values" collapsible="false">
+    		<apex:inputField value="{!rs.dealer__DailyMileageLimit__c}" />
+    		<apex:inputField value="{!rs.dealer__ExcessMileageFee__c}" />
+    		<apex:inputField value="{!rs.dealer__RefuelingFee__c}" />
+    	</apex:pageBlockSection>
+    </apex:pageBlock>
+    </apex:form>
+</apex:page>

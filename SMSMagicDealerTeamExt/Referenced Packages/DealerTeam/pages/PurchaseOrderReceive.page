@@ -1,0 +1,53 @@
+<apex:page id="poreceive" title="Purchase Order Receive" standardController="dealer__Purchase_Order__c" extensions="dealer.PurchaseOrder_EXT"  showHeader="true" sidebar="true" docType="html-5.0">
+	<style>
+		.aright {text-align: right;}
+	</style>
+
+	<apex:sectionHeader title="PO - Receive Purchase Order Items" subtitle="PO#{!Purchase_Order__c.dealer__PO_Number__c}" />
+	<chatter:feedwithfollowers entityId="{!dealer__Purchase_Order__c.Id}" />
+	<apex:form >
+		<apex:pageMessages />
+		<apex:pageBlock >
+			<apex:pageBlockButtons >
+				<apex:commandButton action="{!receiveParts}" value="Receive Parts" rendered="{!IF(recordTypeName=='Parts_Purchase',true,false)}" />
+				<apex:commandButton action="{!acceptPO}" value="Accept Purchase Order" rendered="{!IF(recordTypeName=='Parts_Purchase',false,true)}" />
+				<apex:commandButton action="{!postPO}" value="Post Purchase Order" rendered="{!AND(NOT(ISBLANK(postingURL)), NOT(ISBLANK(dealer__Purchase_Order__c.dealer__Accepted_DateTime__c)))}" />
+				<apex:commandButton action="{!Cancel}" value="Cancel" />
+			</apex:pageBlockButtons>
+
+			<apex:pageBlockSection >
+				<apex:outputField value="{!dealer__Purchase_Order__c.Name}" />
+				<apex:outputField value="{!dealer__Purchase_Order__c.dealer__PO_Amount__c}" />
+			</apex:pageBlockSection>
+
+			<apex:pageBlockSection title="Parts Received" columns="1" collapsible="false" rendered="{!IF(recordTypeName=='Parts_Purchase',true,false)}" >
+				<apex:pageBlockTable var="p" value="{!pw}" width="100%">
+					<apex:column headerValue="QTY Received">
+						<apex:input value="{!p.qtyUpdate}" type="number" disabled="{!IF(p.line.dealer__Part_Quantity__c == p.line.dealer__Part_Quantity_Received__c, true, false)}" />
+					</apex:column>
+					<apex:column headerValue="QTY Requested" value="{!p.line.dealer__Part_Quantity__c}" />
+					<apex:column headerValue="Received" value="{!p.line.dealer__Part_Quantity_Received__c}" />
+					<apex:column headerValue="Part Number" value="{!p.line.dealer__Parts_Master__r.dealer__Part_No__c}" />
+					<apex:column headerValue="Part Description" value="{!p.line.dealer__Parts_Master__r.dealer__Part_Description__c}" />
+				</apex:pageBlockTable>
+			</apex:pageBlockSection>
+
+			<apex:pageBlockSection title="Purchase Order - Vendor Invoice" collapsible="false" rendered="{!IF(recordTypeName=='Vehicle_Purchase',false,true)}">
+
+				<apex:inputField value="{!dealer__Purchase_Order__c.dealer__Invoice_Amount__c}" />
+				<apex:outputField value="{!dealer__Purchase_Order__c.dealer__Vendor__c}" />
+
+				<apex:inputField value="{!dealer__Purchase_Order__c.dealer__Freight__c}" />
+				<apex:outputText />
+
+				<apex:inputField value="{!dealer__Purchase_Order__c.dealer__Invoice_Date__c}" />
+				<apex:inputField value="{!dealer__Purchase_Order__c.dealer__Invoice_Number__c}" />
+
+			</apex:pageBlockSection>
+
+			<apex:pageBlockSection columns="1" collapsible="false" rendered="{!IF(recordTypeName=='Vehicle_Purchase',true,false)}" >
+				<apex:iframe src="{!ops.dealer__PurchaseOrderLineManager__c}?id={!dealer__Purchase_Order__c.Id}" height="650" frameborder="false" scrolling="true" rendered="{!NOT(ISBLANK(ops.dealer__PurchaseOrderLineManager__c))}" />
+			</apex:pageBlockSection>
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>

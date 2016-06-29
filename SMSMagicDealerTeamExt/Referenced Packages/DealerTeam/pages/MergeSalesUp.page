@@ -1,0 +1,266 @@
+<apex:page controller="dealer.MergeSalesup" id="thePage" >
+	<apex:includeScript value="{!URLFOR($Resource.dealer__UIJQuery1822, 'js/jquery-1.7.2.min.js')}"/>
+	<style>
+		.searchResult{
+			height:200px !important; 
+			overflow: auto !important;
+			
+		}
+		.selectedField
+		{
+			background-color: #CFEEF8 !important;
+			border:dotted #1797C0 1px  !important;
+			box-sizing:border-box;
+		   -moz-box-sizing:border-box;
+		   -webkit-box-sizing:border-box;
+		}
+		.oddMerge { 
+				background-color: #F0F0F0 !important; 
+				}
+		.evenMerge{ }
+		
+		.notWritable
+		{
+			color: #999999 !important;
+			font-style: italic !important;
+			background-color: #DDDDDD !important;
+			height:25px !important; 
+			margin: 5px !important; 
+			width:250px !important;
+		}
+		.writable
+		{
+			height:30px !important; 
+			margin: 5px !important; 
+			width:250px !important;
+		}
+		.btnMerge
+		{
+			font-size:14pt !important; 
+			height:30px !important;
+		}
+	</style> 
+	
+	<script>
+		jQuery.noConflict();
+		
+		//jQuery ID escape
+		function esc(myid) {
+           return '#' + myid.replace(/(:|\.)/g,'\\\\$1');
+        }
+		//master object id input component
+		var masterRecordInputId = null;
+		//field columns ID
+		var fields = new Array();
+		//input fields id
+		var fieldsInput = new Array();
+		//"master" image ID
+		var masterImage = new Array();
+		//"set as master" image ID
+		var setMasterImage = new Array();
+		
+		//select the selected object and deselect the others
+		function selectMaster(index)
+		{
+			if(index == null || index == '') return;
+			jQuery(masterRecordInputId).val(index);
+			for(var id in fields)
+			{
+				if(id == index)
+				{
+					jQuery(masterImage[id]).show();
+					jQuery(setMasterImage[id]).hide();
+				}
+				else
+				{
+					jQuery(masterImage[id]).hide();
+					jQuery(setMasterImage[id]).show();
+				}
+				
+				for(var fname in fields[index])
+				{
+					if(id == index)
+					{
+						jQuery(fields[id][fname]).addClass('selectedField');
+						jQuery(fieldsInput[id][fname]).val('true');
+					}
+					else
+					{
+						jQuery(fields[id][fname]).removeClass('selectedField');
+						jQuery(fieldsInput[id][fname]).val('false');
+					}
+				}
+			}
+			
+		}
+		
+		//select a single field (and deselect the others)
+		function selectSingleField(index, name)
+		{
+			if(index == null || index == '') return;
+			for(var id in fields)
+			{
+				if(id == index)
+				{
+					jQuery(fields[id][name]).addClass('selectedField');
+					jQuery(fieldsInput[id][name]).val('true');
+				}
+				else
+				{
+					jQuery(fields[id][name]).removeClass('selectedField');
+					jQuery(fieldsInput[id][name]).val('false');
+				}
+			}
+		}
+	</script>
+	
+	<apex:sectionHeader id="secHead" title="Merge records"/>
+	
+	<apex:form id="theForm">
+	
+		<apex:pageblock id="pbMain">
+			<apex:outputPanel id="errMsgsTop"> 
+				<apex:PageMessages />
+			</apex:outputPanel> 
+			
+			 <!-- <apex:pageBlockSection id="pbsObj" title="Choose an object"  columns="1">
+			
+				  <apex:pageBlockSectionItem id="pbsiSObj">
+					<apex:outputLabel value="Select:"/>
+					<apex:selectList id="sobjSlct" value="{!sObjectType}" size="1">
+						<apex:selectOptions value="{!sobjectsSlctOpt}"/>
+					</apex:selectList>
+				</apex:pageBlockSectionItem>  
+				<apex:pageBlockSectionItem id="pbsiSearchText">
+					<apex:outputLabel value="Search:"/>
+					<apex:inputText id="searchtxt" value="{!searchText}"/>
+				</apex:pageBlockSectionItem>
+				
+				<apex:pageBlockSectionItem id="pbsiBtnSearch">
+				
+					<apex:actionStatus id="pbsiSearchText">
+						<apex:facet name="start">
+							<apex:outputPanel >
+								<img width="16" src="/img/loading32.gif"/> Searching records...
+							</apex:outputPanel>
+						</apex:facet>
+						<apex:facet name="stop">
+							<apex:outputPanel >
+								<apex:commandButton action="{!searchRecords}" value="Search..." rerender="srcResultPanel,mergePanel,errMsgsBottom,errMsgsTop" status="pbsiSearchText"/>
+							</apex:outputPanel>
+						</apex:facet>
+					</apex:actionStatus>
+					
+				</apex:pageBlockSectionItem>
+			</apex:pageBlockSection> -->
+			
+			
+			
+			<apex:pageBlockSection id="pbsMerge" title="Merge records"  columns="1" collapsible="false">
+				<apex:outputPanel id="mergePanel" style="text-align:center !important;">
+					
+				
+					<div style="text-align:center !important;">
+						<br/>
+						<apex:commandButton styleClass="btn btnMerge" action="{!mergeSups}" value="Merge" rendered="{!merginObjects.size>1}" />
+						
+						<br/><br/>
+						
+						<script>
+							masterRecordInputId = esc('{!$Component.masterRecord}');
+						</script>
+						<apex:inputHidden id="masterRecord" value="{!masterObjectId}" /> 
+						
+						<!-- index used to set the column label [e.g. "Account 1"] -->
+						<apex:variable var="cIndex" value="{!0}"/>
+						
+						<!-- dataTable based on all the fields for the object -->
+						<apex:dataTable value="{!describe.allFieldsKeySet}" var="fname" rendered="{!merginObjects.size>0}" rowClasses="oddMerge,evenMerge" rules="cols">
+								
+								<!-- field's API name and label -->
+								<apex:column styleClass="{!IF(describe.allFields[fname].isWritable,'writable','notWritable')}">
+									<apex:facet name="header">&nbsp;</apex:facet>
+									<apex:outputLabel value="{!describe.allFields[fname].Label}" title="{!describe.allFields[fname].Name}"/>
+								</apex:column>
+							
+							<!-- iteration through all the [MaxRecordsCount] objects -->
+							<apex:repeat value="{!merginObjects}" var="obj">
+							
+								<!-- by clicking a cell, the field is selected and the other are deselected: if the field is not writable, it should not be selected-->
+								<apex:column id="column" onclick="if('{!describe.allFields[fname].isWritable}'=='false') return false; selectSingleField('{!obj['Id']}','{!fname}');"
+											styleClass="{!IF(describe.allFields[fname].isWritable,'writable','notWritable')}"
+											rendered="{!AND(NOT(ISBLANK(obj['Id'])), NOT(ISNULL(obj['Id'])))}" >
+									
+									<!-- object header (button to make the object master) -->
+									<apex:facet name="header">
+									
+										<apex:outputPanel style="text-align:center !important;">
+											<apex:variable var="cIndex" value="{!IF(cIndex=MaxRecordsCount,0,cIndex+1)}"/>
+											Click the bullseye to select as Master:
+											<br/>
+											<apex:outputLink rendered="{!ISBLANK(obj['Id'])=false}" onclick="selectMaster('{!obj['Id']}'); return false;">
+												<apex:image id="imageSetMaster" value="/img/icon/campaigns24.png" title="Set as master record" style="display:{!IF(masterObjectId=obj['Id'],'none','block')};"/>
+												<apex:image id="imageMaster" value="/img/msg_icons/confirm24.png" title="Master record" style="display:{!IF(masterObjectId=obj['Id'],'block','none')};"/>
+												
+											</apex:outputLink>
+											<br/>
+											<script>
+												//saves id of the images
+												if("{!obj['Id']}" != '')
+												{
+													masterImage["{!obj['Id']}"] = (esc('{!$Component.imageMaster}'));
+													setMasterImage["{!obj['Id']}"] = (esc('{!$Component.imageSetMaster}'));
+												}
+											</script>
+										</apex:outputPanel>
+										
+									</apex:facet>
+									
+									<apex:outputPanel >
+										
+										<!-- this input field is needed to know which field is choosen and of what object -->
+										<apex:inputHidden rendered="{!AND(describe.allFields[fname].isWritable, ISBLANK(obj['Id'])==false, ISNULL(selectedObjFields[obj['Id']])==false)}" 
+														value="{!selectedObjFields[obj['Id']][fname].isChecked}"
+														id="selectedField"/>
+														
+										<script>
+											if("{!obj['Id']}" != "" && "{!obj['Id']}" != null)
+											{
+												//handles massive click (array of component ID based on object Id and field name)
+												if(fields["{!obj['Id']}"]==null)
+												{ 
+													fields["{!obj['Id']}"] = new Array();
+													fieldsInput["{!obj['Id']}"] = new Array();
+												}
+												//if the field is not writable, it should not be selected
+												if('{!describe.allFields[fname].isWritable}'=='true')
+												{
+													fields["{!obj['Id']}"]['{!fname}'] = (esc('{!$Component.column}'));
+													fieldsInput["{!obj['Id']}"]['{!fname}'] = (esc('{!$Component.selectedField}'));
+												}
+												//if selected, change the style class
+												if("true"== jQuery(fieldsInput["{!obj['Id']}"]['{!fname}']).val()) selectSingleField('{!obj['Id']}','{!fname}');
+											}
+										</script>
+										
+										<apex:outputField value="{!obj[fname]}" rendered="{!obj[fname]!=null}"/>
+										
+										
+									</apex:outputPanel>
+								</apex:column>
+								
+							</apex:repeat>
+							
+						</apex:dataTable>
+					</div>
+				</apex:outputPanel>
+				
+			</apex:pageBlockSection>
+			
+			<apex:outputPanel id="errMsgsBottom">
+				<apex:PageMessages />
+			</apex:outputPanel>
+		</apex:pageblock>
+	</apex:form>
+	
+</apex:page>

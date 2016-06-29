@@ -1,0 +1,6 @@
+<apex:page docType="html" showChat="true" showHeader="false" applyHtmlTag="false" sidebar="false" controller="dealer.CustomerCheckInHome_AC" id="MPI">
+                                <apex:form id="cStart">
+                                 <apex:inputText value="{!searchVin}" id="searchVINField" html-placeholder="Enter Last Six Numbers of VIN" style="height: 50px; text-align: center;" maxlength="6" />
+                                 <apex:commandLink value="Search" action="{!doCustomerInfo}" styleClass="btn" id="doCI" />
+                            </apex:form>
+</apex:page>

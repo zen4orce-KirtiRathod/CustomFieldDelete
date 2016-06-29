@@ -1,0 +1,45 @@
+<apex:page showHeader="true" sidebar="true" id="equipmentAdd" tabStyle="dealer__Deal__c" standardController="dealer__Deal__c" extensions="dealer.Desking_EXT">
+    <apex:sectionHeader title="Advanced Equipment Search" subtitle="Deal# {!deal.Name}" />
+    <apex:form >
+        <apex:pageBlock mode="detail" title="Advanced Equipment Search">
+            <apex:pageBlockButtons location="top">
+                <apex:outputLabel value="MFG" for="kitmfg" />
+                &nbsp;
+                <apex:inputText value="{!kitMFG}" id="kitmfg" />
+                &nbsp;
+                <apex:outputLabel value="Part Number" for="kitNumber" />
+                &nbsp;
+                <apex:inputText value="{!kitNumber}" id="kitNumber" />
+                &nbsp;
+                <apex:outputLabel value="Description" for="kitdesc" />
+                &nbsp;
+                <apex:inputText value="{!kitDescription}" id="kitdesc" />
+                &nbsp;
+                <apex:commandButton action="{!searchEquipment}" value="Search" reRender="rBlock"/>
+                &nbsp;
+                <apex:commandButton action="{!returnToDeal}" value="Return to Deal"/>
+            </apex:pageBlockButtons>
+
+        </apex:pageBlock>
+
+        <apex:pageBlock >
+            <apex:pageBlockSection columns="1" title="{!kitResultSize}" id="rBlock">    
+                <apex:pageBlockTable value="{!kitList}" var="item"> 
+                <!--<apex:column ><apex:inputCheckbox id="saveKit" /></apex:column>-->
+                    <apex:column >
+                        <apex:commandLink styleClass="btn" value="Select" action="{!saveWeOweLineItem}" immediate="true">
+                            <apex:param name="selectedPartNumber" assignTo="{!selectedPartNumber}" value="{!item.Id}" />
+                        </apex:commandLink>
+                    </apex:column>
+                    <apex:column ><apex:outputLink value="/{!item.Id}">{!item.Name}</apex:outputLink></apex:column>
+                    <apex:column value="{!item.dealer__Description__c}" />
+                    <apex:column value="{!item.dealer__Manufacturer__c}" />
+                    <apex:column value="{!item.dealer__Labor_Sale__c}" />
+                    <apex:column value="{!item.dealer__Kit_Price__c}" />
+                    <apex:column value="{!item.dealer__Item_Count__c}" />
+                    <!--<apex:column value="{!item.Sell_on_Deals__c}" />-->
+                </apex:pageBlockTable>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

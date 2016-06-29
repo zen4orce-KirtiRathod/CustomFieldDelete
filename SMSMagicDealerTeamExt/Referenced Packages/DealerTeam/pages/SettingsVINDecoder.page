@@ -1,0 +1,25 @@
+<apex:page controller="dealer.SecureVDCSettings" id="VDCSettingsPage" setup="true" >
+    <apex:form id="vdcform">
+        <apex:sectionHeader title="VIN Decoder Settings" />
+        <apex:panelGrid columns="1">
+            <apex:outputText >
+                This page is used to set the VIN decoder webservice settings.
+            </apex:outputText>
+            <apex:outputText > </apex:outputText>
+        </apex:panelGrid>
+        <apex:pageMessages />
+        <apex:pageBlock title="VIN Decoder Access Settings" mode="edit">
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Save" action="{!saveVDCSettings}" />
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection columns="1">
+
+                <apex:inputText value="{!decoderName}" label="Name" required="true"/>
+                <apex:inputText value="{!clientID}" label="Client ID" required="true"/>
+                <apex:inputText value="{!apiURL}" label="API URL" size="128" required="true" />
+                <apex:inputSecret value="{!decoderKey}" label="API Key" size="64" required="true"  />
+                <apex:outputText >API Key not visible.  This field is for input pourposes only.</apex:outputText>
+            </apex:pageBlockSection>
+         </apex:pageBlock>   
+    </apex:form>
+</apex:page>

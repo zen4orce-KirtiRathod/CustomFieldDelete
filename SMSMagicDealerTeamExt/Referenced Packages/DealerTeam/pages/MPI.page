@@ -1,0 +1,764 @@
+<apex:page docType="html" showChat="true" showHeader="false" applyHtmlTag="false" standardController="dealer__Inspection_Report__c" extensions="dealer.MPI2_EXT">
+  <!--[if IE 8]>               <html class="no-js lt-ie9" lang="en" > <![endif]-->
+  <!--[if gt IE 8]><!-->
+<html class="no-js" lang="en" >
+<!--<![endif]-->
+  
+  <head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width" />
+  <title>Multi-Point Vehicle Inspection</title>
+  
+  <apex:stylesheet value="{!URLFOR($Resource.dealer__MPIIncludes, 'css/foundation.css')}" />
+  <apex:stylesheet value="{!URLFOR($Resource.dealer__MPIIncludes, 'css/3birds-MPI.css')}" />
+  
+  <apex:includeScript value="{!URLFOR($Resource.dealer__MPIIncludes, 'js/vendor/jquery.js')}" />
+  <apex:includeScript value="{!URLFOR($Resource.dealer__MPIIncludes, 'js/foundation/foundation.js')}" />
+  <apex:includeScript value="{!URLFOR($Resource.dealer__MPIIncludes, 'js/foundation/foundation.magellan.js')}" />
+  <apex:includeScript value="{!URLFOR($Resource.dealer__MPIIncludes, 'js/vendor/custom.modernizr.js')}" />
+  
+  
+  
+  <script>
+    function sM(f, v, id) {
+        dealer.MPI_EXT.setM(f+':'+v+':'+id, function(result, event){
+        
+        });
+    }
+  </script>
+  
+  </head>
+  <body>
+  
+  <!-- Start Header 
+======================================================================== -->
+<div data-magellan-expedition="fixed">
+  <dl class="sub-nav">
+    <dd data-magellan-arrival="build"><a href="/">Return to DealerTeam</a></dd>
+  </dl>
+</div>
+  
+  <!--
+  <apex:outputText rendered="{!IF(NOT(ISBLANK(Inspection_Report__c.Id)), true, false)}">
+    <chatter:feed entityId="{!Inspection_Report__c.Id}" />
+  </apex:outputText>
+  -->
+  
+  <div class="row header">
+    <div class="large-4 columns"><img src="/{!MPILogo}" /></div>
+    <div class="large-8 columns text-right">
+      <h2 class="subheader">Multi-Point Vehicle Inspection</h2>
+    </div>
+  </div>
+  
+  <!-- Start Content Wrapper
+======================================================================== -->
+
+  <div class="row bodyContentWrap"> 
+    <!-- Form -->
+    <form class="custom">
+      <div class="large-8 columns">
+        <div class="text-left" style="margin-top: 20px;"><img src="{!URLFOR($Resource.MPIIncludes, 'img/key.png')}" /></div>
+        <div class="section-container accordion" data-section="accordion" style="margin-top: 20px;"> 
+          
+          <!-- SECTION: FLUID CHECK AND FILL
+============================================================================= -->
+          
+          <section class="active">
+            <p class="title" data-section-title=""><a href="#" class="accordianBtn">Fluid Check and Fill</a></p>
+            <div class="content" data-section-content="">
+              <table cellpadding="0" cellspacing="0" width="100%">
+                <thead>
+                  <tr>
+                    <th width="100">Condition</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><label for="radio1">
+                        <input name="radio1" type="radio" id="radio1" value="okay" style="display:none;" onChange="sM('Cooling_System__c', 'G', '{!JSENCODE(mid)}');" />
+                        <span class="custom radio greenBtn"></span></label>
+                      <label for="radio1">
+                        <input name="radio1" type="radio" id="radio1" value="future" style="display:none;" onChange="sM('Cooling_System__c', 'Y', '{!JSENCODE(mid)}');" />
+                        <span class="custom radio yellowBtn"></span></label>
+                      <label for="radio1">
+                        <input name="radio1" type="radio" id="radio1" value="immediate" style="display:none;"  onChange="sM('Cooling_System__c', 'R', '{!JSENCODE(mid)}');" />
+                        <span class="custom radio redBtn"></span></label></td>
+                    <td>Coolant</td>
+                  </tr>
+                  <tr>
+                    <td><label for="radio2">
+                        <input name="radio2" type="radio" id="radio2" value="okay" style="display:none;" onChange="sM('Windshield_Washer_Fluid__c', 'G', '{!JSENCODE(mid)}');" />
+                        <span class="custom radio greenBtn"></span></label>
+                      <label for="radio2">
+                        <input name="radio2" type="radio" id="radio2" value="future" style="display:none;" onChange="sM('Windshield_Washer_Fluid__c', 'G', '{!JSENCODE(mid)}');" />
+                        <span class="custom radio yellowBtn"></span></label>
+                      <label for="radio2">
+                        <input name="radio2" type="radio" id="radio2" value="immediate" style="display:none;" onChange="sM('Windshield_Washer_Fluid__c', 'G', '{!JSENCODE(mid)}');" />
+                        <span class="custom radio redBtn"></span></label></td>
+                    <td>Window washer fluid</td>
+                  </tr>
+                  <tr>
+                    <td><label for="radio3">
+                        <input name="radio3" type="radio" id="radio3" value="okay" style="display:none;" onChange="sM('Transmission_Fluid__c', 'G', '{!JSENCODE(mid)}');" />
+                        <span class="custom radio greenBtn"></span></label>
+                      <label for="radio3">
+                        <input name="radio3" type="radio" id="radio3" value="future" style="display:none;" onChange="sM('Transmission_Fluid__c', 'Y', '{!JSENCODE(mid)}');" />
+                        <span class="custom radio yellowBtn"></span></label>
+                      <label for="radio3">
+                        <input name="radio3" type="radio" id="radio3" value="immediate" style="display:none;" onChange="sM('Transmission_Fluid__c', 'R', '{!JSENCODE(mid)}');" />
+                        <span class="custom radio redBtn"></span></label></td>
+                    <td>Transmission fluid</td>
+                  </tr>
+                  <tr>
+                    <td><label for="radio4">
+                        <input name="radio4" type="radio" id="radio4" value="okay" style="display:none;" onChange="sM('Engine_Oil__c', 'G', '{!JSENCODE(mid)}');" />
+                        <span class="custom radio greenBtn"></span></label>
+                      <label for="radio4">
+                        <input name="radio4" type="radio" id="radio4" value="future" style="display:none;" onChange="sM('Engine_Oil__c', 'Y', '{!JSENCODE(mid)}');" />
+                        <span class="custom radio yellowBtn"></span></label>
+                      <label for="radio4">
+                        <input name="radio4" type="radio" id="radio4" value="immediate" style="display:none;" onChange="sM('Engine_Oil__c', 'R', '{!JSENCODE(mid)}');" />
+                        <span class="custom radio redBtn"></span></label></td>
+                    <td>Engine Oil</td>
+                  </tr>
+                  <tr>
+                    <td><label for="radio5">
+                        <input name="radio5" type="radio" id="radio5" value="okay" style="display:none;" onChange="sM('Brake_Fluid__c', 'G', '{!JSENCODE(mid)}');" />
+                        <span class="custom radio greenBtn"></span></label>
+                      <label for="radio5">
+                        <input name="radio5" type="radio" id="radio5" value="future" style="display:none;" onChange="sM('Brake_Fluid__c', 'Y', '{!JSENCODE(mid)}');" />
+                        <span class="custom radio yellowBtn"></span></label>
+                      <label for="radio5">
+                        <input name="radio5" type="radio" id="radio5" value="immediate" style="display:none;" onChange="sM('Brake_Fluid__c', 'R', '{!JSENCODE(mid)}');" />
+                        <span class="custom radio redBtn"></span></label></td>
+                    <td>Brake fluid</td>
+                  </tr>
+                  <tr>
+                    <td><label for="radio6">
+                        <input name="radio6" type="radio" id="radio6" value="okay" style="display:none;" onChange="sM('Power_Steering_Fluid__c', 'G', '{!JSENCODE(mid)}');" /> 
+                        <span class="custom radio greenBtn"></span></label>
+                      <label for="radio6">
+                        <input name="radio6" type="radio" id="radio6" value="future" style="display:none;" onChange="sM('Power_Steering_Fluid__c', 'Y', '{!JSENCODE(mid)}');" />
+                        <span class="custom radio yellowBtn"></span></label>
+                      <label for="radio6">
+                        <input name="radio6" type="radio" id="radio6" value="immediate" style="display:none;" onChange="sM('Power_Steering_Fluid__c', 'R', '{!JSENCODE(mid)}');" />
+                        <span class="custom radio redBtn"></span></label></td>
+                    <td>Power steering fluid</td>
+                  </tr>
+                  <tr>
+                    <td><label for="radio7">
+                        <input name="radio7" type="radio" id="radio7" value="okay" style="display:none;"/>
+                        <span class="custom radio greenBtn"></span></label>
+                      <label for="radio7">
+                        <input name="radio7" type="radio" id="radio7" value="future" style="display:none;"/>
+                        <span class="custom radio yellowBtn"></span></label>
+                      <label for="radio7">
+                        <input name="radio7" type="radio" id="radio7" value="immediate" style="display:none;"/>
+                        <span class="custom radio redBtn"></span></label></td>
+                    <td>Clutch fluid</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+          
+          <!-- SECTION: CHECK SYSTEMS / COMPONENTS
+============================================================================= -->
+          
+          <section>
+            <p class="title" data-section-title=""><a href="#" class="accordianBtn">Check Systems / Components</a></p>
+            <div class="content" data-section-content="">
+              <table cellpadding="0" cellspacing="0" width="100%">
+                <thead>
+                  <tr>
+                    <th width="100">Condition</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><label for="radio8">
+                        <input name="radio8" type="radio" id="radio8" value="okay" style="display:none;" onChange="sM('Widshield_Wipers_Ok__c', 'R', '{!JSENCODE(mid)}');"/>
+                        <span class="custom radio greenBtn"></span></label>
+                      <label for="radio8">
+                        <input name="radio8" type="radio" id="radio8" value="future" style="display:none;" onChange="sM('Widshield_Wipers_Ok__c', 'R', '{!JSENCODE(mid)}');"/>
+                        <span class="custom radio yellowBtn"></span></label>
+                      <label for="radio8">
+                        <input name="radio8" type="radio" id="radio8" value="immediate" style="display:none;" onChange="sM('Widshield_Wipers_Ok__c', 'R', '{!JSENCODE(mid)}');"/>
+                        <span class="custom radio redBtn"></span></label></td>
+                    <td>Windshield washer spray pattern, wiper operation and wiper blades (front and rear)</td>
+                  </tr>
+                  <tr>
+                    <td><label for="radio9">
+                        <input name="radio9" type="radio" id="radio9" value="okay" style="display:none;" onChange="sM('Lights_Op_Interior__c', 'R', '{!JSENCODE(mid)}');"/>
+                        <span class="custom radio greenBtn"></span></label>
+                      <label for="radio9">
+                        <input name="radio9" type="radio" id="radio9" value="future" style="display:none;" onChange="sM('Lights_Op_Interior__c', 'R', '{!JSENCODE(mid)}');"/>
+                        <span class="custom radio yellowBtn"></span></label>
+                      <label for="radio9">
+                        <input name="radio9" type="radio" id="radio9" value="immediate" style="display:none;" onChange="sM('Lights_Op_Interior__c', 'R', '{!JSENCODE(mid)}');"/>
+                        <span class="custom radio redBtn"></span></label></td>
+                    <td>Check operation of interior lights, exterior head lamps, horn, turn signals, hazard and brake lamps</td>
+                  </tr>
+                  <tr>
+                    <td><label for="radio10">
+                        <input name="radio10" type="radio" id="radio10" value="okay" style="display:none;" onChange="sM('Cabin_Air_Filter__c', 'R', '{!JSENCODE(mid)}');"/>
+                        <span class="custom radio greenBtn"></span></label>
+                      <label for="radio10">
+                        <input name="radio10" type="radio" id="radio10" value="future" style="display:none;" onChange="sM('Cabin_Air_Filter__c', 'R', '{!JSENCODE(mid)}');"/>
+                        <span class="custom radio yellowBtn"></span></label>
+                      <label for="radio10">
+                        <input name="radio10" type="radio" id="radio10" value="immediate" style="display:none;" onChange="sM('Cabin_Air_Filter__c', 'R', '{!JSENCODE(mid)}');"/>
+                        <span class="custom radio redBtn"></span></label></td>
+                    <td>Inspect cabin air filter</td>
+                  </tr>
+                  <tr>
+                    <td><label for="radio11">
+                        <input name="radio11" type="radio" id="radio11" value="okay" style="display:none;" onChange="sM('Parking_Brake_Operational__c', 'R', '{!JSENCODE(mid)}');"/>
+                        <span class="custom radio greenBtn"></span></label>
+                      <label for="radio11">
+                        <input name="radio11" type="radio" id="radio11" value="future" style="display:none;" onChange="sM('Parking_Brake_Operational__c', 'R', '{!JSENCODE(mid)}');"/>
+                        <span class="custom radio yellowBtn"></span></label>
+                      <label for="radio11">
+                        <input name="radio11" type="radio" id="radio11" value="immediate" style="display:none;" onChange="sM('Parking_Brake_Operational__c', 'R', '{!JSENCODE(mid)}');"/>
+                        <span class="custom radio redBtn"></span></label></td>
+                    <td>Check parking brake and brake adjustment</td>
+                  </tr>
+                  <tr>
+                    <td><label for="radio12">
+                        <input name="radio12" type="radio" id="radio12" value="okay" style="display:none;" onChange="sM('Parking_Brake_Operational__c', 'R', '{!JSENCODE(mid)}');"/>
+                        <span class="custom radio greenBtn"></span></label>
+                      <label for="radio12">
+                        <input name="radio12" type="radio" id="radio12" value="future" style="display:none;" onChange="sM('Parking_Brake_Operational__c', 'R', '{!JSENCODE(mid)}');"/>
+                        <span class="custom radio yellowBtn"></span></label>
+                      <label for="radio12">
+                        <input name="radio12" type="radio" id="radio12" value="immediate" style="display:none;" onChange="sM('Parking_Brake_Operational__c', 'R', '{!JSENCODE(mid)}');"/>
+                        <span class="custom radio redBtn"></span></label></td>
+                    <td>Clutch operation (if equipped)</td>
+                  </tr>
+                  <tr>
+                    <td><label for="radio13">
+                        <input name="radio13" type="radio" id="radio13" value="okay" style="display:none;" />
+                        <span class="custom radio greenBtn"></span></label>
+                      <label for="radio13">
+                        <input name="radio13" type="radio" id="radio13" value="future" style="display:none;"/>
+                        <span class="custom radio yellowBtn"></span></label>
+                      <label for="radio13">
+                        <input name="radio13" type="radio" id="radio13" value="immediate" style="display:none;"/>
+                        <span class="custom radio redBtn"></span></label></td>
+                    <td>Test battery with ED-18 and inspect battery terminals for corrosion</td>
+                  </tr>
+                  <tr>
+                    <td><label for="radio14">
+                        <input name="radio14" type="radio" id="radio14" value="okay" style="display:none;" onChange="sM('Engine_Air_Filter__c', 'G', '{!JSENCODE(mid)}');"/>
+                        <span class="custom radio greenBtn"></span></label>
+                      <label for="radio14">
+                        <input name="radio14" type="radio" id="radio14" value="future" style="display:none;" onChange="sM('Engine_Air_Filter__c', 'Y', '{!JSENCODE(mid)}');"/>
+                        <span class="custom radio yellowBtn"></span></label>
+                      <label for="radio14">
+                        <input name="radio14" type="radio" id="radio14" value="immediate" style="display:none;" onChange="sM('Engine_Air_Filter__c', 'R', '{!JSENCODE(mid)}');"/>
+                        <span class="custom radio redBtn"></span></label></td>
+                    <td>Engine air filter</td>
+                  </tr>
+                  <tr>
+                    <td><label for="radio15">
+                        <input name="radio15" type="radio" id="radio15" value="okay" style="display:none;" onChange="sM('Drive_Belts__c', 'G', '{!JSENCODE(mid)}');"/>
+                        <span class="custom radio greenBtn"></span></label>
+                      <label for="radio15">
+                        <input name="radio15" type="radio" id="radio15" value="future" style="display:none;" onChange="sM('Drive_Belts__c', 'Y', '{!JSENCODE(mid)}');"/>
+                        <span class="custom radio yellowBtn"></span></label>
+                      <label for="radio15">
+                        <input name="radio15" type="radio" id="radio15" value="immediate" style="display:none;" onChange="sM('Drive_Belts__c', 'R', '{!JSENCODE(mid)}');"/>
+                        <span class="custom radio redBtn"></span></label></td>
+                    <td>Inspect all drive belt(s)</td>
+                  </tr>
+                  <tr>
+                    <td><label for="radio16">
+                        <input name="radio16" type="radio" id="radio16" value="okay" style="display:none;" onChange="sM('Cooling_System__c', 'G', '{!JSENCODE(mid)}');"/>
+                        <span class="custom radio greenBtn"></span></label>
+                      <label for="radio16">
+                        <input name="radio16" type="radio" id="radio16" value="future" style="display:none;" onChange="sM('Cooling_System__c', 'Y', '{!JSENCODE(mid)}');"/>
+                        <span class="custom radio yellowBtn"></span></label>
+                      <label for="radio16">
+                        <input name="radio16" type="radio" id="radio16" value="immediate" style="display:none;" onChange="sM('Cooling_System__c', 'R', '{!JSENCODE(mid)}');"/>
+                        <span class="custom radio redBtn"></span></label></td>
+                    <td>Inspect engine cooling system for visable damage or leaks</td>
+                  </tr>
+                  <tr>
+                    <td><label for="radio17">
+                        <input name="radio17" type="radio" id="radio17" value="okay" style="display:none;"  onChange="sM('Hoses_Check__c', 'G', '{!JSENCODE(mid)}');"/>
+                        <span class="custom radio greenBtn"></span></label>
+                      <label for="radio17">
+                        <input name="radio17" type="radio" id="radio17" value="future" style="display:none;" onChange="sM('Hoses_Check__c', 'Y', '{!JSENCODE(mid)}');"/>
+                        <span class="custom radio yellowBtn"></span></label>
+                      <label for="radio17">
+                        <input name="radio17" type="radio" id="radio17" value="immediate" style="display:none;" onChange="sM('Hoses_Check__c', 'R', '{!JSENCODE(mid)}');"/>
+                        <span class="custom radio redBtn"></span></label></td>
+                    <td>Radiator, heater, and air conditioning hoses for leaks and/or damage</td>
+                  </tr>
+                  <tr>
+                    <td><label for="radio18">
+                        <input name="radio18" type="radio" id="radio18" value="okay" style="display:none;" onChange="sM('Shocks_Struts_Suspension__c', 'G', '{!JSENCODE(mid)}');"/>
+                        <span class="custom radio greenBtn"></span></label>
+                      <label for="radio18">
+                        <input name="radio18" type="radio" id="radio18" value="future" style="display:none;" onChange="sM('Shocks_Struts_Suspension__c', 'Y', '{!JSENCODE(mid)}');"/>
+                        <span class="custom radio yellowBtn"></span></label>
+                      <label for="radio18">
+                        <input name="radio18" type="radio" id="radio18" value="immediate" style="display:none;" onChange="sM('Shocks_Struts_Suspension__c', 'R', '{!JSENCODE(mid)}');"/>
+                        <span class="custom radio redBtn"></span></label></td>
+                    <td>Inspect shocks/struts and suspension components for leaks and/or wear or damage</td>
+                  </tr>
+                  <tr>
+                    <td><label for="radio19">
+                        <input name="radio19" type="radio" id="radio19" value="okay" style="display:none;" onChange="sM('Steering_Linkages__c', 'G', '{!JSENCODE(mid)}');"/>
+                        <span class="custom radio greenBtn"></span></label>
+                      <label for="radio19">
+                        <input name="radio19" type="radio" id="radio19" value="future" style="display:none;" onChange="sM('Steering_Linkages__c', 'Y', '{!JSENCODE(mid)}');"/>
+                        <span class="custom radio yellowBtn"></span></label>
+                      <label for="radio19">
+                        <input name="radio19" type="radio" id="radio19" value="immediate" style="display:none;" onChange="sM('Steering_Linkages__c', 'R', '{!JSENCODE(mid)}');"/>
+                        <span class="custom radio redBtn"></span></label></td>
+                    <td>Steering free-play and steering linkages</td>
+                  </tr>
+                  <tr>
+                    <td><label for="radio20">
+                        <input name="radio20" type="radio" id="radio20" value="okay" style="display:none;"  onChange="sM('Exhuast_System__c', 'G', '{!JSENCODE(mid)}');"/>
+                        <span class="custom radio greenBtn"></span></label>
+                      <label for="radio20">
+                        <input name="radio20" type="radio" id="radio20" value="future" style="display:none;" onChange="sM('Exhuast_System__c', 'Y', '{!JSENCODE(mid)}');"/>
+                        <span class="custom radio yellowBtn"></span></label>
+                      <label for="radio20">
+                        <input name="radio20" type="radio" id="radio20" value="immediate" style="display:none;" onChange="sM('Exhuast_System__c', 'R', '{!JSENCODE(mid)}');"/>
+                        <span class="custom radio redBtn"></span></label></td>
+                    <td>Exhaust system for damage, deterioration and loose parts</td>
+                  </tr>
+                  <tr>
+                    <td><label for="radio21">
+                        <input name="radio21" type="radio" id="radio21" value="okay" style="display:none;" onChange="sM('U_Joints_CV_Boots_Output_Shaft_Seals__c', 'G', '{!JSENCODE(mid)}');"/>
+                        <span class="custom radio greenBtn"></span></label>
+                      <label for="radio21">
+                        <input name="radio21" type="radio" id="radio21" value="future" style="display:none;" onChange="sM('U_Joints_CV_Boots_Output_Shaft_Seals__c', 'Y', '{!JSENCODE(mid)}');"/>
+                        <span class="custom radio yellowBtn"></span></label>
+                      <label for="radio21">
+                        <input name="radio21" type="radio" id="radio21" value="immediate" style="display:none;" onChange="sM('U_Joints_CV_Boots_Output_Shaft_Seals__c', 'R', '{!JSENCODE(mid)}');"/>
+                        <span class="custom radio redBtn"></span></label></td>
+                    <td>Inspect Constant velocity (CV) drive axle boots (if equipped)</td>
+                  </tr>
+                  <tr>
+                    <td><label for="radio22">
+                        <input name="radio22" type="radio" id="radio22" value="okay" style="display:none;" onChange="sM('Brake_Lines_Hoses__c', 'G', '{!JSENCODE(mid)}');"/>
+                        <span class="custom radio greenBtn"></span></label>
+                      <label for="radio22">
+                        <input name="radio22" type="radio" id="radio22" value="future" style="display:none;" onChange="sM('Brake_Lines_Hoses__c', 'Y', '{!JSENCODE(mid)}');"/>
+                        <span class="custom radio yellowBtn"></span></label>
+                      <label for="radio22">
+                        <input name="radio22" type="radio" id="radio22" value="immediate" style="display:none;" onChange="sM('Brake_Lines_Hoses__c', 'R', '{!JSENCODE(mid)}');"/>
+                        <span class="custom radio redBtn"></span></label></td>
+                    <td>Brake system - inspect lines and hoses for visible leaks or damage and deterioration to lines and hoses</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+          
+          <!-- SECTION: INSPECT TIRES
+============================================================================= -->
+          
+          <section>
+            <p class="title" data-section-title=""><a href="#" class="accordianBtn">Inspect Tires</a></p>
+            <div class="content" data-section-content="">
+              <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tires">
+                <tr>
+                  <td valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                      <thead>
+                        <tr>
+                          <th>Left Front</th>
+                        </tr>
+                      </thead>
+                      <tr>
+                        <td><label for="radio23">
+                            <input name="radio23" type="radio" id="radio23" value="okay" style="display:none;" onChange="sM('Tire_DF__c', 'G', '{!JSENCODE(mid)}');"/>
+                            <span class="custom radio greenBtn"></span> 7/32 or more</label></td>
+                      </tr>
+                      <tr>
+                        <td><label for="radio23">
+                            <input name="radio23" type="radio" id="radio23" value="okay" style="display:none;" onChange="sM('Tire_DF__c', 'Y', '{!JSENCODE(mid)}');"/>
+                            <span class="custom radio yellowBtn"></span> 4/32 to 6/32</label></td>
+                      </tr>
+                      <tr>
+                        <td><label for="radio23">
+                            <input name="radio23" type="radio" id="radio23" value="okay" style="display:none;" onChange="sM('Tire_DF__c', 'R', '{!JSENCODE(mid)}');"/>
+                            <span class="custom radio redBtn"></span> 3/32 or less</label></td>
+                      </tr>
+                    </table>
+                    <br/>
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                      <thead>
+                        <tr>
+                          <th>Left Rear</th>
+                        </tr>
+                      </thead>
+                      <tr>
+                        <td><label for="radio24">
+                            <input name="radio24" type="radio" id="radio24" value="okay" style="display:none;" onChange="sM('Tire_DR__c', 'G', '{!JSENCODE(mid)}');"/>
+                            <span class="custom radio greenBtn"></span> 7/32 or more</label></td>
+                      </tr>
+                      <tr>
+                        <td><label for="radio24">
+                            <input name="radio24" type="radio" id="radio24" value="okay" style="display:none;" onChange="sM('Tire_DR__c', 'Y', '{!JSENCODE(mid)}');"/>
+                            <span class="custom radio yellowBtn"></span> 4/32 to 6/32</label></td>
+                      </tr>
+                      <tr>
+                        <td><label for="radio24">
+                            <input name="radio24" type="radio" id="radio24" value="okay" style="display:none;" onChange="sM('Tire_DR__c', 'R', '{!JSENCODE(mid)}');"/>
+                            <span class="custom radio redBtn"></span> 3/32 or less</label></td>
+                      </tr>
+                    </table></td>
+                  <td align="center" class="hide-for-small" valign="middle"><img src="{!URLFOR($Resource.MPIIncludes, 'img/tire.png')}"/></td>
+                  <td valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                      <thead>
+                        <tr>
+                          <th>Right Front</th>
+                        </tr>
+                      </thead>
+                      <tr>
+                        <td><label for="radio25">
+                            <input name="radio25" type="radio" id="radio25" value="okay" style="display:none;" onChange="sM('Tire_PF__c', 'G', '{!JSENCODE(mid)}');"/>
+                            <span class="custom radio greenBtn"></span> 7/32 or more</label></td>
+                      </tr>
+                      <tr>
+                        <td><label for="radio25">
+                            <input name="radio25" type="radio" id="radio25" value="okay" style="display:none;" onChange="sM('Tire_PF__c', 'Y', '{!JSENCODE(mid)}');"/>
+                            <span class="custom radio yellowBtn"></span> 4/32 to 6/32</label></td>
+                      </tr>
+                      <tr>
+                        <td><label for="radio25">
+                            <input name="radio25" type="radio" id="radio25" value="okay" style="display:none;" onChange="sM('Tire_PF__c', 'R', '{!JSENCODE(mid)}');"/>
+                            <span class="custom radio redBtn"></span> 3/32 or less</label></td>
+                      </tr>
+                    </table>
+                    <br/>
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                      <thead>
+                        <tr>
+                          <th>Right  Rear</th>
+                        </tr>
+                      </thead>
+                      <tr>
+                        <td><label for="radio26">
+                            <input name="radio26" type="radio" id="radio26" value="okay" style="display:none;" onChange="sM('Tire_PR__c', 'G', '{!JSENCODE(mid)}');"/>
+                            <span class="custom radio greenBtn"></span> 7/32 or more</label></td>
+                      </tr>
+                      <tr>
+                        <td><label for="radio26">
+                            <input name="radio26" type="radio" id="radio26" value="okay" style="display:none;" onChange="sM('Tire_PR__c', 'Y', '{!JSENCODE(mid)}');"/>
+                            <span class="custom radio yellowBtn"></span> 4/32 to 6/32</label></td>
+                      </tr>
+                      <tr>
+                        <td><label for="radio26">
+                            <input name="radio26" type="radio" id="radio26" value="okay" style="display:none;" onChange="sM('Tire_PR__c', 'R', '{!JSENCODE(mid)}');"/>
+                            <span class="custom radio redBtn"></span> 3/32 or less</label></td>
+                      </tr>
+                    </table></td>
+                </tr>
+              </table>
+            </div>
+          </section>
+          
+          <!-- SECTION: BRAKE TIRES
+============================================================================= -->
+          
+          <section>
+            <p class="title" data-section-title=""><a href="#" class="accordianBtn">Brake Inspection</a></p>
+            <div class="content" data-section-content="">
+              <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tires">
+                <tr>
+                  <td valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                      <thead>
+                        <tr>
+                          <th>Left Front</th>
+                        </tr>
+                      </thead>
+                      <tr>
+                        <td><label for="radio27">
+                            <input name="radio27" type="radio" id="radio27" value="okay" style="display:none;" onChange="sM('Brake_DF__c', 'G', '{!JSENCODE(mid)}');"/>
+                            <span class="custom radio greenBtn"></span> Over 5mm (Disc)</label></td>
+                      </tr>
+                      <tr>
+                        <td><label for="radio27">
+                            <input name="radio27" type="radio" id="radio27" value="okay" style="display:none;" onChange="sM('Brake_DF__c', 'Y', '{!JSENCODE(mid)}');"/>
+                            <span class="custom radio yellowBtn"></span> 3mm to 5mm</label></td>
+                      </tr>
+                      <tr>
+                        <td><label for="radio27">
+                            <input name="radio27" type="radio" id="radio27" value="okay" style="display:none;" onChange="sM('Brake_DF__c', 'R', '{!JSENCODE(mid)}');"/>
+                            <span class="custom radio redBtn"></span> Less than 3mm</label></td>
+                      </tr>
+                    </table>
+                    <br/>
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                      <thead>
+                        <tr>
+                          <th>Left Rear</th>
+                        </tr>
+                      </thead>
+                      <tr>
+                        <td><label for="radio28">
+                            <input name="radio28" type="radio" id="radio28" value="okay" style="display:none;" onChange="sM('Brake_DR__c', 'R', '{!JSENCODE(mid)}');"/>
+                            <span class="custom radio greenBtn"></span> Over 5mm (Disc)</label></td>
+                      </tr>
+                      <tr>
+                        <td><label for="radio28">
+                            <input name="radio28" type="radio" id="radio28" value="okay" style="display:none;" onChange="sM('Brake_DR__c', 'R', '{!JSENCODE(mid)}');"/>
+                            <span class="custom radio yellowBtn"></span> 3mm to 5mm</label></td>
+                      </tr>
+                      <tr>
+                        <td><label for="radio28">
+                            <input name="radio28" type="radio" id="radio28" value="okay" style="display:none;" onChange="sM('Brake_DR__c', 'R', '{!JSENCODE(mid)}');"/>
+                            <span class="custom radio redBtn"></span> Less than 3mm</label></td>
+                      </tr>
+                    </table></td>
+                  <td align="center" class="hide-for-small" valign="middle"><img src="{!URLFOR($Resource.MPIIncludes, 'img/brake_disk_brake.png')}"/></td>
+                  <td valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                      <thead>
+                        <tr>
+                          <th>Right Front</th>
+                        </tr>
+                      </thead>
+                      <tr>
+                        <td><label for="radio29">
+                            <input name="radio29" type="radio" id="radio29" value="okay" style="display:none;" onChange="sM('Brake_PF__c', 'G', '{!JSENCODE(mid)}');"/>
+                            <span class="custom radio greenBtn"></span> Over 5mm (Disc)</label></td>
+                      </tr>
+                      <tr>
+                        <td><label for="radio29">
+                            <input name="radio29" type="radio" id="radio29" value="okay" style="display:none;" onChange="sM('Brake_PF__c', 'Y', '{!JSENCODE(mid)}');"/>
+                            <span class="custom radio yellowBtn"></span> 3mm to 5mm</label></td>
+                      </tr>
+                      <tr>
+                        <td><label for="radio29">
+                            <input name="radio29" type="radio" id="radio29" value="okay" style="display:none;" onChange="sM('Brake_PF__c', 'R', '{!JSENCODE(mid)}');"/>
+                            <span class="custom radio redBtn"></span> Less than 3mm</label></td>
+                      </tr>
+                    </table>
+                    <br/>
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                      <thead>
+                        <tr>
+                          <th>Right  Rear</th>
+                        </tr>
+                      </thead>
+                      <tr>
+                        <td><label for="radio30">
+                            <input name="radio30" type="radio" id="radio30" value="okay" style="display:none;" onChange="sM('Brake_PR__c', 'R', '{!JSENCODE(mid)}');"/>
+                            <span class="custom radio greenBtn"></span> Over 5mm (Disc)</label></td>
+                      </tr>
+                      <tr>
+                        <td><label for="radio30">
+                            <input name="radio30" type="radio" id="radio30" value="okay" style="display:none;" onChange="sM('Brake_PR__c', 'R', '{!JSENCODE(mid)}');"/>
+                            <span class="custom radio yellowBtn"></span> 3mm to 5mm</label></td>
+                      </tr>
+                      <tr>
+                        <td><label for="radio30">
+                            <input name="radio30" type="radio" id="radio30" value="okay" style="display:none;" onChange="sM('Brake_PR__c', 'R', '{!JSENCODE(mid)}');"/>
+                            <span class="custom radio redBtn"></span> Less than 3mm</label></td>
+                      </tr>
+                    </table></td>
+                </tr>
+              </table>
+            </div>
+          </section>
+          
+          <!-- SECTION: NEXT SCHEDULED SERVICE
+============================================================================= -->
+          
+          <section>
+            <p class="title" data-section-title=""><a href="#" class="accordianBtn">Next Scheduled Service and Comments</a></p>
+            <div class="content" data-section-content="">
+              <select name="">
+                <option>Month:</option>
+                <option>January</option>
+                <option>February</option>
+                <option>March</option>
+                <option>April</option>
+                <option>May</option>
+                <option>June</option>
+                <option>July</option>
+                <option>August</option>
+                <option>September</option>
+                <option>October</option>
+                <option>November</option>
+                <option>December</option>
+              </select>
+              <select name="">
+                <option>Day:</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+                <option>6</option>
+                <option>7</option>
+                <option>8</option>
+                <option>9</option>
+                <option>10</option>
+                <option>11</option>
+                <option>12</option>
+                <option>13</option>
+                <option>14</option>
+                <option>15</option>
+                <option>16</option>
+                <option>17</option>
+                <option>18</option>
+                <option>19</option>
+                <option>20</option>
+                <option>21</option>
+                <option>22</option>
+                <option>23</option>
+                <option>24</option>
+                <option>25</option>
+                <option>26</option>
+                <option>27</option>
+                <option>28</option>
+                <option>29</option>
+                <option>30</option>
+                <option>31</option>
+              </select>
+              <select name="">
+                <option>Year:</option>
+                <option>2013</option>
+                <option>2014</option>
+              </select>
+              <select name="">
+                <option selected="selected">Select Time</option>
+                <option>8:00 am</option>
+                <option>8:15 am</option>
+                <option>8:30 am</option>
+                <option>8:45 am</option>
+                <option>9:00 am</option>
+                <option>9:15 am</option>
+                <option>9:30 am</option>
+                <option>9:45 am</option>
+                <option>10:00 am</option>
+                <option>10:15 am</option>
+                <option>10:30 am</option>
+                <option>10:45 am</option>
+                <option>11:00 am</option>
+                <option>11:15 am</option>
+                <option>11:30 am</option>
+                <option>11:45 am</option>
+                <option>12:00 pm</option>
+                <option>12:15 pm</option>
+                <option>12:30 pm</option>
+                <option>12:45 pm</option>
+                <option>1:00 pm</option>
+                <option>1:15 pm</option>
+                <option>1:30 pm</option>
+                <option>1:45 pm</option>
+                <option>2:00 pm</option>
+                <option>2:15 pm</option>
+                <option>2:30 pm</option>
+                <option>2:45 pm</option>
+                <option>3:00 pm</option>
+                <option>3:15 pm</option>
+                <option>3:30 pm</option>
+                <option>3:45 pm</option>
+                <option>4:00 pm</option>
+                <option>4:15 pm</option>
+                <option>4:30 pm</option>
+                <option>4:45 pm</option>
+                <option>5:00 pm</option>
+                <option>5:15 pm</option>
+                <option>5:30 pm</option>
+              </select>
+              <textarea name="" placeholder="Technician Comments" style="min-height: 130px; max-height: 130px;"></textarea>
+            </div>
+          </section>
+        </div>
+      </div>
+      
+      <!-- Customer Details Form -->
+      <div class="large-4 columns leftCol">
+        <div class="row orderDetails hide-for-small" style="margin-top: 20px;">
+          <div class="small-4 columns"><img src="{!URLFOR($Resource.MPIIncludes, 'img/tech-headshot.png')}"/></div>
+          <div class="small-8 columns"><strong class="blue">Technician:</strong> <br />
+            Jon Anderson<br />
+            <br />
+            <strong class="blue">Service Advisor:</strong> <br />
+            Andy Hunt</div>
+        </div>
+        <div style="margin-top: 20px;"> <a href="#" class="inspectBlock"><apex:outputText value="{0,date,yyyy.MM.dd}"> <apex:param value="{!NOW()}" /> </apex:outputText></a> <a href="#" class="inspectBlock">{!ServiceRepairOrder.Name}</a> </div>
+        <div class="row sep">&nbsp;</div>
+        <div class="customerDetails" style="margin-bottom: 25px;">
+          <h2 class="subheader">Customer Details</h2>
+          <input name="" type="text" placeholder="First Name" value="{!ContactDetails.FirstName}" disabled = "true"/>
+          <input name="" type="text" placeholder="Last Name" value="{!ContactDetails.LastName}" disabled = "true"/>
+          <input name="" type="text" placeholder="Email" value="{!ContactDetails.Email}" disabled = "true"/>
+          <input name="" type="text" placeholder="Phone Number" value="{!ContactDetails.Phone}" disabled = "true"/>
+          <input name="textme" type="radio" value="Text me with updates during service"/>Text MSG Udpates
+          <div class="row sep">&nbsp;</div>
+          <h2 class="subheader">Vehicle Details</h2>
+          <select name="" disabled="true">
+            <option selected="selectd" disabled="true">{!VehicleDetails.Year__c}</option>
+            <!-- <option>2014</option>
+            <option>2013</option>
+            <option>2012</option>
+            <option>2011</option>
+            <option>2010</option>
+            <option>2009</option> -->
+          </select>
+          <select name="" disabled="true">
+            <option selected="selected" disabled="true">{!VehicleDetails.Make__c}</option>
+          </select>
+          <select name="" disabled="true">
+            <option selected="selected" disabled="true">{!VehicleDetails.Carline__c}</option>
+          </select>
+          <input name="" type="text" placeholder="VIN Number" value="{!VehicleDetails.VIN__c}" disabled = "true"/>
+          <input name="" type="text" placeholder="Vehicle Mileage" value="{!VehicleDetails.Warranty_Exp_Miles__c}" disabled = "true"/>
+          <apex:form >
+            <apex:commandButton action="{!saveStatus}" value="Complete" id="theButton" styleClass="completeBtn"/>
+          </apex:form>
+        </div>
+      </div>
+    </form>
+  </div>
+  <!-- Closes bodyContentWrap --> 
+
+  <!-- Start Footer
+======================================================================== 
+
+<div class="row">
+Footer Content Goes Here
+</div>--> 
+  
+  <script>
+  document.write('<script src=' +
+  ('__proto__' in {} ? '{!URLFOR($Resource.MPIIncludes, 'js/vendor/zepto')}' : '{!URLFOR($Resource.MPIIncludes, 'js/vendor/jquery')}') +
+  '.js><\/script>')
+</script> 
+  <script src="{!URLFOR($Resource.MPIIncludes, 'js/foundation.min.js')}"></script> 
+  <!--
+  <script src="js/foundation/foundation.js"></script>
+  <script src="js/foundation/foundation.interchange.js"></script>
+  <script src="js/foundation/foundation.abide.js"></script>
+  <script src="js/foundation/foundation.dropdown.js"></script>
+  <script src="js/foundation/foundation.placeholder.js"></script>
+  <script src="js/foundation/foundation.forms.js"></script>
+  <script src="js/foundation/foundation.alerts.js"></script>
+  <script src="js/foundation/foundation.magellan.js"></script>
+  <script src="js/foundation/foundation.reveal.js"></script>
+  <script src="js/foundation/foundation.tooltips.js"></script>
+  <script src="js/foundation/foundation.clearing.js"></script>
+  <script src="js/foundation/foundation.cookie.js"></script>
+  <script src="js/foundation/foundation.joyride.js"></script>
+  <script src="js/foundation/foundation.orbit.js"></script>
+  
+  <script src="js/foundation/foundation.topbar.js"></script>
+  
+  --> 
+  <script src="{!URLFOR($Resource.MPIIncludes, 'js/foundation/foundation.section.js')}"></script> 
+  <script> $(document).foundation(); </script>
+  </body>
+  </html></apex:page>

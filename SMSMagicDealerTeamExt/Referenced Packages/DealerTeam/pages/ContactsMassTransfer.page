@@ -1,0 +1,80 @@
+<apex:page controller="dealer.ContactsMassTransfer" setup="true" title="Mass Transfer Customers">
+<apex:includeScript value="{!URLFOR($Resource.dealer__jQuery_UI_1820, 'js/jquery-1.7.2.min.js')}" />
+<apex:includeScript value="{!URLFOR($Resource.dealer__jQuery_UI_1820, 'js/jquery-ui-1.8.20.custom.min.js')}" />
+    <script type="text/javascript">
+    	var $j = jQuery.noConflict();
+		function handleThis( e ){
+			$j('.selectedId').attr('checked', isChecked('selectall'));
+	    }      
+	    function isChecked(checkboxId) {
+	        var id = '#' + checkboxId;
+	        return $j(id).is(":checked");
+	    }
+	    function getwidth(){
+           	var scrwidth  = document.getElementById('thumb_window').scrollWidth;
+           	var scrheight  = document.getElementById('thumb_window').scrollHeight;
+           	var marginleft = (document.documentElement.clientWidth - scrwidth)/2;
+           	//document.getElementById('ffeCommunityHomePage:popupform:custpopup').style.marginLeft = marginleft.toString()+"px";
+           	//document.getElementById('ffeCommunityHomePage:popupform:custpopup').style.height = (scrheight+50).toString()+"px";
+        }
+	</script>
+	<apex:form id="FormId">
+		<apex:sectionHeader subtitle="Customer Mass Transfer" description="This page allows you to mass transfer customer ownership from one user to another." />
+		<apex:pageBlock mode="Edit">
+			<apex:pageBlockSection title="Mass Transfer Contacts">
+				<apex:pageBlockSectionItem >
+					<apex:outputText value="Transfer From"/>
+					<apex:inputField value="{!con.dealer__Transfer_From__c}"/>
+				</apex:pageBlockSectionItem>
+				<apex:pageBlockSectionItem >
+					<apex:pageMessage rendered="{!AND(EnteredSearchBox,ISNULL(con.dealer__Transfer_From__c))}" severity="Error" strength="1" title="Error: " summary="Please Select Transfer From user"></apex:pageMessage>
+                </apex:pageBlockSectionItem>   
+				<apex:pageBlockSectionItem >
+					<apex:outputText value="Transfer To"/>
+					<apex:selectList style="width:200px;vertical-align:bottom;" id="unselected_list" required="false" value="{!participant}" multiselect="true" size="14">
+                        <apex:selectOptions value="{!participants}"/>
+                    </apex:selectList>
+				</apex:pageBlockSectionItem>
+				<apex:pageBlockSectionItem >
+					<apex:pageMessage rendered="{!AND(EnteredTransferBox,Participant.size == 0)}" severity="Error" strength="1" title="Error: " summary="Please Select atleast One User from Transfer To drop down List"></apex:pageMessage>
+                </apex:pageBlockSectionItem> 
+			</apex:pageBlockSection>
+			<apex:pageBlockSection >
+				<center><apex:commandButton value="Find" id="Search" action="{!search}"></apex:commandButton></center>
+			</apex:pageBlockSection>
+		</apex:pageBlock>
+		<apex:pageMessage rendered="{!AND(EnteredSearchBox,NOT(ISNULL(con.dealer__Transfer_From__c)),ContactList.size == 0)}" severity="Error" strength="1" title="Error: " summary="There are no Contact records associated with this User"></apex:pageMessage>
+		<apex:outputPanel rendered="{!AND(EnteredSearchBox,NOT(ISNULL(con.dealer__Transfer_From__c)),ContactList.size != 0)}">
+		<div style="max-height:400px; padding: 10px;" id="thumb_window">
+					<center><span class="alignment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<apex:commandButton value="Transfer" id="Transfer" action="{!Transfer}"></apex:commandButton>
+						<apex:commandButton value="Cancel" id="Cancel" action="{!Cancel}"></apex:commandButton>
+					</span></center>
+				<table style="width:100%;" align="right" class="list" border="0" cellpadding="0" cellspacing="0">
+		            <thead class="rich-table-thead">
+		              <tr class="headerRow ">
+		                <th class="headerRow " scope="col" colspan="1"><input type="checkbox" id="selectall" checked="true" onclick="javascript: handleThis(this);">All</input></th>
+		                <th class="headerRow " scope="col" colspan="1">Name</th>
+		                <th class="headerRow " scope="col" colspan="1">Phone</th>
+		                <th class="headerRow " scope="col" colspan="1">EMail</th>
+		                <th class="headerRow " scope="col" colspan="1">Contact Owner</th>
+		              </tr>
+		            </thead>
+		            <tbody>
+			            <apex:repeat value="{!ContactList}" var="person">
+				            <apex:outputPanel layout="block">                   
+				                <tr class="dataRow" onblur="if (window.hiOff){hiOff(this);}" onfocus="if (window.hiOn){hiOn(this);}" onmouseout="if (window.hiOff){hiOff(this);}" onmouseover="if (window.hiOn){hiOn(this);}">                      
+					                <td class="dataCell" width="10%"><apex:inputCheckbox value="{!person.isChecked}" styleClass="selectedId"/></td>
+					                <td class="dataCell" width="20%">{!person.Name}</td>
+					                <td class="dataCell" width="20%">{!person.Phone}</td>
+					                <td class="dataCell" width="25%">{!person.Email}</td>
+					                <td class="dataCell" width="25%">{!person.OwnerName}</td>
+				                </tr>
+				            </apex:outputPanel>                 
+			            </apex:repeat>
+		            </tbody>
+	            </table>
+		</div>
+		</apex:outputPanel>
+	</apex:form>
+</apex:page>

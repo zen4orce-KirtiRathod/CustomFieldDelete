@@ -1,0 +1,85 @@
+<apex:page controller="dealer.ServiceJobCard" id="jobCard" title="Print Job Card">
+    <style type="text/css">
+   .wRow { 
+        color:white;
+        font-size:bold;
+    }
+    .bBottom {
+     	border-bottom:1px solid black;   
+    }
+    </style>
+    <apex:sectionHeader description="Select a technician to prepare a daily workcard for." title="Job Cards" subtitle="Technician Daily Job Cards" />
+    <apex:form id="jcForm">
+        <apex:pageBlock id="SelectTechnician" title="Select Technician">
+            <apex:pageBlockButtons location="top" >
+            <apex:commandButton action="{!compileReport}" value="Generate Job Card" reRender="opensro" status="roStatus" />
+            </apex:pageBlockButtons>
+            <apex:actionStatus startText=" (working...)"
+            stopText="" id="roStatus"/>
+            <br />
+            <apex:selectList value="{!selectedTech}" multiselect="false">
+                <apex:selectOptions value="{!TechsList}"/>
+            </apex:selectList>
+        </apex:pageBlock>
+        
+        <apex:pageBlock title="Open Service Repair Orders" id="opensro">
+
+            <apex:pageBlockButtons location="top">
+                <apex:outputLink value="/apex/serviceJobCardPDF?techid={!HTMLENCODE(selectedTech)}" target="_blank" styleClass="btn">Print Job Card</apex:outputLink>
+            </apex:pageBlockButtons>
+            <apex:repeat id="rotable" value="{!repairorders}" var="ro" >
+
+                
+
+                <table width="100%" cellpadding="4" cellspacing="0">
+                    <tr>
+                        <td class="wRow bBottom"><b>Stock#:</b>&nbsp;<apex:outputField value="{!ro.dealer__Vehicle__r.dealer__Stock_Number__c}" /></td>
+                        <td class="bBottom"><b>Color:</b>&nbsp;<apex:outputField value="{!ro.dealer__Vehicle__r.dealer__Ext_Color__c}" /></td>
+                        <td class="bBottom"><b>Hat#:</b>&nbsp;<apex:outputField value="{!ro.dealer__Tag__c}" /></td>
+                        <td class="bBottom"><b>Location:</b>&nbsp;<apex:outputField value="{!ro.dealer__Location__c}" /></td>
+                        <td class="bBottom"><b>Open:</b>&nbsp;<apex:outputField value="{!ro.dealer__Days_Down__c}" /></td>
+                        <td class="bBottom"><b>Inv Stat:</b>&nbsp;<apex:outputField value="{!ro.dealer__Vehicle__r.dealer__Status_Code__c}" /></td>
+                        <td class="bBottom">&nbsp;</td>
+                        <td class="bBottom">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td class="wRow bBottom">RO#:<apex:outputText value="{!ro.dealer__RO_Number__c}" /></td>
+                        <td class="wRow bBottom" colspan="4"></td>
+                        <td class="bBottom"><b>Customer Contact:</b>&nbsp;<apex:outputText value="{!ro.Customer_Contact__r.Name}" /></td>
+                        <td class="bBottom"><b>Promise Date:</b>&nbsp;<apex:outputfield value="{!ro.dealer__Promise_Date__c}" />&nbsp;<apex:outputfield value="{!ro.dealer__Promise_Time__c}" /></td>
+                        <td class="bBottom"><b>Waiting:</b>&nbsp;<apex:outputField value="{!ro.dealer__Waiting__c}" /></td>
+                    </tr>                    
+                    <tr>
+                    	<td colspan="8"><b>Notes:</b>&nbsp;<apex:outputField value="{!ro.dealer__Comments__c}" /></td>
+                    </tr>
+
+                    <apex:repeat value="{!ro.dealer__Job_Lines__r}" var="jl">
+                    <apex:outputText rendered="{!AND(jl.dealer__Stat__c!='Complete', IF(selectedTech==jl.dealer__Technician__c, true, false))}">
+                    <tr>
+                        <td colspan="8">
+                            <table width="100%" cellpadding="4" cellspacing="0">
+                                <tr>
+                                    <td width="145px" class="bBottom"><b>Line#:</b>&nbsp;<apex:outputField value="{!jl.dealer__Line_Number__c}" /></td>
+                                    <td width="145px" class="bBottom"><b>Code:</b>&nbsp;<apex:outputField value="{!jl.dealer__Op_Code__c}" /></td>
+                                    <td width="145px" class="bBottom"><b>Tech:</b>&nbsp;<apex:outputField value="{!jl.dealer__Technician__c}" /></td>
+                                    <td class="bBottom"><b>Status:</b>&nbsp;<apex:outputField value="{!jl.dealer__Stat__c}" /></td>
+                                </tr>
+                                <tr>
+                                    <td class="bBottom"><b>Concern:</b></td>
+                                    <td colspan="3" class="bBottom"><apex:outputField value="{!jl.dealer__CustomerConcern__c}" /></td>    
+                                </tr>
+                                 <tr>
+                                    <td class="bBottom" height="145px;"><b>Correction:</b></td>
+                                    <td colspan="3" class="bBottom"><apex:outputField value="{!jl.dealer__Correction__c}" /></td>    
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    </apex:outputText>  
+                    </apex:repeat> 
+                    
+                </table>
+            </apex:repeat>
+        </apex:pageBlock>
+      </apex:form>   
+</apex:page>

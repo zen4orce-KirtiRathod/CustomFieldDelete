@@ -1,0 +1,996 @@
+<apex:page title="Repair Order: {!HTMLENCODE(dealer__Service_Repair_Order__c.Name)}" standardController="dealer__Service_Repair_Order__c" extensions="dealer.ServiceRepairOrder_EXT" id="ServiceROCreate" showChat="true">
+<apex:includeScript value="{!URLFOR($Resource.dealer__jQuery_UI_1820, 'js/jquery-1.7.2.min.js')}" />
+<apex:includeScript value="{!URLFOR($Resource.dealer__jQuery_UI_1820, 'js/jquery-ui-1.8.20.custom.min.js')}" />
+<apex:includeScript value="{!$Resource.dealer__jsHashTable}" />
+<apex:includeScript value="{!$Resource.dealer__jQueryNumberFormatting}" />
+<apex:includeScript value="{!$Resource.dealer__jQueryTools}" />
+<apex:includeScript value="{!$Resource.dealer__jQuery_TimePicker}" />
+<apex:stylesheet value="{!URLFOR($Resource.dealer__jQuery_UI_1820,'css/Aristo/Aristo.css')}"/>
+<apex:stylesheet value="{!$Resource.dealer__ServiceCSS}"/>
+
+<apex:stylesheet value="{!URLFOR($Resource.dealer__jqGrid, 'ui.jqgrid.css')}" />
+<apex:includeScript value="{!URLFOR($Resource.dealer__jqGrid, 'grid.locale-en.js')}" />
+<apex:includeScript value="{!URLFOR($Resource.dealer__jqGrid, 'jquery.jqGrid.min.js')}" />
+
+<script type="text/javascript">
+
+var j$ = jQuery.noConflict();
+var action = '';
+var buttonText = '';
+var lineNumber  = 0;
+var pObj        = new Object();
+pObj.data       = new Array(); 
+var lineSubTotal=0;
+
+var partsInvoiceId = '{!JSENCODE(dealer__Service_Repair_Order__c.dealer__Parts_Invoice__c)}';
+var repairOrderId  = '{!JSENCODE(dealer__Service_Repair_Order__c.Id)}';
+
+// On Ready Load Functions
+j$(document).ready(function() {
+    
+    // Load active job lines
+    loadJobLineGrid();
+     
+
+     
+     j$("#timePromisedInput").timepicker({
+         showPeriod: true,
+         onHourShow: OnHourShowCallback,
+         onMinuteShow: OnMinuteShowCallback,
+         onClose: copyTimeOut
+     });
+     j$("#timePromisedInput").val('{!JSENCODE(dealer__Service_Repair_Order__c.dealer__Promise_Time__c)}');
+     
+     <apex:outputText rendered="{!NOT(ISBLANK(dealer__Service_Repair_Order__c.dealer__Invoiced_Date_Time__c))}">
+        j$(esc('ServiceROCreate:CreateServiceRepairOrder:lopinputBlock:lopinputBlockButtons:opCodejs')).prop('disabled', true);
+        j$('#timePromisedInput').prop('disabled', true);
+        j$('#noValue').prop('disabled', true);
+     </apex:outputText>
+    
+    <apex:outputText rendered="{!ISBLANK(dealer__Service_Repair_Order__c.dealer__Invoiced_Date_Time__c)}">
+    // Load Service History
+    j$("#serviceHistory").jqGrid({
+        data: svcHistory,
+        datatype: "local",
+        height: 'auto',
+        rowNum: 30,
+        rowList: [10,20,30],
+        colNames:['RO No', 'Date', 'Advisor', 'Job#', 'Labor', 'Parts', 'Operation','Labor Type','Concern', 'Cause','Correction'],
+        colModel:[
+            {name:'ronumber',index:'ronumber', width:60, sorttype:"int", formatter: 'showLink', formatOptions: { baseLinkUrl: '/', target:'_blank'}},
+            {name:'opendate',index:'opendate', width:70, sortable:false, formatter:"date"},
+            {name:'advisor',index:'advisor', width:100, sortable:false},
+            {name:'joblinenumber', index:'joblinenumber', width:30, sortable:false}, 
+            {name:'laborcharges',index:'laborcharges', width:80, align:"right",sortable:false, formatter:"number"},
+            {name:'partscharges',index:'partscharges', width:80, align:"right",sortable:false, formatter:"number"},
+            {name:'operation',index:'opeartion', width:100, sortable:false},
+            {name:'paytype',index:'paytype', width:30, sortable:false}, 
+            {name:'concern',index:'concern', width:175, sortable:false},
+            {name:'cause',index:'cause', width:175, sortable:false},
+            {name:'correction',index:'correction', width:175, sortable:false}       
+        ],
+        pager: "#pageHistory",
+        viewrecords: true,
+        sortname: 'ronumber',
+        grouping:true,
+        groupingView : {
+            groupField : ['ronumber'],
+            groupColumnShow : [true],
+            groupText : ['<b>{0} - {1} Item(s)</b>'],
+            groupCollapse : false,
+            groupOrder: ['desc']        
+        },
+        caption: "Service History"
+    }); 
+    </apex:outputText>        
+}); 
+ 
+// Command Input Functions
+function commandInputExec(k, id) {
+    cLog(k);
+    j$('#CommandInput-'+id).val("");
+    // Delete Part Line
+    if(k==100 || k==68) {
+        confirmDelete(j$('#PartNumberRow-'+id).text(), id);
+    }
+    
+    // Change Job Line
+    if(k==99 || k==67) {
+        j$("#CommandInput-"+id).val("");
+        showLineDialog('', id); 
+    }
+    
+}    
+    
+// Load Lines
+function loadJobLineGrid() {
+    dealer.ServiceRepairOrder_EXT.loadServiceJobLines( '{!JSENCODE(Service_Repair_Order__c.Id)}', function(result, event) {
+        if(event.status) {
+            cLog(result);
+             j$.each(result, function(index, v) {
+                lineNumber++;
+                createLine(v.Id, v);
+             });
+        } else if (event.type === 'exception') {    
+              logError(event.message)
+         } else {
+             logError(event.message)
+         }
+    }, {escape:true});
+}
+
+function jobLine(opstring) {
+    dealer.ServiceRepairOrder_EXT.getOpCode(opstring, function(result, event) {
+        if(event.status) {
+            showLineDialog(result, null);
+        } else if (event.type === 'exception') {    
+            logError(event.message);
+        } else {
+           logError(event.message);
+        }
+    }, {escape:true});
+}
+
+function showLineDialog(d, id) {
+    cLog(d);
+    j$("#jlId").val('');
+    j$("#jlOpCode").text('');
+    j$("#jlOpCodeDesc").val('');
+    j$("#jlOpCodeDescDisplay").val('');
+    j$("#jlComplaint").val('');
+    j$("#jlPaymentMethod").val('');
+    j$("#jlBookTime").val('');
+    j$("#jlEstimatedCost").val('');
+    buttonText = "";
+    action     = "";
+    
+    // Conditional Checks
+    if(d.dealer__Op_Code_Description__c==undefined) {
+    	d.dealer__Op_Code_Description__c='';
+    }
+    
+    if(d != null && d != '') {
+        obj = d; 
+
+        j$("#jlId").val(obj.Id);
+        j$("#jlOpCode").text(obj.Name);
+        j$("#jlOpCodeDesc").val(obj.dealer__Op_Code_Description__c);
+        j$("#jlOpCodeDescDisplay").text(obj.dealer__Op_Code_Description__c);
+        j$("#jlComplaint").val(obj.dealer__Concern__c);
+        j$("#jlPaymentMethod").val(obj.dealer__Pay_Type__c);
+        j$("#jlBookTime").val(obj.dealer__Book_Time__c).formatNumber({format:"#,###.00", local:"us"});
+        j$("#jlEstimatedCost").val(obj.dealer__Estimate__c).formatNumber({format:"#,###.00", local:"us"});
+        buttonText = "Add Job Line";
+        action = "add";
+    } else {
+
+        j$("#jlId").val(j$("#LineNumber-"+id).val());
+        j$("#jlOpCode").text(j$("#JobOpCodeName-"+id).val());
+        j$("#jlOpCodeDesc").val(j$("#JobOpCodeDescription-"+id).val());
+        j$("#jlComplaint").val(j$("#JobConcernText-"+id).val());
+        j$("#jlPaymentMethod").val(j$("#JobPayType-"+id).val());
+        j$("#jlBookTime").val(j$("#JobBookTime-"+id).val()).formatNumber({format:"#,###.00", local:"us"});
+        j$("#jlEstimatedCost").val(j$("#JobEstimate-"+id).val()).formatNumber({format:"#,###.00", local:"us"});
+        buttonText = "Update Job Line";     
+        action = "update";      
+
+    }
+    
+    j$("#jlDialog").dialog({ 
+                        modal: true,
+                        width: 650,
+                        height: 350,
+                        resizable: false,
+                        draggable: false,
+                        buttons: [
+                            {
+                                text: buttonText,
+                                click: function() {
+                                    DOM_addJobLine(action);
+                                    j$(this).dialog("close");
+                                }   
+                            }
+                        ]
+                    });
+}
+
+function DOM_addJobLine(a) {
+    
+    // Job Line
+    if(a == "add") {
+        cLog('Adding Service Line');
+        lineNumber++;
+    }
+    // Get jl elements
+    var lineDetail = {
+                        "lId" : j$("#jlId").val()+"-"+lineNumber,
+                        "Id" : j$("#jlId").val(),
+                        "OpCode" : j$("#jlOpCode").text(),
+                        "Description" : j$("#jlOpCodeDesc").val(),
+                        "Concern" : j$("#jlComplaint").val().replace('&', '&amp;'),
+                        "PayMethod" : j$("#jlPaymentMethod option:selected").val(),
+                        "BookTime" : j$("#jlBookTime").val(),
+                        "Est" : j$("#jlEstimatedCost").val(),
+                        "LineNumber" : lineNumber 
+                     };     
+    
+    if(a == "add") {
+    
+        // pObj.push(lineDetail);
+        var actionString = '<invoice><serviceroid>{!JSENCODE(Service_Repair_Order__c.Id)}</serviceroid><servicename>{!JSENCODE(Service_Repair_Order__c.Name)}</servicename>'+json2xml(lineDetail, "")+'</invoice>';
+        cLog(actionString); 
+        // return false;
+        dealer.ServiceRepairOrder_EXT.addServiceLine(actionString, function(result, event) {
+            if(event.status) {
+               createLine(result.Id, result);
+            } else if (event.type === 'exception') {    
+                logError(event.message);
+            } else {
+               logError(event.message);
+            }
+        }, {escape:true});   
+        action='';
+        
+    } else if(a == "update") {
+        /*
+        var indexIDC = 0;
+        var indexID  = 0;
+        j$.each(pObj.data, function(key, value) {
+            if(lineDetail.lId == value.lId) {
+                indexID = indexIDC;
+            }
+            
+            indexIDC++; 
+        });
+        pObj.data.splice(indexID, 1, lineDetail);
+        createLine(lineDetail.Id, lineDetail);
+        */
+        cLog('Update Dom fired...');
+    }
+    
+    // updateEstimate();
+}
+
+function createLine(id, obj)
+{
+    cLog('Create Line called');
+    cLog(id);
+    cLog(obj);
+    // Main Wrapper (If exists, do not recreate, this is how we update lines)
+    if(j$('#jobDiv-'+id).length == 0) {
+    cLog('New line');
+    j$('<div>', {
+        id: 'jobRowLine-'+id
+    }).appendTo('#jobLinesDiv').addClass("RORowWrapper");
+    
+    j$('<div>', {
+            id: 'jobDiv-'+id
+        }).appendTo('#jobRowLine-'+id).addClass("RORowWrapper");
+    
+        // Command container & input
+        j$('<div></div>', {
+                text: ''
+            })
+            .attr('id', 'CommandDiv-'+id)
+            .appendTo('#jobDiv-'+id).addClass("s1");
+        j$('<span>', {
+                id: 'LineNumber-'+obj.Id
+            })
+            .css('display', 'none')
+            .appendTo('#jobDiv-'+id);       
+        
+        j$('<a>', {
+            id: 'CommandInput-'+id,
+            text: 'Labor',
+            href: '/'+id
+        }).appendTo('#CommandDiv-'+id);
+            
+        // Parts Link
+        j$('<div>', {
+            id: 'JobPartsDiv-'+id
+        }).appendTo('#CommandDiv-'+id).css('margin-top', '15px');
+        
+        // Prepare Parts Link
+        var partsInvoiceLink = '';
+        if(partsInvoiceId!='') {
+            partsInvoiceLink = '&id='+partsInvoiceId;
+        }
+        
+        j$('<a>', {
+            id: 'JobPartsAnchor-'+id,
+            text: 'Parts',
+            href: '/apex/dealer__ServiceJobLineParts?jid='+id+'&rid='+repairOrderId+partsInvoiceLink
+        }).appendTo('#JobPartsDiv-'+id);        
+        
+    j$(esc('ServiceROCreate:CreateServiceRepairOrder:lopinputBlock')).css('height','auto');
+    j$(esc('ServiceROCreate:CreateServiceRepairOrder:lopinputBlock:lopinputBlockButtons:opCodejs')).focus();        
+    } else {
+        j$("#JobOpCode-"+id).remove();
+        j$("#JobNumber-"+id).remove();
+        j$("#JobOpConcern-"+id).remove();
+        j$("#JobPayType-"+id).remove();
+        j$("#JobBookTime-"+id).remove();
+        j$("#JobSublet-"+id).remove();
+         j$("#JobPartsTotal-"+id).remove();
+          j$("#JobLaborTotal-"+id).remove();
+        j$("#JobTotal-"+id).remove();
+        j$("#JobClear-"+id).remove();
+    }
+    
+    // Line#
+    j$('<div>', {
+        id: 'JobNumber-'+id,
+        text: obj.dealer__Line_Number__c
+    }).appendTo('#jobDiv-'+id).addClass("s2").css('font-weight', 'bold');   
+    
+    // Op Code
+    j$('<div>', {
+        id: 'JobOpCode-'+id
+    }).appendTo('#jobDiv-'+id).addClass("s3");
+        // Anchor to Job Line
+        j$('<a>', {
+            id: 'JobOpCodeLink-'+id,
+            href: '/'+obj.Id,
+            target: '_self'
+        }).appendTo('#JobOpCode-'+id);
+        
+            // Nested span content for anchor tag
+            j$('<span>', {
+                id : 'JobOpCodeName-'+id,
+                text : obj.dealer__Op_Code__c
+            }).css('padding', '4px').css('font-weight', 'bold').appendTo('#JobOpCodeLink-'+id);
+            // Nested span content for anchor tag
+            
+            // Consistancy Check
+            if(obj.dealer__StandardOpCode__r==undefined) { obj.dealer__StandardOpCode__r='';}
+            if(obj.dealer__StandardOpCode__r.dealer__Op_Code_Description__c==undefined){obj.dealer__StandardOpCode__r.dealer__Op_Code_Description__c='';}
+            
+            j$('<span>', {
+                id : 'JobOpCodeDescription-'+id,
+                text : Encoder.htmlDecode(obj.dealer__StandardOpCode__r.dealer__Op_Code_Description__c)
+            }).css('padding', '4px').appendTo('#JobOpCodeLink-'+id);
+            
+        // Div layer for Concern
+            j$('<div>', {
+                id: 'JobOpConcern-'+id
+            }).appendTo('#JobOpCode-'+id).addClass("cRow");
+            j$('<span>', {
+                id: 'JobConcernLabel-'+id,
+                text: 'Concern: '
+            }).css('display', 'inline-block').css('text-align', 'right').css('width','72px').css('font-weight', 'bold').appendTo('#JobOpConcern-'+id);
+            j$('<span>', {
+                id: 'JobConcernText-'+id,
+                text: Encoder.htmlDecode(obj.dealer__CustomerConcern__c)
+            }).appendTo('#JobOpConcern-'+id);
+            
+        // Div Layer for Cause
+            j$('<div>', {
+                id: 'JobCause-'+id
+            }).appendTo('#JobOpCode-'+id).addClass("cRow");
+            j$('<span>', {
+                id: 'JobCauseLabel-'+id,
+                text: 'Cause: '
+            }).css('display', 'inline-block').css('text-align', 'right').css('width','72px').css('font-weight', 'bold').appendTo('#JobCause-'+id);
+            j$('<span>', {
+                id: 'JobCauseText-'+id,
+                text: Encoder.htmlDecode(obj.dealer__Cause__c)
+            }).appendTo('#JobCause-'+id);
+            
+        // Div Layer for Correction
+            j$('<div>', {
+                id: 'JobCorrection-'+id
+            }).appendTo('#JobOpCode-'+id).addClass("cRow");
+            j$('<span>', {
+                id: 'JobCorrectionLabel-'+id,
+                text: 'Correction: '
+            }).css('display', 'inline-block').css('text-align', 'right').css('width','72px').css('font-weight', 'bold').appendTo('#JobCorrection-'+id);
+            j$('<span>', {
+                id: 'JobCorrectionText-'+id,
+                text: Encoder.htmlDecode(obj.dealer__Correction__c)
+            }).appendTo('#JobCorrection-'+id);  
+            
+        
+    
+    // Type
+    j$('<div>', {
+        id: 'JobPayType-'+id,
+        text: obj.dealer__Labor_Type__c
+    }).appendTo('#jobDiv-'+id).addClass("s4");
+    
+    // Status
+    var status = obj.dealer__Stat__c;
+    var color  = 'black';
+    if(obj.dealer__Currently_Active__c==1) { status='Active'; color='green'; }
+    j$('<div>', {
+        id: 'JobPayType-'+id,
+        text: status
+    }).appendTo('#jobDiv-'+id).addClass("s5").css('color', color);
+    
+    // Book Time
+    j$('<div>', {
+        id: 'JobBookTime-'+id,
+        text: obj.dealer__Book_Time__c
+    })
+    .appendTo('#jobDiv-'+id)
+    .addClass("s6")
+    .formatNumber({format:"#,##0.0", local:"us"});
+    
+    // Sublet Charges
+    j$('<div>', {
+        id: 'JobSublet-'+id,
+        text: obj.dealer__Sublet_Total__c
+    })
+    .appendTo('#jobDiv-'+id)
+    .addClass("s7")
+    .formatNumber({format:"#,###.00", local:"us"});
+    
+    // Parts Charges
+    j$('<div>', {
+        id: 'JobPartsTotal-'+id
+    })
+    .appendTo('#jobDiv-'+id)
+    .addClass("s8");
+    
+    // Labor Charges
+    j$('<div>', {
+        id: 'JobLaborTotal-'+id,
+        text: obj.dealer__Labor_Charges__c
+    })
+    .appendTo('#jobDiv-'+id)
+    .addClass("s9") 
+    .formatNumber({format:"#,###.00", local:"us"});
+
+    // Total Charges
+    j$('<div>', {
+        id: 'JobTotal-'+id,
+        text: obj.dealer__Labor_Charges__c+obj.dealer__Sublet_Total__c
+    })
+    .appendTo('#jobDiv-'+id)
+    .addClass("s10")    
+    .formatNumber({format:"#,###.00", local:"us"});
+    
+    // Add to total
+    lineSubTotal += obj.dealer__Line_Total__c;
+    
+    ///////////////////////////////////////////////
+    //Display Parts Lines
+    if(obj.dealer__Parts_Lines__r) {
+     j$.each(obj.dealer__Parts_Lines__r, function(index, v) {
+            
+            j$('<div>', {
+                id: 'partDiv-'+v.Id
+            }).appendTo('#jobRowLine-'+v.dealer__Job_Line__c).addClass("RORowWrapper");
+    
+            // Command container & input
+            j$('<div></div>', {
+                text: ''
+            })
+            .appendTo('#partDiv-'+v.Id).addClass("s1");
+            // Line#
+            j$('<div>', {
+                id: 'partLineNumber-'+v.Id
+            }).appendTo('#partDiv-'+v.Id).addClass("s2");   
+            
+            // Part Number & Description
+            j$('<div>', {
+                id: 'partCode-'+v.Id                
+            }).appendTo('#partDiv-'+v.Id).addClass("s3");
+            
+            j$('<a>', {
+                id: 'PartLink-'+v.Id,
+                href: '/apex/dealer__ServiceJobLineParts?id={!JSENCODE(Service_Repair_Order__c.dealer__Parts_Invoice__c)}&jid='+v.Id+'&rid={!JSENCODE(Service_Repair_Order__c.Id)}',
+                text: 'Part: '+Encoder.htmlDecode(v.dealer__Part_Number__c)+' :'+Encoder.htmlDecode(v.dealer__Part_Description__c)
+            }).appendTo('#partCode-'+v.Id);
+            
+            // Type
+            j$('<div>', {
+                id: 'partPayType-'+v.Id
+            }).appendTo('#partDiv-'+v.Id).addClass("s4");
+            
+            // Status
+            if(obj.dealer__Currently_Active__c==1) { status='Active'; color='green'; }
+            j$('<div>', {
+                id: 'partOrderType-'+v.Id
+            }).appendTo('#partDiv-'+v.Id).addClass("s5");
+            
+            // Book Time / QTY Sold
+            j$('<div>', {
+                id: 'partQTY-'+v.Id,
+                text: v.dealer__Quantity_Sold__c
+            })
+            .appendTo('#partDiv-'+v.Id)
+            .addClass("s6")
+            .formatNumber({format:"#,##0", local:"us"});
+            
+            // Sublet Charges
+            j$('<div>', {
+                id: 'partSublet-'+v.Id,
+                text: ''
+            })
+            .appendTo('#partDiv-'+v.Id)
+            .addClass("s7");
+            
+            // Parts Charges
+            j$('<div>', {
+                id: 'partTotal-'+v.Id,
+                text: v.dealer__Price__c
+            })
+            .appendTo('#partDiv-'+v.Id)
+            .addClass("s8") 
+            .formatNumber({format:"#,###.00", local:"us"});
+            
+            // Labor Charges
+            j$('<div>', {
+                id: 'partLaborTotal-'+v.Id
+            })
+            .appendTo('#partDiv-'+v.Id)
+            .addClass("s9");
+        
+            // Total Charges
+            j$('<div>', {
+                id: 'extTotal-'+v.Id,
+                text: v.dealer__Extended_Price__c
+            })
+            .appendTo('#partDiv-'+v.Id)
+            .addClass("s10")
+            .formatNumber({format:"#,###.00", local:"us"});
+            
+            lineSubTotal += v.dealer__Extended_Price__c;
+            
+            j$('<div>').attr('id', 'partClear-'+id).css('clear', 'both').css('height', 'auto').appendTo('#partDiv-'+v.Id);  
+     });
+     }  
+    ///////////////////////////////////////////////
+    
+    // Append Line totals
+    j$('<div>', {
+        id: 'jobLineSubTotal-'+id,
+        text: obj.dealer__Line_Total__c
+    }).css('background-color', '#ededed')
+    .css('width','98.6%')
+    .css('text-align', 'right')
+    .css('font-size', '12px')
+    .css('font-weight', 'bold')
+    .appendTo('#jobRowLine-'+id)
+    .formatNumber({format:"#,###.00", local:"us"});
+            
+    j$('<div>').attr('id', 'JobClear-'+id).css('clear', 'both').css('height', 'auto').appendTo('#jobDiv-'+id);  
+    j$(esc('ServiceROCreate:CreateServiceRepairOrder:lopinputBlock')).css('height', 'auto');    
+    lineSubTotal=0;
+    
+    
+}  
+
+function OnHourShowCallback(hour) {
+    if ((hour > 22) || (hour < 6)) {
+        return false; // not valid
+    }
+    return true; // valid
+}
+
+function OnMinuteShowCallback(hour, minute) {
+    if ((hour == 22) && (minute >= 30)) { return false; } // not valid
+    if ((hour == 6) && (minute < 30)) { return false; }   // not valid
+    return true;  // valid
+}
+
+// Support & Action functions
+function esc(myid) {
+      return '#' + myid.replace(/(:|\.)/g,'\\\\$1');
+}
+
+function noenter(ev) {
+     if (window.event && window.event.keyCode == 13 || ev.which == 13)
+     {  
+         if(j$(esc('ServiceROCreate:CreateServiceRepairOrder:lopinputBlock:lopinputBlockButtons:opCodejs')).val() != null) {
+            jobLine(j$(esc('ServiceROCreate:CreateServiceRepairOrder:lopinputBlock:lopinputBlockButtons:opCodejs')).val());
+            j$(esc('ServiceROCreate:CreateServiceRepairOrder:lopinputBlock:lopinputBlockButtons:opCodejs')).val('');
+         }
+         return false;
+     }
+     else
+     {
+         return true;
+     }
+}
+
+function createJobLineDiv(id, n)
+{
+    var divTag = document.createElement("div");
+    divTag.id = "jobDiv-"+id;            
+    //divTag.setAttribute("align","center");
+    divTag.style.display = "block";
+    divTag.style.margin = "0px auto";
+    divTag.style.padding = "4px";
+    divTag.style.border = "1px solid #ECECEC";
+    divTag.className ="dynamicDiv";
+    divTag.innerHTML = n;
+   
+   if(document.getElementById('jobDiv-'+id)) {
+    //alert('(jobDiv-'+id+') Element Exists');
+    document.getElementById("JobLinesDiv").appendChild(divTag);
+   } else {
+    document.getElementById("JobLinesDiv").appendChild(divTag);
+   }
+}      
+
+function OnHourShowCallback(hour) {
+     if ((hour > 22) || (hour < 6)) {
+         return false; // not valid
+     }
+     return true; // valid
+ }
+ function OnMinuteShowCallback(hour, minute) {
+     if ((hour == 22) && (minute >= 30)) { return false; } // not valid
+     if ((hour == 6) && (minute < 30)) { return false; }   // not valid
+     return true;  // valid
+ }
+ 
+ function copyTimeOut() {
+   j$(esc('ServiceROCreate:CreateServiceRepairOrder:roHeaderBlock:hiddenPromiseTime')).val(j$("#timePromisedInput").val());
+ }
+        
+function logError(msg) {
+
+    if(typeof window.console == 'object') {
+        cLog(msg);                  
+    }
+            
+    j$('#errors-js').text(msg);
+}
+
+function cLog(msg) {
+    if(typeof window.console == 'object') {
+        console.log(msg);                  
+    }
+}
+
+function json2xml(o, tab) {
+   var toXml = function(v, name, ind) {
+      var xml = "";
+      if (v instanceof Array) {
+         for (var i=0, n=v.length; i<n; i++)
+            xml += ind + toXml(v[i], name, ind+"\t") + "\n";
+      }
+      else if (typeof(v) == "object") {
+         var hasChild = false;
+         xml += ind + "<" + name;
+         for (var m in v) {
+            if (m.charAt(0) == "@")
+               xml += " " + m.substr(1) + "=\"" + v[m].toString() + "\"";
+            else
+               hasChild = true;
+         }
+         xml += hasChild ? ">" : "/>";
+         if (hasChild) {
+            for (var m in v) {
+               if (m == "#text")
+                  xml += v[m];
+               else if (m == "#cdata")
+                  xml += "<![CDATA[" + v[m] + "]]>";
+               else if (m.charAt(0) != "@")
+                  xml += toXml(v[m], m, ind+"\t");
+            }
+            xml += (xml.charAt(xml.length-1)=="\n"?ind:"") + "</" + name + ">";
+         }
+      }
+      else {
+         xml += ind + "<" + name + ">" + v.toString() +  "</" + name + ">";
+      }
+      return xml;
+   }, xml="";
+   for (var m in o)
+      xml += toXml(o[m], m, "");
+   return tab ? xml.replace(/\t/g, tab) : xml.replace(/\t|\n/g, "");
+}
+<apex:outputText rendered="{!ISBLANK(dealer__Service_Repair_Order__c.dealer__Invoiced_Date_Time__c)}">
+    var svcHistory = {!ServiceHistoryJSON};
+</apex:outputText>
+</script>
+
+
+    <apex:sectionHeader title="Service Repair Order" subtitle="{!dealer__Service_Repair_Order__c.Name}" />
+    <chatter:feedWithFollowers entityId="{!dealer__Service_Repair_Order__c.Id}" />
+    
+    <apex:form id="CreateServiceRepairOrder"> 
+    <apex:pageBlock title="Service Repair Order" id="roHeaderBlock" mode="maindetail">
+              <apex:pageBlockButtons location="top">
+                    <apex:outputPanel style="width:200px;">
+                    <apex:commandButton action="{!save}"  value="Save" rendered="{!ISBLANK(dealer__Service_Repair_Order__c.dealer__Invoiced_Date_Time__c)}" />
+                    <apex:commandButton action="{!updateEstaimtePageReference}" value="Update Estimate" rendered="{!ISBLANK(dealer__Service_Repair_Order__c.dealer__Invoiced_Date_Time__c)}" />
+                    <apex:commandButton action="{!cashierInvoice}" value="Cashier" rendered="{!ISBLANK(dealer__Service_Repair_Order__c.dealer__Posted_Date_Time__c)}"/>
+                   <apex:commandButton action="{!reopenInvoice}" value="Re-Open Invoice" rendered="{!AND(NOT(ISBLANK(dealer__Service_Repair_Order__c.dealer__Invoiced_Date_Time__c)), ISBLANK(dealer__Service_Repair_Order__c.dealer__Posted_Date_Time__c))}" />
+                   
+                    </apex:outputPanel>
+                    <apex:commandButton value="Print RO" onClick="window.open('/apex/dealer__ServiceRepairOrderCustomerCopy?id={!JSINHTMLENCODE(dealer__Service_Repair_Order__c.Id)}')" reRender="renderPanel" />
+                    <apex:commandButton value="Audit Copy" onClick="window.open('/apex/dealer__ServiceRepairOrderAuditCopyPDF?id={!JSINHTMLENCODE(dealer__Service_Repair_Order__c.Id)}')" reRender="renderPanel" />                    
+                    <apex:commandButton value="Tech View / Book Out" action="{!techTimeEntry}" rendered="{!ISBLANK(dealer__Service_Repair_Order__c.dealer__Invoiced_Date_Time__c)}" />
+                    <!-- <apex:commandButton value="Tech Job Card" action="{!techJobCard}" rendered="{!ISBLANK(dealer__Service_Repair_Order__c.dealer__Invoiced_Date_Time__c)}" /> -->
+                  	<apex:commandButton value="Close Repair Order" action="{!invoiceRO}" rendered="{!ISBLANK(dealer__Service_Repair_Order__c.dealer__Invoiced_Date_Time__c)}" />
+                    <input type="text" id="noValue" style="border:0px;width:5px;"/>
+                    <!--
+                    <apex:commandButton onclick="window.open('/apex/dealer__MPITechInputMOBILE?Oid={!dealer__Service_Repair_Order__c.Id}');" value="MPI"/>
+                    Link to a new MPI form
+                    -->
+
+                    <!-- Status field added to the Repair Order Object
+                    <apex:outputPanel style="width: 350px; text-align: right; font-size: 16px; font-weight: bold; float:right;">
+                        <apex:outputText value="RO Status: Open" rendered="{!ISBLANK(dealer__Service_Repair_Order__c.dealer__Invoiced_Date_Time__c)}" />
+                        <apex:outputText value="RO Status: At Cashier" rendered="{!AND(NOT(ISBLANK(dealer__Service_Repair_Order__c.dealer__Invoiced_Date_Time__c)), ISBLANK(dealer__Service_Repair_Order__c.dealer__Posted_Date_Time__c))}" />
+                        <apex:outputText value="RO Status: Closed" rendered="{!NOT(ISBLANK(Service_Repair_Order__c.Posted_Date_Time__c))}" />
+                        <input type="text" id="noValue" style="border:0px;width:5px;"/>
+                    </apex:outputPanel>
+                    -->
+                    
+                </apex:pageBlockButtons>
+            <apex:pageMessages />
+        <apex:pageBlockSection id="headSection">
+                <apex:outputField value="{!dealer__Service_Repair_Order__c.dealer__Customer__c}" />
+                
+                <apex:outputField value="{!dealer__Service_Repair_Order__c.dealer__Status__c}"> 
+                        <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                            hideOnEdit="editButton" event="ondblclick" 
+                            changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>
+                </apex:outputField>   
+                
+                <!--
+                <apex:outputField value="{!dealer__Service_Repair_Order__c.dealer__Customer__c}" 
+                    rendered="{!IF(Service_Repair_Order__c.Customer_Contact__r.Name != Service_Repair_Order__c.Customer__r.Name, true, false)}"/>
+                <apex:outputText rendered="{!IF(Service_Repair_Order__c.Customer_Contact__r.Name != Service_Repair_Order__c.Customer__r.Name, false, true)}" />
+                -->
+                
+                <apex:outputField value="{!dealer__Service_Repair_Order__c.dealer__Service_Advisor__c}">
+                    <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                            hideOnEdit="editButton" event="ondblclick" 
+                            changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>
+                </apex:outputField>   
+                
+
+                
+                <apex:outputField value="{!dealer__Service_Repair_Order__c.dealer__Waiting__c}">
+                    <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                            hideOnEdit="editButton" event="ondblclick" 
+                            changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>
+                </apex:outputField> 
+                
+                
+               <apex:outputField value="{!dealer__Service_Repair_Order__c.dealer__Promise_Date__c}">
+                    <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                            hideOnEdit="editButton" event="ondblclick" 
+                            changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>
+                </apex:outputField> 
+
+                                                                                
+               <apex:outputField value="{!dealer__Service_Repair_Order__c.dealer__Create_Date_Time__c}"></apex:outputField>
+                
+               <apex:pageBlockSectionItem id="promiseTime">
+                    <apex:outputLabel value="Promise Time" for="timePromsiedInput" />
+                    <input type="text" id="timePromisedInput" name="timePromisedInput" style="border: 0px;"/>
+                </apex:pageBlockSectionItem>
+                                
+                <apex:outputField value="{!dealer__Service_Repair_Order__c.dealer__Invoiced_Date_Time__c}"></apex:outputField>   
+                
+                <apex:outputField value="{!dealer__Service_Repair_Order__c.dealer__Comments__c}">
+                    <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                            hideOnEdit="editButton" event="ondblclick" 
+                            changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>
+                </apex:outputField> 
+        
+                <apex:outputField value="{!dealer__Service_Repair_Order__c.dealer__Vehicle__c}">
+                    <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                            hideOnEdit="editButton" event="ondblclick" 
+                            changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>
+                </apex:outputField> 
+                
+                <apex:outputField value="{!dealer__Service_Repair_Order__c.dealer__Taxable__c}">
+                      <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                            hideOnEdit="editButton" event="ondblclick" 
+                            changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>           
+                </apex:outputField>
+                
+                <apex:outputText value="{!dealer__Service_Repair_Order__c.Vehicle__r.dealer__VIN__c}" label="VIN" />
+                
+                <apex:outputText rendered="{!ISBLANK(dealer__Service_Repair_Order__c.dealer__Company__c)}" />
+            	<apex:outputField value="{!dealer__Service_Repair_Order__c.dealer__Company__c}" 
+                    rendered="{!NOT(ISBLANK(dealer__Service_Repair_Order__c.dealer__Company__c))}">                    
+                    <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                            hideOnEdit="editButton" event="ondblclick" 
+                            changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>
+                </apex:outputField>
+                
+                <apex:outputField value="{!dealer__Service_Repair_Order__c.dealer__Tag__c}">
+                    <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                            hideOnEdit="editButton" event="ondblclick" 
+                            changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>
+                </apex:outputField> 
+                
+                <apex:outputField value="{!dealer__Service_Repair_Order__c.dealer__Customer_Charges__c}"></apex:outputField> 
+            
+                
+                <apex:outputField value="{!dealer__Service_Repair_Order__c.dealer__Mileage_In__c}"></apex:outputField> 
+                
+                <apex:outputField value="{!dealer__Service_Repair_Order__c.dealer__Warranty_Charges__c}"></apex:outputField>
+           
+                <apex:outputField value="{!dealer__Service_Repair_Order__c.dealer__Mileage_Out__c}">
+                    <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                            hideOnEdit="editButton" event="ondblclick" 
+                            changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>
+                </apex:outputField>  
+                             
+                <apex:outputField value="{!dealer__Service_Repair_Order__c.dealer__Internal_Charges__c}"></apex:outputField>  
+                <apex:outputField value="{!dealer__Service_Repair_Order__c.dealer__Estimate__c}" />
+                
+                <apex:outputField value="{!dealer__Service_Repair_Order__c.dealer__Shop_Supplies__c}">
+                    <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                            hideOnEdit="editButton" event="ondblclick" 
+                            changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>
+                </apex:outputField> 
+                
+                <apex:outputField value="{!dealer__Service_Repair_Order__c.dealer__Location__c}">
+                    <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                            hideOnEdit="editButton" event="ondblclick" 
+                            changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>
+                </apex:outputField>
+
+                <apex:outputField value="{!dealer__Service_Repair_Order__c.dealer__Tax__c}" label="Total Tax" />
+
+                <!-- Discount Section -->
+                <apex:outputText />
+                <apex:outputField value="{!dealer__Service_Repair_Order__c.dealer__Discount_Type__c}">
+                    <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                            hideOnEdit="editButton" event="ondblclick" 
+                            changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>
+                </apex:outputField>
+                <apex:outputText />
+                <apex:outputField value="{!dealer__Service_Repair_Order__c.dealer__Discount_Total__c}">
+                    <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                            hideOnEdit="editButton" event="ondblclick" 
+                            changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>
+                </apex:outputField>                
+                <!-- End of Discount Section -->                
+                
+                <!--
+                <apex:outputField value="{!Service_Repair_Order__c.Inventory_Vehicle_Status__c}" 
+                                    rendered="{!IF(NOT(ISBLANK(dealer__Service_Repair_Order__c.dealer__Inventory_Vehicle_Status__c)), true, false)}">
+                    <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                            hideOnEdit="editButton" event="ondblclick" 
+                            changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>
+                </apex:outputField>
+                <apex:outputText rendered="{!IF(NOT(ISBLANK(dealer__Service_Repair_Order__c.dealer__Inventory_Vehicle_Status__c)), false, true)}" />
+                -->
+                <apex:pageBlockSectionItem id="invStatusItem" rendered="{!IF(NOT(ISBLANK(dealer__Service_Repair_Order__c.dealer__Inventory_Vehicle_Status__c)), true, false)}">
+                    <apex:outputLabel value="Inventory Status" for="inventoryStatus" />
+                    <apex:selectList id="inventoryStatus" value="{!InventoryStatus}" multiselect="false" size="1">
+                        <apex:selectOptions value="{!InventoryStatusOptions}"/>
+                    </apex:selectList>
+                </apex:pageBlockSectionItem>
+
+                <apex:outputText rendered="{!IF(NOT(ISBLANK(dealer__Service_Repair_Order__c.dealer__Inventory_Vehicle_Status__c)), false, true)}" />
+
+                <apex:outputText value="{0, number, $###,###.00}" label="Total Customer Charges">
+                    <apex:param value="{!Service_Repair_Order__c.Customer_Charges__c+Service_Repair_Order__c.Shop_Supplies__c+Service_Repair_Order__c.Tax__c + (IF(ISBLANK(Service_Repair_Order__c.Discount_Total__c),0,Service_Repair_Order__c.Discount_Total__c)) }" />
+                </apex:outputText>
+                                
+        </apex:pageBlockSection>
+         <apex:inputHidden value="{!dealer__Service_Repair_Order__c.dealer__Promise_Time__c}" id="hiddenPromiseTime" />
+    </apex:pageBlock>
+    <div id="errors-js"> </div> 
+    <apex:pageBlock title="Job Lines" id="lopinputBlock" >
+        <apex:pageBlockButtons location="top" id="lopinputBlockButtons">
+            <div id="functionBar" style="width: 400px; float: left;">
+                <b>Labor Operation - Quick Lookup</b>&nbsp;<apex:inputText id="opCodejs" onkeypress="return noenter(event);" />&nbsp;
+                <c:AutoComplete objectname="dealer__StandardOpCode__c" 
+                        additionalfield="dealer__Op_Code_Description__c" 
+                        resultfields="dealer__Op_Code_Description__c" 
+                        autocomplete_textbox="{!$Component.opCodejs}" />
+            </div>
+            <div>
+            
+			<c:ServiceOperationCodeLookup rendered="{!ISBLANK(dealer__Service_Repair_Order__c.dealer__Invoiced_Date_Time__c)}"/>
+               
+            </div>
+        </apex:pageBlockButtons>
+        <div id="jobLineHeader">
+            <div class="RORowWrapper">
+                 <div class="s1"><b>Opt</b>
+                 </div>
+                 <div class="s2"><b>Line#</b>
+                 </div>
+                 <div class="s3"><b>Op / Desc</b>
+                 </div>
+                 <div class="s4"><b>Type</b>
+                 </div>
+                 <div class="s5"><b>Status</b>
+                 </div>
+                 <div class="s6"><b>Time</b>
+                 </div>
+                 <div class="s7"><b>Sublet</b>
+                 </div>
+                 <div class="s8"><b>Parts</b>
+                 </div>
+                 <div class="s9"><b>Labor</b>
+                 </div>
+                 <div class="s10"><b>Total</b>
+                 </div>
+                 <div class="clearBoth"></div>
+             </div> 
+            <br />
+        </div>
+        <div id="jobLinesDiv"></div>
+    </apex:pageBlock>   
+    
+    <apex:pageBlock title="Service History" rendered="{!ISBLANK(dealer__Service_Repair_Order__c.dealer__Invoiced_Date_Time__c)}">
+            <apex:pageBlockSection columns="1">
+                <table id="serviceHistory" ></table>
+                <div id="pageHistory"></div>
+            </apex:pageBlockSection>
+    </apex:pageBlock>
+    
+    <apex:inputHidden value="{!dealer__Service_Repair_Order__c.dealer__Open_Job_Lines__c}" />
+    <apex:outputPanel id="renderPanel"></apex:outputPanel>
+</apex:form>
+<apex:relatedList list="dealer__Cashiering__r" />
+<apex:relatedList list="NotesAndAttachments" />
+<apex:relatedList list="OpenActivities" />
+<apex:relatedList list="ActivityHistories" />  
+
+      <div id="jlDialog" title="Job Line Detail" style="display:none;">
+        <table cellspacing="0" cellpadding="6" border="0">
+            <tr>
+                <td align="right" style="border:bottom 1px solid;"><b>Op Code</b></td>
+                <td style="border:bottom 1px solid;">
+                    <input type="hidden" id="jlId" />
+                    <input type="hidden" id="jlOpCodeDesc" />
+                    <input type="hidden" id="jsROID" value="{!JSINHTMLENCODE(Service_Repair_Order__c.Id)}" />
+                    <div id="jlOpCode"></div>
+                </td>
+            </tr>
+            <tr>
+                <td align="right" style="border:bottom 1px solid;"><b>Deafult Concern</b></td>
+                <td style="border:bottom 1px solid;">
+                    <span id="jlOpCodeDescDisplay"></span>
+                </td>
+            </tr>
+            <tr>
+                <td align="right" style="border:bottom 1px solid;"><b>Concern</b></td>
+                <td style="border:bottom 1px solid;">
+                    <textarea id="jlComplaint" cols="60"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td align="right" style="border:bottom 1px solid;"><b>Pay Type</b></td>
+                <td style="border:bottom 1px solid;">
+                    <select id="jlPaymentMethod">
+                        <option value="C" selected="selected">C</option>
+                        <option value="W">W</option>
+                        <option value="I">I</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td align="right" style="border:bottom 1px solid;"><b>Line Type</b></td>
+                <td style="border:bottom 1px solid;">
+                    <select id="jlGLMethod">
+                        <option value="CustomerRetail">Customer Retail</option>
+                        <option value="ThirdPartyRetail">Third Party Retail</option>
+                        <option value="VARetail">VA Retail</option>
+                        <option value="CompRetail">Comp Vehicle Repair</option>
+                        <option value="GetReady">Get Ready</option>
+                        <option value="ShopDamage">Shop Damage</option>
+                        <option value="WarrantyBraun">Warranty Braun</option>
+                        <option value="WarrantyVMI">Warranty VMI</option>
+                    </select>
+                </td>
+            </tr>            
+            <tr>
+                <td align="right" style="border:bottom 1px solid;"><b>Estimated Hours</b></td>
+                <td style="border:bottom 1px solid;"><input type="text" id="jlBookTime" size="6" maxlength="5" /></td>
+                
+            </tr>   
+            <tr>
+                <td align="right" style="border:bottom 1px solid;"><b>Estimated Cost</b></td>
+                <td style="border:bottom 1px solid;"><input type="text" id="jlEstimatedCost" size="7" maxlength="8" /></td>
+            </tr>                                       
+        </table>
+    </div>
+</apex:page>

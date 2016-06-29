@@ -1,0 +1,169 @@
+<apex:page controller="smagicinteract.HelpController" >
+<apex:includeScript value="{!$Resource.smagicinteract__BulkSMSJS}"/>
+
+<c:Expired_Message_Component isPanelVisible="{! NOT(isVisible) }"/>       
+<apex:pageMessages />  
+
+<apex:outputPanel rendered="{!isVisible}">
+    <apex:pageBlock title="{!$Label.API_KEY_HELP_SECTION_TITLE}" rendered="{!IF (show =='APIkey' || show =='all',true, false)}" >
+        <apex:pageBlockButtons location="top" rendered="{!IF (show =='APIkey' || show =='all',true, false)}">
+            <apex:form >
+                <apex:commandButton value="{!$Label.FEEDBACK_BUTTON}" onclick="redirectTo('/apex/FeedbackPage','/apex/SMSMagicHelp');return false;" />
+            </apex:form>
+        </apex:pageBlockButtons>
+        {!$Label.API_KEY_HELP_SECTION_BODY_PART_1} <br/><br/> 
+        &nbsp;&nbsp;&nbsp;&nbsp; {!$Label.API_KEY_HELP_SECTION_BODY_PART_2}<br /><br />
+        &nbsp;&nbsp;&nbsp;&nbsp; {!$Label.API_KEY_HELP_SECTION_BODY_PART_3}<br /><br />
+        &nbsp;&nbsp;&nbsp;&nbsp; {!$Label.API_KEY_HELP_SECTION_BODY_PART_4}<br /><br />
+        &nbsp;&nbsp;&nbsp;&nbsp; {!$Label.API_KEY_HELP_SECTION_BODY_PART_5}<br /><br />
+        {!$Label.API_KEY_HELP_SECTION_BODY_PART_6} &nbsp; <apex:outputLink value="mailto:care@screen-magic.com">{!$Label.API_KEY_HELP_SECTION_BODY_PART_7}</apex:outputLink>.<br /><br />
+    </apex:pageBlock>
+
+    <apex:pageBlock title="{!$Label.CONFIGURATION_HELP_SECTION_TITLE}" rendered="{!IF (show =='SMSMagicConfig' || show =='all',true, false)}" >
+        <apex:pageBlockButtons location="top" rendered="{!IF (show =='SMSMagicConfig',true, false)}">
+            <apex:form >
+                <apex:commandButton value="{!$Label.FEEDBACK_BUTTON}" onclick="redirectTo('/apex/FeedbackPage','/apex/SMSMagicHelp?from=SMSMagicConfig');return false;" />
+            </apex:form>
+        </apex:pageBlockButtons>        
+        {!$Label.CONFIGURATION_HELP_SECTION_BODY_PART_1}<br/><br/>
+        &nbsp;&nbsp;&nbsp;&nbsp; {!$Label.CONFIGURATION_HELP_SECTION_BODY_PART_2} &nbsp; {!$Label.CONFIGURATION_HELP_SECTION_BODY_PART_3}<br/><br/>
+        &nbsp;&nbsp;&nbsp;&nbsp; {!$Label.CONFIGURATION_HELP_SECTION_BODY_PART_4} &nbsp; {!$Label.CONFIGURATION_HELP_SECTION_BODY_PART_5}<br/><br/>
+        &nbsp;&nbsp;&nbsp;&nbsp; {!$Label.CONFIGURATION_HELP_SECTION_BODY_PART_6} &nbsp; {!$Label.CONFIGURATION_HELP_SECTION_BODY_PART_7}<br/><br/>
+
+        {!$Label.CONFIGURATION_HELP_SECTION_BODY_PART_8}<br /><br />
+        
+        {!$Label.CONFIGURATION_HELP_SECTION_BODY_PART_9}<br/><br/>
+        {!$Label.CONFIGURATION_HELP_SECTION_BODY_PART_10}<br/>
+        {!$Label.CONFIGURATION_HELP_SECTION_BODY_PART_11}<br/><br/>
+         
+    </apex:pageBlock>
+    
+    <apex:pageBlock title="{!$Label.SMS_TEMPLATE_HELP_SECTION_TITLE}" rendered="{!IF (show == 'SMSTemplates' || show =='all',true, false)}" >
+        <apex:pageBlockButtons location="top" rendered="{!IF (show =='SMSTemplates',true, false)}">
+            <apex:form >
+                <apex:commandButton value="{!$Label.FEEDBACK_BUTTON}" onclick="redirectTo('/apex/FeedbackPage','/apex/SMSMagicHelp?from=SMSTemplates');return false;" />
+            </apex:form>
+        </apex:pageBlockButtons>
+        {!$Label.SMS_TEMPLATE_HELP_SECTION_BODY_PART_1}<br/> <br/>
+        {!$Label.SMS_TEMPLATE_HELP_SECTION_BODY_PART_2} <br/>
+        {!$Label.SMS_TEMPLATE_HELP_SECTION_BODY_PART_3}
+    </apex:pageBlock>
+    
+    <apex:pageBlock title="{!$Label.SMS_HISTORY_HELP_SECTION_TITLE}" rendered="{!IF (show == 'SMSHistory' || show =='all',true, false)}" >
+        <apex:pageBlockButtons location="top" rendered="{!IF (show =='SMSHistory',true, false)}">
+            <apex:form >
+                <apex:commandButton value="{!$Label.FEEDBACK_BUTTON}" onclick="redirectTo('/apex/FeedbackPage','/apex/SMSMagicHelp?from=SMSHistory');return false;" />
+            </apex:form>
+        </apex:pageBlockButtons>
+        {!$Label.SMS_HISTORY_HELP_SECTION_BODY}
+    </apex:pageBlock>
+    
+    <apex:pageBlock title="{!$Label.SMS_MAGIC_HOME_HELP_SECTION_TITLE}" rendered="{!IF (show == 'SMHome' || show =='all',true, false)}" >
+        <apex:pageBlockButtons location="top" rendered="{!IF (show =='SMHome',true, false)}">
+            <apex:form >
+                <apex:commandButton value="{!$Label.FEEDBACK_BUTTON}" onclick="redirectTo('/apex/FeedbackPage','/apex/SMSMagicHelp?from=SMHome');return false;" />
+            </apex:form>
+        </apex:pageBlockButtons>
+        {!$Label.SMS_MAGIC_HOME_HELP_SECTION_BODY_PART_1}<br/> <br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;{!$Label.SMS_MAGIC_HOME_HELP_SECTION_BODY_PART_2}<br/> <br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;{!$Label.SMS_MAGIC_HOME_HELP_SECTION_BODY_PART_3}<br/> <br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;{!$Label.SMS_MAGIC_HOME_HELP_SECTION_BODY_PART_4}<br/> <br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;{!$Label.SMS_MAGIC_HOME_HELP_SECTION_BODY_PART_5}<br/> <br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;{!$Label.SMS_MAGIC_HOME_HELP_SECTION_BODY_PART_6}<br/> <br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;{!$Label.SMS_MAGIC_HOME_HELP_SECTION_BODY_PART_7}<br/> <br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;{!$Label.SMS_MAGIC_HOME_HELP_SECTION_BODY_PART_8}<br/>
+           &nbsp;&nbsp;&nbsp;&nbsp; {!$Label.SMS_MAGIC_HOME_HELP_SECTION_BODY_PART_9}<br/> <br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;{!$Label.SMS_MAGIC_HOME_HELP_SECTION_BODY_PART_10} <br/> <br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;{!$Label.SMS_MAGIC_HOME_HELP_SECTION_BODY_PART_11}<br/> <br/>
+    </apex:pageBlock>
+    
+    <apex:pageBlock title="{!$Label.NEW_SMS_TEMPLATE_HELP_SECTION_TITLE}" rendered="{!IF (show == 'NewSMSTemplate' || show =='all',true, false)}" >
+        <apex:pageBlockButtons location="top" rendered="{!IF (show =='NewSMSTemplate',true, false)}">
+            <apex:form >
+                <apex:commandButton value="{!$Label.FEEDBACK_BUTTON}" onclick="redirectTo('/apex/FeedbackPage','/apex/SMSMagicHelp?from=NewSMSTemplate');return false;" />
+            </apex:form>
+        </apex:pageBlockButtons>
+        {!$Label.NEW_SMS_TEMPLATE_HELP_SECTION_BODY_PART_1}<br/> <br/>
+        {!$Label.NEW_SMS_TEMPLATE_HELP_SECTION_BODY_PART_2}<br/> <br/>
+        {!$Label.NEW_SMS_TEMPLATE_HELP_SECTION_BODY_PART_3}<br/> <br/>
+    </apex:pageBlock>
+    
+    <apex:pageBlock title="{!$Label.NEW_SMS_HELP_SECTION_TITLE}" rendered="{!IF (show == 'NewSMS' || show =='all',true, false)}" >
+        <apex:pageBlockButtons location="top" rendered="{!IF (show =='NewSMS',true, false)}">
+            <apex:form >
+                <apex:commandButton value="{!$Label.FEEDBACK_BUTTON}" onclick="redirectTo('/apex/FeedbackPage','/apex/SMSMagicHelp?from=NewSMS');return false;" />
+            </apex:form>
+        </apex:pageBlockButtons>
+        {!$Label.NEW_SMS_HELP_SECTION_BODY_PART_1} <br/> <br/>
+        {!$Label.NEW_SMS_HELP_SECTION_BODY_PART_2} &nbsp; <apex:outputLink value="mailto:care@screen-magic.com">{!$Label.NEW_SMS_HELP_SECTION_BODY_PART_3}</apex:outputLink> <br/> <br/>
+        {!$Label.NEW_SMS_HELP_SECTION_BODY_PART_4}<br/> <br/>
+        {!$Label.NEW_SMS_HELP_SECTION_BODY_PART_5}<br/> <br/>
+    </apex:pageBlock>
+    
+    <apex:pageBlock title="{!$Label.BULK_SMS_HELP_SECTION_TITLE}" rendered="{!IF (show == 'BulkSendSMS' || show =='all',true, false)}" >
+        <apex:pageBlockButtons location="top" rendered="{!IF (show =='BulkSendSMS',true, false)}">
+            <apex:form >
+                <apex:commandButton value="{!$Label.FEEDBACK_BUTTON}" onclick="redirectTo('/apex/FeedbackPage','/apex/SMSMagicHelp?from=BulkSendSMS');return false;" />
+            </apex:form>
+        </apex:pageBlockButtons>
+       {!$Label.BULK_SMS_HELP_SECTION_BODY_PART_1}<br/> <br/> 
+       {!$Label.BULK_SMS_HELP_SECTION_BODY_PART_2} &nbsp; <apex:outputLink value="mailto:care@screen-magic.com">{!$Label.BULK_SMS_HELP_SECTION_BODY_PART_3}</apex:outputLink><br/> <br/>
+       {!$Label.BULK_SMS_HELP_SECTION_BODY_PART_4}<br/> <br/>
+       {!$Label.BULK_SMS_HELP_SECTION_BODY_PART_5} <br/> <br/>
+    </apex:pageBlock>
+    
+    <apex:pageBlock title="{!$Label.INCOMING_HELP_SECTION_TITLE}" rendered="{!IF (show == 'IncomingSMS' || show =='all',true, false)}" >
+    <apex:pageBlockButtons location="top" rendered="{!IF (show =='IncomingSMS',true, false)}">
+            <apex:form >
+                <apex:commandButton value="{!$Label.FEEDBACK_BUTTON}" onclick="redirectTo('/apex/FeedbackPage','/apex/SMSMagicHelp?from=IncomingSMS');return false;" />
+            </apex:form>
+        </apex:pageBlockButtons>
+    {!$Label.INCOMING_HELP_SECTION_BODY_PART_1} <br/> <br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;{!$Label.INCOMING_HELP_SECTION_BODY_PART_2} <br/> <br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;{!$Label.INCOMING_HELP_SECTION_BODY_PART_3} <br/> <br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;{!$Label.INCOMING_HELP_SECTION_BODY_PART_4} <br/> <br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;{!$Label.INCOMING_HELP_SECTION_BODY_PART_5} <br/> <br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;{!$Label.INCOMING_HELP_SECTION_BODY_PART_6} <br/> <br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;{!$Label.INCOMING_HELP_SECTION_BODY_PART_7} <br/> <br/>
+    </apex:pageBlock>
+    
+    <apex:pageBlock title="{!$Label.CAMPAIGN_SMS_HELP_SECTION_TITLE}" rendered="{!IF (show == 'CampaignSMSSend' || show =='all',true, false)}" >
+        <apex:pageBlockButtons location="top" rendered="{!IF (show =='CampaignSMSSend',true, false)}">
+            <apex:form >
+                <apex:commandButton value="{!$Label.FEEDBACK_BUTTON}" onclick="redirectTo('/apex/FeedbackPage','/apex/SMSMagicHelp?from=CampaignSMSSend');return false;" />
+            </apex:form>
+        </apex:pageBlockButtons>
+        {!$Label.CAMPAIGN_SMS_HELP_SECTION_BODY_PART_1} <br/> <br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;{!$Label.CAMPAIGN_SMS_HELP_SECTION_BODY_PART_2} <br/> <br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;{!$Label.CAMPAIGN_SMS_HELP_SECTION_BODY_PART_3} <br/> <br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;{!$Label.CAMPAIGN_SMS_HELP_SECTION_BODY_PART_4} <br/> <br/>
+    </apex:pageBlock>
+    
+    <apex:pageBlock title="{!$Label.FORWARDING_CONFIGURATION_HELP_SECTION_TITLE}" rendered="{!IF (show == 'ForwordingConfiguration' || show =='all',true, false)}" >
+        <apex:pageBlockButtons location="top" rendered="{!IF (show =='ForwordingConfiguration',true, false)}">
+            <apex:form >
+                <apex:commandButton value="{!$Label.FEEDBACK_BUTTON}" onclick="redirectTo('/apex/FeedbackPage','/apex/SMSMagicHelp?from=ForwordingConfiguration');return false;" />
+            </apex:form>
+        </apex:pageBlockButtons>
+        {!$Label.FORWARDING_CONFIGURATION_HELP_SECTION_BODY_PART_1} <br/> <br/>
+        {!$Label.FORWARDING_CONFIGURATION_HELP_SECTION_BODY_PART_2} <br/> <br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;{!$Label.FORWARDING_CONFIGURATION_HELP_SECTION_BODY_PART_3}<br/> <br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;{!$Label.FORWARDING_CONFIGURATION_HELP_SECTION_BODY_PART_4} <br/> <br/>
+        <i>{!$Label.FORWARDING_CONFIGURATION_HELP_SECTION_BODY_PART_5}</i><br/> <br/>
+    </apex:pageBlock>
+    
+    <apex:pageBlock title="{!$Label.LOOKUP_CONFIGURATION_HELP_SECTION_TITLE}" rendered="{!IF (show == 'IncomingLookupConfiguration' || show =='all',true, false)}" >
+        <apex:pageBlockButtons location="top" rendered="{!IF (show =='IncomingLookupConfiguration',true, false)}">
+            <apex:form >
+                <apex:commandButton value="{!$Label.FEEDBACK_BUTTON}" onclick="redirectTo('/apex/FeedbackPage','/apex/SMSMagicHelp?from=IncomingLookupConfiguration');return false;" />
+            </apex:form>
+        </apex:pageBlockButtons>
+        {!$Label.LOOKUP_CONFIGURATION_HELP_SECTION_BODY_PART_1} <br/> <br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;{!$Label.LOOKUP_CONFIGURATION_HELP_SECTION_BODY_PART_2} <br/> <br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;{!$Label.LOOKUP_CONFIGURATION_HELP_SECTION_BODY_PART_3} <br/> <br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;{!$Label.LOOKUP_CONFIGURATION_HELP_SECTION_BODY_PART_4} <br/> <br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;{!$Label.LOOKUP_CONFIGURATION_HELP_SECTION_BODY_PART_5} <br/> <br/>
+    </apex:pageBlock>
+
+</apex:outputPanel>
+</apex:page>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>List</customSettingsType>
+    <description>Settings to store organization location information</description>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>Appointment_Duration__c</fullName>
+        <defaultValue>30</defaultValue>
+        <deprecated>false</deprecated>
+        <description>The Default length of appointments.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>In Minutes</inlineHelpText>
+        <label>Appointment Duration</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Close_Hour__c</fullName>
+        <defaultValue>1730</defaultValue>
+        <deprecated>false</deprecated>
+        <description>The hour that the shop closes</description>
+        <externalId>false</externalId>
+        <inlineHelpText>In 24 Hour time</inlineHelpText>
+        <label>Close Hour</label>
+        <precision>4</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Location_Members__c</fullName>
+        <deprecated>false</deprecated>
+        <description>The Advisors or Technicians, or other employees that are resources for scheduling appointments at this location.</description>
+        <externalId>false</externalId>
+        <label>Location Members</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Open_Hour__c</fullName>
+        <defaultValue>0700</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Open Hour</description>
+        <externalId>false</externalId>
+        <inlineHelpText>In 24 Hour time</inlineHelpText>
+        <label>Open Hour</label>
+        <precision>4</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <label>OrganizationLocationSettings</label>
+    <visibility>Public</visibility>
+</CustomObject>

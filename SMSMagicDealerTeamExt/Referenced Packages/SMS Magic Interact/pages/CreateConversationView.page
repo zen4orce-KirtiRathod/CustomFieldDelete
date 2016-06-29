@@ -1,0 +1,16 @@
+<apex:page showHeader="false" sidebar="false">
+    <apex:includeScript value="{!URLFOR($Resource.smagicinteract__jquery)}"/>    
+    <apex:includeLightning rendered="true"/>
+    <div id="lightning" />
+
+    <script>
+        $Lightning.use("smagicinteract:ConversationViewCreator", function() {
+          $Lightning.createComponent("smagicinteract:ConversationViewCreatorComponent",
+          { label : "Press Me!" },
+          "lightning",
+          function(cmp) {
+          });
+        });
+    </script>
+
+</apex:page>

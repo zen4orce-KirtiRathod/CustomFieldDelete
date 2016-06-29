@@ -1,0 +1,32 @@
+<apex:page standardController="dealer__PartPhysicalInventory__c" extensions="dealer.PartsPhysical_EXT" title="Physical Inventory" showChat="true" showHeader="true" sidebar="true">
+	<apex:sectionHeader title="Parts Physical Inventory" subtitle="{!IF(dealer__PartPhysicalInventory__c.Id!=null, dealer__PartPhysicalInventory__c.Name, 'Create new Inventory Physical')}" />
+	<apex:form id="physical">
+		<apex:pageBlock mode="maindetail" id="b">
+			<apex:pageMessages id="messages" />
+			<apex:pageBlockButtons location="top">
+				<apex:commandButton action="{!newPhysicalInventory}" value="New Parts Physical Inventory" rendered="{!ISBLANK(dealer__PartPhysicalInventory__c.Id)}" />
+			</apex:pageBlockButtons>
+
+			<apex:pageBlockSection id="pbs1" rendered="{!ISBLANK(dealer__PartPhysicalInventory__c.Id)}">
+				<apex:inputField value="{!dealer__PartPhysicalInventory__c.dealer__Location__c}" />
+				<apex:selectList size="1" value="{!physicalType}">
+					<apex:selectOptions value="{!PhyscialTypeOptions}" />
+				</apex:selectList>
+			</apex:pageBlockSection>
+			<!--
+			<apex:pageBlockSection id="pbr1" rendered="{!NOT(ISBLANK(PartPhysicalInventory__c.Id))}">
+				<apex:outputField value="{!PartPhysicalInventory__c.Name}" />
+				<apex:outputText />
+
+				<apex:outputField value="{!dealer__PartPhysicalInventory__c.dealer__Location__c}" />
+				<apex:outputField value="{!PartPhysicalInventory__c.dealer__Status__c}" />
+
+				<apex:pageBlockTable title="Inventory Records" var="p" value="{!detail_records}">
+					<apex:outputField value="{!p.Name}" />
+				</apex:pageBlockTable>
+			</apex:pageBlockSection>
+			-->
+
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>

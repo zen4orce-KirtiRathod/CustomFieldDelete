@@ -1,0 +1,2345 @@
+<apex:page label="Service Appointments" title="Service Schedule" showChat="true" id="sa_schedule" docType="html-5.0" standardController="dealer__Service_Appointment__c" extensions="dealer.ServiceAppointment_EXT"  tabStyle="ServiceScheduler__tab">
+    <!-- 
+        Future TODO
+            . Time on job line open and able to update length of apt
+    -->
+
+    <!--  jQuery CDN -->
+    <apex:includeScript value="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" />
+    <apex:includeScript value="{!URLFOR($Resource.dealer__serializeJSON)}" />
+
+    <!-- INclude Namespaced Bootstrap 3.0 -->
+    <apex:includeScript value="{!URLFOR($Resource.dealer__BootstrapNS,'/bootstrap/js/bootstrap.min.js')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.dealer__BootstrapNS,'/bootstrap/css/bootstrap.min.css')}"/>
+
+    <apex:stylesheet value="{!URLFOR($Resource.dealer__BootstrapNS,'/bootstrap/css/dealerteam_bs.css')}"/>
+
+    <!-- KENDO 2014.3.1316 -->
+    <!-- <apex:includeScript value="{!URLFOR($Resource.KendoUiFULL,'/js/kendo.all.min.js')}"/> -->
+    <!-- <apex:includeScript value="{!URLFOR($Resource.KendoUiFULL,'/js/kendo.timezones.min.js')}"/> -->
+    <!-- <apex:stylesheet value="{!URLFOR($Resource.BootstrapNS,'/kendo/kendo.common-bootstrap.min.css')}"/> -->
+    <!-- <apex:stylesheet value="{!URLFOR($Resource.BootstrapNS,'/kendo/kendo.bootstrap.min.css')}"/> -->
+
+
+    <!-- KENDO 2015.1.429 -->
+    <apex:includeScript value="{!URLFOR($Resource.dealer__KendoUiFULL2015,'/js/kendo.all.min.js')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.dealer__KendoUiFULL2015,'/styles/kendo.bootstrap.min.css')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.dealer__KendoUiFULL2015,'/styles/kendo.common-bootstrap.core.min.css')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.dealer__KendoUiFULL2015,'/styles/kendo.common-bootstrap.min.css')}"/>
+    <!-- <apex:stylesheet value="{!URLFOR($Resource.KendoUiFULL2015,'/styles/kendo.common.min.css')}"/> -->
+
+    <!-- Moment.js v2.9 -->
+    <apex:includeScript value="{!URLFOR($Resource.dealer__MomentJS)}" />
+
+    <script type="text/javascript">
+        var j$ = jQuery.noConflict();
+
+        // default date format
+        var dateFormat = 'MM/dd/yyyy h:mm tt';
+        var momentDateTimeFormat = 'MM/DD/YYYY h:mm A';
+        var momentDateFormat = 'MM/DD/YYYY';
+    </script>
+<body>
+
+    <apex:sectionHeader title="Service Appointments" subtitle="Schedule" description="" />
+
+    <div id="force">
+        <div id="tools" class="row">
+            <div id="locationMenu">
+                <div class="col-md-9">
+                    <input id="locationSelect"
+                           data-role="dropdownlist"
+                           data-filter="contains"
+                           data-auto-bind="true"
+                           data-value-primitive="true"
+                           data-text-field="Name"
+                           data-value-field="Id"
+                           data-bind=" source: locations,
+                                       value: selectedLocationId,
+                                        events: {
+                                            select: selectLocation,
+                                        }"
+                           style="width: 250px" />
+
+                    <div class="dropdown avisorSelect">
+                        <button class="btn btn-sm btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            Filter Techs/Advisors
+                            <span class="caret"></span>
+                        </button>
+                        
+                        <ul class="dropdown-menu-form dropdown-menu" data-bind="source: advisorResource" data-template="memberListTemplate"></ul>
+                        
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- Scheduler Div -->
+        <div id="scheduler"></div>
+
+        <div id="add_new_cust_window">
+            <div class="add_new_form">
+                <h4>Account</h4>
+                    <input type="hidden" id="existingUserId" name="existingUserId" />
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                        <!-- FIRST Name -->
+                        <label for="firstName" class="control-label">First Name:</label>
+                        <input class="form-control" id="firstName" name="firstName" type="text" />
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <!-- LAST Name -->
+                        <label for="lastName" class="control-label">Last Name:</label>
+                        <input class="form-control" id="lastName" name="lastName" type="text" />
+                    </div>
+                </div>
+                <div class="row">    
+                    <div class="form-group col-sm-12">
+                        <!-- EMAIL -->
+                        <label for="email" class="control-label">Email:</label>
+                        <input class="form-control" id="email" name="email" type="email" />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                        <!-- Phone -->
+                        <label for="phone" class="control-label">Phone Number:</label>
+                        <input class="form-control" id="phone" name="phone" type="text" />
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <!-- Mobile -->
+                        <label for="mobile" class="control-label">Mobile Phone:</label>
+                        <input class="form-control" id="mobile" name="mobile" type="text" />
+                    </div>
+                </div>
+                <hr />
+                <h4>Mailing Address</h4>
+                <div class="row">
+                    <div class="form-group col-sm-12">
+                        <!-- Phone -->
+                        <label for="mailingStreet" class="control-label">Street:</label>
+                        <input class="form-control" id="mailingStreet" name="mailingStreet" type="text" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-sm-7">
+                        <!-- Phone -->
+                        <label for="mailingCity" class="control-label">City</label>
+                        <input class="form-control" id="mailingCity" name="mailingCity" type="text" />
+                    </div>
+                    <div class="form-group col-sm-2">
+                        <!-- Phone -->
+                        <label for="mailingState" class="control-label">State</label>
+                        <input class="form-control" id="mailingState" name="mailingState" type="text" />
+                    </div>
+                    <div class="form-group col-sm-3">
+                        <!-- Phone -->
+                        <label for="mailingZip" class="control-label">Zip</label>
+                        <input class="form-control" id="mailingZip" name="mailingZip" type="text" />
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="pull-right">
+                        <button class="btn btn-default cancel_cust">Cancel</button>
+                        <button class="btn btn-primary save_cust">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="add_new_veh_window">
+            <div class="add_new_form">
+                <h4>Vehicle Info</h4>
+                <input id="vehOwnerId" name="vehOwnerId" type="hidden" />
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                        <!-- VIN -->
+                        <label for="vin" class="control-label">VIN #:</label>
+                        <div class="input-group">
+                            <input class="form-control" id="vin" name="vin:auto" type="text" />
+                            <span class="input-group-btn">
+                                <button class="btn btn-default decode_vin" type="button" title="Lookup VIN"><i class="glyphicon glyphicon-search"></i></button>
+                            </span>
+                        </div><!-- /input-group -->
+
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <!-- EMAIL -->
+                        <label for="licence" class="control-label">Licence:</label>
+                        <input class="form-control" id="licence" name="licence" type="email" />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                        <!-- Year -->
+                        <label for="year" class="control-label">Year:</label>
+                        <input class="form-control" id="year" name="year" type="text" />
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <!-- Make -->
+                        <label for="make" class="control-label">Make:</label>
+                        <input class="form-control" id="make" name="make" type="email" />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                        <!-- Model -->
+                        <label for="model" class="control-label">Model:</label>
+                        <input class="form-control" id="model" name="model" type="text" />
+                    </div>
+                    <div class="form-group col-sm-6 trim_col">
+                        <!-- Trim -->
+                        <label for="trim" class="control-label block_label">Trim:</label>
+                        <input class="form-control" id="trim" name="trim" type="email" />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                        <!-- Last Odometer -->
+                        <label for="odometer" class="control-label">Last Odometer:</label>
+                        <input class="form-control" id="odometer" name="odometer" type="text" />
+                    </div>
+
+                </div>
+
+                <hr />
+                <div class="row">
+                    <div class="pull-right">
+                        <button class="btn btn-default cancel_veh">Cancel</button>
+                        <button class="btn btn-primary save_veh">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <span id="staticNotification"></span>
+    </div>
+
+    <script id="eventTemplate" type="text/x-kendo-template">
+        # if ( typeof type === 'undefined') { var type = 'APT'; } #
+        # if ( type == 'APT') { #
+
+            <div class="event_wrap" style="background-color: #: kendo.toString( (typeof color !== 'undefined' && color !== '')? color : '\\#777777') #; ">
+                <div>#: kendo.toString( (typeof title !== 'undefined')? title : '') #</div>
+                <div><span class="label">Cust:</span> #: kendo.toString( (typeof name !== 'undefined')? name : '') #</div>
+                <div><span class="label">#: kendo.toString( (typeof custPhone !== 'undefined')? 'Phone:' + custPhone : '') #</span></div>
+                <div><span class="label">#: kendo.toString( (typeof custMobile !== 'undefined')? 'Mobile: ' + custMobile : '') #</span></div>
+                <div>
+                    #if (typeof lines !== 'undefined') {  #
+                        <ul>
+                        # for (var i = 0; i < lines.length; i++) { #
+                            <li>#= lines[i].serviceOperationCode # #= (typeof lines[i].concern !== 'undefined' && lines[i].concern != '') ? ': '+lines[i].concern : '' #</li>
+                        # } #
+                        </ul>
+                    # } #
+                </div>
+                <div class="btn_wrap">        
+                    <a href="/apex/dealer__ConvertSAtoRO?id=#: kendo.toString( id ) #" class="btn btn-default btn-xs create_ro" target="_blank"> Create RO <span class="glyphicon glyphicon-wrench"></span></a>
+                    <a href="/apex/ServiceAppointment?id=#: kendo.toString( id ) #" class="btn btn-default btn-xs" target="_blank">Detail <i class="glyphicon glyphicon-new-window"></i></a>
+                </div>
+                <!-- TODO: Car is ready button? -->
+                <!--
+                <button class="btn btn-danger btn-xs">Delete <span class="glyphicon glyphicon-remove"></span> </button>
+                -->
+            </div>
+        # } else { #
+            <div class="event_wrap ro_wrap" style="background-color: #: kendo.toString( (typeof color !== 'undefined' && color !== '')? color : '\\#777777') #; ">
+                <div>
+                    <div>#: kendo.toString( (typeof title !== 'undefined')? title : '') #</div>
+                    # if(typeof name !== 'undefined'){ #
+                        <div><span class="label">Cust:</span> #: kendo.toString( (typeof name !== 'undefined')? name : '') #</div>
+                    #}#
+                    #if(typeof name !== 'undefined'){#
+                        <div><span class="label">Veh:</span> #: kendo.toString( (typeof vehName !== 'undefined')? vehName : '') #</div>
+                    #}#
+                </div>
+            <div>
+        # } #
+    </script>
+
+    <script id="editorTemplate" type="text/x-kendo-template">
+        <div id="force" class="modalwrap">
+            <div class="row">
+                <div class="col-sm-6">
+
+                    <!-- CUSTOMER -->
+                    <div class="form-group">
+                        <label for="custid" class="block_label">Customer:</label>
+                        <input id="custId" name="custId" style="width: 335px;" />
+                        <button class="btn btn-primary btn-xs add_customer" title="Create New Customer" data-add="customer"><i class="glyphicon glyphicon-plus"></i></button>
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+
+                    <!-- START -->
+                    <div class="form-group row">
+                        <label for="start" class="col-sm-3 control-label">Start:</label>
+                        <div class="col-sm-9">
+                            <input data-role="datetimepicker" data-format="MM/dd/yyyy h:mm tt" name="start" id="start" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+
+                    <!-- VEHICLE -->
+                    <div class="form-group">
+                        <label for="vehId" class="block_label">Vehicle:</label>
+                        <input id="vehId" name="vehId"  style="width: 335px;" />
+                        <button class="btn btn-primary btn-xs add_vehicle" title="Add Vehicle" data-add="vehicle" disabled><i class="glyphicon glyphicon-plus"></i></button>
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+
+                    <!-- END DATE TIME-->
+                    <div class="form-group row">
+                        <label for="end" class="col-sm-3 control-label">End:</label>
+                        <div class="col-sm-9">
+                            <input data-role="datetimepicker" data-format="MM/dd/yyyy h:mm tt" name="end" id="end" />
+                            <p class="text-muted">Calculated Time: <span class="total_time">-</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+
+                <div class="col-sm-6">
+
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <!-- Vehicle Odometer -->
+                            <div class="form-group">
+                                <label for="vehOdometer" class="block_label">Odometer:</label>
+                                <input class="form-control input-sm"  id="vehOdometer" name="vehOdometer" />
+                            </div>
+                        </div>
+                         <div class="col-sm-3">
+                            <label for="last_odometer" class="block_label text-muted">Last:</label>
+                            <span class="text-muted last_odometer"></span>
+                         </div>
+
+                         <div class="col-sm-2">
+                            <!-- Reccomended Service -->
+                            <button class="btn btn-primary btn-sm view_recommended" title="View Recommended Service Items" disabled><i class="glyphicon glyphicon-dashboard"></i></button>
+                         </div>
+                         <div class="col-sm-2">
+                            <!-- Service history -->
+                            <button class="btn btn-primary btn-sm view_history" title="View Vehicle Service History" disabled><i class="glyphicon glyphicon-list-alt"></i></button>                         
+                         </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+
+                    <!-- ADVISOR SELECT -->
+                    <div class="form-group row">
+                        <label for="advisorId" class="col-sm-2 control-label">Adv/Tech:</label>
+                        <div class="col-sm-9">
+                            <input id="advisorId" name="advisorId" />
+                            
+                            <!-- COMPANY NUMBER -->
+                            # if (typeof companynumber !== 'undefined' ) { #
+                                <span class="text-muted">#= companynumber #</span>
+                            # } #
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+
+                    <!-- COLORS -->
+                    <div class="form-group row">
+                        <div class="col-sm-3 control-label"><strong>Colors:</strong></div>
+                        
+                        <div class="btn-group colors_group col-sm-12" data-toggle="buttons">
+                            
+                            # j$.each(aptColors, function(desc,hex){ #
+                                <label class="btn" style="background-color: \\##= hex # ; color: \\#fff;">#= desc #
+                                    <input type="radio" name="color" autocomplete="off" value="\\##= hex #" active /> 
+                                    <span class="glyphicon"></span>
+                                </label>
+                            # }); #
+
+                        </div>
+                    </div>
+                </div>
+            </div>            
+
+            <br />
+            <div class="lines_content">
+                <table class="table table-condensed lines_table">
+                <col style="width:5%" /> 
+                <col style="width:25%" /> 
+                <col style="width:33%" />
+                <col style="width:12%" />
+                <col style="width:20%" />
+                <col style="width:10%" />
+                <thead>
+                    <tr>
+                        <th> </th>
+                        <th>OP Code</th>
+                        <th>Concern</th>
+                        <th>Payment<br />Method</th>
+                        <th>Estimate</th>
+                        <th>Est. Time.</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="placeholder">
+                        <td colspan="6"><p class="text-muted text-center"><button class="btn btn-default add_line" tittle="Add Line"><i class="glyphicon glyphicon-plus"></i></button></p></td>
+                    </tr>
+                </tbody>
+                </table>
+            </div>
+
+           <script>
+
+                jQuery(function() {
+                    render_advisor_lookup();
+
+                    function makeEmptyLine(){
+                        return  {
+                            time: '',
+                            lineKey: makeTempId(),
+                            serviceOperationCode: '',
+                            serviceOperationCodeId: '',
+                            concern: '',
+                            estimate: ''
+                        }
+                    }
+
+                    j$('.add_line').on('click',function(){
+                        // Limit Joblines to 10
+                        if (j$('.job_line').length < 10) {
+                            render_service_line_form( j$('.job_line').length +1, makeEmptyLine() );
+                        }
+                        if (j$('.job_line').length == 10) {
+                            j$('.add_line').prop('disabled','disabled');
+                        }
+
+                        var uid = j$(this).parents('.k-popup-edit-form').data('uid');
+                        var appt = scheduler.dataSource.getByUid(uid);
+                        appt.dirty = true;
+                    });
+                    j$('.lines_table').on('keyup change',function(){ 
+                        // console.log('changed') ;
+                        var uid = j$(this).parents('.k-popup-edit-form').data('uid');
+                        var appt = scheduler.dataSource.getByUid(uid);
+                        appt.dirty = true;
+                    });
+                });
+           <\/script>
+       </div>
+    </script>   
+
+    <script id="custTemplate" type="text/x-kendo-template">
+        <div class="cust_lookup">
+            <strong>#: Name #</strong>
+            <small>
+                #: kendo.toString( (typeof custEmail !== 'undefined')? ' ' + custEmail : '') # 
+                #: kendo.toString( (typeof custPhone !== 'undefined')? '- P:' + custPhone : '') #
+                #: kendo.toString( (typeof custMobile !== 'undefined')? '- M: ' + custMobile : '') #
+            </small>
+                # if (typeof custMailingAddress !== 'undefined' && custMailingAddress !== '' ) { #
+                   <small>#: kendo.toString( custMailingAddress ) # </small>
+                # } #
+        </div>
+    </script>
+
+    <script id="custValueTemplate" type="text/x-kendo-template">
+        <span class="selected-value">
+            <strong>#: Name #</strong><small>#: kendo.toString( (typeof custPhone !== 'undefined')? '- P:' + custPhone : '') ##: kendo.toString( (typeof custMobile !== 'undefined')? '- M: ' + custMobile : '') #</small>
+        </span>
+    </script>
+              
+    <script id="locationTemplate" type="text/x-kendo-template">
+        <div class="btn-group">
+            # active = (Id == locationModel.get('selectedLocation').Id) ? 'active' : '' #
+            <button type="radio" id="#= Id #" name="location" class="btn btn-default #= active # " data-apt="" data-bind="click: selectLocation">
+                #= Name #
+            </button>
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            # if ( Members.length > 0 ) { #
+            <ul class="dropdown-menu-form dropdown-menu">
+                # for (var z = 0; z < Members.length; z++) { #
+                    <li><label for="#= Members[z].Id #"><input type="checkbox" value="#= Members[z].Id #" checked="checked" name="#= Members[z].Id #" id="#= Members[z].Id #" /> #= Members[z].Name #</label></li>
+                # } #
+            </ul>
+            # } #
+        </div>
+    </script>
+
+    <script id="memberListTemplate" type="text/x-kendo-template">
+
+        <li><label for="#= Id #"><input type="checkbox" value="#= Id #" checked="checked" name="#= Id #" id="#= Id #" /> #= Name #</label></li>
+    </script>
+
+    <script id="historyTemplate" type="text/x-kendo-template">
+        <div>
+            # var lines =  j$('\\#service_window').data(); #
+        </div>
+    </script>
+
+    <script id="eventToolTipTemplate" type="text/x-kendo-template">
+        <div>
+            #var uid = target.attr("data-uid");#
+            #var scheduler = target.closest("[data-role=scheduler]").data("kendoScheduler");#
+            #var model = scheduler.occurrenceByUid(uid);#
+           
+            #if(model) {#
+                Customer: #: kendo.toString( (typeof model.name !== 'undefined')? model.name.replace('SVCAPT:','') : '') #
+                #if(typeof model.start !== 'undefined') {#
+                    <br />Start: #: kendo.toString(  moment(model.start).format(momentDateTimeFormat) ) #
+                #}#
+                #if(typeof model.end !== 'undefined') {#
+                    <br />End: #: kendo.toString( moment(model.end).format(momentDateTimeFormat) ) #
+                #}#
+
+                <div>
+                    #if (typeof model.lines !== 'undefined') {  #
+                        <ul>
+                        # for (var i = 0; i < model.lines.length; i++) { #
+                            <li>#= model.lines[i].serviceOperationCode #: #= model.lines[i].concern #</li>
+                        # } #
+                        </ul>
+                    # } #
+                </div>
+
+            #} else {#
+                <strong>No event data is available</strong>
+            #}#
+        </div>
+    </script>
+
+    <script type="text/javascript">
+    // #: kendo.toString( (typeof custEmail !== 'undefined')? ' ' + custEmail : '') # 
+
+        // # for (var i = 0; i < data.length; i++) { #
+        // # } #
+
+    var startDate = moment();
+
+    // Inline cust/veh window
+    var add_cust_window = j$('#add_new_cust_window'); 
+    var add_veh_window = j$('#add_new_veh_window'); 
+
+    var scheduler = null;
+    var dataSource = null;
+
+    // QueryString Variables
+    var custId = getParameterByName('custid');
+    var vehId = getParameterByName('vehid');
+
+    // Location Model (MVVM)
+    var locationModel = kendo.observable({
+        locations: {!LocationsJSON},
+        selectedLocation: null,
+        advisorResource: function(){
+            return this.get('selectedLocation.Members');
+        },
+        selectedLocationId : function(){
+            return this.get('selectedLocation.Id');
+        },
+        selectedLocationCN : function(){
+            return this.get('selectedLocation.companyNumber');
+        },
+        setDefaultLoc : function(){
+            var selLocId = '{!LastLocationId}';
+            // var selLocId = ''; // testing blank last location //a1KE000000UBEkAMAX
+            
+            if(!selLocId){
+                selLocId = this.locations[0].Id;
+            }
+
+            // console.log('selLocId');
+            // console.log(selLocId);
+
+            var loc = this.get('locations').filter(function( _loc ) {
+              return _loc.Id == selLocId;
+            });
+            this.set("selectedLocation", loc[0]);
+            // console.log(loc[0]);
+        },
+        selectLocation: function(e) {
+            var loc = e.sender.dataItem(e.item);
+            // var loc = e.data; // only for old button ui
+
+            // console.log('Selected location: ');
+            // console.log(loc);
+
+            this.set("selectedLocation", loc);
+
+            // scheduler.dataSource.read();
+
+            // Update user settings via Remote Action
+            dealer.ServiceAppointment_EXT.updateDefaultLocation( loc.Id , function(result, event) {
+                // console.log(event);
+                if(event.status) {
+                    // console.log(result);
+                } else {
+                    // nopsies
+                }
+            });
+
+            // Rerender
+            scheduler.destroy();
+            j$('#scheduler').html('');
+            scheduler = null;
+
+            // restart Shcheduler
+            init();
+
+            dealerDataSource.read();
+
+            // reprocess advisor select.
+            processAdvisorChecks();
+        }
+    });
+    locationModel.setDefaultLoc();
+    // Bind location DATA
+    kendo.bind(j$("#locationMenu"), locationModel);
+
+    // var orgLocations = {!LocationsJSON};
+    // TODO figure out fallback variable here.
+    // var selectedLocation = ( typeof orgLocations[0] != undefined && orgLocations[0] != null ) ? orgLocations[0] : null;
+    // var advisorResource = {!AdvisorResourceJSON};
+    var selectedAdvisors = {!SelectedAdvisors};
+    // var selectedAdvisors = ['005E0000000iCElIAM'];
+
+    var aptColors = {!AppointmentColors};
+    var aptDuration = {!AppointmentDuration};
+
+    // WORKAROUND PLACEHOLDERs
+    var CUST_ID = null;
+    var VEH_ID = null;
+
+    /** Data Sources */
+    
+    // Scheduler Data Source and Schema
+    var dealerDataSchema = {
+        total: function(response) {
+            // console.log( response.length );
+            return response; // total is returned in the "total" field of the response
+        },
+        errors: "error",
+        model: {
+            id: "id",
+            fields: {
+                id: { from: "RecordId", type: "string" },
+                advisorId: { from: "AdvisorId", type: "string" },
+                title: { type: "string", from: "title", defaultValue: "Service Appointment" },
+                type: { type: "string", from: "type", defaultValue: "APT" },
+
+                custId: { from: "custId", type: "string" },
+                start: { type: "date", from: "start" },
+                end: { type: "date", from: "end" },
+                // lines: { type: "string", from: "lines" },
+
+                color: { type: "string", from: "color" },
+                vehOdometer: { type: "number", from: "vehOdometer", defaultValue: "0"},
+                name: { type: "string", from: "Name", defaultValue: "No Name Set" },
+                vehId: { type: "string", from: "vehId" }
+            }
+        }
+    }
+
+    var dealerDataSource = new kendo.data.SchedulerDataSource({
+        transport: {
+            read: {
+                url: "/apex/dealer__serviceappointmentjson",
+                dataType: "json",
+                type: "GET",
+                data: {
+                    // location: locationModel.selectedLocationId(), // location based appointments
+                    custId: custId,
+                    action: 'read_apt'
+                }
+            },
+            update: {
+                url: "/apex/dealer__serviceappointmentjson",
+                dataType: "json",
+                // type: "POST",
+                data: {
+                    // location: locationModel.selectedLocationId(), // location based appointments
+                    action: 'update_apt'
+                },
+                success: function () {
+                    updateComplete();
+                }
+            },
+            create: {
+                url: "/apex/dealer__serviceappointmentjson",
+                dataType: "json",
+                data: {
+                    // location: locationModel.selectedLocationId(), // location based appointments
+                    // companyNumber: locationModel.selectedLocationCN(),
+                    action: 'create_apt'
+                },
+                success: function () {
+                    console.log('Success');
+                    updateComplete();
+                }
+            },
+            destroy: {
+                url: "/apex/dealer__serviceappointmentjson",
+                dataType: "json",
+                data: {
+                    action: 'destroy_apt'
+                },
+                success: function () {
+                    updateComplete();
+                }
+            },
+            parameterMap: function(data, operation) {
+                if(operation == "read") {
+                    data.start = moment( j$("#scheduler").data("kendoScheduler")._selectedView._startDate ).startOf('week').unix() + '000';
+                    data.end = moment( j$("#scheduler").data("kendoScheduler")._selectedView._endDate ).endOf('week').unix() + '000';
+                }
+
+                if(operation == "update") {
+                    data.start= data.start.getTime();
+                    data.end  = data.end.getTime();
+                }
+
+                if(operation == "create") {
+                    data.start= data.start.getTime();
+                    data.end  = data.end.getTime();
+
+                    if(data.custId === ''||data.custId === null) {
+                        // j$('#custId').val(CUST_ID);
+                        data.custId = CUST_ID;
+                    }
+
+                    if(data.vehId === '' || data.vehId === null) {
+                        // j$('#custId').val(VEH_ID);
+                        data.vehId = VEH_ID;
+                    }
+                }
+
+                if(operation == "destroy") {
+                    data.start = data.start.getTime();
+                    data.end   = data.end.getTime();
+                }
+
+                // Setup Appointment
+                data.location = locationModel.selectedLocationId(); // location based appointments
+                data.companyNumber = locationModel.selectedLocationCN();
+
+                return data; 
+            }
+        },
+        error: function(e) {
+            // console.log(e);
+            // alert('There was an error saving this record. Your update may not be saved. Please refresh the page and try again. ERROR('+e+')');
+            display_event_error(e);
+        },
+        schema: dealerDataSchema
+    });
+
+    j$(document).ready(function() {
+
+        // Start the initialization ASAP
+        init();
+
+        j$('.dropdown-menu').on('click', function(e){
+                if(j$(this).hasClass('dropdown-menu-form')){
+                    e.stopPropagation();
+                }
+        });
+
+        // process the advisor checkboxes on first page load
+        processAdvisorChecks();
+
+        // open new apt dialogue if custId is in URL
+        preset_field_add_new();
+
+        /** Event Triggers */ 
+
+        // j$('.location_btn').each(function(i,el){
+        //     console.log(j$(el).data());
+        // });
+
+        // LOG EVENT - For debugging events
+        j$('#scheduler').on('click','.expose', function(e){
+            e.preventDefault();
+            console.log(j$(this).parents('.k-event'));
+            var uid = j$(this).parents('.k-event').data('uid');
+            console.log(uid);
+            var s_event = scheduler.occurrenceByUid(uid);
+            console.log(s_event);
+        });
+
+        // Delete Service Lines
+        j$('body').on('click', '.del_line', function(){
+
+            if (j$('.job_line').length > 10) {
+                j$('.add_line').prop('disabled','false');
+            }
+
+            // get line id
+            var $line = j$(this).parents('.job_line');
+            var lineId = $line.prop('id');
+            var opCode = $line.find('input.serviceOperationCode').data("kendoDropDownList").value();
+
+            if( opCode != '' && opCode != 'Select Items...' ) {
+                // Delete Line Remote Action
+                dealer.ServiceAppointment_EXT.deleteSAline(  lineId, function(result, event) {
+                    if(event.status) {
+                        $line.fadeOut(250, function(){
+                            j$(this).remove();
+                        });
+                    } else {
+                        // Setup Error Notification
+                        var staticNotification = j$("#staticNotification").kendoNotification({
+                            appendTo: ".k-scheduler-edit-form",
+                            autoHideAfter: 0,
+                            button: true
+                        }).data("kendoNotification");
+                        staticNotification.error('Unable to delete line. Please try again later.');
+                    }
+                });
+            } else {
+                $line.fadeOut(250, function(){
+                    j$(this).remove();
+                });
+            }
+
+        });
+
+        // In-line New customer/vehicle wondow initialize
+        set_cust_veh_windows();
+    });
+
+    /** Remote Data Functions */
+
+    function init() {
+       
+        console.log(locationModel.selectedLocation);
+
+        // Remote Action setup
+        // get_appointmentdata_remote(render_scheduler); 
+
+        // Transport reads
+        render_scheduler(dealerDataSource);
+
+        // Set global scheduler
+        setup_scheduler();
+    }
+
+    function advisor_filter(advisors){
+        return filter = {
+            logic: "or",
+            filters: j$.map(advisors, function(value) {
+                return {
+                    operator: "eq",
+                    field: "Id",
+                    value: value
+                };
+            })
+        };
+    }
+
+    // Set Scheduler GLOBAL and setup some hooks
+    function setup_scheduler() {
+        // scheduler = j$("#scheduler").data("kendoScheduler");
+
+        // bind to event save event
+        scheduler.bind("save", apt_save_hook);
+        // scheduler.bind("save", hide_overlay);
+
+        // bind to event cancel event
+        scheduler.bind("cancel", hide_overlay);
+
+        // Bind to edit of event
+        scheduler.bind("edit", get_cust_info);
+        scheduler.bind("edit", display_current_lines);
+        scheduler.bind("edit", edit_event_hook);
+
+        // Bind to the navigate, when the view is changed, the date is sent to a new read request.
+        scheduler.bind("navigate", re_read_appointments);
+
+        j$( window ).load(function() {
+            preset_field_add_new();
+        });
+
+        j$("#scheduler").kendoTooltip({
+            filter: ".k-scheduler-workWeekview .k-event, .k-scheduler-weekview .k-event, .k-scheduler-timelineWeekview .k-event",
+            // position: "top",
+            width: 200,
+            content: kendo.template(j$('#eventToolTipTemplate').html())
+        });
+
+    }
+
+    function re_read_appointments() {
+        // Delay reading appointments to allow asyncronous request to process
+        setTimeout(function() {
+             scheduler.dataSource.read();
+        }, 500);
+        scheduler.refresh();
+    }
+
+    // If cust id is in query string then we need to display the edit modal for a new event
+    function preset_field_add_new() {
+        if (custId != ''){
+            scheduler.addEvent({ 
+                // title: "(No title)" 
+                custId: custId,
+                vehId: vehId
+            })
+        }
+    }
+
+    function file_name(){
+        return moment( j$("#scheduler").data("kendoScheduler")._selectedView._startDate).format(momentDateFormat) + ' - ' + moment( j$("#scheduler").data("kendoScheduler")._selectedView._endDate).format(momentDateFormat) ;
+    }
+    /** Functions */
+    function render_scheduler(_dataSource) {
+
+        scheduler = j$("#scheduler").kendoScheduler({
+            toolbar: [ "pdf" ],
+            pdf: {
+                fileName: 'service-appointments.pdf',
+                // fileName: file_name(),
+                // proxyURL: "http://demos.telerik.com/kendo-ui/service/export",
+                landscape: true
+            },
+            eventTemplate: j$("#eventTemplate").html(),
+            allDayEventTemplate: j$("#eventTemplate").html(),
+            editable: { template: kendo.template( j$('#editorTemplate').html() ) },
+            date: new moment(),
+            // startTime: new Date("2014/11/18 07:00 AM"),
+            height: 750, // Adjust hieght based viewport
+            // allDaySlot: false,
+            workWeekStart: 1,
+            workWeekEnd: 6,
+            workDayStart: new Date("2013/1/1 08:00 AM"),
+            workDayEnd: new Date("2013/1/1 05:30 PM"),
+            views: [
+                { type: "day", selected: true, minorTickCount: (60/aptDuration)}, 
+                { type: "workWeek" },
+                { 
+                    type: "timelineWeek", 
+                    columnWidth: 50,
+                    group: {
+                        orientation: "vertical"
+                    }
+                }
+                // { type: "agenda" }
+            ],
+            showWorkHours: true,
+            // timezone: "America/Los_Angeles",
+            dataSource: _dataSource,
+            group: {
+                resources: ["Advisors"]
+            },
+            moveStart: function(e) {
+                if(e.event.type == 'RO') {
+                    console.log("can't change ROs");
+                    e.preventDefault();
+                    console.log(e);
+
+                    display_event_error({ errors : {"type": "Event", "message":"Repair Orders cannot be edited in the scheduler view." } });
+                }
+            },
+            resources: [
+                {
+                    field: "advisorId",
+                    name: "Advisors",
+                    dataTextField: "Name",
+                    dataValueField: "Id",
+                    dataSource: locationModel.advisorResource(),
+                    title: "Advisor"
+                }
+            ]
+        }).data("kendoScheduler");
+    }
+
+    /** Editor Functions */
+
+    // Misc functions to run when editor is opened
+    function edit_event_hook(e) {
+        console.log(e);
+
+        // redirect if this event is an RO
+        if(typeof e.event.type !== 'undefined') {
+            if(e.event.type == 'RO') {
+                e.preventDefault();
+                // window.location
+                window.location.href = "/"+e.event.id;
+            }
+        }
+
+        var _cust_dropdown = j$('#custId').data("kendoDropDownList");
+
+        // Add checkbox to selected color
+        j$('.colors_group .btn').on('click', function(){
+            j$('.colors_group').find('.glyphicon-ok').removeClass('glyphicon-ok');
+            j$(this).find('.glyphicon').addClass('glyphicon-ok');
+        });
+
+        // open add new cust/vehicle window
+        j$('.add_customer').on('click', function(e){
+            // Open Kendo window
+            add_cust_window.data("kendoWindow").open().center();
+
+            // Are we editing or adding
+            if( j$(this).find('i').hasClass('glyphicon-pencil')  ) {
+                var _id = _cust_dropdown.value();
+                var _custObj = _cust_dropdown.dataSource.get(_id);
+
+                populate_edit_user( _custObj );
+            }
+
+        });
+
+        // open add new cust/vehicle window
+        j$('.add_vehicle').on('click', function(e){
+            // Open Kendo window
+            add_veh_window.data("kendoWindow").open().center();
+            j$('#vehOwnerId').val( _cust_dropdown.value() );
+
+        });
+
+        // Make waiting less difficult
+        j$('.k-scheduler-update, .k-scheduler-delete').click(function(){
+
+            j$('<i class="glyphicon glyphicon-refresh spin update_loading"></i>').appendTo( j$(this) );
+            // j$('<i class="glyphicon glyphicon-refresh spin update_loading"></i>').appendTo( j$('.k-scheduler-update, .k-scheduler-delete') );
+        });
+
+        // Display Service History
+        j$('.view_history').on('click', function(e){
+            var _vehId = j$('#vehId').data('kendoDropDownList').value();
+            // Get Service History Data
+            dealer.ServiceAppointment_EXT.getJobListHistory( _vehId , function(result, event) {
+                if(event.status) {
+                    render_service_history( result );
+                } else {
+                    // Error message
+                }
+            });
+        });
+
+        // Display Service History
+        j$('.view_recommended').on('click', function(e){
+            var _vehDrop = j$('#vehId').data('kendoDropDownList');
+            var _vehId = _vehDrop.value();
+
+            j$(this).find('i').removeClass('glyphicon-dashboard').addClass('glyphicon-refresh spin');
+
+            // Get Vehicle object from field dataSource
+            var _vehObj = _vehDrop.dataSource.get(_vehId);
+            var _tmpOdo = 0;
+
+            if( j$('#vehOdometer').val() !== '' ) {
+                _tmpOdo = j$('#vehOdometer').val();
+            } 
+
+            _vehObj.currOdom = _tmpOdo;
+
+            render_recommended_service(_vehObj);
+        });
+
+        startDateReference = j$('#start').data('kendoDateTimePicker');
+        startDateReference.timeView.options.min = new Date(2000, 0, 1, 8, 30, 0);
+        startDateReference.timeView.options.max = new Date(2000, 0, 1, 17, 30, 0);
+
+        endDateReference = j$('#end').data('kendoDateTimePicker');
+        endDateReference.timeView.options.min = new Date(2000, 0, 1, 8, 30, 0);
+        endDateReference.timeView.options.max = new Date(2000, 0, 1, 17, 30, 0);
+
+        // e.event.end = moment( new Date(e.event.start) ).add(aptDuration, 'minutes');
+
+        return e.event;
+    }
+
+    function render_customer_lookup(){
+        var custDataSource = new kendo.data.DataSource({
+            serverFiltering: true,
+            schema: {
+                model: { id: "custId" }
+            },
+            transport: {
+                read: {
+                    url: "apex/dealer__serviceappointmentjson",
+                    dataType: "json",
+                    data: {
+                        action: 'read_customers'
+                    }
+
+                },
+                parameterMap: function(data, operation) {
+                    if(operation == "read") {
+                        data.custid = custId;
+                    }
+                    return data; 
+                }
+            }
+        });
+
+        j$('#custId').kendoDropDownList({
+            filter: 'contains',
+            dataTextField: 'Name',
+            dataValueField: 'custId',
+            dataSource: custDataSource,
+            optionLabel: "Select Customer...",
+            valueTemplate: j$("#custValueTemplate").html(),
+            template: j$("#custTemplate").html(),
+            // enable vehicle buton on change
+            cascade: function(e){
+                // var value = this.value();
+                j$('.add_vehicle').prop("disabled", false);
+                process_edit_add_customer_button(this);
+            }
+         });
+    }
+
+    function process_edit_add_customer_button(_drop) {
+
+        var _id = _drop.value();
+
+        // Switch Create Button
+        if( _id === '' ) {
+            j$('.add_customer .glyphicon-pencil').removeClass('glyphicon-pencil').addClass('glyphicon-plus').prop('title','Create New Customer');
+        } else {
+            j$('.add_customer .glyphicon-plus').removeClass('glyphicon-plus').addClass('glyphicon-pencil').prop('title','Edit Customer');
+        }
+    }
+
+    function populate_edit_user(_userObj){
+        j$('#existingUserId').val(_userObj.custId);
+        j$('#firstName').val(_userObj.custFirstName);
+        j$('#lastName').val(_userObj.custLastName);
+        j$('#email').val(_userObj.custEmail);
+        j$('#phone').val(_userObj.custPhone);
+        j$('#mobile').val(_userObj.custMobilePhone);
+        j$('#mailingStreet').val(_userObj.custMailingStreet);
+        j$('#mailingCity').val(_userObj.custMailingCity);
+        j$('#mailingState').val(_userObj.custMailingState);
+        j$('#mailingZip').val(_userObj.custMailingPostalCode);
+    }
+
+    function get_cust_info(e) {
+        // console.log('editing event: ');
+        // console.log(e.event);
+
+        // console.log('custId: '+ custId);
+        if( typeof e.event.custId !== 'undefined' ) {
+            custId = e.event.custId;
+            // console.log('customerID set!');
+        } else {
+            custId = "";
+        }
+
+        render_customer_lookup();
+        render_vehicle_lookup();
+    }
+
+    var vehicleModel = kendo.data.Model.define({
+            id: "id"
+        });
+
+    function render_vehicle_lookup(){
+
+        var vehDataSource = new kendo.data.DataSource({
+            // ServerFiltering required to force field to relad when a customer is selected.
+            serverFiltering: true,
+            schema: {
+                model: vehicleModel
+            },
+            transport: {
+                read: {
+                    url: "apex/dealer__serviceappointmentjson",
+                    dataType: "json",
+                    data: {
+                        action: 'read_vehicles',
+                    }
+                },
+                parameterMap: function(data, operation) {
+                    // console.log(custId);
+                    if(operation == "read") {
+                        if(custId != '') { 
+                            data.custid = custId; 
+                        } else {
+                            data.custid = j$('#custId').data('kendoDropDownList').value(); 
+                        }
+                        if(vehId != '') { data.vehid = vehId; }
+                    }
+                    return data; 
+                }
+            }
+        });
+        j$('#vehId').kendoDropDownList({
+            // filter: 'contains',
+            cascadeFrom: 'custId',
+            cascadeFromField: 'custid',
+            dataTextField: 'name',
+            dataValueField: 'id',
+            dataSource: vehDataSource,
+            optionLabel: "Select Vehicle...",
+            cascade: function(e){
+
+                if(this.value() != "") {
+                    // Set Value of Last Odometer reference
+                    var _selectedVeh = this.dataSource.get( this.value() );
+
+                    if (typeof _selectedVeh.lastOdom !== undefined && _selectedVeh.lastOdom != null) {
+                        j$('.last_odometer').text(_selectedVeh.lastOdom);
+                    }
+
+                    // vehOdometer
+                    if (j$('#vehOdometer').val()!==''||j$('#vehOdometer').val()!==null) {
+                        j$('.view_recommended').prop('disabled',false);
+                    } else {
+                        j$('.view_recommended').prop('title','Year, Make, Model and Current Odometer required');
+                    }
+
+                    j$('.view_history').prop('disabled',false);
+                }
+            },
+            dataBound: function(e) {
+                
+                // console.log( this.dataSource.data() );
+
+                // Select a single vehicle if only one is returned
+                var _boundData = this.dataSource.data();
+                if( _boundData.length == 1 ) {
+                    this.value(_boundData[0].id);
+
+                    // Use Workaround Global to set veh ID.
+                    VEH_ID = this.value();
+                }
+            }
+
+         });
+    }
+
+    function render_advisor_lookup(){
+
+        // Location Aware Advisor selection
+        j$('#advisorId').kendoDropDownList({
+            filter: 'contains',
+            dataTextField: 'Name',
+            dataValueField: 'Id',
+            dataSource: locationModel.advisorResource(),
+            optionLabel: "Select...",
+         });
+
+        /* j$('#advisorId').kendoDropDownList({
+            filter: 'contains',
+            dataTextField: 'text',
+            dataValueField: 'value',
+            dataSource: advisorDataSource,
+            optionLabel: "Select...",
+         });*/
+    }
+
+    function job_selected(e) {
+
+        var lineItem = this.dataItem( e.item.index() + 1 );
+        var job_line =  j$(e.sender.element[0]).closest('.job_line');
+
+        console.log(lineItem);
+
+        job_line.find('.concern').val(lineItem.concern);
+        job_line.find('.estimate').val(lineItem.estimate);
+        job_line.find('.time_text').text(lineItem.time);
+        job_line.find('.time').val(lineItem.time);
+        job_line.find('input.payment_method').data("kendoDropDownList").value(lineItem.laborCode || lineItem.payment_method);
+        job_line.find('.serviceOperationCodeId').val(lineItem.id);
+
+        var job_lines = job_line.parents('.lines_table').find('.job_line');
+        var total_time = 0;
+        j$.each(job_lines, function(i, el){
+            // add total time in hours
+            total_time += parseFloat( j$(el).find('.time').val() );
+        });
+
+        j$('.total_time').text(total_time);
+
+        // update appointment end time. 
+        /*
+            var start = j$("#start").data("kendoDateTimePicker");
+            var end = j$("#end").data("kendoDateTimePicker");
+            // var endTime = $("#end").data("kendoDateTimePicker").value();
+            var endTime = moment( kendo.toString( start.value() , dateFormat)  ).add(total_time, 'hours').format(momentDateTimeFormat);
+
+            end.value(endTime);
+        */
+    }
+
+    function render_service_line_form(id, line) {
+
+        // console.log('line: ');
+        // console.log(line);
+        var lineId = ( typeof line.lineId != 'undefined' ) ? line.lineId : id;
+        var service_line = '<tr class="job_line" id ="'+lineId+'">\
+            <td><button class="btn btn-xs btn-danger del_line"><i class="glyphicon glyphicon-remove"></i></button></td>\
+            <td>\
+                <input class="serviceOperationCode" name="['+id+'][serviceOperationCode]" value="'+line.serviceOperationCode+'"/>\
+                <input type="hidden" class="serviceOperationCodeId" name="['+id+'][serviceOperationCodeId]" value="'+( (typeof line.serviceOperationCodeId !== 'undefined') ? line.serviceOperationCodeId : '' )+'"/>\
+                <input type="hidden" class="lineKey" name="['+id+'][lineKey]" value="'+( (typeof line.lineKey !== 'undefined') ? line.lineKey : '' )+'"/>\
+            </td>\
+            <td>\
+                <textarea name="['+id+'][concern]" class="form-control concern" placeholder="Enter Concern">'+line.concern+'</textarea>\
+            </td>\
+            <td>\
+                <input class="payment_method" name="['+id+'][payment_method]" />\
+            </td>\
+            <td>\
+                <div class="form-group">\
+                    <div class="input-group">\
+                      <div class="input-group-addon">$</div><input type="number" class="form-control estimate" placeholder="0" name="['+id+'][estimate]" value="'+line.estimate+'"/>\
+                    </div>\
+                </div>\
+            </td>\
+            <td><div class="form-group"><input class="form-control time" name="['+id+'][time]" type="hidden" value="'+line.time+'" /><span class="muted-text time_text form-control disabled" disabled>...</span></div></td>\
+        </tr>';
+
+        // Service Codes Data Source
+        var _svcCodesDataSource = new kendo.data.DataSource({
+            transport: {
+                read: {
+                    url: "apex/dealer__serviceappointmentjson",
+                    dataType: "json",
+                    data: {
+                        action: 'read_service_codes'
+                    }
+                }
+            }
+        });
+
+        // j$(service_line).appendTo('.lines_content tbody');
+        var droplist = j$(service_line).insertBefore('.lines_table tbody .placeholder').find('.serviceOperationCode').kendoDropDownList({
+                filter: 'contains',
+                autoBind: false,
+                dataTextField: 'name',
+                dataValueField: 'name',
+                // value: line.serviceOperationCode,
+                select: job_selected,
+                dataSource: _svcCodesDataSource,
+                optionLabel: "Select Items...",
+            }).data("kendoDropDownList");
+
+        if (line.serviceOperationCode != '') {
+            droplist.value(line.serviceOperationCode);        
+        }
+
+        // Payment Types Data Source
+        var _pmtTypeOptions = new kendo.data.DataSource({
+            transport: {
+                read: {
+                    url: "apex/dealer__serviceappointmentjson",
+                    dataType: "json",
+                    data: {
+                        action: 'read_pmt_types'
+                    }
+                }
+            }
+        });
+        var pmtDropList = j$('.lines_table tr#'+lineId+' .payment_method').css('width','75px').kendoDropDownList({
+                filter: 'contains',
+                autoBind: false,
+                dataTextField: 'label',
+                dataValueField: 'value',
+                dataSource: _pmtTypeOptions,
+            }).data("kendoDropDownList");
+
+        // Set payment method value to match line.
+        if( line.payment_method ) {
+            pmtDropList.value(line.payment_method);
+        }
+    }
+
+    function set_cust_veh_windows(){
+        var window_options = {
+                appendTo: '#force',
+                width: "600px",
+                title: "Add New",
+                modal: true,
+                actions: ["Close"],
+                visible: false,
+                position: {
+                    top: '40%',
+                    // left: '50%'
+                }
+            }
+
+        if (!add_cust_window.data("kendoWindow")) {
+
+            add_cust_window.kendoWindow(window_options);
+            var _custWindow = add_cust_window.data("kendoWindow");
+
+            // Bind to close
+            _custWindow.bind('close', function(){
+                j$('#existingUserId').val('');
+                j$('#firstName').val('');
+                j$('#lastName').val('');
+                j$('#email').val('');
+                j$('#phone').val('');
+                j$('#mobile').val('');
+                j$('#mailingStreet').val('');
+                j$('#mailingCity').val('');
+                j$('#mailingState').val('');
+                j$('#mailingZip').val('');
+            });
+
+            j$('.cancel_cust').click(function(){
+                _custWindow.close();
+            });
+
+            j$('.save_cust').click(function(){
+                var _btn = j$(this);
+                // Display loading while waiting for response.
+                j$('<i class="glyphicon glyphicon-refresh spin" />').appendTo(_btn).addClass();
+
+                var _cust_data = j$('#add_new_cust_window .add_new_form :input').serializeJSON();
+
+                dealer.ServiceAppointment_EXT.contactUpdateInsert( JSON.stringify(_cust_data) , function(result, event) {
+                    if(event.status) {
+                        var _custDropList = j$('#custId').data('kendoDropDownList');
+                        var _custDropData = _custDropList.dataSource;
+
+                        // Are we updating new user?
+                        if( j$('#existingUserId').val() !== '') {
+                            _custDropData.pushUpdate( _cust_data );
+
+                        // Otherwise add new user
+                        } else {
+
+                            // TODO: Updates not displaying in dropdown
+                            // console.log('Adding New');
+
+                            // Push the newly created customer to the dropdown list data.
+                            _custDropData.add( result);
+
+                            // Select newly created customer
+                            _custDropList.value( result.custId );
+                            CUST_ID = result.custId ;
+                        }
+
+                        _custDropList.refresh();
+
+                        _btn.find('i').remove();
+                        _custWindow.close();
+                    }
+
+                });
+            });
+        }
+
+        if (!add_veh_window.data("kendoWindow")) {
+            add_veh_window.kendoWindow(window_options);
+            var _vehWindow = add_veh_window.data("kendoWindow");
+
+            // Bind to close
+            _vehWindow.bind('close', function(){
+                j$('#vin').val('');
+                j$('#licence').val('');
+                j$('#year').val('');
+                j$('#make').val('');
+                j$('#model').val('');
+                j$('#odometer').val('');
+
+                // Destroy Kendo Dropdown if exists
+                if ( j$('#trim').data('kendoDropDownList') ) {
+                    var _dropDownData = j$('#trim').data('kendoDropDownList');
+                    _dropDownData.wrapper.remove();
+
+                    _dropDownData.destroy();
+                    j$('<input class="form-control" id="trim" name="trim" type="email" />').appendTo('.trim_col');
+                }
+                j$('#trim').val('');
+                j$('#force .k-overlay').hide();
+            });
+
+            j$('.cancel_veh').click(function(){
+                _vehWindow.close();
+                j$('#force .k-overlay').hide();
+            });
+
+            j$('.save_veh').click(function(){
+                var _btn = j$(this);
+                j$('<i class="glyphicon glyphicon-refresh spin" />').appendTo(_btn).addClass();
+                var _new_veh_id = j$('#vehOwnerId').val();
+                var _veh_data = j$('#add_new_veh_window .add_new_form :input').serializeJSON({
+                    parseWithFunction: function(inputValue, inputName) { 
+                        var _returnVal = inputValue;
+                        if (inputName === 'vehOdometer' && inputValue === '') {
+                            _returnVal = 0;
+                        }
+                        if (inputName === 'vin' && inputValue === '') {
+                            _returnVal = null;
+                        }
+
+                        return _returnVal 
+                    }
+                });
+                dealer.ServiceAppointment_EXT.createServiceVehicle( JSON.stringify(_veh_data), function(result, event) {
+                        // console.log(event);    
+                        // console.log(result);    
+
+                        _btn.find('i').remove();
+                        if(event.status) {
+
+                            var _vehDropList = j$('#vehId').data('kendoDropDownList');
+                            var _vehDropData = _vehDropList.dataSource;
+
+                            // Push the newly created customer to the dropdown list data.
+                            var addResult = _vehDropData.add( new vehicleModel( result ) );
+
+                            // _vehDropList.setDataSource();
+
+                            // Select newly created vehicle
+                            _vehDropList.value( result.id );
+                            VEH_ID = result.id ;
+                            // j$('#vehId').prop('value', result.id );
+
+                            // Remove status animation and close window.
+                            
+                            _vehWindow.close();
+                            j$('#force .k-overlay').hide();
+                        } else {
+                            if(event.message) {
+                               display_event_error(  { errors : {"type": "Error: ", "message": event.message } } ,'#add_new_veh_window');
+
+                           } else {
+                                display_event_error( { errors : {"type": "Error: ", "message": 'An unknown error occured. Please try again later.' } } ,'#add_new_veh_window');
+                           }
+                            
+                        }
+                });
+            });
+
+            // Decode VIN
+            j$('.decode_vin').click(function(){
+                // set local _vin to user entered vin
+                var _vin = j$('#vin').val();
+
+                // Display loading while waiting for response.
+                j$('.glyphicon-search').removeClass('glyphicon-search').addClass('glyphicon-refresh spin');
+
+                // Call remote action
+                dealer.ServiceAppointment_EXT.decodedVin( _vin, function(result, event) {
+                    if(event.status) {
+
+                        j$('#year').val( result.dealer__Year__c );
+                        j$('#make').val( result.dealer__Make__c );
+                        j$('#model').val( result.dealer__Carline__c );
+
+                        if(result.dealer__Trim_Level__c.length > 1) {
+                            j$("#trim").kendoDropDownList({
+                                dataSource: result.dealer__Trim_Level__c
+                            }).parent('span').removeClass('form-control');
+                        } else {
+                            j$('#trim').val( result.dealer__Trim_Level__c[0] );
+                        }
+
+                        j$('.glyphicon-refresh.spin').removeClass('glyphicon-refresh spin').addClass('glyphicon-search');
+                    }
+                });
+            });
+        }
+    }
+
+    function render_service_history(_data){
+
+        // Window initialization and store
+        var historyWindow = j$("<div id='service_window'/>").kendoWindow({
+            // appendTo: '#force',
+            title    : "Service History",
+            maxWidth: 900,
+            resizable: false,
+            modal    : true,
+            viewable : false,
+            content  : {
+                // dataType: "json",
+                template: j$("#historyTemplate").html()
+            }
+        }).data("kendoWindow");
+
+        // Bind the data element to the window element for the tempalte
+        // kendo.bind( historyWindow.element, { lines: data, id:"no quotes id" });
+
+        j$('#service_window').data('lines', _data);
+
+        j$('<div id="line_grid" />')
+            .appendTo( j$('#service_window div') )
+            .kendoGrid({
+                dataSource: {
+                  data: _data,
+                  // group by the "dealer__RO_Number__c" field
+                  group: { field: "dealer__RO_Number__c" , dir: "desc"},
+                  sort: { field: "dealer__RO_Number__c", dir: "desc" }
+                },
+                groupable: true,
+                sortable: true,
+                columns: [{
+                    field: "dealer__RO_Number__c",
+                    title: "RO#"
+                },{
+                    field: "dealer__Service_Repair_Order__r.dealer__Create_Date_Time__c",
+                    title: "RO Date",
+                    template: "#= kendo.toString( moment( dealer__Service_Repair_Order__r.dealer__Create_Date_Time__c,'x' ).format(momentDateFormat) ) #"
+                }, {
+                    field: "dealer__Line_Number__c",
+                    title: "Line Number"
+                }, {
+                    field: "dealer__Concern__c",
+                    title: "Concern",
+                    // width: 200
+                }, {
+                    field: "dealer__Labor_Charges__c",
+                    title: "Labor Charges"
+                }, {
+                    field: "dealer__Book_Time__c",
+                    title: "Book Time"
+                }, {
+                    field: "dealer__Line_Total__c",
+                    title: "Line Total"
+                }, {
+                    field: "dealer__Op_Code__c",
+                    title: "OP Code"
+                }, {
+                    field: "dealer__Labor_Type__c",
+                    title: "Labor Type"
+                }]
+            });
+
+        historyWindow.open().center();
+    }
+
+    // Window initialization and store
+    var recommendWindow = j$("<div id='service_window'/>").kendoWindow({
+        // appendTo: '#force',
+        title    : "Recommended Service items",
+        maxWidth: 900,
+        resizable: true,
+        modal    : true,
+        viewable : false
+    }).data("kendoWindow");
+
+    function render_recommended_service(vehData){
+        // Clear out any rendered service windows.
+        j$('#service_window').find('#line_grid').remove();
+        j$('#service_window').html('');
+        // Setup new grid
+        j$('<div id="line_grid" />')
+            .appendTo( j$('#service_window') )
+            .kendoGrid({
+                dataSource: {
+                    transport: {
+                        read: {
+                            url: "https://apsv1.dealerteam.com/api/mpi/recommended-service",
+                            dataType: "json",
+                            type: "GET",
+                            data: {
+                                year: vehData.year,
+                                make: vehData.make,
+                                model: vehData.model,
+                                odometer: vehData.currOdom
+                            },
+                            change: function(e){
+                                // console.log(this);
+                            },
+                            complete: function(req, result){
+                                recommendWindow.open().center();
+                                j$('.view_recommended i').removeClass('glyphicon-refresh spin').addClass('glyphicon-dashboard');
+                            }
+                        }
+                    },
+                    schema :{
+                        // transform data before processing
+                        data: function(response) {
+                            if( response.success !== false ) {
+                                return j$.map(response.items[0].actions, function(el, i){
+                                    return {'Description': el}
+                                });
+                            } else {
+                                return response;
+                            }
+                            // return response.items[0].actions;
+                        }
+                    }
+                },
+                sortable: true,
+                columns: [
+                    {
+                        field: "Description",
+                        title: "Description"
+                    },
+                    { command: { text: "Add to Appointment", click: createLine() }, title: " ", width: '20%' }
+                ]
+            });
+    }
+
+    // Create line when reccomended service is selected 
+    function createLine(e){
+        var selItem = this.dataItem( j$(e.currentTarget).closest("tr") );
+
+        var _lineObj = {
+            time: '',
+            lineKey: makeTempId(),
+            serviceOperationCode: '',
+            serviceOperationCodeId: '',
+            concern: selItem.Description,
+            estimate: ''
+        };
+
+        render_service_line_form( j$('.job_line').length + 1, _lineObj );
+    }
+
+    /** Bound Functions to scheduler events */
+
+    // Render existing lines form
+    function display_current_lines(e){
+        if(typeof e.event.lines === "undefined" ) {
+            e.event['lines'] = [
+                {
+                    time: '',
+                    lineKey: makeTempId(),
+                    serviceOperationCode: '',
+                    serviceOperationCodeId: '',
+                    concern: '',
+                    estimate: ''
+                }
+            ] 
+        } else {          
+            // if( e.event.lines.length > 0 ) {
+                j$.each(e.event.lines, function(i, el){
+                    if (typeof el.serviceOperationCode != 'undefined') {
+                        render_service_line_form(i+1, el);
+                    }
+                });
+            // }
+        }
+    }
+
+    // Tap into the save event
+    function apt_save_hook(e) {
+
+        var _lineData = j$('.lines_content :input').serializeJSON();
+
+        // console.log(_lineData);
+        // console.log(e.event);
+
+        // Save Line Data
+        // e.event['lines'] = _lineData;
+        e.event.update({lines: _lineData});
+        hide_overlay(); // Hack to remove overlay, when saving with a new customer added this does drops the k-overlay
+        // return e.event; // removed due to line data display bug.
+    }
+
+    function hide_overlay(){
+
+        j$('.k-overlay').css('display','none');
+    }
+
+    function show_overlay(){
+
+        j$('.k-overlay').css('display','block');
+    }
+
+    function updateComplete() {
+
+        console.log('updateComplete()');
+
+        j$('.update_loading').remove();
+
+        hide_overlay();
+    }
+
+    function display_event_error(e, appendSel) {
+        // j$('.k-overlay').clone().addClass('nohideOverlay').css('display','block');
+
+        // default parameter set up
+        appendSel = appendSel || '.k-scheduler-edit-form';
+
+        // Setup Error Notification
+        var staticNotification = j$("#staticNotification").kendoNotification({
+            appendTo: appendSel,
+            autoHideAfter: 0,
+            left: 0,
+            button: true
+        }).data("kendoNotification");
+
+        // Setup some eror variables to avoid undefined errors
+        var errorsMain = (typeof e.errors != 'undefined');
+        var errorsMsg = (errorsMain) ? typeof e.errors.message != 'undefined' : false;
+        var errorsType = (errorsMain) ? typeof e.errors.type != 'undefined' : false;
+
+        if (typeof e.errors != 'undefined' && errorsMsg && errorsType) {
+            staticNotification.error(kendo.toString(e.errors.type) + ' - ' + kendo.toString(e.errors.message) );
+        } else {
+            staticNotification.error('An Unknown error occured. Please try again later.');
+            console.log(e);
+        }
+
+        var scheduler = j$("#scheduler").data("kendoScheduler");
+        scheduler.one("dataBinding", function (e) {
+            //prevent saving if server error is thrown
+            e.preventDefault();
+            // console.log(e);
+            // show_overlay();
+
+            // Remove
+            j$('.update_loading').remove();
+        });
+    }
+
+    /** Utility Functions */
+
+    function update_edit_title(str) {
+        
+        j$('.apt_edit_title').text(str);
+    }
+
+    // Used to grab the object data on lookup field select
+    function bind_obj_data(id, selObj){
+
+        j$(selObj).data('id', id);
+    }
+
+    function getParameterByName(name) {
+        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+            results = regex.exec(location.search);
+        return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+    }
+
+    function makeTempId(){
+        var text = "";
+        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+        for( var i=0; i < 7; i++ )
+            text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+        return text;
+    }
+
+    function processAdvisorChecks(){
+
+        j$('#locationMenu input[type="checkbox"]').click(function(e){
+            e.stopPropagation();
+        });
+
+        // setup selected edvisors for initial load
+        j$.each( j$('.avisorSelect input[type="checkbox"]'), function(i, el){
+            var inarray = j$.inArray( j$(el).val(), selectedAdvisors );
+
+            if (  inarray > -1  ) {
+                j$(el).prop('checked','checked');
+            } else {
+                j$(el).prop('checked', false);
+            }
+
+        });
+
+        // Filter Advisors
+        j$('.avisorSelect input[type="checkbox"]').change(function(e) {
+            var selId = j$(this).val();
+            // var scheduler = j$("#scheduler").data("kendoScheduler");
+
+            /*var $btn = j$(this).closest('button[type="radio"]');
+            if(!$btn.hasClass('active')) {
+                $btn.trigger('click');
+            }*/
+
+            // Turned On
+            if( j$(this).is(":checked") ) {
+                // add to array
+                selectedAdvisors.push(selId);
+            } else {
+                // remove from array
+                var index = selectedAdvisors.indexOf(selId);
+                if (index > -1) {
+                    selectedAdvisors.splice(index, 1);
+                }
+            }
+
+            // Update user settings via Remote Action
+            dealer.ServiceAppointment_EXT.updateAdvisorSelectionRemote(  JSON.stringify(selectedAdvisors) , function(result, event) {
+                // console.log(event);
+                if(event.status) {
+                    // console.log(result);
+                } else {
+                    // nopsies
+                }
+
+            });
+
+            // filter advisors after checkbox is selected
+            scheduler.resources[0].dataSource.filter(advisor_filter(selectedAdvisors));  
+            scheduler.view( scheduler.view().name ); //refresh the currunt view  
+
+        }); 
+
+        // var checked = j$.map(j$(".avisorSelect :checked"), function(checkbox) {
+        //     return j$(checkbox).val();
+        // });
+
+        //filter the resource data source on first load
+        scheduler.resources[0].dataSource.filter(advisor_filter(selectedAdvisors));  
+        scheduler.view( scheduler.view().name ); //refresh the currunt view  
+
+    }
+    </script>
+
+    <style>
+
+        #locationMenu label {
+            font-weight: normal;
+        }
+
+        #locationMenu {
+          margin-left: -20px;
+          max-height: 55px;
+          height: 55px;
+          /*overflow: scroll;*/
+        }
+
+        .glyphicon, .ro_wrap:before{
+            position: relative;
+            top: 1px;
+            display: inline-block;
+            font-family: 'Glyphicons Halflings';
+            font-style: normal;
+            font-weight: normal;
+            line-height: 1;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .glyphicon-refresh:before {
+            content: "\e031";
+        }
+        .ro_wrap:before {
+          content: "\e136";
+          position: absolute;
+          width: 50%;
+          height: 50%;
+          right: 0;
+          bottom: 0;
+          color: #fff;
+          opacity: .5;
+          display: block;
+          font-size: 24px;
+        }
+
+        .ro_wrap {
+            border: 2px solid #000;
+            position: relative;
+        }
+
+        .ro_wrap:after {
+            display: block;
+            content: ' ';
+        }
+
+        .ro_wrap:hover {
+            /*cursor: pointer;*/
+        }
+
+        .ro_wrap:hover:after {
+            position: absolute;
+            /*z-index: 1001;*/
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background-color: #fff;
+            color: #fff;
+            opacity: .65;
+        }
+
+
+        .k-button i {
+            margin-left: 3px;
+        }
+
+        h4 .btn {
+            margin-left: 15px;
+        }
+
+        #force h4 {
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .svc_lines_content {
+            display: none;
+        }
+
+        .bDescription {
+            display: none;
+        }
+
+        .modalwrap {padding: 15px 15px 5px 15px;} 
+
+        #force .k-event {
+            border: 0 !important;
+            background-color: #e0e0e0 !important; 
+            padding: 1px !important;
+        }
+
+        #force .event_wrap {
+            position: relative;
+            padding: 0;
+            height: 100%;
+        }
+
+        #force .event_wrap .label {
+            display: none;
+        }
+
+        #force .event_wrap a {
+            opacity: 0;
+            display: none;
+            transition: opacity 0.25 ease-in-out;
+        }
+
+        #force .k-scheduler-dayview .event_wrap:hover a {
+            display: inline-block;
+            opacity: 1;
+        }
+
+        #force .k-scheduler-workWeekview .k-event-delete {
+            display: none;
+        }
+
+        #force .k-scheduler-dayview .event_wrap .label {
+            display: inline;
+            font-size: 1.1em;
+        }
+
+        .k-scheduler-edit-form .k-edit-form-container, .k-scheduler-timezones .k-edit-form-container {
+            width: 800px;
+        }
+
+        .k-scheduler .k-scheduler-table td, .k-scheduler .k-scheduler-table th {
+            height: 30px;
+            line-height: 30px;
+            vertical-align: center;
+        }
+               
+        .k-nav-current > .k-link span + span {
+            max-width: 200px;
+            display: inline-block;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            vertical-align: top;
+        }
+
+        li.k-state-selected.k-state-focused {
+
+        }
+
+        #scheduler ul li{
+            margin-left: 0;
+            margin-right: 0;
+        }
+
+        .people label {
+            font-size: 1.25em;
+            margin-right: 10px;
+            display: inline-block;
+        }
+        .people label input{
+            margin-left: 10px;
+        }
+
+        #force #scheduler  {
+            clear: both;
+
+        }
+
+        #force #scheduler a {
+            color: #000000;
+
+        }
+
+        .bPageTitle {
+            margin-bottom: 5px;
+        }
+
+        .bPageTitle .pageTitleIcon {
+            display: none;
+        }
+
+        .ptBody {
+            position: relative;
+
+        }
+
+        .pageType:before {
+            content: "\e109";
+            position: absolute;
+            font-size: 3em;
+            display: inline-block;
+            font-family: 'Glyphicons Halflings';
+            left: 0px;
+            top: 0px;
+        }
+
+        body .bPageTitle {
+            padding: 15px 0 0;
+            float: left;
+            width: 235px;
+            margin-bottom: 10px;
+            /*position: absolute;*/
+        }
+
+        #force .form-group {
+            min-height: 25px;
+        }
+
+        #force .avisorSelect,  #locationMenu > .btn-group, #locationSelect {
+            margin: 15px 0 0 0;
+            display: inline-block;
+        }
+
+        #locationMenu {
+            margin-left: -20px;
+        }
+
+        .mod-form-control {
+            display: inline;
+            width: 100%;
+            height: 34px;
+            padding: 6px 12px;
+            font-size: 14px;
+            line-height: 1.428571429;
+            color: #555555;
+            vertical-align: middle;
+            background-color: #ffffff;
+            background-image: none;
+            border: 1px solid #cccccc;
+            border-radius: 4px;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+            -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+            transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;           
+        }
+
+        a.mod-form-control {
+            display: inline !important;
+            width: 25px !important;
+            padding: 0px 0px !important;
+            margin-left: -25px !important;
+            border: none !important;
+        }
+
+        #force .k-select {
+            background-color: #eee;
+        }
+
+        .lines_table {
+            /*width: 700;*/
+        }
+
+        .colors_group button {
+            height: 25px;
+            width: 25px;
+        }
+
+        .btn_wrap {
+            position: absolute;
+            top: 0px;
+            right: 15px; 
+        }
+
+        #force .btn-indigo {
+            color: #fff;
+            background-color: #9b59b6;
+            border-color: #8e44ad;
+        }     
+
+        #force .k-scheduler-table .k-today, .k-today>.k-scheduler-datecolumn, .k-today>.k-scheduler-groupcolumn {
+            background-color: #fafafa;
+        }
+
+        .cust_lookup small {
+            color: #777;
+            display: block;
+            position: relative;
+            line-height: 0.9;
+            /*border-bottom: 1px solid #aaa;*/
+            padding-bottom: 2px;
+        } 
+
+        .cust_lookup small {
+            display: block;
+            line-height: 0.9;
+        }   
+
+        .cust_lookup {
+            width: 350px;
+            /*height: 50px;*/
+            position: relative;
+            clear: both;
+        }
+
+        .k-list-container li.k-item {
+            margin: 0;
+        }
+
+        #force .k-window-titlebar.k-header {
+            position: relative;
+            box-sizing: content-box;
+        }
+
+        #force .block_label {
+            display: block;
+        }
+
+        .add_new_form {
+            padding: 10px;
+        }
+
+        .k-dropdown.k-header.form-control {
+            display: block;
+            width: 100%;
+            height: auto;
+            padding: 0;
+            font-size: 14px;
+            line-height: 1em;
+            background-color: #fff;
+            background-image: none;
+            border: 0;
+            border-radius: 0px;
+            box-shadow: none;
+            transition: none;
+        }
+
+        #advisorId {
+            margin-right: 5px;
+        }
+
+        .spin {
+          -webkit-animation: spin 1s infinite linear;
+          -moz-animation: spin 1s infinite linear;
+          -o-animation: spin 1s infinite linear;
+          animation: spin 1s infinite linear;
+             -webkit-transform-origin: 50% 50%;
+                 transform-origin:50% 50%;
+                 -ms-transform-origin:50% 58%; /* IE 9 */
+        }
+
+        @-moz-keyframes spin {
+          from {
+            -moz-transform: rotate(0deg);
+          }
+          to {
+            -moz-transform: rotate(360deg);
+          }
+        }
+
+        @-webkit-keyframes spin {
+          from {
+            -webkit-transform: rotate(0deg);
+          }
+          to {
+            -webkit-transform: rotate(360deg);
+          }
+        }
+
+        @keyframes spin {
+          from {
+            transform: rotate(0deg);
+          }
+          to {
+            transform: rotate(360deg);
+          }
+        }
+
+        #force .view_recommended, #force .view_history {
+            font-size: 1.55em;
+            line-height: 1;
+            padding: 4px 5px;
+            margin-top: 14px;
+        }
+
+        #service_window {
+            padding: 0;
+        }
+
+        #line_grid {
+            border-radius: 0;
+            border: 0;
+        }
+
+        .k-scheduler-edit-form .k-notification {
+            margin: 15px 20px 10px;
+        }
+
+        .k-scheduler {
+            font-family: "Helvetica", sans-serif;
+            font-size: .9em;
+        }
+
+        #force .k-reset.k-scheduler-tools {
+            float: right;
+            margin-left: 7px;
+        }
+
+        #force .k-reset.k-scheduler-tools li a {
+            padding: 5px 6px 5px 6px;
+        }
+
+        /* Hide toolbar, navigation and footer during export */
+        .k-pdf-export .k-scheduler-toolbar,
+        .k-pdf-export .k-scheduler-navigation .k-nav-today,
+        .k-pdf-export .k-scheduler-navigation .k-nav-prev,
+        .k-pdf-export .k-scheduler-navigation .k-nav-next,
+        .k-pdf-export .k-scheduler-footer
+        {
+            display: none;
+        }
+
+
+        .k-pdf-export .k-icon:not(.k-loading),
+        .k-pdf-export .k-grouping-dropclue,
+        .k-pdf-export .k-drop-hint,
+        .k-pdf-export .k-callout,
+        .k-pdf-export .k-tool-icon,
+        .k-pdf-export .k-state-hover .k-tool-icon,
+        .k-pdf-export .k-state-active .k-tool-icon,
+        .k-pdf-export .k-state-active.k-state-hover .k-tool-icon,
+        .k-pdf-export .k-state-selected .k-tool-icon,
+        .k-pdf-export .k-state-selected.k-state-hover .k-tool-icon,
+        .k-pdf-export .k-column-menu .k-sprite,
+        .k-pdf-export .k-mobile-list .k-check:checked,
+        .k-pdf-export .k-mobile-list .k-edit-field [type=checkbox]:checked,
+        .k-pdf-export .k-mobile-list .k-edit-field [type=radio]:checked 
+        {
+            background-image: none !important;
+        } 
+
+        .k-pdf-export .km-pane-wrapper .k-icon {
+            /*background-image: url('Bootstrap/sprite_2x.png');*/
+            background-image: none !important;
+        }
+
+
+        /*#tools { float: left; }*/
+    </style>
+</body> 
+</apex:page>

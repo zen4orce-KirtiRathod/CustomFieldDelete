@@ -1,0 +1,481 @@
+<apex:page standardController="dealer__Service_Estimate__c" renderAs="PDF" showHeader="false" extensions="dealer.ServiceEstimate_EXT" >
+<head>
+<style type="text/css">
+
+@page{
+    size: landscape;
+   margin:0.05in;
+}
+.borderB {
+    border-bottom:1px solid #000;
+}
+
+.borderR{
+    border-right:1px solid #000;    
+}
+.borderL {
+    border-left: 1px solid #000;
+}
+.borderLRB {
+    border-right:1px solid #000;
+    border-left: 1px solid #000;
+    border-bottom: 1px solid #000;
+}
+.borderLRBT {
+	border: 1px solid #000;
+}
+.borderBR {
+    border-right:1px solid #000;
+    border-bottom: 1px solid #000;
+}
+.borderBRT {
+    border-right:1px solid #000;
+    border-bottom: 1px solid #000;
+    border-top: 1px solid #000;
+}
+.HEADER {
+    color: #FFF;
+    background-color: #000;
+    text-align: center;
+    font-size:12px;
+}
+.HEADERL {
+    color: #FFF;
+    background-color: #000;
+    text-align: left;
+    font-size:12px;
+}
+.HEADERR {
+    color: #FFF;
+    text-align: right;
+    font-size:12px;    
+}
+.HEADERBL {
+    color: #000;
+    text-align: left;
+    font-size:12px;
+}
+.Title {
+    font-size: 16px;
+}
+.BigPrint {
+    font-size: 14px;
+    text-indent: 4px;
+    height: 18px;
+}
+
+.TinyPrint {
+    font-size: 12px;
+    text-indent: 4px;
+}
+
+.mPrint {
+    margin-left: 5px;
+    font-size: 14px;
+    text-indent: 4px;
+    height: 18px;
+}
+
+
+</style>
+</head>
+<table width="100%" border="0" id="4SquareRecon" cellpadding="0" cellspacing="0" style="border: 1px solid #000;">
+  <tr>
+    <td colspan="2" align="center" class="borderB Title"><b>Vehicle Reconditioning Requirements</b></td>
+  </tr>
+  <tr>
+    <!-- Parts &  Section -->
+    <td width="264" valign="top">
+        <table width="100%" border="0" id="PSTable" cellpadding="0" cellspacing="0">
+          <tr>
+            <td class="borderBR BigPrint" width="180"><b>Parts and Sublet</b></td>
+            <td width="74" class="borderBR BigPrint"><b>Cost</b></td>
+          </tr>
+			
+          <!-- Part & Sublet Lines --> 
+                    <tr>
+                    <td class="borderBR mPrint">
+						1.
+                    </td>
+                    <td class="borderBR mPrint"></td>
+                    </tr>
+                                        <tr>
+                    <td class="borderBR mPrint">
+						2.
+                    </td>
+                    <td class="borderBR mPrint"></td>
+                    </tr>
+                                        <tr>
+                    <td class="borderBR mPrint">
+						3.
+                    </td>
+                    <td class="borderBR mPrint"></td>
+                    </tr>
+                                        <tr>
+                    <td class="borderBR mPrint">
+						4.
+                    </td>
+                    <td class="borderBR mPrint"></td>
+                    </tr>
+                                        <tr>
+                    <td class="borderBR mPrint">
+						5.
+                    </td>
+                    <td class="borderBR mPrint"></td>
+                    </tr>
+                                        <tr>
+                    <td class="borderBR mPrint">
+						6.
+                    </td>
+                    <td class="borderBR mPrint"></td>
+                    </tr>
+                                        <tr>
+                    <td class="borderBR mPrint">
+						7.
+                    </td>
+                    <td class="borderBR mPrint"></td>
+                    </tr>
+                                        <tr>
+                    <td class="borderBR mPrint">
+						8.
+                    </td>
+                    <td class="borderBR mPrint"></td>
+                    </tr>
+                                        <tr>
+                    <td class="borderBR mPrint">
+						9.
+                    </td>
+                    <td class="borderBR mPrint"></td>
+                    </tr>
+                                        <tr>
+                    <td class="borderBR mPrint">
+						10.
+                    </td>
+                    <td class="borderBR mPrint"></td>
+                    </tr>
+                                        <tr>
+                    <td class="borderBR mPrint">
+						11.
+                    </td>
+                    <td class="borderBR mPrint"></td>
+                    </tr>
+                                        <tr>
+                    <td class="borderBR mPrint">
+						12.
+                    </td>
+                    <td class="borderBR mPrint"></td>
+                    </tr>
+                                        <tr>
+                    <td class="borderBR mPrint">
+						13.
+                    </td>
+                    <td class="borderBR mPrint"></td>
+                    </tr>
+                                        <tr>
+                    <td class="borderBR mPrint">
+						14.
+                    </td>
+                    <td class="borderBR mPrint"></td>
+                    </tr>
+                                        <tr>
+                    <td class="borderBR mPrint">
+						15.
+                    </td>
+                    <td class="borderBR mPrint"></td>
+                    </tr>
+                                        <tr>
+                    <td class="borderBR mPrint">
+						16.
+                    </td>
+                    <td class="borderBR mPrint"></td>
+                    </tr>
+                                        <tr>
+                    <td class="borderBR mPrint">
+						17.
+                    </td>
+                    <td class="borderBR mPrint"></td>
+                    </tr>
+                                        <tr>
+                    <td class="borderBR mPrint">
+						18.
+                    </td>
+                    <td class="borderBR mPrint"></td>
+                    </tr>
+                                        <tr>
+                    <td class="borderBR mPrint">
+						19.&nbsp;Keys (2) Min&nbsp;
+                    </td>
+                    <td class="borderBR mPrint"><apex:outputField value="{!dealer__Service_Estimate__c.dealer__Both_Keys_Fobs__c}" /></td>
+                    </tr>
+                                        <tr>
+                    <td class="borderBR mPrint">
+						20.&nbsp;Owners Manual&nbsp;
+                    </td>
+                    <td class="borderBR mPrint"><apex:outputField value="{!dealer__Service_Estimate__c.dealer__Owners_Manual__c}" /></td>
+                    </tr>
+                                                            <tr>
+                    <td class="borderBR mPrint">
+						21.&nbsp;Navigation Disc&nbsp;
+                    </td>
+                    <td class="borderBR mPrint"><apex:outputField value="{!dealer__Service_Estimate__c.dealer__Navigation_Disc_SD_Installed__c}" /></td>
+                    </tr>
+                    <!-- End Parts & Sublet Lines -->
+          <tr>
+            <td class="borderBR BigPrint"><b>Total</b></td>
+            <td class="borderBR BigPrint"><apex:outputField value="{!dealer__Service_Estimate__c.dealer__Parts_Sublet_Total__c}" /></td>
+          </tr>
+        </table>
+    </td>
+    <!-- Vehicle Info  - Labor & Default Items Section -->
+    <td width="1177" valign="top">
+        <table width="100%" border="0" id="VehicleLaborDetail" cellpadding="0" cellspacing="0">
+          <tr class="borderBR mPrint">
+            <td colspan="2" class="borderBR BigPrint"><b>Stock#</b>&nbsp;<apex:outputField value="{!dealer__Service_Estimate__c.Inventory_Vehicle__r.dealer__Stock_Number__c}" /></td>
+            <td colspan="3" class="borderBR BigPrint"><b>Year/Model</b> &nbsp;<apex:outputField value="{!dealer__Service_Estimate__c.Inventory_Vehicle__r.dealer__Year__c}" />&nbsp;/&nbsp;<apex:outputField value="{!dealer__Service_Estimate__c.Inventory_Vehicle__r.dealer__Model__c}" /></td>
+            <td colspan="2" class="borderBR BigPrint"><b>Trim</b>&nbsp;<apex:outputField value="{!dealer__Service_Estimate__c.Inventory_Vehicle__r.dealer__Trim_Level__c}" /></td>
+            <td width="203" class="borderB BigPrint"><b>RO#</b></td>
+          </tr>
+          <tr>
+            <td colspan="2" class="borderBR BigPrint"><b>VIN</b>&nbsp;<apex:outputField value="{!dealer__Service_Estimate__c.Inventory_Vehicle__r.dealer__VIN__c}" /></td>
+            <td colspan="3" class="borderBR BigPrint"><b>Color</b>&nbsp;<apex:outputField value="{!dealer__Service_Estimate__c.Inventory_Vehicle__r.dealer__Exterior_Color__c}" /></td>
+            <td colspan="2" class="borderBR BigPrint"><b>Miles</b>&nbsp;<apex:outputField value="{!dealer__Service_Estimate__c.dealer__Current_Mileage__c}" /></td>
+            <td class="borderB TinyPrint"><b>Date</b>&nbsp;<apex:outputText value="{0, date, MM/dd/yyyy}"><apex:param value="{!dealer__Service_Estimate__c.CreatedDate}" /></apex:outputText></td>
+          </tr>
+          <tr>
+            <td width="166" class="borderBR BigPrint">Labor Op</td>
+            <td width="208" class="borderBR BigPrint"><b>Work Desc</b></td>
+            <td width="117" class="borderBR BigPrint"><b>Tech Time</b></td>
+            <td width="117" class="borderBR BigPrint"><b>Labor Cost</b></td>
+            <td width="131" class="borderBR BigPrint"><b>Used</b></td>
+            <td width="124" class="borderBR BigPrint"><b>A/M</b></td>
+            <td width="141" class="borderBR BigPrint"><b>OEM</b></td>
+            <td class="borderB BigPrint"><b>Total Cost</b></td>
+          </tr>
+          			<tr>
+                        <td class="borderLRB mPrint">&nbsp;</td>
+                        <td class="borderBR mPrint" width="250px">&nbsp;</td>
+                        <td class="borderBR mPrint" width="50px">&nbsp;</td>
+                        <td class="borderBR mPrint">&nbsp;</td>
+                        <td class="borderBR mPrint" colspan="3">&nbsp;</td>
+                        <td class="borderBR mPrint">&nbsp;</td>
+                    </tr>
+                    			                    <tr>
+                        <td class="borderLRB mPrint">&nbsp;</td>
+                        <td class="borderBR mPrint" width="250px">&nbsp;</td>
+                        <td class="borderBR mPrint" width="50px">&nbsp;</td>
+                        <td class="borderBR mPrint">&nbsp;</td>
+                        <td class="borderBR mPrint" colspan="3">&nbsp;</td>
+                        <td class="borderBR mPrint">&nbsp;</td>
+                    </tr>
+                    			                    <tr>
+                        <td class="borderLRB mPrint">&nbsp;</td>
+                        <td class="borderBR mPrint" width="250px">&nbsp;</td>
+                        <td class="borderBR mPrint" width="50px">&nbsp;</td>
+                        <td class="borderBR mPrint">&nbsp;</td>
+                        <td class="borderBR mPrint" colspan="3">&nbsp;</td>
+                        <td class="borderBR mPrint">&nbsp;</td>
+                    </tr>
+                    			                    <tr>
+                        <td class="borderLRB mPrint">&nbsp;</td>
+                        <td class="borderBR mPrint" width="250px">&nbsp;</td>
+                        <td class="borderBR mPrint" width="50px">&nbsp;</td>
+                        <td class="borderBR mPrint">&nbsp;</td>
+                        <td class="borderBR mPrint" colspan="3">&nbsp;</td>
+                        <td class="borderBR mPrint">&nbsp;</td>
+                    </tr>
+                    			                    <tr>
+                        <td class="borderLRB mPrint">&nbsp;</td>
+                        <td class="borderBR mPrint" width="250px">&nbsp;</td>
+                        <td class="borderBR mPrint" width="50px">&nbsp;</td>
+                        <td class="borderBR mPrint">&nbsp;</td>
+                        <td class="borderBR mPrint" colspan="3">&nbsp;</td>
+                        <td class="borderBR mPrint">&nbsp;</td>
+                    </tr>
+                    			                    <tr>
+                        <td class="borderLRB mPrint">&nbsp;</td>
+                        <td class="borderBR mPrint" width="250px">&nbsp;</td>
+                        <td class="borderBR mPrint" width="50px">&nbsp;</td>
+                        <td class="borderBR mPrint">&nbsp;</td>
+                        <td class="borderBR mPrint" colspan="3">&nbsp;</td>
+                        <td class="borderBR mPrint">&nbsp;</td>
+                    </tr>
+                    			                    <tr>
+                        <td class="borderLRB mPrint">&nbsp;</td>
+                        <td class="borderBR mPrint" width="250px">&nbsp;</td>
+                        <td class="borderBR mPrint" width="50px">&nbsp;</td>
+                        <td class="borderBR mPrint">&nbsp;</td>
+                        <td class="borderBR mPrint" colspan="3">&nbsp;</td>
+                        <td class="borderBR mPrint">&nbsp;</td>
+                    </tr>
+                    			                    <tr>
+                        <td class="borderLRB mPrint">&nbsp;</td>
+                        <td class="borderBR mPrint" width="250px">&nbsp;</td>
+                        <td class="borderBR mPrint" width="50px">&nbsp;</td>
+                        <td class="borderBR mPrint">&nbsp;</td>
+                        <td class="borderBR mPrint" colspan="3">&nbsp;</td>
+                        <td class="borderBR mPrint">&nbsp;</td>
+                    </tr>
+                    			                    <tr>
+                        <td class="borderLRB mPrint">&nbsp;</td>
+                        <td class="borderBR mPrint" width="250px">&nbsp;</td>
+                        <td class="borderBR mPrint" width="50px">&nbsp;</td>
+                        <td class="borderBR mPrint">&nbsp;</td>
+                        <td class="borderBR mPrint" colspan="3">&nbsp;</td>
+                        <td class="borderBR mPrint">&nbsp;</td>
+                    </tr>
+                    			                    <tr>
+                        <td class="borderLRB mPrint">&nbsp;</td>
+                        <td class="borderBR mPrint" width="250px">&nbsp;</td>
+                        <td class="borderBR mPrint" width="50px">&nbsp;</td>
+                        <td class="borderBR mPrint">&nbsp;</td>
+                        <td class="borderBR mPrint" colspan="3">&nbsp;</td>
+                        <td class="borderBR mPrint">&nbsp;</td>
+                    </tr>
+                    			<tr>
+                        <td class="borderLRB mPrint">&nbsp;</td>
+                        <td class="borderBR mPrint" width="250px">&nbsp;</td>
+                        <td class="borderBR mPrint" width="50px">&nbsp;</td>
+                        <td class="borderBR mPrint">&nbsp;</td>
+                        <td class="borderBR mPrint" colspan="3">&nbsp;</td>
+                        <td class="borderBR mPrint">&nbsp;</td>
+                    </tr>
+                    			                    <tr>
+                        <td class="borderLRB mPrint">&nbsp;</td>
+                        <td class="borderBR mPrint" width="250px">&nbsp;</td>
+                        <td class="borderBR mPrint" width="50px">&nbsp;</td>
+                        <td class="borderBR mPrint">&nbsp;</td>
+                        <td class="borderBR mPrint" colspan="3">&nbsp;</td>
+                        <td class="borderBR mPrint">&nbsp;</td>
+                    </tr>
+                    			                    <tr>
+                        <td class="borderLRB mPrint">&nbsp;</td>
+                        <td class="borderBR mPrint" width="250px">&nbsp;</td>
+                        <td class="borderBR mPrint" width="50px">&nbsp;</td>
+                        <td class="borderBR mPrint">&nbsp;</td>
+                        <td class="borderBR mPrint" colspan="3">&nbsp;</td>
+                        <td class="borderBR mPrint">&nbsp;</td>
+                    </tr>
+                    			                    <tr>
+                        <td class="borderLRB mPrint">&nbsp;</td>
+                        <td class="borderBR mPrint" width="250px">&nbsp;</td>
+                        <td class="borderBR mPrint" width="50px">&nbsp;</td>
+                        <td class="borderBR mPrint">&nbsp;</td>
+                        <td class="borderBR mPrint" colspan="3">&nbsp;</td>
+                        <td class="borderBR mPrint">&nbsp;</td>
+                    </tr>
+                    			                    <tr>
+                        <td class="borderLRB mPrint">&nbsp;</td>
+                        <td class="borderBR mPrint" width="250px">&nbsp;</td>
+                        <td class="borderBR mPrint" width="50px">&nbsp;</td>
+                        <td class="borderBR mPrint">&nbsp;</td>
+                        <td class="borderBR mPrint" colspan="3">&nbsp;</td>
+                        <td class="borderBR mPrint">&nbsp;</td>
+                    </tr>
+                    			                    <tr>
+                        <td class="borderLRB mPrint">&nbsp;</td>
+                        <td class="borderBR mPrint" width="250px">&nbsp;</td>
+                        <td class="borderBR mPrint" width="50px">&nbsp;</td>
+                        <td class="borderBR mPrint">&nbsp;</td>
+                        <td class="borderBR mPrint" colspan="3">&nbsp;</td>
+                        <td class="borderBR mPrint">&nbsp;</td>
+                    </tr>
+                    			                    <tr>
+                        <td class="borderLRB mPrint">&nbsp;</td>
+                        <td class="borderBR mPrint" width="250px">&nbsp;</td>
+                        <td class="borderBR mPrint" width="50px">&nbsp;</td>
+                        <td class="borderBR mPrint">&nbsp;</td>
+                        <td class="borderBR mPrint" colspan="3">&nbsp;</td>
+                        <td class="borderBR mPrint">&nbsp;</td>
+                    </tr>
+                    			                    <tr>
+                        <td class="borderLRB mPrint">&nbsp;</td>
+                        <td class="borderBR mPrint" width="250px">&nbsp;</td>
+                        <td class="borderBR mPrint" width="50px">&nbsp;</td>
+                        <td class="borderBR mPrint">&nbsp;</td>
+                        <td class="borderBR mPrint" colspan="3">&nbsp;</td>
+                        <td class="borderBR mPrint">&nbsp;</td>
+                    </tr>
+          <tr>
+            <td colspan="1" class="borderLRB  BigPrint">Transport Damage:</td>
+            <td colspan="7" class="borderB BigPrint"><apex:outputField value="{!dealer__Service_Estimate__c.dealer__Transport_Damage_Description__c}" /></td>
+          </tr>  
+          <tr>
+            <td colspan="5" class="BigPrint">&nbsp;</td>
+            <td class="borderLRB  BigPrint"><b>TOTAL</b></td>
+            <td colspan="2" class="borderB BigPrint"><b><apex:outputField value="{!dealer__Service_Estimate__c.dealer__Estimate_Total__c}" /></b></td>
+          </tr>
+          <tr>
+          	<td colspan="4">
+				   <div id="setRef" style="width:1px; height:1px;">   			
+				     <apex:repeat value="{!EstimateLines}" var="cl">
+				      	<apex:outputPanel rendered="{!IF(!ISBLANK(cl.dealer__Diagram_Reference_Number__c), true, false)}" layout="none">
+				      		<apex:variable var="x" value="{!cl.dealer__damageCoordinateX__c + 195}" />
+				      		<apex:variable var="y" value="{!cl.dealer__damageCoordinateY__c + 435}" />
+							<span style="left: {!x}px; top: {!y}px; position: absolute;">
+								<apex:outputText value="{0,number,###0}"><apex:param value="{!cl.dealer__Diagram_Reference_Number__c}" /></apex:outputText><img src="{!$Resource.SmallX}" />
+							</span>  
+						</apex:outputPanel>
+				      </apex:repeat>
+				   </div>
+					<div id="reconDamageDiagramImage" style="width:450px;">
+						<apex:image value="{!$Resource.dealer__VehicleDiagramTurtle}" />		
+					</div>
+			</td>
+          	<td colspan="4" valign="top">
+          		<!-- Cosmetic Repair Table -->
+          		<table width="100%" border="0" id="CosmeticNotes" cellpadding="0" cellspacing="0">
+          			<tr>
+				    	<td class="2" style="hieght: 35px;">&nbsp;</td>
+				    </tr>
+          			<tr>
+          				<td colspan="2" class="borderLRBT BigPrint"><b>Cosmetic Repair Item</b></td>
+          				<td class="borderBRT BigPrint"><b>Estimate</b></td>
+          			</tr>
+          			<apex:repeat value="{!EstimateLines}" var="cl">
+				      	<apex:outputPanel rendered="{!IF(!ISBLANK(cl.dealer__Cosmetic_Estimate__c), true, false)}" layout="none">
+				      		<tr>
+				      			<td class="borderLRB BigPrint"><apex:outputText value="{0,number,###0}"><apex:param value="{!cl.dealer__Diagram_Reference_Number__c}" /></apex:outputText></td>
+				      			<td class="borderBR BigPrint">{!cl.dealer__Description__c}</td>
+				      			<td class="borderB BigPrint">{!cl.dealer__Sub_Total__c}</td>
+				      		</tr>
+				      	</apex:outputPanel>
+				    </apex:repeat>
+				    <tr>
+				    	<td class="borderLRB BigPrint" colspan="2"><b>Cosmetic Total:</b></td>
+				    	<td class="borderB BigPrint"><b>{!dealer__Service_Estimate__c.dealer__Cosmetic_Total__c}</b></td>
+				    </tr>
+				    <tr>
+				    	<td colspan="3">
+	    		        <table>
+				            <tr>
+				                <td class="TinyPrint">Created By:</td>
+				                <td class="TinyPrint">
+				                <apex:outputText value="{0}, {1}" label="Created By">
+				                    <apex:param value="{!dealer__Service_Estimate__c.CreatedBy.Name}" />
+				                    <apex:param value="{!dealer__Service_Estimate__c.CreatedDate}" />
+				                </apex:outputText>
+				                </td>
+				            </tr>
+				            <tr>    
+				                <td class="TinyPrint">Last Modified By:</td>
+				                <td class="TinyPrint">
+				                <apex:outputText value="{0}, {1}" label="Last Modified By">
+				                    <apex:param value="{!dealer__Service_Estimate__c.LastModifiedBy.Name}" />
+				                    <apex:param value="{!dealer__Service_Estimate__c.LastModifiedDate}" />
+				                </apex:outputText> 
+				                </td>
+				            </tr>
+				        </table>
+				    	</td>
+				    </tr>
+          		</table>
+          	</td>
+          </tr>
+        </table>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">&nbsp; </td>
+  </tr>
+</table>
+</apex:page>

@@ -1,0 +1,59 @@
+<apex:page standardController="smagicinteract__lookup_config__c" extensions="smagicinteract.lookupConfigExtension" tabStyle="SMS_Magic_Settings__tab">
+
+<apex:form >
+<apex:pageMessages id="pageMessage"/>
+
+<apex:pageBlock id="main" title="{!$Label.AOI_TITLE}" helpTitle="{!$Label.HLP_TITLE}" helpUrl="http://screen-magic.com/resources/incoming-sms/action-incoming/" >
+
+	<apex:pageBlockSection id="pageBlockSection"  title="{!$Label.SET_NEW_ACT_CONFIG}" collapsible="false" >
+	<apex:facet name="header">
+		<h3>{!$Label.SET_NEW_ACT_CONFIG}</h3>
+	</apex:facet>
+	</apex:pageBlockSection>
+
+		<br /><br />
+		<apex:outputPanel id="nameField">
+			<table >
+				<tr>
+					<td>
+						<apex:outputLabel styleClass="labelCol" value="{!$Label.NAME}" for="lookupConfigName"/> :
+					</td>
+					<td style="padding-left:10px;"> 
+						<apex:inputField id="lookupConfigName" value="{!lookupConfigObject.Name}" required="true"/>
+					</td>
+				</tr>
+			</table>
+		</apex:outputPanel>
+		<table><tr><td>	
+		<apex:outputPanel id="step1" styleClass="labelCol" style="padding-left:50px;"><br/>
+			{!$Label.LINE1}<br/><br/>
+			{!$Label.ACT_1} <br/>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			{!$Label.ACT_1_EX}
+		</apex:outputPanel><br /><br />
+		<apex:selectRadio id="lookupFound" value="{!lookupConfigObject.smagicinteract__lookupFound__c}" layout="pageDirection" style="color: #4A4A56; padding-top: 5px; padding-bottom: 5px; padding-left: 2px; text-align: left; font-size: 91%; ">
+	    	<apex:selectOption itemValue="" itemLabel="{!$Label.DO_NOTHING}" />
+	    	<apex:selectOption itemValue="Case" itemLabel="{!$Label.CRT_CASE}" />
+	        <apex:selectOption itemValue="Opportunity" itemLabel="{!$Label.CRT_OPP}" />
+	        <apex:selectOption itemValue="Task" itemLabel="{!$Label.CRT_TASK}" />
+	    </apex:selectRadio><br />
+	    </td></tr></table>
+	    
+	    <table><tr><td>
+	    <apex:outputPanel id="step2" styleClass="labelCol"><br/>
+			{!$Label.ACT_2}
+		</apex:outputPanel><br /><br />
+	    <apex:selectRadio id="lookupNotFound" value="{!lookupConfigObject.smagicinteract__lookupNotFound__c}" layout="pageDirection" style="color: #4A4A56; padding-top: 5px; padding-bottom: 5px; padding-left: 2px; text-align: left; font-size: 91%; ">
+	    	<apex:selectOption itemValue="" itemLabel="{!$Label.DO_NOTHING}" />
+	    	<apex:selectOption itemValue="Contact" itemLabel="{!$Label.CRT_CONTACT}" />
+	        <apex:selectOption itemValue="Lead" itemLabel="{!$Label.CRT_LEAD}" />
+	    </apex:selectRadio><br />
+	    </td></tr></table>
+    <apex:pageBlockButtons location="bottom" >
+	    <apex:commandButton action="{!save}" value="{!$Label.SAVE}" title="{!$Label.SAVE}"/>
+	    <apex:commandButton action="{!cancel}" value="{!$Label.CANCEL}" title="{!$Label.CANCEL}"/>
+	</apex:pageBlockButtons>
+
+</apex:pageBlock>
+</apex:form>
+</apex:page>

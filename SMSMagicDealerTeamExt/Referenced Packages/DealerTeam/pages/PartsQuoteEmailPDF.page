@@ -1,0 +1,19 @@
+<apex:page id="PartsQuotePDFEmailer" standardController="dealer__Parts_Quote__c" extensions="dealer.PartsQuote_EXT">
+    <apex:sectionHeader title="Parts Quote" subtitle="Email Quote" />
+    <apex:form >
+        <apex:pageBlock title="Email Parts Quote" id="piEmailHeader">
+        <apex:pageMessages />
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!cancel}" value="Cancel" />
+                <apex:commandButton action="{!sendPDF}" value="Send Email" />
+             </apex:pageBlockButtons>
+             <apex:pageBlockSection columns="1">
+                
+                 <apex:outputField value="{!dealer__Parts_Quote__c.dealer__Customer_Contact__c}"/>
+                 <apex:outputField value="{!dealer__Parts_Quote__c.Customer_Contact__r.Email}" style="width:250px;" />
+                 <apex:inputText value="{!subject}" label="Subject" required="true" style="width:400px;"  />
+                 <apex:inputTextarea value="{!body}" label="Body" richText="true" rows="10" cols="5" />
+             </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

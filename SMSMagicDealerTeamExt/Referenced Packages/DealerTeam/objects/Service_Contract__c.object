@@ -1,0 +1,557 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <customHelpPage>SuccessDocumentation_Tab</customHelpPage>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <deprecated>false</deprecated>
+    <description>Service Contract Sales</description>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableEnhancedLookup>true</enableEnhancedLookup>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <fields>
+        <fullName>Car_Deal__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Car Deal</label>
+        <referenceTo>Deal__c</referenceTo>
+        <relationshipLabel>Service Contracts</relationshipLabel>
+        <relationshipName>Service_Contracts</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Company_Number__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Company Number</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Location 1</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Location 2</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Contract_Template__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Contract templates are used to populate default contract settings on new car deals.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Contract templates are used to populate default contract settings on new car deals.</inlineHelpText>
+        <label>Contract Template</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Cost__c</fullName>
+        <defaultValue>0.00</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Cost</label>
+        <precision>8</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Customer_Contact__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Customer</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipLabel>Service Contracts (Contact)</relationshipLabel>
+        <relationshipName>Service_Contracts</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Customer__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Customer Account</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Service Contracts (Account)</relationshipLabel>
+        <relationshipName>Service_Contracts</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Deductable__c</fullName>
+        <defaultValue>0.00</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Deductable</label>
+        <precision>8</precision>
+        <required>true</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Default_on_Lease_Agreements__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Should this contract be added by default on lease agreements?</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Should this contract be added by default on lease agreements?</inlineHelpText>
+        <label>Default on Lease Agreements</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Default_on_Retail_Deals__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Should this contract be defaulted on Retail Deals?</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Should this contract be defaulted on Retail Deals?</inlineHelpText>
+        <label>Default on Retail Deals</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Description__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Description</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>End_Date__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>End Date</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Expiration_Mileage__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Expiration Mileage</label>
+        <precision>9</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Expiration_Months__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Expiration Months</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>External_Id__c</fullName>
+        <caseSensitive>false</caseSensitive>
+        <deprecated>false</deprecated>
+        <description>External ID used to connect records based on their unique ID.</description>
+        <externalId>true</externalId>
+        <label>External Id</label>
+        <length>64</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>true</unique>
+    </fields>
+    <fields>
+        <fullName>Gross__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Service contract gross</description>
+        <externalId>false</externalId>
+        <formula>Sale_Price__c -  Cost__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Gross</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Location__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>Dealership Location lookup to identify the physical location this record belongs to.</description>
+        <externalId>false</externalId>
+        <label>Location</label>
+        <referenceTo>Dealer_Location__c</referenceTo>
+        <relationshipLabel>Service Contracts</relationshipLabel>
+        <relationshipName>Service_Contracts</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Odometer_at_Sale__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Odometer at Sale</label>
+        <precision>7</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Order__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Order</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Plan_Code__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Plan Code</label>
+        <length>64</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Printable__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Pint this item on the Proposal</description>
+        <externalId>false</externalId>
+        <label>Printable</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Product_Code__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Product Code</label>
+        <length>64</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Sale_Price__c</fullName>
+        <defaultValue>0.00</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Sale Price</label>
+        <precision>9</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Service_Vehicle__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Service Vehicle</label>
+        <referenceTo>Service_Vehicle__c</referenceTo>
+        <relationshipLabel>Service Contracts</relationshipLabel>
+        <relationshipName>Service_Contracts</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Start_Date__c</fullName>
+        <defaultValue>TODAY()</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Start Date</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Taxable__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Taxable</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Type__c</fullName>
+        <deprecated>false</deprecated>
+        <description>The type of insurance product</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The type of insurance product</inlineHelpText>
+        <label>Type</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Extended Service Contract</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Maintenance Contract</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>GAP</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Roadside Protection</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Vehicle_Inventory__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Vehicle Inventory</label>
+        <referenceTo>Vehicle_Inventory__c</referenceTo>
+        <relationshipLabel>Service Contracts</relationshipLabel>
+        <relationshipName>Service_Contracts</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <label>Service Contract</label>
+    <listViews>
+        <fullName>All</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <listViews>
+        <fullName>Contract_Templates</fullName>
+        <columns>NAME</columns>
+        <columns>Contract_Template__c</columns>
+        <columns>Cost__c</columns>
+        <columns>Deductable__c</columns>
+        <columns>Description__c</columns>
+        <columns>Expiration_Mileage__c</columns>
+        <columns>Expiration_Months__c</columns>
+        <columns>Plan_Code__c</columns>
+        <columns>Product_Code__c</columns>
+        <columns>Sale_Price__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Contract_Template__c</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </filters>
+        <label>Contract Templates</label>
+    </listViews>
+    <nameField>
+        <displayFormat>{YY}{MM}{DD}-{0}</displayFormat>
+        <label>SC#</label>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Service Contracts</pluralLabel>
+    <recordTypes>
+        <fullName>Contract</fullName>
+        <active>true</active>
+        <description>Sales of a service contract</description>
+        <label>Contract</label>
+        <picklistValues>
+            <picklist>Company_Number__c</picklist>
+            <values>
+                <fullName>Location 1</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Location 2</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Type__c</picklist>
+            <values>
+                <fullName>Extended Service Contract</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>GAP</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Maintenance Contract</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Roadside Protection</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Template</fullName>
+        <active>true</active>
+        <description>Used to populate defaults for the sale of a service contract</description>
+        <label>Template</label>
+        <picklistValues>
+            <picklist>Company_Number__c</picklist>
+            <values>
+                <fullName>Location 1</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Location 2</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Type__c</picklist>
+            <values>
+                <fullName>Extended Service Contract</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>GAP</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Maintenance Contract</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Roadside Protection</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <searchLayouts>
+        <customTabListAdditionalFields>Car_Deal__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Customer__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Service_Vehicle__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Contract_Template__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Odometer_at_Sale__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Expiration_Mileage__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Start_Date__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Expiration_Months__c</customTabListAdditionalFields>
+        <lookupDialogsAdditionalFields>Car_Deal__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Customer__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Service_Vehicle__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Contract_Template__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Odometer_at_Sale__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Expiration_Mileage__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Start_Date__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Expiration_Months__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Company_Number__c</lookupDialogsAdditionalFields>
+        <lookupFilterFields>Company_Number__c</lookupFilterFields>
+        <lookupFilterFields>Description__c</lookupFilterFields>
+        <lookupPhoneDialogsAdditionalFields>Car_Deal__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Customer__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Service_Vehicle__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Contract_Template__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Odometer_at_Sale__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Expiration_Mileage__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Start_Date__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Expiration_Months__c</lookupPhoneDialogsAdditionalFields>
+        <searchFilterFields>Company_Number__c</searchFilterFields>
+        <searchFilterFields>Description__c</searchFilterFields>
+        <searchResultsAdditionalFields>Car_Deal__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Customer__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Service_Vehicle__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Contract_Template__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Odometer_at_Sale__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Expiration_Mileage__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Start_Date__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Expiration_Months__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Company_Number__c</searchResultsAdditionalFields>
+    </searchLayouts>
+    <sharingModel>ReadWrite</sharingModel>
+    <validationRules>
+        <fullName>Service_Contract_Protect_Templates</fullName>
+        <active>true</active>
+        <description>Protect the service template from being associated with a deal.</description>
+        <errorConditionFormula>AND(Contract_Template__c&lt;&gt;null,  Car_Deal__c &lt;&gt;null)</errorConditionFormula>
+        <errorDisplayField>Car_Deal__c</errorDisplayField>
+        <errorMessage>Service Contract Templates can not be saved to car deals.  Please select a Service Contract that does is not defined as a Template</errorMessage>
+    </validationRules>
+</CustomObject>

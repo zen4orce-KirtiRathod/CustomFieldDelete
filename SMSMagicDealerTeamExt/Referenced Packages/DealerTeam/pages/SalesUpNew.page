@@ -1,0 +1,298 @@
+<apex:page tabStyle="dealer__Sales_Up__c" title="New Sales Up" id="pge" standardController="dealer__Sales_Up__c" extensions="dealer.SalesLead_EXT" docType="html-5.0"> 
+    
+<!--  jQuery CDN -->
+<apex:includeScript value="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" />
+<apex:includeScript value="{!URLFOR($Resource.dealer__serializeJSON)}" />
+
+<!-- Include Namespaced Bootstrap 3.0 -->
+<apex:includeScript value="{!URLFOR($Resource.dealer__BootstrapNS,'/bootstrap/js/bootstrap.min.js')}"/>
+<apex:stylesheet value="{!URLFOR($Resource.dealer__BootstrapNS,'/bootstrap/css/bootstrap.min.css')}"/>
+
+<apex:stylesheet value="{!URLFOR($Resource.dealer__BootstrapNS,'/bootstrap/css/dealerteam_bs.css')}"/>
+
+<!-- KENDO 2015.1.429 -->
+<apex:includeScript value="{!URLFOR($Resource.dealer__KendoUiFULL2015,'/js/kendo.all.min.js')}"/>
+<apex:stylesheet value="{!URLFOR($Resource.dealer__KendoUiFULL2015,'/styles/kendo.bootstrap.min.css')}"/>
+<apex:stylesheet value="{!URLFOR($Resource.dealer__KendoUiFULL2015,'/styles/kendo.common-bootstrap.core.min.css')}"/>
+<apex:stylesheet value="{!URLFOR($Resource.dealer__KendoUiFULL2015,'/styles/kendo.common-bootstrap.min.css')}"/>
+    
+   <!--  <apex:stylesheet value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+    
+    <apex:includeScript value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"/>
+ -->
+     
+    <style>
+        .rTable {       display: table;     width: 100%; } 
+        .rTableRow {     display: table-row; } 
+        .rTableHeading {      display: table-header-group;    background-color: #ddd; } 
+        .rTableCell, .rTableHead {    display: table-cell;    padding: 3px 10px;      border: 1px solid #999999; } 
+        .rTableHeading {       display: table-header-group;    background-color: #ddd;     font-weight: bold; } 
+        .rTableFoot {      display: table-footer-group;    font-weight: bold;      background-color: #ddd; } 
+        .rTableBody {     display: table-row-group; }
+    </style>
+    <script type="text/javascript"> 
+
+      var lex_preferred = {!LexPreference};
+      if(lex_preferred == true) {
+        window.location.replace('/apex/dealer__SalesUpNewLex');
+      }
+      /* d(ocument.)resady("#btnOpen").click(function(){
+       alert('button clicked');
+        $("#serviceVehList").modal();
+       }); 
+       
+       $(document).ready("#pge\\:supf:\\supTop\\:topBtns\\:createSU").click(function(){
+        //'onComplete': function(){
+            alert('dfdfd');
+            $("#serviceVehList").modal();
+        //}
+        
+       }); */
+       
+      function javaScrpt(){
+         //alert('javaScrpt onclid');
+         ServiceVehicles(); 
+      }
+       
+       function serviceVehicleRecords(){
+          //alert('oncomplete'); 
+         
+         //if({!serVehicleList}){
+            $("#serviceVehList").modal();
+            //var svlist = "{!serVehicleList}";
+            //alert('svlist::'+svlist);
+        // }
+       }
+       
+        function javaScrptComp(){
+        alert('javaScrpt onclid');
+         dataCamparison(); 
+      }
+       
+      function comparisionWindow(){
+         //alert('Comparision');
+         $("#comparisionBlk").modal();
+      }
+
+      function goBack() {
+        window.history.back();
+      }
+
+       //  //function to open custom visualforce page on lookup - KVP
+       // function openLookup(baseURL, width, modified, searchParam){
+       //      var originalbaseURL = baseURL;
+       //      var originalwidth = width;
+       //      var originalmodified = modified;
+       //      var originalsearchParam = searchParam;
+       //      var prefix = '{!keyPrefix}';
+            
+       //      var lookupType = baseURL.substr(baseURL.length-3, 3);
+       //      if (modified == '1') baseURL = baseURL + searchParam;
+            
+       //      var isCustomLookup = false;
+            
+       //      // Following "prefix" is the lookup type for Vehicle object so change this as per your standard or custom object
+       //      if(lookupType == prefix){
+          
+       //          var urlArr = baseURL.split("&");
+       //          var txtId = '';
+       //          if(urlArr.length > 2) {
+       //              urlArr = urlArr[1].split('=');
+       //              txtId = urlArr[1];
+       //          }
+              
+       //          // Following is the url of Custom Lookup page. You need to change that accordingly
+       //          baseURL = "/apex/VehicleSearchAdvanced?txt=" + txtId;
+    
+       //          // Following is the id of apex:form control "supf". You need to change that accordingly
+       //          baseURL = baseURL + "&frm=" + escapeUTF("{!$Component.supf}");
+       //          if (modified == '1') {
+       //              baseURL = baseURL + "&lksearch=" + searchParam;
+       //          }
+    
+       //          // Following is the ID of inputField that is the lookup to be customized as custom lookup
+       //          if(txtId.indexOf('vehicle') > -1 ){
+                
+       //              isCustomLookup = true;
+       //          }
+       //      }
+            
+            
+       //      if(isCustomLookup == true){
+       //          openPopup(baseURL, "lookup", 350, 480, "width="+850+",height=550,toolbar=no,status=no,directories=no,menubar=no,resizable=yes,scrollable=no", true);
+       //      }
+       //      else {
+       //          if (modified == '1') originalbaseURL = originalbaseURL + originalsearchParam;
+       //              openPopup(originalbaseURL, "lookup", 350, 480, "width="+originalwidth+",height=480,toolbar=no,status=no,directories=no,menubar=no,resizable=yes,scrollable=no", true);
+       //      } 
+       //  } 
+    </script>
+
+  <apex:sectionHeader title="Sales Up" subtitle="New Sales Up" /> 
+  
+   
+  <apex:form id="supf"> 
+  <div>   
+  
+      <apex:actionfunction name="ServiceVehicles" action="{!customSave}" rerender="supf" oncomplete="serviceVehicleRecords();"/>
+      <!--  <apex:actionfunction name="dataCamparison" action="{!comparision}" rerender="supf" oncomplete="comparisionWindow();"/>  -->
+
+        <!-- JVK 12-11-2015 - Native Duplicate Prevention -->
+        
+
+        <apex:pageBlock title="Duplicate Records" rendered="{!hasDuplicateResult}">
+            
+            <apex:pageMessages id="pm2"/>
+            <apex:pageBlockButtons >
+              <apex:commandButton action="{!saveDuplicateOverride}" value="Create" rendered="{!hasDuplicateResult}" reRender="pm2"/>
+            </apex:pageBlockButtons>
+
+            <apex:pageBlockTable value="{!duplicateRecords}" var="item">
+                <apex:column >
+                    <apex:facet name="header">Name</apex:facet>
+                    <apex:outputLink value="/{!item['Id']}">{!item['Name']}</apex:outputLink>
+                </apex:column>
+                <apex:column >
+                    <apex:facet name="header">Owner</apex:facet>
+                    <apex:outputField value="{!item['OwnerId']}"/>
+                </apex:column>
+                <apex:column >
+                    <apex:facet name="header">Last Modified Date</apex:facet>
+                    <apex:outputField value="{!item['LastModifiedDate']}"/>
+                </apex:column>
+            </apex:pageBlockTable> 
+        </apex:pageBlock>
+
+        <apex:pageBlock id="supTop" mode="maindetail">
+
+            <apex:pageMessages id="pm1"/>
+
+            <apex:pageBlockButtons id="topBtns">
+
+                 <apex:commandButton action="{!CreateSU}" value="Create" styleClass="withDupCheck" rendered="{!NOT(hasDuplicateResult)}"/>
+                 <apex:commandButton value="Cancel" onclick="goBack();" /> 
+
+            </apex:pageBlockButtons>
+            
+            <apex:pageBlockSection collapsible="false">
+              <!-- Modifided based on customer feedback -->
+
+              <apex:inputField value="{!dealer__Sales_Up__c.dealer__FirstName__c}" required="true" id="FirstName" taborderhint="1"/>
+              <apex:inputField value="{!dealer__Sales_Up__c.dealer__Lead_Date__c}" required="true" id="LeadDate" />  
+
+              <apex:inputField value="{!dealer__Sales_Up__c.dealer__LastName__c}" required="true" id="LastName" taborderhint="2"/>
+              <apex:inputField value="{!dealer__Sales_Up__c.dealer__Lead_Type__c}" required="true" id="LeadType" taborderhint="6"/>
+
+              <apex:inputField value="{!dealer__Sales_Up__c.dealer__Phone__c}" id="Phone" taborderhint="3"/>
+              <apex:inputField value="{!dealer__Sales_Up__c.dealer__Lead_Status__c}" required="true" taborderhint="7"/>
+
+              <apex:inputField value="{!dealer__Sales_Up__c.dealer__Mobile__c}" id="Mobile" taborderhint="4"/>
+              <apex:outputText />
+
+              <apex:inputField value="{!dealer__Sales_Up__c.dealer__Email__c}" id="Email" taborderhint="5"/>
+              <apex:inputField value="{!dealer__Sales_Up__c.dealer__Source__c}" id="Source" taborderhint="8"/>  
+
+              <apex:inputField value="{!dealer__Sales_Up__c.dealer__Birthdate__c}" id="birthdate"/>
+              <apex:inputField value="{!dealer__Sales_Up__c.dealer__Salesperson_1__c}" id="Salesperson1" />
+
+              <apex:inputField value="{!dealer__Sales_Up__c.dealer__In_Store__c}" id="InStore" />
+              <apex:inputField value="{!dealer__Sales_Up__c.dealer__Salesperson_2__c}" id="Salesperson2" />
+
+              <apex:inputField value="{!dealer__Sales_Up__c.dealer__Greet_Meet__c}" id="GreetMeet" />
+              <apex:inputField value="{!dealer__Sales_Up__c.dealer__CCC_Rep__c}" id="BDC_Rep" />
+
+              <apex:inputField value="{!dealer__Sales_Up__c.dealer__Present_Vehicle__c}" />
+              <apex:inputField value="{!dealer__Sales_Up__c.dealer__Store_Location__c}" id="StoreLocation" />
+
+              <apex:inputField value="{!dealer__Sales_Up__c.dealer__Demo__c}" />
+              <apex:outputText />
+
+              <apex:inputField value="{!dealer__Sales_Up__c.dealer__Write_Up__c}" />
+              <apex:outputText />
+
+              <!-- Prospect Page Field Set to add custom field support to CreateNew page 1/11/16 Jarrett -->
+              <apex:repeat value="{!$ObjectType.dealer__Sales_Up__c.FieldSets.dealer__ProspectFieldSet}" var="f"> 
+                    <apex:inputField value="{!dealer__Sales_Up__c[f]}" />
+                </apex:repeat> 
+
+            </apex:pageBlockSection>           
+            
+            <apex:pageBlockSection columns="1">
+                <apex:inputField value="{!dealer__Sales_Up__c.dealer__Comments__c}" id="Comments" style="width:600px;"/>
+            </apex:pageBlockSection>
+
+            <!-- Address Block -->
+            <apex:pageBlockSection title="Address" columns="2" collapsible="true">
+                    <apex:inputField value="{!dealer__Sales_Up__c.dealer__Mailing_Street__c}"/>
+                    <apex:inputField value="{!dealer__Sales_Up__c.dealer__Mailing_City__c}"/>
+                    
+                    <apex:inputField value="{!dealer__Sales_Up__c.dealer__Mailing_State__c}"/>
+                    <apex:inputField value="{!dealer__Sales_Up__c.dealer__Mailing_Zip__c}" />
+            </apex:pageBlockSection> 
+
+            <!-- Desired Vehicle -->            
+            <apex:pageBlockSection title="Desired Vehicle" collapsible="true"> 
+                <apex:inputField value="{!dealer__Sales_Up__c.dealer__Desired_Stock_Num__c}" id="vehicle_lookup"/>
+                <apex:inputField value="{!dealer__Sales_Up__c.dealer__VIN__c}" />
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel for="yearhigh" value="Year High / Low" /> 
+                    <apex:outputPanel >
+                        <apex:inputField value="{!dealer__Sales_Up__c.dealer__Year_High__c}" id="yearhigh"/>
+                        <apex:inputField value="{!dealer__Sales_Up__c.dealer__Year_To__c}" />
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:inputField value="{!dealer__Sales_Up__c.dealer__Color_Preference_Ext__c}" />
+                <apex:inputField value="{!dealer__Sales_Up__c.dealer__Make__c}" />
+                <apex:inputField value="{!dealer__Sales_Up__c.dealer__Color_Preference_Int__c}" />
+                <apex:inputText value="{!dealer__Sales_Up__c.dealer__Model__c}" />
+                <apex:outputText />
+                <apex:inputField value="{!dealer__Sales_Up__c.dealer__Trim__c}" />
+            </apex:pageBlockSection>
+
+
+            <apex:pageBlockSection title="Finance" collapsible="true">
+                <apex:inputField value="{!dealer__Sales_Up__c.dealer__Desired_Monthly_Payment__c}" />
+                <apex:inputField value="{!dealer__Sales_Up__c.dealer__Finance_Method__c}" />
+                <apex:inputField value="{!dealer__Sales_Up__c.dealer__Pre_qualified_Loan_Amount__c}" />
+
+                <!-- Finance Field Set Support (12-22-2015 (https://dealerteam--agf.na14.visual.force.com/a4sd0000000xCP6AAM)) -->
+                <apex:repeat value="{!$ObjectType.dealer__Sales_Up__c.FieldSets.dealer__FinanceFieldSet}" var="f"> 
+                    <apex:inputField value="{!dealer__Sales_Up__c[f]}" />
+                </apex:repeat>                
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockSection title="Trade In" collapsible="true">
+
+                <apex:inputField value="{!dealer__Sales_Up__c.dealer__Service_Vehicle__c}" /> <!-- added by KVP -->
+                <apex:inputField value="{!dealer__Sales_Up__c.dealer__Trade_Year__c}" />
+
+                <apex:inputField value="{!dealer__Sales_Up__c.dealer__Trade_VIN__c}" />
+                <apex:inputField value="{!dealer__Sales_Up__c.dealer__Trade_Make__c}" />
+
+                <apex:inputField value="{!dealer__Sales_Up__c.dealer__Trade_Mileage__c}" />
+                <apex:inputField value="{!dealer__Sales_Up__c.dealer__Trade_Model__c}" />
+
+                <apex:outputText />
+                <apex:inputField value="{!dealer__Sales_Up__c.dealer__Trade_Trim_Level__c}" />
+                
+                <!-- Trade-In Field Set Support (12-22-2015 (https://dealerteam--agf.na14.visual.force.com/a4sd0000000xCP6AAM)) -->
+                <apex:repeat value="{!$ObjectType.dealer__Sales_Up__c.FieldSets.dealer__TradeFieldSet}" var="f"> 
+                    <apex:inputField value="{!dealer__Sales_Up__c[f]}" />
+                </apex:repeat>    
+
+            </apex:pageBlockSection>
+
+
+
+        </apex:pageBlock>
+         <apex:datatable value="{!serVehicleList}" var="item">
+                    <apex:column value="{!item.id}"/>
+                    <apex:column value="{!item.name}"/>
+                    <apex:column >
+                        <apex:commandbutton value="select"/>
+                    </apex:column>
+      </apex:datatable>
+       
+  </div>      
+  </apex:form>        
+</apex:page>

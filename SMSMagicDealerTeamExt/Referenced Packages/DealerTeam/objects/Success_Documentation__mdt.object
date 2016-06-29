@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Support and success related content</description>
+    <fields>
+        <fullName>Metadata_Name__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Name of the metadata content being documented.</description>
+        <externalId>false</externalId>
+        <fieldManageability>Locked</fieldManageability>
+        <label>Metadata Name</label>
+        <length>126</length>
+        <required>true</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Metadata_Type__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Type of metadata the custom documentation link is destined for</description>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Metadata Type</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Custom Object</fullName>
+                <default>true</default>
+            </picklistValues>
+            <restrictedPicklist>true</restrictedPicklist>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Success_URL__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Success documentation URL</description>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <label>Success URL</label>
+        <required>true</required>
+        <type>Url</type>
+    </fields>
+    <label>Success Documentation</label>
+    <pluralLabel>Success Documentation</pluralLabel>
+    <visibility>Public</visibility>
+</CustomObject>

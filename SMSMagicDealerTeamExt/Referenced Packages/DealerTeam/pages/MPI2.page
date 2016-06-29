@@ -1,0 +1,699 @@
+<apex:page docType="html" showChat="true" showHeader="false" applyHtmlTag="false" standardController="dealer__Inspection_Report__c" extensions="dealer.MPI2_EXT" id="MPI">
+<!--[if IE 8]>               <html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="en" >
+<!--<![endif]-->
+
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width" />
+<title>Vehicle Inspection</title>
+ 
+<apex:stylesheet value="{!URLFOR($Resource.dealer__MPI2Includes, 'css/foundation.css')}" />
+<apex:stylesheet value="{!URLFOR($Resource.dealer__MPI2Includes, 'css/3birds-MPI.css')}" />
+<apex:includeScript value="{!URLFOR($Resource.dealer__MPI2Includes, 'js/vendor/jquery.js')}" />    
+<apex:includeScript value="{!URLFOR($Resource.dealer__MPI2Includes, 'js/foundation/foundation.js')}" />
+<apex:includeScript value="{!URLFOR($Resource.dealer__MPI2Includes, 'js/jquery.jqscribble.js')}" />
+
+<style>
+/* OVERRIDES */
+.accordion .content {height: 500px;}
+.sml-title { display: block; font-weight: normal; margin-bottom: 5px;}
+</style>
+
+    <script type="text/javascript">
+    var msgMe = <apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__SMS_Updates__c == true, true, false)}" />;
+    var id	  = '{!JSENCODE(Inspection_Report__c.Id)}';
+    var mpidat= jQuery.parseJSON('{!JSENCODE(MPIJSON)}');
+    $j = jQuery.noConflict();
+    $j(document).ready(function() {
+        $j("#MPI\\:NewMPI\\:nbtn").removeClass('btn');
+        $j("span.custom").click(function() { 
+            	dealer.MPI2_EXT.setM($j(this).attr('id')+':'+id, function(result, event){
+                    if(result===false) {
+                        // Error 
+                        console.log('Error, remoting returned false');
+                    }
+                });
+            });
+        $j("input.setCCA").blur(function() {
+            	dealer.MPI2_EXT.setDecimalValue(id+':'+$j(this).val(), function(result, event){
+                    if(result===false) {
+                        console.log('Error Remoting Text Field Value');
+                     }
+                 });
+            });
+        
+		$j("#txtOn").click(function() {
+           		dealer.MPI2_EXT.setTextMessage('{!JSENCODE(ContactDetails.Id)}:1:{!JSENCODE(Inspection_Report__c.Id)}', function(result, event) {
+                    if(result===false) {
+                        console.log('Error setting Text Allow');
+                    }
+                }); 	 
+        });
+        
+		$j("#txtOff").click(function() {
+           		dealer.MPI2_EXT.setTextMessage('{!JSENCODE(ContactDetails.Id)}:0:{!JSENCODE(Inspection_Report__c.Id)}', function(result, event) {
+                    if(result===false) {
+                        console.log('Error setting Text Dissallow');
+                    }
+                }); 	 
+        });        
+                
+        $j.each(mpidat, function(i, e) {
+            	if(i.indexOf('dealer__')!=-1) {
+                    if($j('#'+i+'\\:'+e).length>0) {
+                       $j('#'+i+'\\:'+e).addClass('checked');
+                        }
+                    }
+            }); 
+        
+        $j("#carDrawing").mouseup(function() {
+        	$j('#carDrawing').data('jqScribble').save(function(imageData){
+               $j('#vehicleDrawing').val(imageData);	
+			});
+       	});
+		     
+        $j("#carDrawing").jqScribble({
+            				width:'174px',
+            				height:'297px',
+            				backgroundImage:'{!URLFOR($Resource.MPI2Includes, 'img/vehicle-outline.jpg')}',
+            				brushColor: '#FF9900'
+        });
+        
+        $j("#signature").mouseup(function() {
+            $j("#signature").data('jqScribble').save(function(sigData){
+               $j('#sigDraw').val(sigData);	
+			});
+        });
+        
+        $j("#signature").jqScribble({
+            				width:'275px',
+            				height:'125px',
+				            backgroundImage:'',
+            				brushColor: '#2A4480'
+        });        
+    });
+    
+    function setStatus() {
+     	   var newVal = $j("#MPI\\:StatusForm\\:mpiStatus").val();
+				dealer.MPI2_EXT.setM('dealer__Status__c:'+newVal+':'+id, function(result, event){
+                    if(result===false) {
+                        // Error 
+                        console.log('Error, remoting returned false');
+                    }
+                });           	
+    }
+    
+    function setAllowSMS() {
+           
+                dealer.MPI2_EXT.setTextMessage('{!JSENCODE(ContactDetails.Id)}:1', function(result, event) {
+                    if(result===false) {
+                        console.log('Error setting Text Allow/Dissallow');
+                    }
+                });    
+    }
+    </script>
+</head>
+<body>
+
+    
+<!-- Start Header 
+======================================================================== -->
+<div class="row header">
+    <div class="large-4 small-6 columns"><img src="{!URLFOR($Resource.MPI2Includes, 'img/logo-3birds.png')}" style="height: 62px;" /></div>
+    <div class="large-8 columns hide-for-small text-right"><h2 class="subheader">Vehicle Inspection Report</h2></div>
+</div>
+
+
+<!-- Start Content Wrapper
+======================================================================== -->
+<div class="row bodyContentWrap">
+<!-- Form -->
+<form class="custom">
+
+    
+
+    
+
+
+<div class="large-8 columns">
+    <div class="text-left" style="margin-top: 20px;"><img src="{!URLFOR($Resource.MPI2Includes, 'img/key.png')}"/></div>
+    <div class="section-container accordion" data-section="accordion" style="margin-top: 20px;">
+    
+<!-- Begin MPI Action -->
+        <apex:form id="NewMPI" rendered="{!IF(ISBLANK(dealer__Inspection_Report__c.id), true, false)}">
+        	<apex:commandButton action="{!createMPI}" value="Begin MPI for {!NewMPIContact.Name}" rendered="{!IF(ISBLANK(dealer__Inspection_Report__c.id), true, false)}" styleClass="completeBtn" id="nbtn" />
+        </apex:form>
+        
+        <apex:outputText rendered="{!IF(NOT(ISBLANK(dealer__Inspection_Report__c.id)), true, false)}">
+            
+<!-- Existing Appointment Lines and Previous Service Visit -->
+   
+   <section class="active">
+        <p class="title" data-section-title=""><a href="#" class="accordianBtn">Appointment &amp; Visit Details</a></p>
+        <div class="content" data-section-content="">
+            <apex:outputText rendered="{!IF(NOT(ISBLANK(ServiceAppointment.dealer__Date_Time__c)),true,false)}"> 
+			<table cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                    <td>Appointment</td>
+                    <td><apex:outputField value="{!ServiceAppointment.dealer__Date_Time__c}"/></td>
+                    <td><apex:outputField value="{!ServiceAppointment.dealer__SA__c}"/></td>
+                </tr>
+                <tr>
+                    <td>Waiting?&nbsp;<apex:outputField value="{!ServiceAppointment.dealer__Waiter__c}"/></td>
+                    <td>&nbsp;</td>
+                    <td>Estimate:&nbsp;<apex:outputField value="{!ServiceAppointment.dealer__Quote_Total__c}"/></td>
+                </tr>
+            </table>  
+            <table cellpadding="0" cellspacing="0" width="100%">
+            	<tr>
+                    <th>Operation</th>
+                    <th>Concern</th>
+                    <th>Pay Type</th>
+                    <th>Estimate</th>
+                </tr>
+                <apex:repeat value="{!ServiceAppointment.Service_Appointment_Lines__r}" var="l">
+            	<tr>
+                    <td><apex:outputField value="{!l.dealer__Op_Code__c}"/></td>
+                    <td><apex:outputField value="{!l.dealer__Complaint__c}"/></td>
+                    <td><apex:outputField value="{!l.dealer__Pay_Type__c}"/></td>
+                    <td><apex:outputField value="{!l.dealer__Qoute__c}"/></td>
+                </tr> 
+                </apex:repeat>    
+            </table>    
+            </apex:outputText>
+                     <table cellpadding="0" cellspacing="0" width="100%">
+            	<tr>
+                    <th>Code</th>
+                    <th>Component</th>
+                    <th>Identified</th>
+                    <th>Quote</th>
+                </tr>
+                
+            	<tr>
+                    <td><span class="custom radio redBtn "></span></td>
+                    <td>Front Brake Roter Surface &amp; Pad(s)</td>
+                    <td>11/04/2013</td>
+                    <td>$129.99</td>
+                </tr> 
+                <tr>
+                    <td><span class="custom radio yellowBtn "></span></td>
+                    <td>Cabin Air Filter</td>
+                    <td>11/04/2013</td>
+                    <td>$29.95</td>
+                </tr>
+                 <tr>
+                    <td><span class="custom radio greenBtn "></span></td>
+                    <td>B1 Service</td>
+                    <td>Factory Scheduled</td>
+                    <td>$99.95</td>
+                </tr>         
+                <tr>
+                    <td colspan="4"> <input name="" class="completeBtn" type="submit" value="Add Selected Service(s)" /></td>
+                </tr>    
+            </table> 
+            
+       </div>
+   </section>
+    
+<!-- SECTION: FLUID CHECK AND FILL
+============================================================================= -->
+
+      <section>
+        <p class="title" data-section-title=""><a href="#" class="accordianBtn">Tires, Brakes and Battery</a></p>
+        <div class="content" data-section-content="">
+     <table cellpadding="0" cellspacing="0" width="100%">
+              <tbody>
+                <tr>
+                  <td width="50%">
+                     <h2 class="subheader"><img src="{!URLFOR($Resource.MPI2Includes, 'img/tire.png')}" width="104" height="138"/> Tires</h2>
+                  </td>
+                  <td>
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0" style="border: none; background: #fff;">
+                              <tr>
+                                <th align="left" valign="middle" scope="col">
+                                <span class="sml-title">Drivers Front</span>
+                                  <label for="DriversFront"><input name="DriversFront" type="radio" id="DriversFront" value="okay" style="display:none;"/><span id="dealer__Tire_DF__c:G" class="custom radio greenBtn"></span></label>
+                                  <label for="DriversFront"><input name="DriversFront" type="radio" id="DriversFront" value="future" style="display:none;"/><span id="dealer__Tire_DF__c:Y" class="custom radio yellowBtn"></span></label>
+                                  <label for="DriversFront"><input name="DriversFront" type="radio" id="DriversFront" value="immediate" style="display:none;"/><span id="dealer__Tire_DF__c:R" class="custom radio redBtn"></span></label> 
+                                </th>
+                                <th align="left" valign="middle" scope="col">
+                                 <span class="sml-title">Passenger Front</span>
+                                  <label for="radio1"><input name="PassengerFront" type="radio" id="radio1" value="okay" style="display:none;"/><span id="dealer__Tire_DR__c:G" class="custom radio greenBtn"></span></label>
+                                  <label for="radio1"><input name="PassengerFront" type="radio" id="radio1" value="future" style="display:none;"/><span id="dealer__Tire_DR__c:Y" class="custom radio yellowBtn"></span></label>
+                                  <label for="radio1"><input name="PassengerFront" type="radio" id="radio1" value="immediate" style="display:none;"/><span id="dealer__Tire_DR__c:R" class="custom radio redBtn"></span></label> 
+                                </th>
+                              </tr>
+                              <tr style="background-color: #fff;">
+                                <td align="left" valign="middle">
+                                <span class="sml-title">Drivers Rear</span>
+                                  <label for="radio1"><input name="DriversRear" type="radio" id="radio1" value="okay" style="display:none;"/><span id="dealer__Tire_PF__c:G" class="custom radio greenBtn"></span></label>
+                                  <label for="radio1"><input name="DriversRear" type="radio" id="radio1" value="future" style="display:none;"/><span id="dealer__Tire_PF__c:Y" class="custom radio yellowBtn"></span></label>
+                                  <label for="radio1"><input name="DriversRear" type="radio" id="radio1" value="immediate" style="display:none;"/><span id="dealer__Tire_PF__c:R" class="custom radio redBtn"></span></label> 
+                                </td>
+                                <td align="left" valign="middle">
+                                <span class="sml-title">Passenger Rear</span>
+                                  <label for="radio1"><input name="PassengerRear" type="radio" id="radio1" value="okay" style="display:none;"/><span id="dealer__Tire_PR__c:G" class="custom radio greenBtn"></span></label>
+                                  <label for="radio1"><input name="PassengerRear" type="radio" id="radio1" value="future" style="display:none;"/><span id="dealer__Tire_PR__c:Y" class="custom radio yellowBtn"></span></label>
+                                  <label for="radio1"><input name="PassengerRear" type="radio" id="radio1" value="immediate" style="display:none;"/><span id="dealer__Tire_PR__c:R" class="custom radio redBtn"></span></label> 
+                                </td>
+                              </tr>
+                            </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td width="50%">
+                     <h2 class="subheader"><img src="{!URLFOR($Resource.MPI2Includes, 'img/brake_disk_brake-gryBkgd.jpg')}" width="106" height="130"/> Brakes</h2>
+                  </td>
+                  <td>
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0" style="border: none; background: #fff;">
+                              <tr style="background-color: #f9f9f9;">
+                                <th align="left" valign="middle" scope="col">
+                                <span class="sml-title">Drivers Front</span>
+                                  <label for="radio1"><input name="BrakesDriversFront" type="radio" id="radio1" value="okay" style="display:none;"/><span id="dealer__Brake_DF__c:G" class="custom radio greenBtn"></span></label>
+                                  <label for="radio1"><input name="BrakesDriversFront" type="radio" id="radio1" value="future" style="display:none;"/><span id="dealer__Brake_DF__c:Y" class="custom radio yellowBtn"></span></label>
+                                  <label for="radio1"><input name="BrakesDriversFront" type="radio" id="radio1" value="immediate" style="display:none;"/><span id="dealer__Brake_DF__c:R" class="custom radio redBtn"></span></label> 
+                                </th>
+                                <th align="left" valign="middle" scope="col">
+                                 <span class="sml-title">Passenger Front</span>
+                                  <label for="radio1"><input name="BrakesPassengerFront" type="radio" id="radio1" value="okay" style="display:none;"/><span id="dealer__Brake_PF__c:G" class="custom radio greenBtn"></span></label>
+                                  <label for="radio1"><input name="BrakesPassengerFront" type="radio" id="radio1" value="future" style="display:none;"/><span id="dealer__Brake_PF__c:Y" class="custom radio yellowBtn"></span></label>
+                                  <label for="radio1"><input name="BrakesPassengerFront" type="radio" id="radio1" value="immediate" style="display:none;"/><span id="dealer__Brake_PF__c:R" class="custom radio redBtn"></span></label> 
+                                </th>
+                              </tr>
+                              <tr style="background-color: #f9f9f9;">
+                                <td align="left" valign="middle">
+                                <span class="sml-title">Drivers Rear</span>
+                                  <label for="radio1"><input name="BrakesDriversRear" type="radio" id="radio1" value="okay" style="display:none;"/><span id="dealer__Brake_DR__c:G" class="custom radio greenBtn"></span></label>
+                                  <label for="radio1"><input name="BrakesDriversRear" type="radio" id="radio1" value="future" style="display:none;"/><span id="dealer__Brake_DR__c:Y" class="custom radio yellowBtn"></span></label>
+                                  <label for="radio1"><input name="BrakesDriversRear" type="radio" id="radio1" value="immediate" style="display:none;"/><span id="dealer__Brake_DR__c:R" class="custom radio redBtn"></span></label> 
+                                </td>
+                                <td align="left" valign="middle">
+                                <span class="sml-title">Passenger Rear</span>
+                                    <label for="radio1"><input name="BrakesPassengerRear" type="radio" id="radio1" value="okay" style="display:none;"/><span id="dealer__Brake_PR__c:G" class="custom radio greenBtn"></span></label>
+                                    <label for="radio1"><input name="BrakesPassengerRear" type="radio" id="radio1" value="future" style="display:none;"/><span id="dealer__Brake_DR__c:Y" class="custom radio yellowBtn"></span></label>
+                                    <label for="radio1"><input name="BrakesPassengerRear" type="radio" id="radio1" value="immediate" style="display:none;"/><span id="dealer__Brake_DR__c:R" class="custom radio redBtn"></span></label> 
+                                </td>
+                              </tr>
+                            </table>
+                  </td>
+                </tr>
+                
+                
+                <tr>
+                  <td width="50%">
+                     <h2 class="subheader"><img src="{!URLFOR($Resource.MPI2Includes, 'img/battery.jpg')}" style="margin-left: 14px; margin-right: 14px;"/> Battery</h2>
+                  </td>
+                  <td>
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0" style="border: none; background: #fff;">
+                              <tr>
+                                <td align="left" valign="middle" scope="col">
+                                <span class="sml-title">Battery Status</span>
+                                  <label for="radio1"><input name="BatteryStatus" type="radio" id="radio1" value="okay" style="display:none;"/><span id="dealer__Battery_1_Status__c:G" class="custom radio greenBtn"></span></label>
+                                  <label for="radio1"><input name="BatteryStatus" type="radio" id="radio1" value="future" style="display:none;"/><span id="dealer__Battery_1_Status__c:Y" class="custom radio yellowBtn"></span></label>
+                                  <label for="radio1"><input name="BatteryStatus" type="radio" id="radio1" value="immediate" style="display:none;"/><span id="dealer__Battery_1_Status__c:R" class="custom radio redBtn"></span></label> 
+                                </td>
+                                <td align="left" valign="left">
+                                    <span class="sml-title">CCA</span>
+                                    <label for="battCCA"><input class="setDecimal" name="cca" id="dealer__Battery_1_Actual_CCA__c" type="text" value="{!Inspection_Report__c.dealer__Battery_1_Actual_CCA__c}" /></label>
+                                </td>
+                              </tr>
+                            </table>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+        </div>
+      </section>
+      
+  
+  
+      
+      
+      
+<!-- SECTION: CHECK SYSTEMS / COMPONENTS
+============================================================================= -->
+      
+      <section>
+        <p class="title" data-section-title=""><a href="#" class="accordianBtn">Check Systems / Components</a></p>
+        <div class="content" data-section-content="">
+          <table cellpadding="0" cellspacing="0" width="100%">
+              <thead>
+                <tr>
+                  <th width="100">Condition</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                      <label for="radio8"><input name="radio8" type="radio" id="radio8" value="okay" style="display:none;"/><span id="dealer__Exterior_Lights__c:G" class="custom radio greenBtn"></span></label>
+                      <label for="radio8"><input name="radio8" type="radio" id="radio8" value="future" style="display:none;"/><span id="dealer__Exterior_Lights__c:Y" class="custom radio yellowBtn"></span></label>
+                      <label for="radio8"><input name="radio8" type="radio" id="radio8" value="immediate" style="display:none;"/><span id="dealer__Exterior_Lights__c:R" class="custom radio redBtn"></span></label> 
+                  </td>
+                  <td>Headlights / Taillights / Brake lights / Hazard lights / Turn signals</td>
+                </tr>
+                <tr>
+                  <td>
+                      <label for="radio9"><input name="radio9" type="radio" id="radio9" value="okay" style="display:none;"/><span id="dealer__Interior_Lights__c:G" class="custom radio greenBtn"></span></label>
+                      <label for="radio9"><input name="radio9" type="radio" id="radio9" value="future" style="display:none;"/><span id="dealer__Interior_Lights__c:Y" class="custom radio yellowBtn"></span></label>
+                      <label for="radio9"><input name="radio9" type="radio" id="radio9" value="immediate" style="display:none;"/><span id="dealer__Interior_Lights__c:R" class="custom radio redBtn"></span></label> 
+                  </td>
+                  <td>Interior lights</td>
+                </tr>
+                <tr>
+                  <td>
+                      <label for="radio10"><input name="radio10" type="radio" id="radio10" value="okay" style="display:none;"/><span id="dealer__Windshield_Washer_Fluid__c:G" class="custom radio greenBtn"></span></label>
+                      <label for="radio10"><input name="radio10" type="radio" id="radio10" value="future" style="display:none;"/><span id="dealer__Windshield_Washer_Fluid__c:Y" class="custom radio yellowBtn"></span></label>
+                      <label for="radio10"><input name="radio10" type="radio" id="radio10" value="immediate" style="display:none;"/><span id="dealer__Windshield_Washer_Fluid__c:R" class="custom radio redBtn"></span></label> 
+                  </td>
+                  <td>Windsheild washer fluid / wiper blade condition</td>
+                </tr>
+                <tr>
+                  <td>
+                      <label for="radio11"><input name="radio11" type="radio" id="radio11" value="okay" style="display:none;"/><span id="dealer__Parking_Brake__c:G" class="custom radio greenBtn"></span></label>
+                      <label for="radio11"><input name="radio11" type="radio" id="radio11" value="future" style="display:none;"/><span id="dealer__Parking_Brake__c:Y" class="custom radio yellowBtn"></span></label>
+                      <label for="radio11"><input name="radio11" type="radio" id="radio11" value="immediate" style="display:none;"/><span id="dealer__Parking_Brake__c:R" class="custom radio redBtn"></span></label> 
+                  </td>
+                  <td>Parking Brake</td>
+                </tr>
+                <tr>
+                  <td>
+                      <label for="radio12"><input name="radio12" type="radio" id="radio12" value="okay" style="display:none;"/><span id="dealer__Horn__c:G" class="custom radio greenBtn"></span></label>
+                      <label for="radio12"><input name="radio12" type="radio" id="radio12" value="future" style="display:none;"/><span id="dealer__Horn__c:Y" class="custom radio yellowBtn"></span></label>
+                      <label for="radio12"><input name="radio12" type="radio" id="radio12" value="immediate" style="display:none;"/><span id="dealer__Horn__c:R" class="custom radio redBtn"></span></label> 
+                  </td>
+                  <td>Horn operation</td>
+                </tr>
+                <tr>
+                  <td>
+                      <label for="radio13"><input name="radio13" type="radio" id="radio13" value="okay" style="display:none;"/><span id="dealer__Fluid_Leaks_Engine_Oil_Quality__c:G" class="custom radio greenBtn"></span></label>
+                      <label for="radio13"><input name="radio13" type="radio" id="radio13" value="future" style="display:none;"/><span id="dealer__Fluid_Leaks_Engine_Oil_Quality__c:Y" class="custom radio yellowBtn"></span></label>
+                      <label for="radio13"><input name="radio13" type="radio" id="radio13" value="immediate" style="display:none;"/><span id="dealer__Fluid_Leaks_Engine_Oil_Quality__c:R" class="custom radio redBtn"></span></label> 
+                  </td>
+                  <td>Fluids: Oil/Coolant/Power Steering/Transmission</td>
+                </tr>
+                <tr>
+                  <td>
+                      <label for="radio14"><input name="radio14" type="radio" id="radio14" value="okay" style="display:none;"/><span id="dealer__Drive_Belts__c:G" class="custom radio greenBtn"></span></label>
+                      <label for="radio14"><input name="radio14" type="radio" id="radio14" value="future" style="display:none;"/><span id="dealer__Drive_Belts__c:Y" class="custom radio yellowBtn"></span></label>
+                      <label for="radio14"><input name="radio14" type="radio" id="radio14" value="immediate" style="display:none;"/><span id="dealer__Drive_Belts__c:R" class="custom radio redBtn"></span></label> 
+                  </td>
+                  <td>Accessory drive belts</td>
+                </tr>
+                <tr>
+                  <td>
+                      <label for="radio15"><input name="radio15" type="radio" id="radio15" value="okay" style="display:none;"/><span id="dealer__Cooling_System__c:G" class="custom radio greenBtn"></span></label>
+                      <label for="radio15"><input name="radio15" type="radio" id="radio15" value="future" style="display:none;"/><span id="dealer__Cooling_System__c:Y" class="custom radio yellowBtn"></span></label>
+                      <label for="radio15"><input name="radio15" type="radio" id="radio15" value="immediate" style="display:none;"/><span id="dealer__Cooling_System__c:R" class="custom radio redBtn"></span></label> 
+                  </td>
+                  <td>Radiator hoses &amp; clamps / overflow tank</td>
+                </tr>
+                <tr>
+                  <td>
+                      <label for="radio16"><input name="radio16" type="radio" id="radio16" value="okay" style="display:none;"/><span id="dealer__Engine_Air_Filter__c:G" class="custom radio greenBtn"></span></label>
+                      <label for="radio16"><input name="radio16" type="radio" id="radio16" value="future" style="display:none;"/><span id="dealer__Engine_Air_Filter__c:Y" class="custom radio yellowBtn"></span></label>
+                      <label for="radio16"><input name="radio16" type="radio" id="radio16" value="immediate" style="display:none;"/><span id="dealer__Engine_Air_Filter__c:R" class="custom radio redBtn"></span></label> 
+                  </td>
+                  <td>Engine air filter</td>
+                </tr>
+                <tr>
+                  <td>
+                      <label for="radio17"><input name="radio17" type="radio" id="radio17" value="okay" style="display:none;"/><span id="dealer__HVAC_System__c:G" class="custom radio greenBtn"></span></label>
+                      <label for="radio17"><input name="radio17" type="radio" id="radio17" value="future" style="display:none;"/><span id="dealer__HVAC_System__c:Y" class="custom radio yellowBtn"></span></label>
+                      <label for="radio17"><input name="radio17" type="radio" id="radio17" value="immediate" style="display:none;"/><span id="dealer__HVAC_System__c:R" class="custom radio redBtn"></span></label> 
+                  </td>
+                  <td>HVAC System visible condition / operation</td>
+                </tr>
+                <tr>
+                  <td>
+                      <label for="radio18"><input name="radio18" type="radio" id="radio18" value="okay" style="display:none;"/><span class="custom radio greenBtn"></span></label>
+                      <label for="radio18"><input name="radio18" type="radio" id="radio18" value="future" style="display:none;"/><span class="custom radio yellowBtn"></span></label>
+                      <label for="radio18"><input name="radio18" type="radio" id="radio18" value="immediate" style="display:none;"/><span class="custom radio redBtn"></span></label> 
+                  </td>
+                  <td>Brake lines / hoses / parking brake cable</td>
+                </tr>
+                <tr>
+                  <td>
+                      <label for="radio19"><input name="radio19" type="radio" id="radio19" value="okay" style="display:none;"/><span id="dealer__Brake_Lines_Hoses__c:G" class="custom radio greenBtn"></span></label>
+                      <label for="radio19"><input name="radio19" type="radio" id="radio19" value="future" style="display:none;"/><span id="dealer__Brake_Lines_Hoses__c:Y" class="custom radio yellowBtn"></span></label>
+                      <label for="radio19"><input name="radio19" type="radio" id="radio19" value="immediate" style="display:none;"/><span id="dealer__Brake_Lines_Hoses__c:R" class="custom radio redBtn"></span></label> 
+                  </td>
+                  <td>Shocks / Struts / Suspension</td>
+                </tr>
+                <tr>
+                  <td>
+                      <label for="radio20"><input name="radio20" type="radio" id="radio20" value="okay" style="display:none;"/><span id="dealer__Alignment__c:G" class="custom radio greenBtn"></span></label>
+                      <label for="radio20"><input name="radio20" type="radio" id="radio20" value="future" style="display:none;"/><span id="dealer__Alignment__c:Y" class="custom radio yellowBtn"></span></label>
+                      <label for="radio20"><input name="radio20" type="radio" id="radio20" value="immediate" style="display:none;"/><span id="dealer__Alignment__c:R" class="custom radio redBtn"></span></label> 
+                  </td>
+                  <td>Alignment / steering gear / tie rod ends</td>
+                </tr>
+              </tbody>
+            </table>
+        </div>
+      </section>
+      
+      
+      
+
+
+<!-- SECTION: INSPECT TIRES
+=============================================================================
+      
+      
+      <section>
+        <p class="title" data-section-title=""><a href="#" class="accordianBtn">Inspect Tires</a></p>
+        <div class="content" data-section-content="">
+          <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tires">
+              <tr>
+                <td valign="top">
+                
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                      <thead><tr><th>Left Front</th></tr></thead>
+                      <tr><td><label for="radio23"><input name="radio23" type="radio" id="radio23" value="okay" style="display:none;"/><span class="custom radio greenBtn"></span> 7/32 or more</label></td></tr>
+                      <tr><td><label for="radio23"><input name="radio23" type="radio" id="radio23" value="okay" style="display:none;"/><span class="custom radio yellowBtn"></span> 4/32 to 6/32</label></td></tr>
+                      <tr><td><label for="radio23"><input name="radio23" type="radio" id="radio23" value="okay" style="display:none;"/><span class="custom radio redBtn"></span> 3/32 or less</label></td></tr>
+                    </table>
+                    <br>
+                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                      <thead><tr><th>Left Rear</th></tr></thead>
+                      <tr><td><label for="radio24"><input name="radio24" type="radio" id="radio24" value="okay" style="display:none;"/><span class="custom radio greenBtn"></span> 7/32 or more</label></td></tr>
+                      <tr><td><label for="radio24"><input name="radio24" type="radio" id="radio24" value="okay" style="display:none;"/><span class="custom radio yellowBtn"></span> 4/32 to 6/32</label></td></tr>
+                      <tr><td><label for="radio24"><input name="radio24" type="radio" id="radio24" value="okay" style="display:none;"/><span class="custom radio redBtn"></span> 3/32 or less</label></td></tr>
+                    </table>
+                        
+                </td>
+                
+                <td align="center" class="hide-for-small" valign="middle"><img src="img/tire.png"/></td>
+                
+                <td valign="top">
+                
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                      <thead><tr><th>Right Front</th></tr></thead>
+                      <tr><td><label for="radio25"><input name="radio25" type="radio" id="radio25" value="okay" style="display:none;"/><span class="custom radio greenBtn"></span> 7/32 or more</label></td></tr>
+                      <tr><td><label for="radio25"><input name="radio25" type="radio" id="radio25" value="okay" style="display:none;"/><span class="custom radio yellowBtn"></span> 4/32 to 6/32</label></td></tr>
+                      <tr><td><label for="radio25"><input name="radio25" type="radio" id="radio25" value="okay" style="display:none;"/><span class="custom radio redBtn"></span> 3/32 or less</label></td></tr>
+                    </table>
+                    <br>
+                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                      <thead><tr><th>Right  Rear</th></tr></thead>
+                      <tr><td><label for="radio26"><input name="radio26" type="radio" id="radio26" value="okay" style="display:none;"/><span class="custom radio greenBtn"></span> 7/32 or more</label></td></tr>
+                      <tr><td><label for="radio26"><input name="radio26" type="radio" id="radio26" value="okay" style="display:none;"/><span class="custom radio yellowBtn"></span> 4/32 to 6/32</label></td></tr>
+                      <tr><td><label for="radio26"><input name="radio26" type="radio" id="radio26" value="okay" style="display:none;"/><span class="custom radio redBtn"></span> 3/32 or less</label></td></tr>
+                    </table>
+                
+                </td>
+            </tr>
+          </table>
+        </div>
+      </section> -->
+      
+      
+      
+
+
+<!-- SECTION: BRAKE TIRES
+=============================================================================
+     
+      <section>
+        <p class="title" data-section-title=""><a href="#" class="accordianBtn">Brake Inspection</a></p>
+        <div class="content" data-section-content="""><label for="radio29"><input name="radio29" type="radio" id="radio29" value="okay" style="display:none;"/><span class="custom radio yellowBtn"></span> 3mm to 5mm</label></td></tr>
+                      <tr><td><label for="radio29"><input name="radio29" type="radio" id="radio29" value="okay" style="display:none;"/><span class="custom radio redBtn"></span> Less than 3mm</label></td></tr>
+                    </table>
+                    <br>
+                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                      <thead><tr><th>Right  Rear</th></tr></thead>
+                      <tr><td><label for="radio30"><input name="radio30" type="radio" id="radio30" value="okay" style="display:none;"/><span class="custom radio greenBtn"></span> Over 5mm (Disc)</label></td></tr>
+                      <tr><td><label for="radio30"><input name="radio30" type="radio" id="radio30" value="okay" style="display:none;"/><span class="custom radio yellowBtn"></span> 3mm to 5mm</label></td></tr>
+                      <tr><td><label for="radio30"><input name="radio30" type="radio" id="radio30" value="okay" style="display:none;"/><span class="custom radio redBtn"></span> Less than 3mm</label></td></tr>
+                    </table>
+                
+                </td>
+            </tr>
+          </table>
+        </div>
+      </section>    
+      
+      
+      
+
+
+<!-- SECTION: NEXT SCHEDULED SERVICE
+============================================================================= -->
+
+      <section>
+        <p class="title" data-section-title=""><a href="#" class="accordianBtn">Vehicle Notes &amp; Comments</a></p>
+        <div class="content" data-section-content="">
+  
+          <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td width="30%" scope="col">
+            	<canvas id="carDrawing" width="174px" height="297px"></canvas>
+                <input type="hidden" name="vehicleDrawing" id="vehicleDrawing" value="" />
+              </td>
+            <td width="70%" scope="col">
+            <textarea name="" placeholder="Existing Body Damage" style="min-height: 130px; max-height: 130px;">{!HTMLENCODE(Inspection_Report__c.dealer__Existing_Vehicle_Damage_Description__c)}</textarea>
+            <textarea name="" placeholder="Internal Notes" style="min-height: 130px; max-height: 130px;">{!HTMLENCODE(Inspection_Report__c.dealer__Internal_Comments__c)}</textarea>
+            </td>
+          </tr>
+        </table>
+       
+          
+      
+           
+           
+        </div>
+      </section>
+      </apex:outputText>
+    </div>
+    
+    
+</div>  
+
+
+
+
+
+
+
+
+
+<!-- Customer Details Form -->
+<div class="large-4 columns leftCol">
+
+    <div class="row orderDetails hide-for-small" style="margin-top: 20px;">
+        <!-- <div class="small-4 columns"><img src="{!URLFOR($Resource.MPI2Includes, 'img/tech-headshot.png')}"/></div>-->
+        
+        <div class="small-4 columns"><img src="{!HTMLENCODE(me.FullPhotoUrl)}"/></div>
+        <div class="small-8 columns"><strong class="blue">Technician:</strong> <br /><apex:outputField value="{!dealer__Inspection_Report__c.dealer__Technician__c}"/><br /><br /><strong class="blue">Service Advisor:</strong> <br /><apex:outputField value="{!dealer__Inspection_Report__c.dealer__Service_Advisor__c}"/></div>
+    </div>
+    <div style="margin-top: 20px;">
+    <a href="#" class="inspectBlock"><apex:outputText value="{0,date,yyyy.MM.dd}"> <apex:param value="{!NOW()}" /> </apex:outputText></a>
+    <a href="/{!HTMLENCODE(ServiceRepairOrder.Id)}#" class="inspectBlock">{!ServiceRepairOrder.Name}</a>
+
+    </div>
+    
+    <div style="margin-top: 20px;">
+        <h2 class="subheader" style="font-size:20px;">Status</h2>
+        <apex:form id="StatusForm">
+             
+        	<apex:inputField value="{!dealer__Inspection_Report__c.dealer__Status__c}" onchange="setStatus();" id="mpiStatus" rendered="{!IF(NOT(ISBLANK(dealer__Inspection_Report__c.id)), true, false)}"/>
+        </apex:form>
+    </div>
+    
+    <div class="row sep">&nbsp;</div>
+    
+    <style>
+    form.custom .custom.checkbox.checked::before {margin-top: 12px;}
+    </style>
+    
+    <div class="customerDetails" style="margin-bottom: 25px;">
+
+        <h2 class="subheader"><a href="/{!HTMLENCODE(ContactDetails.Id)}" >Customer Details</a></h2>
+            <input id="ContactFirstName" name="" type="text" placeholder="First Name" value="{!HTMLENCODE(ContactDetails.FirstName)}" />
+            <input id="ContactLastName" name="" type="text" placeholder="Last Name" value="{!HTMLENCODE(ContactDetails.LastName)}" />
+            <input id="ContactEmail" name="" type="text" placeholder="Email" value="{!HTMLENCODE(ContactDetails.Email)}" />
+            <input id="ContactPhone" name="" type="text" placeholder="Phone Number" value="{!HTMLENCODE(ContactDetails.Phone)}" />
+            <input id="ContactPhone" name="" type="text" placeholder="Mobile Phone" value="{!HTMLENCODE(ContactDetails.MobilePhone)}" />
+        	<div>Text Message Notification</div>
+            <div class="switch" style="width:69px;">
+ 				<input id="txtOff" name="txtSwitch" type="radio" checked="checked" />
+              	<label for="txtOff" onclick="">Off</label>                
+                
+                <input id="txtOn" name="txtSwitch" type="radio" />
+              	<label for="txtOn" onclick="">On</label>
+              	<span></span>
+                
+            </div>
+        	
+        	<h2 class="subheader">Signature:</h2>
+			<canvas id="signature" width="275px" height="125px"></canvas>
+            <input type="hidden" name="signDraw" id="sigDra" value="" />        
+            <div class="row sep">&nbsp;</div>
+            
+        <h2 class="subheader"><a href="/{!HTMLENCODE(VehicleDetails.Id)}#">Vehicle Details</a></h2>
+        	
+            <input name="" type="text" placeholder="VIN Number" value="{!HTMLENCODE(VehicleDetails.VIN__c)}" readonly="true" />
+            <input name="" type="text" placeholder="Vehicle Mileage" />
+        	<input name="" type="text" placeholder="Year" value="{!HTMLENCODE(VehicleDetails.Year__c)}" readonly="true" />
+        	<input name="" type="text" placeholder="Make" value="{!HTMLENCODE(VehicleDetails.Make__c)}" readonly="true" />
+            <input name="" type="text" placeholder="Model" value="{!HTMLENCODE(VehicleDetails.Carline__c)}" readonly="true" />   
+        
+    </div>
+</div>
+    
+    
+</form>
+</div> <!-- Closes bodyContentWrap -->
+
+
+
+
+
+
+
+
+
+<!-- Start Footer
+======================================================================== 
+
+<div class="row">
+Footer Content Goes Here
+</div>-->
+
+
+
+
+
+  <script>
+  document.write('<script src=' +
+  ('__proto__' in {} ? '{!URLFOR($Resource.MPI2Includes, 'js/vendor/zepto')}' : '{!URLFOR($Resource.MPI2Includes, 'js/vendor/jquery')}') +
+  '.js><\/script>')
+</script> 
+  <script src="{!URLFOR($Resource.MPI2Includes, 'js/foundation.min.js')}"></script> 
+  <!--
+  <script src="js/foundation/foundation.js"></script>
+  <script src="js/foundation/foundation.interchange.js"></script>
+  <script src="js/foundation/foundation.abide.js"></script>
+  <script src="js/foundation/foundation.dropdown.js"></script>
+  <script src="js/foundation/foundation.placeholder.js"></script>
+  <script src="js/foundation/foundation.forms.js"></script>
+  <script src="js/foundation/foundation.alerts.js"></script>
+  <script src="js/foundation/foundation.magellan.js"></script>
+  <script src="js/foundation/foundation.reveal.js"></script>
+  <script src="js/foundation/foundation.tooltips.js"></script>
+  <script src="js/foundation/foundation.clearing.js"></script>
+  <script src="js/foundation/foundation.cookie.js"></script>
+  <script src="js/foundation/foundation.joyride.js"></script>
+  <script src="js/foundation/foundation.orbit.js"></script>
+    <script src="js/foundation/foundation.switch.js"></script>
+  <script src="js/foundation/foundation.topbar.js"></script>
+  
+  --> 
+  <script src="{!URLFOR($Resource.MPI2Includes, 'js/foundation/foundation.section.js')}"></script> 
+  <script> $j(document).foundation(); </script>
+  </body>
+  </html></apex:page>

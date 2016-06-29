@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Model-Specific-03-Touchback Fiesta</name>
+    <style>none</style>
+    <subject>Still Interested in the Ford Fiesta?</subject>
+    <textOnly>Hi dealer__FirstName__c,
+
+I recently sent you some emails regarding your online inquiry including some pricing information and a few questions designed to help me to better assist you.  Serving our customers&apos; needs is my highest priority and I want to be sure that I have addressed your request appropriately.
+
+With all the spam blockers and email filters, the only way for me to be sure that you received the information I have sent you is for you to let me know.
+
+Please let me know if my email messages are reaching you.  If there is anything else I can do for you, please do not hesitate to let me know as I would be happy to assist you in any way I can.
+
+dealer__Salesperson_1__r.Name
+Organization.Name
+Organization.Phone
+
+Follow us on Facebook        Follow us on Twitter        Click for Directions
+
+Franklin Ford | 1235 Street Name Your City, State 11111| (555) 555-5555</textOnly>
+    <type>custom</type>
+</EmailTemplate>

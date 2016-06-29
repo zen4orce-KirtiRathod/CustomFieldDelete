@@ -1,0 +1,136 @@
+<apex:page controller="dealer.CRMSettings" title="CRM Settings" setup="true">
+    <apex:includeScript value="{!URLFOR($Resource.dealer__jQuery_UI_1820, 'js/jquery-1.7.2.min.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.dealer__jQuery_UI_1820, 'js/jquery-ui-1.8.20.custom.min.js')}" />
+    <script>
+        $j = jQuery.noConflict();
+        $j(document).ready(function() {
+             
+        });
+    
+    </script>
+    
+    <apex:form >
+    <apex:pageMessages id="pageMessages" />
+    <apex:pageBlock title="CRM Settings">
+        <apex:pageBlockButtons >
+            <apex:commandButton action="{!save}" value="Save" id="saveBtn"/>
+        </apex:pageBlockButtons>
+        
+        <apex:pageBlock id="crmBaseSettings" title="CRM Settings">
+            <apex:pageBlockSection >
+                <apex:inputField value="{!crm.dealer__Auto_Link_Buyer_Record__c}"/>
+                <apex:inputField value="{!crm.dealer__Record_Owner_Match_Salesperson__c}" />
+                <apex:inputField value="{!crm.dealer__Complete_Sales_Steps_upon_Sale__c}" />
+                <apex:inputField value="{!crm.dealer__Sales_Up_Record_Prefix__c}" />
+                <apex:inputField value="{!crm.dealer__DisablePersonAccounts__c}" />
+                <apex:inputField value="{!crm.dealer__Default_SalesPerson1__c}" />
+                <apex:inputField value="{!crm.dealer__Status_Codes_for_Dupe_Checking__c}" />
+                <apex:inputField value="{!crm.dealer__Vehicle_Location_Match_User_Location__c}" />
+                <apex:selectList value="{!crm.dealer__Native_or_Non_Native_Dupe_Catching__c}" label="Duplicate Management" multiselect="false" size="1">
+                    <apex:selectOptions value="{!dupeOptions}"/>
+                </apex:selectList>
+                <apex:inputField value="{!crm.dealer__Inv_Match_Alert__c}" />
+                <apex:inputField value="{!crm.dealer__Enable_Price_Change_Alert__c}" />
+            </apex:pageBlockSection>
+        
+            
+             
+        </apex:pageBlock>
+        
+        <apex:pageBlock title="Desk Log Settings">
+            <apex:pageBlockSection >
+                <apex:inputField value="{!crm.dealer__Desk_Log_Deal_Types__c}" />  
+                <apex:inputField value="{!crm.dealer__Desk_Log_Deal_Status__c}" />
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    
+        <apex:pageBlock title="Internet Lead Management System">
+            <apex:pageBlockSection >
+                <apex:inputField value="{!crm.dealer__ILM_No_Duplicates__c}" />
+                <apex:inputField value="{!crm.dealer__ILM_Duplicate_Time_Period__c}" />
+                <apex:inputField Value="{!crm.dealer__UrbanScience_Active__c}" />
+            </apex:pageBlockSection>
+        </apex:pageBlock> 
+        
+        <apex:pageBlock title="Email Settings">
+            <apex:pageBlockSection >
+                <apex:inputField value="{!crm.dealer__Email_Inbound_Activities_Remain_Open__c}" />
+            </apex:pageBlockSection>
+        </apex:pageBlock> 
+        
+        <apex:pageBlock title="MPI Settings">
+            <apex:pageBlockSection >
+                <apex:inputField value="{!crm.dealer__MPI_Print_Link_Pre_Printed_Form__c}" />
+                <apex:inputField value="{!crm.dealer__MPI_Print_Preview_Full_Color__c}" />
+                <apex:inputField value="{!crm.dealer__MPI_ePrint__c}"/>
+                <apex:inputField value="{!crm.dealer__MPI_Print_Footer__c}" />
+                <apex:inputField value="{!crm.dealer__MPI_Generate_PDF_Status__c}" />
+                <apex:inputField value="{!crm.dealer__MPI_Email_Advisor__c}" />
+                <apex:inputField value="{!crm.dealer__MPI_Upsell_OpCode__c}" />
+            </apex:pageBlockSection>
+        </apex:pageBlock> 
+        
+        <apex:pageBlock title="Rewards Program">
+        <apex:pageBlockSection >
+        
+               <apex:inputField value="{!crm.dealer__Rewards_Program_Enabled__c}"/>
+               <apex:inputField value="{!crm.dealer__Rewards_Percentage__c}"/>
+               
+               <apex:inputField value="{!crm.dealer__Rewards_Discount_Code__c}"/>
+               <apex:inputField value="{!crm.dealer__Rewards_Free_Service_Interval__c}"/>
+               
+               <apex:inputField value="{!crm.dealer__Rewards_Number_Length__c}" />
+               
+               <apex:inputField value="{!crm.dealer__Rewards_Expiration_Months__c}" />
+               
+               
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="1">
+            <apex:inputField value="{!crm.dealer__Rewards_OilChange_OpCodes__c}" style="width:450px;"/>
+            <apex:inputField value="{!crm.dealer__Rewards_FreeService_OpCodes__c}" style="width:450px;"/>
+        </apex:pageBlockSection>
+    </apex:pageBlock>
+
+    <apex:pageBlock title="Inventory Media Settings">
+        <apex:pageBlockSection >
+            <apex:inputField value="{!crm.dealer__Inventory_Media_Max_Size__c}"/>
+            <apex:inputField value="{!crm.dealer__Inventory_Media_Publish_Default__c}" />
+            <apex:inputField value="{!crm.dealer__Inventory_Media_Force_Crop__c}" />
+            <apex:inputField value="{!crm.dealer__Inventory_Media_Crop_Ratio__c}" />
+        </apex:pageBlockSection>
+    </apex:pageBlock> 
+    
+    <!--   
+    <apex:pageBlock title="3Birds Marketing Platform">
+        <apex:pageBlocksection columns="1">
+            <apex:inputField value="{!crm.X3Birds_Enabled__c}" />
+            <apex:inputField value="{!crm.X3Birds_API_Key__c}" style="width:450px;"/>
+            <apex:inputField value="{!crm.X3Birds_Client_Id__c}" />
+        </apex:pageBlocksection>
+    </apex:pageBlock>
+    -->
+
+    </apex:pageBlock>
+    </apex:form>
+    
+    <script>
+        function validate3BKey() {
+            $j.ajax({
+                type:"GET",
+                crossDomain: true,
+                dataType: 'jsonp',
+                beforeSend: function(xhr){
+                    xhr.setRequestHeader("Content-type" , "text/html; utf-16");
+                   <!-- xhr.setRequestHeader("X-ThreeBirds-Auth" , "{!JSENCODE(crm.X3Birds_API_Key__c)}"); -->
+                },
+              <!-- url: "https://api.3birdsmarketing.com/api/v1/salesforce/templates/{!HTMLENCODE(crm.X3Birds_Client_Id__c)}", -->
+                data: "",
+                processData: false,
+                success: function(msg) {
+                    console.log(StringifyPretty(msg));
+            }
+            
+    });
+        }
+    </script>
+</apex:page>

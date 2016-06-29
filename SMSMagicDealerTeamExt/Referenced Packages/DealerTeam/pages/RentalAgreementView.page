@@ -1,0 +1,403 @@
+<apex:page tabStyle="dealer__Rental_Agreements__c" standardController="dealer__Rental_Agreements__c" extensions="dealer.RentalAgreement_EXT">
+<style type="text/css">
+ p {font-weight: bolder }
+
+.tableSolid {
+    border:1px solid #666;
+    background-color: #FFF;
+    -moz-border-radius: 3px;
+    border-radius: 3px; 
+}
+
+.tableSolid th {
+    background-color: #666;
+    color:#FFF;
+    font-weight:bold;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+.tableSolid td {
+    border-bottom:1px solid #e9e9e9;
+}
+.rentalStatus {
+    font-size:16px;
+    font-weight:bold;
+    color:#0C0;
+}
+
+</style>
+
+<script type="text/javascript">
+function open_win(urltonav, nameoflnik)
+{
+    window.open(urltonav, nameoflink, 800, 1000);
+}
+</script>
+
+<apex:sectionHeader title="Rental Agreement" subtitle="{!dealer__Rental_Agreements__c.Name}" />
+
+<chatter:feedWithFollowers entityId="{!dealer__Rental_Agreements__c.Id}" />
+<apex:form >
+<apex:pageBlock title="Rental Agreement">
+     <apex:pageBlockButtons >
+         <apex:commandButton action="{!edit}" value="Edit Agreement"  rendered="{!IF(dealer__Rental_Agreements__c.dealer__Agreement_Status__c=='Open', true, false)}"/>
+         <apex:commandButton value="Print Contract" onClick="window.open('{!baseURL}/apex/{!JSENCODE(rs.dealer__ContractFormName__c)}?id={!dealer__Rental_Agreements__c.Id}');"/>
+         <apex:commandButton value="Print Receipt" onClick="window.open('{!baseURL}/apex/{!JSENCODE(rs.dealer__ReceiptFormName__c)}?id={!dealer__Rental_Agreements__c.Id}');" rendered="{!IF(dealer__Rental_Agreements__c.dealer__Agreement_Status__c=='Open', false, true)}"/>
+         <apex:commandButton value="Process Rental Vehicle Return" action="{!processReturn}" rendered="{!IF(dealer__Rental_Agreements__c.dealer__Agreement_Status__c=='Open', true, false)}" />
+         <apex:commandButton value="Re-Open Closed Rental Agreement" action="{!ModifyClosedRental}" rendered="{!IF(dealer__Rental_Agreements__c.dealer__Agreement_Status__c=='Open', false, true)}" />
+     </apex:pageBlockButtons>
+<table width="100%" border="0">
+    <tr>
+        <td width="33%" class="rentalStatus"><apex:outputLink value="/apex/RentalAgreementView?id={!dealer__Rental_Agreements__c.Id}"><b>{!dealer__Rental_Agreements__c.name}</b></apex:outputLink>&nbsp;</td>
+        <td width="33%" class="rentalStatus">Agreement Status:&nbsp;<apex:outputField value="{!dealer__Rental_Agreements__c.dealer__Agreement_Status__c}" /></td>
+        <td width="34%">
+        Created By:&nbsp;<apex:outputField value="{!dealer__Rental_Agreements__c.CreatedById}" />&nbsp;<apex:outputField value="{!dealer__Rental_Agreements__c.CreatedDate}" /><br />
+        Last Modified By:&nbsp;<apex:outputField value="{!dealer__Rental_Agreements__c.LastModifiedById}" />&nbsp;<apex:outputField value="{!dealer__Rental_Agreements__c.LastModifiedDate}" />
+        </td>
+    </tr>
+</table> 
+
+<table width="100%" border="0">
+  <tr>
+    <td width="40%" valign="top">
+    <table width="100%" border="0" class="tableSolid" cellpadding="6" cellspacing="0">
+      <tr>
+        <th colspan="3">RENTAL VEHICLE INFORMATION</th>
+      </tr>
+      <tr>
+        <td>
+            Rental Vehicle&nbsp;
+        </td>
+        <td colspan="2">
+            <apex:outputField value="{!dealer__Rental_Agreements__c.dealer__Rental_Vehicle__c}" id="RentalVehicle" style="width:300px;" />
+        </td>
+      </tr>
+      <tr>
+        <td>Date &amp; Time OUT</td>
+        <td><apex:outputField value="{!dealer__Rental_Agreements__c.dealer__Date_Out__c}" /></td>
+        <td><apex:outputField value="{!dealer__Rental_Agreements__c.dealer__Time_OUT__c}" /></td>
+      </tr>
+      <tr>
+        <td>Date &amp; Time DUE IN</td>
+        <td><apex:outputField value="{!dealer__Rental_Agreements__c.dealer__Date_DUE_In__c}" /></td>
+        <td><apex:outputField value="{!dealer__Rental_Agreements__c.dealer__Time_DUE_IN__c}" /></td>
+      </tr>
+      <apex:outputText rendered="{!IF(dealer__Rental_Agreements__c.dealer__Agreement_Status__c=='Open', false, true)}" >
+      <tr>
+        <td>Date &amp; Time Returned</td>
+        <td><apex:outputField value="{!dealer__Rental_Agreements__c.dealer__Return_Date__c}" /></td>
+        <td><apex:outputField value="{!dealer__Rental_Agreements__c.dealer__Return_Time__c}" /></td>
+      </tr>
+      </apex:outputText>      
+      <tr>
+         <td>Rental Rate:&nbsp;</td>
+         <td><apex:outputField value="{!dealer__Rental_Agreements__c.dealer__Rental_Rates_code__c}" /></td>
+         <td><apex:outputField value="{!dealer__Rental_Agreements__c.dealer__Rental_Rate__c}" /></td>
+      </tr>
+      <tr>
+        <td><apex:outputLabel value="Daily Miles Allowed: " for="milesAllowed" /></td>
+        <td><apex:outputField value="{!dealer__Rental_Agreements__c.dealer__Mileage_Limit_Daily__c}" id="milesAllowed" style="width:50px;" /></td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+         <td>
+            <apex:outputLabel value="Mileage Out: " for="milesOut" /><br />
+            <apex:outputLabel value="Mileage Returned: " for="milesReturned" rendered="{!IF(ISBLANK(dealer__Rental_Agreements__c.dealer__Return_Mileage__c), false, true)}" /> 
+         </td>
+        <td>
+            <apex:outputField value="{!dealer__Rental_Agreements__c.dealer__Mileage_Out__c}" id="milesOut" /><br />
+            <apex:outputField value="{!dealer__Rental_Agreements__c.dealer__Return_Mileage__c}" id="milesReturned" rendered="{!IF(ISBLANK(dealer__Rental_Agreements__c.dealer__Return_Mileage__c), false, true)}" />
+        </td>
+        <td>
+            <apex:outputLabel value="Mileage Driven: " for="milesDriven" rendered="{!IF(ISBLANK(dealer__Rental_Agreements__c.dealer__Return_Mileage__c), false, true)}" /><br />
+            <apex:outputText value="{!dealer__Rental_Agreements__c.dealer__Return_Mileage__c - dealer__Rental_Agreements__c.dealer__Mileage_Out__c}" id="milesDriven" rendered="{!IF(ISBLANK(dealer__Rental_Agreements__c.dealer__Return_Mileage__c), false, true)}" />
+        </td>
+      </tr>
+      <tr>
+        <td>Fuel Level Out:&nbsp;</td>
+        <td colspan="2"><apex:outputField value="{!dealer__Rental_Agreements__c.dealer__Fuel_Level_on_Checkout__c}" id="fuelOUT" /></td>
+      </tr>
+      <tr>
+        <td><apex:outputLabel value="Fuel Level Returned: " for="milesReturn" rendered="{!IF(ISBLANK(dealer__Rental_Agreements__c.dealer__Fuel_Level_on_Return__c), false, true)}" />&nbsp;</td>
+        <td colspan="2"><apex:outputField value="{!dealer__Rental_Agreements__c.dealer__Fuel_Level_on_Return__c}" id="fuelReturn" rendered="{!IF(ISBLANK(dealer__Rental_Agreements__c.dealer__Fuel_Level_on_Return__c), false, true)}" /></td>
+      </tr>      
+      <tr>
+        <td>            
+            <apex:outputLabel value="Fuel per Gallon: " for="fuelpergallon" />
+            <apex:outputField value="{!dealer__Rental_Agreements__c.dealer__Fuel_Charge_per_Gallon__c}" id="fuelpergallon"/>
+        </td>
+        <td>            
+            <apex:outputLabel value="Re-Fuel Fee: " for="refuelfee" />
+            <apex:outputField value="{!dealer__Rental_Agreements__c.dealer__Refueling_Fee__c}" id="refuelfee" style="width:50px;" />
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td colspan="3"><b>Fees &amp; Charges</b></td>
+      </tr>
+      <tr>
+        <td>Days#</td>
+        <td><apex:outputField value="{!dealer__Rental_Agreements__c.dealer__Days_Rented__c}" />&nbsp;@&nbsp;{!dealer__Rental_Agreements__c.dealer__Rental_Rate__c}</td>
+        <td><apex:outputField value="{!dealer__Rental_Agreements__c.dealer__Estimated_Charges__c}" /></td>
+      </tr> 
+      <tr>
+        <td>Accessories</td>
+        <td><apex:outputField value="{!dealer__Rental_Agreements__c.dealer__Accessories_Description__c}" /></td>
+        <td><apex:outputField value="{!dealer__Rental_Agreements__c.dealer__Accessories_Cost__c}" /></td>
+      </tr> 
+      <tr>
+        <td>Vehicle License Fee</td>
+        <td><apex:outputField value="{!dealer__Rental_Agreements__c.dealer__Days_Rented__c}" />&nbsp;@&nbsp;$0.00</td>
+        <td>                
+        <apex:outputText value="{0,number,$#,###.##}">
+            <apex:param value="{!dealer__Rental_Agreements__c.dealer__Vehicle_Licence_Fee_Extended__c}" />
+        </apex:outputText>
+        </td>
+      </tr> 
+      <apex:outputText rendered="{!NOT(AND(ISBLANK(dealer__Rental_Agreements__c.dealer__Adjustment_Charges__c), dealer__Rental_Agreements__c.dealer__Adjustment_Charges__c != VALUE('0.0')))}">
+      <tr>
+        <td>Additional Charges/Credits:</td>
+        <td>&nbsp;</td>
+        <td><apex:outputField value="{!dealer__Rental_Agreements__c.dealer__Adjustment_Charges__c}" />&nbsp;</td>
+      </tr>
+      </apex:outputText>
+      <apex:outputText rendered="{!NOT(ISBLANK(dealer__Rental_Agreements__c.dealer__Discount__c))}">
+      <tr>
+        <td>Discount:</td>
+        <td>&nbsp;</td>
+        <td><apex:outputField value="{!dealer__Rental_Agreements__c.dealer__Discount__c}" />&nbsp;</td>
+      </tr>   
+      </apex:outputText>   
+      <tr>
+        <td colspan="3">&nbsp;</td>
+      </tr>  
+      <tr>
+        <td>Estimated Tax: 
+        &nbsp;({!DefaultTaxRate / 100}) <apex:outputText rendered="{!IF(dealer__Rental_Agreements__c.dealer__Tax_Exempt__c==true, true, false)}">
+          <b>Tax Exempt</b>
+        </apex:outputText>
+        </td>
+        <td>&nbsp;</td>
+        <td>
+
+
+        <apex:outputText value="{0,number,$#,###.00}" rendered="{!IF(dealer__Rental_Agreements__c.dealer__Tax_Exempt__c==false, true, false)}">
+            <apex:param value="{!((dealer__Rental_Agreements__c.dealer__Estimated_Charges__c  + IF(ISBLANK(dealer__Rental_Agreements__c.dealer__Discount__c), 0, dealer__Rental_Agreements__c.dealer__Discount__c)) * (DefaultTaxRate / 100))}" />
+        </apex:outputText>
+
+        <apex:outputText value="{0,number,$#,##0.00}" rendered="{!IF(dealer__Rental_Agreements__c.dealer__Tax_Exempt__c==true, true, false)}">
+            <apex:param value="{!0}" />
+        </apex:outputText>
+
+        </td>
+    </tr>
+    <tr>
+        <td>Total Payments:</td>
+        <td>&nbsp;</td>
+        <td>
+          <apex:outputText value="{0,number,$#,##0.00}" >
+            <apex:param value="{!dealer__Rental_Agreements__c.dealer__Total_Payments__c}" />
+          </apex:outputText>          
+
+        </td>
+      </tr>
+      <tr>
+        <td><b>Total Estimated Charges:</b></td>
+        <td>&nbsp;</td>
+        <td>
+        <apex:outputText value="{0,number,$#,###.00}" rendered="{!IF(dealer__Rental_Agreements__c.dealer__Tax_Exempt__c==false, true, false)}">
+            <apex:param value="{!dealer__Rental_Agreements__c.dealer__Vehicle_Licence_Fee_Extended__c + dealer__Rental_Agreements__c.dealer__Estimated_Charges__c + dealer__Rental_Agreements__c.dealer__Accessories_Cost__c + IF(ISBLANK(dealer__Rental_Agreements__c.dealer__Adjustment_Charges__c), 0, dealer__Rental_Agreements__c.dealer__Adjustment_Charges__c) + IF(ISBLANK(dealer__Rental_Agreements__c.dealer__Discount__c), 0, dealer__Rental_Agreements__c.dealer__Discount__c) + ((dealer__Rental_Agreements__c.dealer__Estimated_Charges__c  + IF(ISBLANK(dealer__Rental_Agreements__c.dealer__Discount__c), 0, dealer__Rental_Agreements__c.dealer__Discount__c)) * (DefaultTaxRate / 100))}" />
+        </apex:outputText>
+
+        <apex:outputText value="{0,number,$#,###.00}" rendered="{!IF(dealer__Rental_Agreements__c.dealer__Tax_Exempt__c==true, true, false)}">
+            <apex:param value="{!Rental_Agreements__c.Vehicle_Licence_Fee_Extended__c + 
+                                    Rental_Agreements__c.Estimated_Charges__c + 
+                                    Rental_Agreements__c.Accessories_Cost__c + 
+                                    IF(ISBLANK(Rental_Agreements__c.Adjustment_Charges__c), 0, Rental_Agreements__c.Adjustment_Charges__c) +
+                                    IF(ISBLANK(Rental_Agreements__c.Discount__c), 0, Rental_Agreements__c.Discount__c)}" />
+        </apex:outputText>        
+        </td>
+      </tr>
+    </table> 
+    <br />
+        <br />
+    <table width="100%" border="0" class="tableSolid" cellpadding="6" cellspacing="0" >
+      <tr>
+        <th colspan="2" align="center">CUSTOMER VEHICLE INFORMATION</th>
+        </tr>
+       <tr>
+        <td colspan="2">
+         <apex:outputLabel value="Repiar Order Vehicle Info: " for="customerVehicle" />
+        <apex:outputField value="{!dealer__Rental_Agreements__c.dealer__Service_Repair_Order__c}" id="customerVehicle"/>
+        </td>
+      </tr>       
+      <tr>
+        <td>License No.&nbsp;<apex:outputText value="{!dealer__Rental_Agreements__c.dealer__Customer_Vehicle_Licence_No__c}" /></td>
+        <td>State&nbsp;<apex:outputText value="{!dealer__Rental_Agreements__c.dealer__Customer_Vehicle_Licence_State__c}" /></td>
+      </tr>
+      <tr>
+        <td colspan="2">VIN&nbsp;<apex:outputText value="{!dealer__Rental_Agreements__c.dealer__Customer_Vehicle_VIN__c}" /></td>
+      </tr>
+      <tr>
+        <td colspan="2">Description:&nbsp;<apex:outputText value="{!dealer__Rental_Agreements__c.dealer__Customer_Vehicle_Description__c}" /></td>
+      </tr>
+    </table>
+    <br />
+    <table width="100%" border="0" class="tableSolid" cellpadding="6" cellspacing="0">
+      <tr>
+        <td colspan="2">
+        <apex:outputLabel value="Additional Driver" for="additionalDriver" />
+        <apex:outputField value="{!dealer__Rental_Agreements__c.dealer__Additional_Driver__c}" id="additionalDriver"/>      
+        </td>
+        <td>
+        <apex:outputLabel value="Birth Date" for="additionalDriverBday" />
+        <apex:outputField value="{!dealer__Rental_Agreements__c.dealer__Additional_Drivers_Birthday__c}" id="additionalDriverBday"/> 
+        </td>
+      </tr>
+      <tr>
+        <td>
+        <apex:outputLabel value="Driver's License No." for="additionalDriverLic" />
+        <apex:outputField value="{!dealer__Rental_Agreements__c.dealer__Additional_Drivers_Lic__c}" id="additionalDriverLic"/>         
+        </td>
+        <td>
+        <apex:outputLabel value="State" for="additionalDriverSt" />
+        <apex:outputField value="{!dealer__Rental_Agreements__c.dealer__Additional_Drivers_Lic_St__c}" id="additionalDriverSt"/>         
+        </td>
+        <td>
+        <apex:outputLabel value="Expires" for="additionalDriverExp" />
+        <apex:outputField value="{!dealer__Rental_Agreements__c.dealer__Additional_Drivers_Lic_Exp__c}" id="additionalDriverExp"/>        
+        </td>
+      </tr>
+    </table>
+    <br />
+    <table width="100%" border="0" class="tableSolid" cellpadding="6" cellspacing="0">
+      <tr>
+        <th colspan="3" align="center">CUSTOMER INSURANCE INFORMATION</th>
+        </tr>
+      <tr>
+        <td colspan="2">
+        <apex:outputLabel value="Insurer: " for="insurer" />
+        <apex:outputField value="{!dealer__Rental_Agreements__c.dealer__Insurer__c}" id="insurer"/>             
+        </td>
+        <td>
+        <apex:outputLabel value="Agent: " for="insAgent" />
+        <apex:outputField value="{!dealer__Rental_Agreements__c.dealer__Agent__c}" id="insAgent"/>   
+        </td>
+      </tr>
+      <tr>
+        <td>        
+        <apex:outputLabel value="Policy No. " for="insPolicy" />
+        <apex:outputField value="{!dealer__Rental_Agreements__c.dealer__Policy_No__c}" id="insPolicy"/>  
+        </td>
+        <td>
+        <apex:outputLabel value="Expiration Date: " for="insExp" />
+        <apex:outputField value="{!dealer__Rental_Agreements__c.dealer__Policy_Expiration_Date__c}" id="insExp"/>  
+        </td>
+        <td>
+        <apex:outputLabel value="Phone: " for="insPhone" />
+        <apex:outputField value="{!dealer__Rental_Agreements__c.dealer__Insurer_Phone__c}" id="insPhone"/>         
+        </td>
+      </tr>
+    </table>  
+    </td>
+    <td width="60%" valign="top"><table width="100%" border="0" class="tableSolid" cellpadding="6" cellspacing="0">
+      <tr>
+        <th colspan="3" align="center">CUSTOMER INFORMATION</th>
+        </tr>
+      <tr>
+        <td colspan="3">
+        <apex:outputField value="{!dealer__Rental_Agreements__c.dealer__Contact__c}" id="customerRO"/>
+        </td>
+        </tr>
+      <tr>
+        <td colspan="3">
+        <apex:outputField value="{!customer.MailingStreet}" /> <br />
+        <apex:outputField value="{!customer.MailingCity}" />, <apex:outputField value="{!customer.MailingState}" />&nbsp;<apex:outputField value="{!customer.MailingPostalCode}" />
+        </td>
+        </tr>
+      <tr>
+        <td><span style="font-style:italic;">Home</span>&nbsp;<apex:outputField value="{!customer.HomePhone}" />&nbsp;</td>
+        <td><span style="font-style:italic;">Mobile</span>&nbsp;<apex:outputField value="{!customer.MobilePhone}" />&nbsp;</td>
+        <td><span style="font-style:italic;">Email</span>&nbsp;<apex:outputField value="{!customer.Email}" /></td>
+      </tr>
+      <tr>
+        <td>Deposit Method:</td>
+        <td colspan="2"><apex:outputField value="{!dealer__Rental_Agreements__c.dealer__Deposit_Method__c}" />&nbsp;</td>
+      </tr>   
+      <tr>
+        <td>Credit Card</td>
+        <td colspan="2"><apex:outputField value="{!dealer__Rental_Agreements__c.dealer__Credit_Card__c}" />&nbsp;<apex:outputField value="{!dealer__Rental_Agreements__c.dealer__Credit_Card_Expiration_Date__c}" /></td>
+      </tr>         
+      <tr>
+        <td>Deposit Amount:</td>
+        <td colspan="2"><apex:outputField value="{!dealer__Rental_Agreements__c.dealer__Deposit_Amount__c}" />&nbsp;</td>
+      </tr> 
+      <tr>
+        <td>CC Authorization Number:</td>
+        <td colspan="2"><apex:outputField value="{!dealer__Rental_Agreements__c.dealer__Authorization_Number__c}" />&nbsp;</td>
+      </tr> 
+      <tr>
+        <td>Bank Phone No:</td>
+        <td colspan="2"><apex:outputField value="{!dealer__Rental_Agreements__c.dealer__CC_Phone_Number__c}" />&nbsp;</td>
+      </tr>               
+      <tr>
+        <td>Purchase Order:</td>
+        <td colspan="2"><apex:outputField value="{!dealer__Rental_Agreements__c.dealer__Purchase_Order__c}" />&nbsp;</td>
+      </tr>
+      <tr>
+        <td>Payment Type:</td>
+        <td colspan="2"><apex:outputField value="{!dealer__Rental_Agreements__c.dealer__Payment_Type__c}" />&nbsp;</td>
+      </tr> 
+      <tr>
+        <td>Payment Method:</td>
+        <td colspan="2"><apex:outputField value="{!dealer__Rental_Agreements__c.dealer__Payment_Method__c}" />&nbsp;</td>
+      </tr>
+      <tr>
+        <td>Payment Notes:</td>
+        <td colspan="2"><apex:outputField value="{!dealer__Rental_Agreements__c.dealer__Split_Payment_Notes__c}" />&nbsp;</td>
+      </tr>                          
+    </table>
+</td>
+  </tr>
+</table>
+</apex:pageBlock>
+<apex:pageBlock mode="edit" title="Additional Information">
+  <apex:pageBlockSection title="Contract Location">
+        <apex:outputField value="{!dealer__Rental_Agreements__c.dealer__Location__c}" />
+  </apex:pageBlockSection>
+
+<apex:pageBlockSection title="Third Party Billing">
+  <apex:repeat value="{!$ObjectType.dealer__Rental_Agreements__c.FieldSets.dealer__RentalThirdPartyBilling}" var="tf">
+      <apex:outputField value="{!dealer__Rental_Agreements__c[tf]}" />
+  </apex:repeat>
+</apex:pageBlockSection>
+<apex:pageBlockSection title="Vehicle Delivery">
+<apex:repeat value="{!$ObjectType.dealer__Rental_Agreements__c.FieldSets.dealer__RentalMobility}" 
+            var="field">     
+          <apex:outputField value="{!dealer__Rental_Agreements__c[field]}" />
+
+</apex:repeat>
+</apex:pageBlockSection>
+<apex:pageBlockSection title="Delivery Address Info">
+<apex:repeat value="{!$ObjectType.dealer__Rental_Agreements__c.FieldSets.dealer__RentalDelivery}" 
+            var="field">     
+          <apex:outputField value="{!dealer__Rental_Agreements__c[field]}" />
+
+</apex:repeat>
+</apex:pageBlockSection>
+<apex:pageBlockSection title="Arrival / Pick Up Info">
+<apex:repeat value="{!$ObjectType.dealer__Rental_Agreements__c.FieldSets.dealer__RentalPickup}" 
+            var="field">     
+          <apex:outputField value="{!dealer__Rental_Agreements__c[field]}" />
+
+</apex:repeat>
+</apex:pageBlockSection>
+</apex:pageBlock>
+</apex:form>
+
+<apex:relatedList list="RentalCashierEntry__r" />
+<apex:relatedList list="NotesAndAttachments" />
+<apex:relatedList list="OpenActivities" />
+<apex:relatedList list="ActivityHistories" />
+</apex:page>

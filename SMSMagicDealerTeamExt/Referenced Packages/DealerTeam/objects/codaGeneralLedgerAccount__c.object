@@ -1,0 +1,829 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <customHelpPage>SuccessDocumentation_Tab</customHelpPage>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <deprecated>false</deprecated>
+    <description>General ledger account represent different categories of income/expenses/assets/liabilities and reserves.</description>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableEnhancedLookup>true</enableEnhancedLookup>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <fields>
+        <fullName>AdjustOperatingActivities__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Reclassify Profits</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Available_for_Service_PO__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Expense accounts available to be selected for line items on purchase order.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Expense accounts available to be selected for line items on purchase order.</inlineHelpText>
+        <label>Available for Service PO</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>BalanceSheet1__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Balance Sheet 1</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Balance Sheet</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>BalanceSheet2__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Balance Sheet 2</label>
+        <picklist>
+            <controllingField>BalanceSheet1__c</controllingField>
+            <picklistValues>
+                <fullName>Current Assets</fullName>
+                <default>false</default>
+                <controllingFieldValues>Balance Sheet</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Fixed Assets</fullName>
+                <default>false</default>
+                <controllingFieldValues>Balance Sheet</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Intangible Assets</fullName>
+                <default>false</default>
+                <controllingFieldValues>Balance Sheet</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Current Liabilities</fullName>
+                <default>false</default>
+                <controllingFieldValues>Balance Sheet</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Long Term Liabilities</fullName>
+                <default>false</default>
+                <controllingFieldValues>Balance Sheet</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Shareholders Funds</fullName>
+                <default>false</default>
+                <controllingFieldValues>Balance Sheet</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Income Statement</fullName>
+                <default>false</default>
+                <controllingFieldValues>Balance Sheet</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Profit and Loss</fullName>
+                <default>false</default>
+                <controllingFieldValues>Balance Sheet</controllingFieldValues>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>BalanceSheet3__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Balance Sheet 3</label>
+        <picklist>
+            <controllingField>BalanceSheet2__c</controllingField>
+            <picklistValues>
+                <fullName>Bank and Cash</fullName>
+                <default>false</default>
+                <controllingFieldValues>Current Assets</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Accounts Receivable</fullName>
+                <default>false</default>
+                <controllingFieldValues>Current Assets</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Provisions</fullName>
+                <default>false</default>
+                <controllingFieldValues>Current Assets</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Inventory</fullName>
+                <default>false</default>
+                <controllingFieldValues>Current Assets</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Prepayments and Accrued Income</fullName>
+                <default>false</default>
+                <controllingFieldValues>Current Assets</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Debtors</fullName>
+                <default>false</default>
+                <controllingFieldValues>Current Assets</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Stock</fullName>
+                <default>false</default>
+                <controllingFieldValues>Current Assets</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Fixtures Fittings and Equipment</fullName>
+                <default>false</default>
+                <controllingFieldValues>Fixed Assets</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Land and Buildings</fullName>
+                <default>false</default>
+                <controllingFieldValues>Fixed Assets</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Intangible Assets</fullName>
+                <default>false</default>
+                <controllingFieldValues>Intangible Assets</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Accounts Payable</fullName>
+                <default>false</default>
+                <controllingFieldValues>Current Liabilities</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Accruals and Deferred Income</fullName>
+                <default>false</default>
+                <controllingFieldValues>Current Liabilities</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Employment Payables</fullName>
+                <default>false</default>
+                <controllingFieldValues>Current Liabilities</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Tax Liability</fullName>
+                <default>false</default>
+                <controllingFieldValues>Current Liabilities</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Creditors</fullName>
+                <default>false</default>
+                <controllingFieldValues>Current Liabilities</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Employment Creditors</fullName>
+                <default>false</default>
+                <controllingFieldValues>Current Liabilities</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Payable After 1 Year</fullName>
+                <default>false</default>
+                <controllingFieldValues>Long Term Liabilities</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Creditors Due After 1 Year</fullName>
+                <default>false</default>
+                <controllingFieldValues>Long Term Liabilities</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Capital and Reserves</fullName>
+                <default>false</default>
+                <controllingFieldValues>Shareholders Funds</controllingFieldValues>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>CashFlowCategory__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Cash Flow Category</description>
+        <externalId>false</externalId>
+        <label>Cash Flow Category</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Operating Activities</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Investing Activities</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Financing Activities</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>CashFlowLineSummary__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Cash Flow Line Summary</label>
+        <picklist>
+            <picklistValues>
+                <fullName>(Gain) / Loss on Foreign Exchange</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>(Gain) / Loss on Investment Disposals</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>(Increase) / Decrease in Inventory</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>(Increase) / Decrease in Other Current Assets</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>(Increase) / Decrease in Receivables</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Deferred Revenue</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Depreciation &amp; Amortization</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Dividends on Common Shares</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Dividends on Preference Shares</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Dividends Received</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Impairment</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Increase / (Decrease) in Common Capital</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Increase / (Decrease) in Employment Creditors</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Increase / (Decrease) in Long Term Borrowing</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Increase / (Decrease) in Other Current Liabilities</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Increase / (Decrease) in Payables</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Increase / (Decrease) in Preference Capital</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Increase / (Decrease) in Short Term Borrowing</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Increase / (Decrease) in Tax Liability</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Interest Expense</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Interest Income</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Purchase of Fixed Assets</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Purchase of Investment Securities</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Research &amp; Development</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Sale of Investment Securities</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Sales Proceeds from Disposal of Fixed Assets</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Taxation</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Unrealized (Gain) / Loss on Foreign Exchange</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>ExternalId__c</fullName>
+        <caseSensitive>false</caseSensitive>
+        <deprecated>false</deprecated>
+        <externalId>true</externalId>
+        <label>External Id</label>
+        <length>32</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>true</unique>
+    </fields>
+    <fields>
+        <fullName>GLAGroup__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>GLA Group</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Accounts Receivable</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Accounts Payable</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Cash</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>ReportingCode__c</fullName>
+        <caseSensitive>false</caseSensitive>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Reporting Code</label>
+        <length>24</length>
+        <required>true</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>true</unique>
+    </fields>
+    <fields>
+        <fullName>TrialBalance1__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Trial Balance 1</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Profit and Loss</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Income Statement</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Balance Sheet</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>TrialBalance2__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Trial Balance 2</label>
+        <picklist>
+            <controllingField>TrialBalance1__c</controllingField>
+            <picklistValues>
+                <fullName>Gross Profit</fullName>
+                <default>false</default>
+                <controllingFieldValues>Profit and Loss</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Operating Expenses</fullName>
+                <default>false</default>
+                <controllingFieldValues>Profit and Loss</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Interest and Taxation</fullName>
+                <default>false</default>
+                <controllingFieldValues>Profit and Loss</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>EBITDA</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Depreciation and Amortization</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Interest</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Taxation</fullName>
+                <default>false</default>
+                <controllingFieldValues>Profit and Loss</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Current Assets</fullName>
+                <default>false</default>
+                <controllingFieldValues>Balance Sheet</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Fixed Assets</fullName>
+                <default>false</default>
+                <controllingFieldValues>Balance Sheet</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Intangible Assets</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Long Term Liabilities</fullName>
+                <default>false</default>
+                <controllingFieldValues>Balance Sheet</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Shareholders Funds</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Non-Current Assets</fullName>
+                <default>false</default>
+                <controllingFieldValues>Balance Sheet</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Current Liability</fullName>
+                <default>false</default>
+                <controllingFieldValues>Balance Sheet</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Other Income and Expenses</fullName>
+                <default>false</default>
+                <controllingFieldValues>Income Statement</controllingFieldValues>
+                <controllingFieldValues>Profit and Loss</controllingFieldValues>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>TrialBalance3__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Trial Balance 3</label>
+        <picklist>
+            <controllingField>TrialBalance2__c</controllingField>
+            <picklistValues>
+                <fullName>Sales Revenue</fullName>
+                <default>false</default>
+                <controllingFieldValues>EBITDA</controllingFieldValues>
+                <controllingFieldValues>Gross Profit</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Cost of Sales</fullName>
+                <default>false</default>
+                <controllingFieldValues>EBITDA</controllingFieldValues>
+                <controllingFieldValues>Gross Profit</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Administration Costs</fullName>
+                <default>false</default>
+                <controllingFieldValues>EBITDA</controllingFieldValues>
+                <controllingFieldValues>Operating Expenses</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Depreciation</fullName>
+                <default>false</default>
+                <controllingFieldValues>Depreciation and Amortization</controllingFieldValues>
+                <controllingFieldValues>Interest and Taxation</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Equipment Hire and Repairs</fullName>
+                <default>false</default>
+                <controllingFieldValues>EBITDA</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Marketing Expenses</fullName>
+                <default>false</default>
+                <controllingFieldValues>EBITDA</controllingFieldValues>
+                <controllingFieldValues>Operating Expenses</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Motor Expenses</fullName>
+                <default>false</default>
+                <controllingFieldValues>EBITDA</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Occupation Costs</fullName>
+                <default>false</default>
+                <controllingFieldValues>EBITDA</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Payroll Costs</fullName>
+                <default>false</default>
+                <controllingFieldValues>EBITDA</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Professional Fees</fullName>
+                <default>false</default>
+                <controllingFieldValues>EBITDA</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Staff Costs</fullName>
+                <default>false</default>
+                <controllingFieldValues>EBITDA</controllingFieldValues>
+                <controllingFieldValues>Operating Expenses</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Travel Expenses</fullName>
+                <default>false</default>
+                <controllingFieldValues>EBITDA</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Other Income and Expenses</fullName>
+                <default>false</default>
+                <controllingFieldValues>EBITDA</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Finance Costs</fullName>
+                <default>false</default>
+                <controllingFieldValues>Interest</controllingFieldValues>
+                <controllingFieldValues>Interest and Taxation</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Taxation</fullName>
+                <default>false</default>
+                <controllingFieldValues>Taxation</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Bank and Cash</fullName>
+                <default>false</default>
+                <controllingFieldValues>Current Assets</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Accounts Receivable</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Provisions</fullName>
+                <default>false</default>
+                <controllingFieldValues>Current Assets</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Inventory</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Prepayments and Accrued Income</fullName>
+                <default>false</default>
+                <controllingFieldValues>Current Assets</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Debtors</fullName>
+                <default>false</default>
+                <controllingFieldValues>Current Assets</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Stock</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Fixtures Fittings and Equipment</fullName>
+                <default>false</default>
+                <controllingFieldValues>Fixed Assets</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Land and Buildings</fullName>
+                <default>false</default>
+                <controllingFieldValues>Fixed Assets</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Intangible Assets</fullName>
+                <default>false</default>
+                <controllingFieldValues>Intangible Assets</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Accounts Payable</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Accruals and Deferred Income</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Employment Payables</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Tax Liability</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Creditors</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Employment Creditors</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Payable After 1 Year</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Creditors Due After 1 Year</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Capital and Reserves</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>TrialBalance4__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Trial Balance 4</label>
+        <picklist>
+            <controllingField>TrialBalance3__c</controllingField>
+            <picklistValues>
+                <fullName>Sales - Direct</fullName>
+                <default>false</default>
+                <controllingFieldValues>Sales Revenue</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Sales - Indirect</fullName>
+                <default>false</default>
+                <controllingFieldValues>Sales Revenue</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Cost of Sales - Direct</fullName>
+                <default>false</default>
+                <controllingFieldValues>Cost of Sales</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Cost of Sales - Indirect</fullName>
+                <default>false</default>
+                <controllingFieldValues>Cost of Sales</controllingFieldValues>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Type__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Type</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Balance Sheet</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Profit and Loss</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Retained Earnings</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>UnitofWork__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Unit of Work</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <label>General Ledger Account</label>
+    <nameField>
+        <label>General Ledger Account Name</label>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>General Ledger Accounts</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ReadWrite</sharingModel>
+</CustomObject>

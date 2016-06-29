@@ -1,0 +1,116 @@
+<apex:page id="MPIServiceHistory" docType="html" showChat="true" showHeader="false" applyHtmlTag="false" sidebar="false" standardController="dealer__Inspection_Report__c" extensions="dealer.MPI2_EXT">
+    <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, user-scalable=no"/>
+    <title>Digital MPI Customer Check In</title>
+
+    <apex:includeScript value="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" />
+    <apex:includeScript value="{!URLFOR($Resource.dealer__SDLResources,'/js/bootstrap.min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.dealer__Customer_Check,'/js/fastclick.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.dealer__Alertify, 'alertify.min.js')}" />    
+
+    <apex:stylesheet value="//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" />
+
+    <apex:stylesheet value="{!URLFOR($Resource.dealer__ImageUploaderResources, 'css/normalize.min.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.dealer__SDLResources,'/css/VFbootstrap.css')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.dealer__Customer_Check,'/css/mpi2.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.dealer__Alertify, 'alertify.core.css')}" />    
+
+    <apex:stylesheet value="{!URLFOR($Resource.dealer__ImageUploaderResources, 'css/normalize.min.css')}" />
+    <script type="text/javascript">
+		$j = jQuery.noConflict();
+    
+  		var svcHistory = {!ServiceHistoryJSON};
+    	var apptId = '{!serviceAppointment.Id}';
+    
+    	$j(document).ready(function() {
+        
+        			if(svcHistory[0] !== undefined) {
+        
+                        var toAppend = '';
+                        $j.each(svcHistory, function(index) {
+                             var row = svcHistory[index];
+                            
+                            // console.log(row);
+                            var d = new Date(row.opendate);
+                            var n = d.toDateString();
+                            toAppend += '<tr><td>'+row.ronumber+'</td><td>'+n+'</td><td>'+row.advisor+'</td><td>'+row.joblinenumber+'</td><td>'+row.laborcharges+'</td><td>'+row.partscharges+'</td><td>'+row.operation+'</td></tr>';
+                            toAppend += '<tr><td colspan="7">'+row.concern+'</td></tr>';
+                            toAppend += '<tr><td colspan="7">'+row.cause+'</td></tr>';
+                            toAppend += '<tr><td colspan="7">'+row.correction+'</td></tr>';
+                        
+                    
+                        });
+                    
+                        $j('#svcHistoryLines').append(toAppend); 
+                    } else {
+                        $j('#history').html('<h3>No service history for this vehicle.</h3>');
+                    }
+        });
+    </script>
+ </head>   
+ <body id="force">
+
+        <div class="navbar navbar-fixed-top topBar hidden-sm hidden-xs">
+            <div class="container">
+                <div class="row">
+                    <div class="logo col-sm-6">
+                        <img src="/{!mpilogo}"  alt="" />
+                    </div>
+                    <div class="col-sm-6 text-right">
+                        <table width="" border="0" align="right" cellpadding="0" cellspacing="0" class="advisor" role="grid">
+                          <tr>
+                            <th width="60" class="hidden-sm" align="center" valign="middle" scope="col">
+                                <div class="UserPhoto" style="background: url({!me.smallPhotoUrl}) no-repeat center center; background-size: 100%;">&nbsp;</div>
+                                </th>
+                            <th align="left" valign="middle" scope="col">
+                                <span style="display: block; height: 4px;" class="visible-sm">&nbsp;</span>
+                                <span class="userTitle">&nbsp;</span>
+                                <span class="userName"><apex:outputText value="{!me.Name}" /></span>
+                            </th>
+                            <th valign="middle" scope="col" class="hidden-sm"><div class="Date"><apex:outputText value="{0,date,yyyy.MM.dd}"> <apex:param value="{!NOW()}" /> </apex:outputText></div></th>
+                              <th><a href="/{!htmlencode(keyPrefix)}/o">Return to Technician Queue</a></th>
+                          </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container" style="overflow: hidden; margin-top: 100px;">
+	<div id="ServiceVehicleHistory">
+    <div id="container" class="row"> 
+    	<div class="small-12 columns" >
+   			<a href="/{!dealer__Inspection_Report__c.Id}" style="font-size:14px;">Return to MPI</a>
+    	</div>
+        <div class="small-12 columns" style="margin-top: 15px;">
+        	<h4>
+                Service History
+            </h4><div id="history">
+            
+        
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>RO Number</th>
+                  <th>Date</th>
+                  <th>Advisor</th>
+                  <th>Job #</th>
+                  <th>Labor</th>
+                  <th>Parts</th>
+                  <th>Operation</th>
+                </tr>
+              </thead>
+              <tbody id="svcHistoryLines">
+
+
+              </tbody>
+            </table>
+            
+            </div>
+        </div>
+
+    </div>
+</div>
+</div>
+</body>
+</apex:page>

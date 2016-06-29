@@ -1,0 +1,113 @@
+<apex:page showHeader="true" sidebar="true" showChat="true" title="Return to Vendor " standardController="dealer__Parts_Invoice__c" extensions="dealer.PartsReturn" tabStyle="Parts_Return__tab">
+
+    <!--  jQuery CDN -->
+    <apex:includeScript value="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" />
+
+	<apex:sectionHeader title="Parts Return" subtitle="{!IF(dealer__Parts_Invoice__c.Id=='', 'New Parts Return', 'Return# '+dealer__Parts_Invoice__c.Name)}" description="{!IF(dealer__Parts_Invoice__c.Id=='', 'Create a parts invoice for return to vendor.  Select the vendor you would like to prepare the return for and add the corresponding inventory items.', '')}" />
+
+	<apex:form id="prvf">
+		<apex:pageMessages id="pbM" />
+		<apex:pageBlock mode="maindetail">
+			
+			<apex:pageBlockButtons >
+				<apex:commandButton action="{!save}" value="Save" />
+				<apex:commandButton action="{!cancel}" value="Cancel" />
+				<apex:commandButton action="{!voidRecord}" value="Void" disabled="{!IF(lineCount>0,true,false)}" onclick="if(!confirm('Contiue to void this parts return?')){return};"/>
+				<apex:commandButton action="{!invoiceRecord}" value="Invoice" disabled="{!IF(dealer__Parts_Invoice__c.dealer__Status__c!='Open', true, false)}"/>
+			</apex:pageBlockButtons>
+
+			<apex:pageBlockSection >
+
+				<!-- Status -->
+				<apex:outputText rendered="{!NOT(ISBLANK(dealer__Parts_Invoice__c.Id))}" />
+				<apex:outputField value="{!dealer__Parts_Invoice__c.dealer__Status__c}" rendered="{!NOT(ISBLANK(dealer__Parts_Invoice__c.Id))}"/>
+
+				<!-- Vendor Block -->
+
+				<apex:inputField value="{!dealer__Parts_Invoice__c.dealer__Customer__c}" label="Vendor" required="true" rendered="{!ISBLANK(dealer__Parts_Invoice__c.Id)}"/>
+				<apex:inputField value="{!dealer__Parts_Invoice__c.dealer__Location__c}" required="true" rendered="{!ISBLANK(dealer__Parts_Invoice__c.Id)}"/>
+				<apex:outputField value="{!dealer__Parts_Invoice__c.dealer__Customer__c}" label="Vendor" rendered="{!NOT(ISBLANK(dealer__Parts_Invoice__c.Id))}"/>
+				<apex:outputField value="{!dealer__Parts_Invoice__c.dealer__Location__c}" rendered="{!NOT(ISBLANK(dealer__Parts_Invoice__c.Id))}"/>				
+
+				<!-- Shipping and RMA Information -->
+				<apex:inputField value="{!dealer__Parts_Invoice__c.dealer__RMA_No__c}" />
+				<apex:inputField value="{!dealer__Parts_Invoice__c.dealer__Shipping_Charges__c}" />
+
+				<apex:inputField value="{!dealer__Parts_Invoice__c.dealer__Ship_To__c}" />
+				<apex:inputField value="{!dealer__Parts_Invoice__c.dealer__Comments__c}" />
+
+				<apex:inputField value="{!dealer__Parts_Invoice__c.dealer__Ship_Via__c}" />
+				<apex:inputField value="{!dealer__Parts_Invoice__c.dealer__Shipping_Tracking_No__c}" />
+
+			</apex:pageBlockSection>
+			<!--
+			<apex:inputField value="{!Parts_Invoice__c.}" />
+			<apex:inputField value="{!Parts_Invoice__c.}" />
+			-->
+			<apex:pageBlockSection columns="2" collapsible="false" id="auditfields" rendered="{!NOT(ISBLANK(dealer__Parts_Invoice__c.Id))}">
+				<apex:pageBlockSectionItem >
+				    <apex:outputLabel for="CreatedBy" value="Created By" />   
+				    <apex:outputPanel >
+				        <apex:commandLink id="CreatedBy" action="/{!Parts_Invoice__c.CreatedBy.Id}" value="{!dealer__Parts_Invoice__c.CreatedBy.Name}" />
+				        <apex:outputText value=", {!dealer__Parts_Invoice__c.CreatedDate}" /> 
+				    </apex:outputPanel>
+				</apex:pageBlockSectionItem>
+
+				<apex:pageBlockSectionItem >
+				    <apex:outputLabel for="LastModifiedBy" value="Last Modified By" />   
+				    <apex:outputPanel >
+				        <apex:commandLink id="LastModifiedBy" action="/{!Parts_Invoice__c.LastModifiedBy.Id}" value="{!dealer__Parts_Invoice__c.LastModifiedBy.Name}" />
+				        <apex:outputText value=", {!dealer__Parts_Invoice__c.LastModifiedDate}" /> 
+				    </apex:outputPanel>
+				</apex:pageBlockSectionItem>				
+			</apex:pageBlockSection>			
+
+		</apex:pageBlock>
+
+		<apex:pageBlock title="Part to Return" rendered="{!AND(NOT(ISBLANK(dealer__Parts_Invoice__c.Id)), dealer__Parts_Invoice__c.dealer__Status__c='Open')}" id="partsReturnLineBlock">
+			<apex:pageBlockSection columns="1" showHeader="false">
+				<apex:panelGrid columns="7" width="70%">
+					<apex:outputLabel for="qty" >QTY</apex:outputLabel>
+					<apex:inputField value="{!returnLine.dealer__Quantity_Sold__c}" label="QTY" id="qty" />
+					<apex:outputLabel for="part" >Part</apex:outputLabel>
+					<apex:inputField value="{!returnLine.dealer__Part__c}" label="Part" id="part" onchange="lpl(this);" />
+					<apex:outputLabel value="Purchase Order" for="po" />
+					<apex:selectList value="{!purchaseOrderId}" multiselect="false" id="po" size="1">
+						<apex:selectOptions value="{!poLines}" />
+					</apex:selectList>
+					<apex:commandLink value="Add Return Line" styleClass="btn" style="text-decoration: none;" action="{!addReturnLine}" />
+				</apex:panelGrid> 
+			</apex:pageBlockSection>
+		</apex:pageBlock>
+
+		<apex:pageBlock title="Return Items" rendered="{!NOT(ISBLANK(dealer__Parts_Invoice__c.Id))}" id="returnLines">
+			<apex:pageBlockTable value="{!InvoiceLines}" var="l">
+				<apex:column headerValue="Action">
+					<apex:commandLink action="{!deleteLine}" immediate="true" rendered="{!IF(dealer__Parts_Invoice__c.dealer__Status__c='Open',true,false)}" value="Delete" reRender="returnLines,pbM">
+						<apex:param name="deleteRowId" assignTo="{!deleteRowId}" value="{!l.Id}" />
+					</apex:commandLink>
+				</apex:column>
+				<apex:column headerValue="QTY" value="{!l.dealer__Quantity_Sold__c}" />
+				<apex:column headerValue="Part" value="{!l.dealer__Part__c}" />
+				<apex:column headerValue="Description" value="{!l.dealer__Part_Description__c}" />
+				<apex:column headerValue="Value" value="{!l.dealer__Cost__c}" />
+				<apex:column headerValue="Purchase Order" value="{!l.dealer__Purchase_Order_Line__r.dealer__Purchase_Order__c}" />
+				<apex:column headerValue="Counterman" value="{!l.dealer__Counterman__c}" />
+			</apex:pageBlockTable>
+		</apex:pageBlock>
+
+		<apex:actionFunction action="{!reloadPOLines}" reRender="partsReturnLineBlock" immediate="true" name="loadPOLines">
+			<apex:param value="" name="firstParam" assignTo="{!partsRecordId}" />
+		</apex:actionFunction>
+	</apex:form>
+
+    <script>
+		$dt = jQuery.noConflict();
+		function lpl(e) {
+
+			console.log($dt('[id$="part_lkid"]').val());
+
+			loadPOLines($dt('[id$="part_lkid"]').val());
+		}
+	</script>
+</apex:page>

@@ -1,0 +1,63 @@
+<apex:page standardController="dealer__Parts_Master__c" extensions="dealer.PartsMaster_EXT" title="New Parts Master" id="PMNew">
+<apex:includeScript value="{!URLFOR($Resource.dealer__jQuery_UI_1820, 'js/jquery-1.7.2.min.js')}" />
+<apex:includeScript value="{!URLFOR($Resource.dealer__jQuery_UI_1820, 'js/jquery-ui-1.8.20.custom.min.js')}" />
+<apex:includeScript value="{!$Resource.dealer__jsHashTable}" />
+<apex:includeScript value="{!$Resource.dealer__jQueryNumberFormatting}" />
+<apex:includeScript value="{!$Resource.dealer__jQueryTools}" />
+<apex:stylesheet value="{!URLFOR($Resource.dealer__jQuery_UI_1820,'css/Aristo/Aristo.css')}"/>
+<script type="text/javascript">
+var j$ = jQuery.noConflict();
+j$(document).ready(function() {
+	j$('#PMNew\\:PMForm\\:pnfBlock\\:topBlock\\:newMasterMFG').focus();
+});
+</script>
+
+<apex:form id="PMForm">
+	<apex:pageBlock title="Create Parts Master Record" mode="edit" id="pnfBlock">
+		<apex:pageMessages />
+		<apex:pageBlockButtons id="buttons">
+			<apex:commandButton action="{!save}" value=" Save " id="Savebutton"  />
+			<apex:commandButton action="{!cancel}" value=" Cancel " />
+		</apex:pageBlockButtons>
+		<apex:pageBlockSection id="topBlock" columns="1">
+			<apex:inputField value="{!dealer__Parts_Master__c.dealer__Manufacturer__c}" id="newMasterMFG" taborderhint="1" />
+			<apex:inputField value="{!dealer__Parts_Master__c.Name}" taborderhint="2"  required="true"/>
+			<apex:inputField value="{!dealer__Parts_Master__c.dealer__Part_Description__c}" taborderhint="3" required="true" />
+		</apex:pageBlockSection>
+		<apex:pageBlockSection id="newBlock">
+			<apex:outputText />
+			<apex:inputField value="{!dealer__Parts_Master__c.dealer__Cost__c}" required="true" />
+			
+			<apex:outputText />
+			<apex:inputField value="{!dealer__Parts_Master__c.dealer__Retail_Price__c}" required="true" />
+			
+			<apex:outputText />
+			<apex:inputField value="{!dealer__Parts_Master__c.dealer__Jobber_Price__c}" />
+			
+			<apex:inputField value="{!dealer__Parts_Master__c.dealer__Pack_QTY__c}" taborderhint="4"  />
+			<apex:inputField value="{!dealer__Parts_Master__c.dealer__MAP__c}" />
+			
+			<apex:inputField value="{!dealer__Parts_Master__c.dealer__Core_Required__c}" taborderhint="5"  />
+			<apex:inputField value="{!dealer__Parts_Master__c.dealer__Warranty_Price__c}" />
+			
+			<apex:inputField value="{!dealer__Parts_Master__c.dealer__Core_Value__c}" taborderhint="6"  />
+			<apex:inputField value="{!dealer__Parts_Master__c.dealer__Height__c}" />
+			
+			<apex:outputText />
+			<apex:inputField value="{!dealer__Parts_Master__c.dealer__Width__c}" />
+			
+			<apex:outputText />
+			<apex:inputField value="{!dealer__Parts_Master__c.dealer__Length__c}" />
+			
+			<apex:outputText />
+			<apex:inputField value="{!dealer__Parts_Master__c.dealer__Weight__c}" />
+			
+			<apex:outputText />
+			<apex:inputField value="{!dealer__Parts_Master__c.dealer__UPC__c}" />
+			
+			<apex:outputText />
+			<apex:inputField value="{!dealer__Parts_Master__c.dealer__Return_Code__c}" />
+		</apex:pageBlockSection>
+	</apex:pageBlock>
+</apex:form>
+</apex:page>

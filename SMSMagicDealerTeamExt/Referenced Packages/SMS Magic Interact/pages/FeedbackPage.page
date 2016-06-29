@@ -1,0 +1,52 @@
+<apex:page Controller="smagicinteract.FeedbackController" title="SMS Magic-Feedback" tabStyle="SM_Home__tab">
+
+<apex:pageMessages id="pageMessage"/> 
+ 
+<apex:form id="confForm">
+<apex:pageBlock title="{!$Label.FDBCK}" id="mainBlock">
+
+<apex:pageBlockSection title="{!$Label.CHS_CTGRY} ">
+<apex:facet name="header">
+	<h3>{!$Label.CHS_CTGRY}</h3>
+</apex:facet>
+	<apex:selectList size="1" value="{!selectedCategory}" style="margin-left:110px;">
+	    <apex:selectOption itemValue="Feature Request" itemLabel="{!$Label.FEATURE_REQUEST}"/>
+	    <apex:selectOption itemValue="Bug Report" itemLabel="{!$Label.BUG_REPORT}"/>
+	    <apex:selectOption itemValue="General" itemLabel="{!$Label.GENERAL}"/>
+	</apex:selectList>
+</apex:pageBlockSection>
+
+<apex:pageBlockSection id="feedbackDetails" columns="10" title="{!$Label.ETR_UR_FDBCK}" >
+<apex:facet name="header">
+	<h3>{!$Label.ETR_UR_FDBCK}</h3>
+</apex:facet>
+
+<table cellspacing="10px" style="margin-left:-20px;" >
+    <tr><td class="labelCol" style="text-align:left;">{!$Label.SBJCT}</td>
+    <td>
+    	<apex:outputPanel styleClass="requiredInput" layout="block">
+    	<apex:outputPanel styleClass="requiredBlock" layout="block"/>
+	    <apex:inputText style="width:410px;text-align:left margin-left:200px;" value="{!subject}" maxlength="200"/>
+	    </apex:outputPanel>
+    </td>
+       
+    </tr>
+    <tr> <td class="labelCol" style="text-align:left;">{!$Label.DSCRPTN} </td>   
+    <td><apex:inputTextArea id="feedbackText"  style="width:410px;height:60px;text-align:left;" value="{!feedbackText}"></apex:inputTextArea> </td>
+    </tr>
+     
+    <tr><td class="labelCol" style="text-align:left;">{!$Label.ATTCHMNT} </td>
+    <td><apex:inputFile value="{!attachment.body}" filename="{!attachment.name}"/></td>
+    </tr>
+    
+</table>
+</apex:pageBlockSection>
+
+<apex:pageBlockButtons location="bottom">
+    <apex:commandButton action="{!submit}" value="{!$Label.SBMT}"/>
+    <apex:commandButton action="{!cancel}" value="{!$Label.CNCL}"/>
+</apex:pageBlockButtons>
+
+</apex:pageBlock>
+</apex:form>
+</apex:page>

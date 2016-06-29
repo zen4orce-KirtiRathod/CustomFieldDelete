@@ -1,0 +1,22 @@
+<apex:page id="ServiceEstimateEmailPDF" standardController="dealer__Service_Estimate__c" extensions="dealer.ServiceEstimate_EXT">
+    <apex:sectionHeader title="Service Estimate" subtitle="Email Estimate" />
+    <apex:form >
+        <apex:pageBlock title="4-Sqare" id="x4SHeader">
+        <apex:pageMessages />
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!cancel}" value="Cancel" />
+                <apex:commandButton action="{!sendPDF}" value="Send Email" />
+             </apex:pageBlockButtons>
+             <apex:pageBlockSection columns="1">
+                 
+                 <apex:inputField value="{!dealer__Service_Estimate__c.dealer__EmailApprover__c}" label="Employee" id="emailrecip"/>
+                 <apex:inputField value="{!dealer__Service_Estimate__c.dealer__Customer__c}"/>
+                 <apex:inputText value="{!subject}" label="Subject" required="true"  />
+                 <apex:inputTextarea value="{!body}" label="Body" />
+                 
+                 <apex:outputText label="Attachment" rendered="{!IF(dealer__Service_Estimate__c.Inventory_Vehicle__r.dealer__Stock_Number__c != null, true, false)}">{!dealer__Service_Estimate__c.Inventory_Vehicle__r.dealer__Stock_Number__c}4Sqare.pdf</apex:outputText>
+            	 <apex:outputText label="Attachment" rendered="{!IF(dealer__Service_Estimate__c.Inventory_Vehicle__r.dealer__Stock_Number__c != null, false, true)}">{!dealer__Service_Estimate__c.Name}.pdf</apex:outputText>
+             </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

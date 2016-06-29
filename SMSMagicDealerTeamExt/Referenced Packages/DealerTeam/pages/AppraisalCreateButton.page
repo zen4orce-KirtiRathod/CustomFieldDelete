@@ -1,0 +1,5 @@
+<apex:page standardController="dealer__Sales_Up__c" extensions="dealer.SalesLead_EXT" showHeader="false" sidebar="false">
+	<apex:form >
+		<apex:commandButton value="vAuto Appraisal" />
+	</apex:form>
+</apex:page>

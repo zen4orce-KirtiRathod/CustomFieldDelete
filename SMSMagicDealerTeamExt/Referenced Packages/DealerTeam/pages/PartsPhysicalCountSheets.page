@@ -1,0 +1,49 @@
+<apex:page standardController="dealer__PartPhysicalInventory__c" extensions="dealer.PartsPhysical_EXT" renderAs="PDF" showHeader="false" standardStylesheets="false" applyHtmlTag="false" applyBodyTag="false">
+<head>
+<style>
+
+	@page {
+    /* Landscape orientation */
+    size:portrait;
+    margin: 0.25in;
+
+    	@top-left {
+    		width: 600px;
+    		font-size: 14px;
+    		content : "Parts Physical {!PartPhysicalInventory__c.Name}";
+    	}
+
+    	@top-right {
+	    	width: 200px;
+	    	font-size: 14px;
+	    	content: "Page " counter(page) " of " counter(pages);    		
+    	}
+
+    	@bottom-left {
+    		width: 600px;
+    		font-size: 12px;
+    		content: "Parts Physical {!PartPhysicalInventory__c.Name}";
+    	}
+    	@bottom-right {
+	    	width: 200px;
+	    	font-size: 12px;
+	    	content: "Page " counter(page) " of " counter(pages);
+    	}
+    }
+
+</style>
+</head>
+
+<!-- repeating the physical workfile -->
+<table width="100%"> 
+<apex:repeat value="{!detail_records}" var="d">
+
+	<tr style="height:65px;">
+		<td><apex:outputText value="{!d.dealer__Part__r.dealer__Part_Number__c}" /></td>
+		<td><apex:outputText value="{!d.dealer__Part__r.dealer__Description__c}" /></td>
+		<td>____________	/	____________</td>
+	</tr>
+</apex:repeat>
+</table>
+
+</apex:page>

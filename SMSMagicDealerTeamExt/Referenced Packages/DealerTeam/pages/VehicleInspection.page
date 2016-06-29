@@ -1,0 +1,3759 @@
+<apex:page standardController="dealer__Appraisal__c" extensions="dealer.StockInInspection" id="StockInInspection" docType="html-5.0"  title="Stock-In Appraisal">
+
+<!--  jQuery CDN -->
+<apex:includeScript value="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" />
+<apex:includeScript value="{!URLFOR($Resource.dealer__Currency_Mask,'plentz-jquery-maskmoney-b0bff2e/dist/jquery.maskMoney.js ')}" />
+<apex:includeScript value="{!URLFOR($Resource.dealer__serializeJSON)}" />
+<apex:includeScript value="{!$Resource.dealer__jQueryBlockUI}" />
+
+<!-- Include Namespaced Bootstrap 3.0 -->
+<apex:includeScript value="{!URLFOR($Resource.dealer__BootstrapNS,'/bootstrap/js/bootstrap.min.js')}"/>
+<apex:stylesheet value="{!URLFOR($Resource.dealer__BootstrapNS,'/bootstrap/css/bootstrap.min.css')}"/>
+
+<apex:stylesheet value="{!URLFOR($Resource.dealer__BootstrapNS,'/bootstrap/css/dealerteam_bs.css')}"/>
+
+<!-- KENDO 2015.1.429 -->
+<apex:includeScript value="{!URLFOR($Resource.dealer__KendoUiFULL2015,'/js/kendo.all.min.js')}"/>
+<apex:stylesheet value="{!URLFOR($Resource.dealer__KendoUiFULL2015,'/styles/kendo.bootstrap.min.css')}"/>
+<apex:stylesheet value="{!URLFOR($Resource.dealer__KendoUiFULL2015,'/styles/kendo.common-bootstrap.core.min.css')}"/>
+<apex:stylesheet value="{!URLFOR($Resource.dealer__KendoUiFULL2015,'/styles/kendo.common-bootstrap.min.css')}"/>
+
+
+
+<!-- <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'/> -->
+
+<apex:sectionHeader title="Estimate Vehicle Reconditioning" subtitle="Appraisal Vehicle" />
+
+
+<style type="text/css">
+.popup_msg{
+  position:absolute;
+  z-index:10;   
+  width:20px;
+  height:20px;
+  text-align:center;
+  
+  
+  //background:url(tick.png) no-repeat;
+  //background-size:100%;
+ //display:none;
+}
+
+
+.main{ 
+    position:relative; 
+    width:600px;
+    height:520px;
+    top:85px;
+    }
+    
+.mainSedan{ 
+    position:relative; 
+    width:600px;
+    height:520px;
+    top:85px;
+    }
+.mainSUV{ 
+    position:relative; 
+    width:600px;
+    height:435px;
+    top:85px;
+    }
+.mainPickUp{ 
+    position:relative; 
+    width:600px;
+    height:435px;
+    top:85px;
+    }
+.mainVan{ 
+    position:relative; 
+    width:600px;
+    height:330px;
+    top:85px;
+    }
+.mainHatchBack{ 
+    position:relative; 
+    width:600px;
+    height:455px;
+    top:85px;
+    }
+.mainStationWagon{ 
+    position:relative; 
+    width:600px;
+    height:385px;
+    top:85px;
+    }   
+
+.container_block{
+position:relative;
+}
+#force a {
+  background-color: transparent;
+}
+
+.lookupInput .form-control {
+  width: auto !important;
+}
+.bPageTitle {
+  background: #08a2a2 none repeat scroll 0 0 !important;
+  border-bottom: 5px solid #f2f2f2;
+  border-radius: 5px 5px 0 0;
+  color: #fff !important;
+  margin: 5px 0 !important;
+  padding: 4px 0 !important;
+  width: 100%;font-family: "Open Sans",sans-serif;
+}
+.pageType,.pageDescription {
+  color: #fff !important;font-family: "Open Sans",sans-serif;
+}
+.header-block-2 label{font-family: "Open Sans",sans-serif;font-size:16px;}
+.bPageTitle .ptBody .content {
+  width: 100%;
+}
+#force .btn-primary {
+    color: #fff;
+    background-color: #A8330C;
+    border-color: #A8330C;
+}
+.margintb {
+    margin: 0 auto;
+    width: 500px;
+}
+.marginb15 {
+    margin-bottom: 15px;
+}
+.margintop85{
+    margin-top:85px;
+}
+.block-color {
+    float: left;
+    margin: 10px 40px 0;
+    width: 80px;
+    position:absolute;
+}
+.block-color-1 {
+  left: 405px;
+  top: 0;
+}
+.block-color-2 {
+  right: 390px;
+  top: 0;
+}
+.block-color-3 {
+  right: 390px;
+}
+.block-color-4 {
+  left: 405px;
+}
+.block-color a {
+    border: 1px solid #000;
+    display: inline-block;
+    float: left;
+    height: 20px;
+    margin-right: 5px;
+    width: 20px;
+    margin-bottom: 1px;
+}
+.acc-but {
+    margin-bottom: 0;
+}
+.acc-but a {
+font-family: 'Open Sans', sans-serif;
+     background-color: #08A2A2!important;
+    color: #fff!important;
+    padding: 10px 15px;
+    border-radius: 5px 5px 0 0;
+    width: 100%;
+    display: inline-block;    margin-bottom: 5px;text-decoration: none!important;font-size:16px;
+}
+
+.acc-but a:hover{background-color: #748F8F!important;}
+
+
+.block-details label,.block-valuation label,.block-vehicleinfo label,.block-appraisals label,.block-mechanical label {font-family: 'Open Sans', sans-serif;font-size:15px;font-weight:400!important;}
+
+
+.block-details,.block-valuation,.block-vehicleinfo,.block-appraisals,.block-mechanical {
+    background-color: #DFF0F0;
+    padding: 10px 10px;margin-bottom: 15px;
+}
+
+.block-save{ background-color: #DFF0F0;
+    padding: 10px 10px;margin-bottom: 15px;}
+
+.imgblock {
+    //margin-top: 85px;
+    position:absolute;
+}
+.green-color a {
+    background-color: #6ec34e!important;
+}
+.yellow-color a {
+    background-color: #e4cd31!important;
+}
+.red-color a {
+    background-color: #d52927!important;
+}
+.title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 15px;
+}
+.sub-title {
+    float: left;
+    font-weight: bold;
+    width: 60px;
+}
+.marginbottom15{margin-bottom:15px;}
+#force .form-group {
+  margin-bottom: 15px !important;
+}
+.header-block-1 a, .header-block-2 a, .header-block-3 a {
+  color: #fff !important;
+  font-family: "Open Sans",sans-serif;
+  font-size: 16px;
+}
+
+.header-block-1,.header-block-2,.header-block-3{
+  border: 2px solid #fff;
+  border-radius: 5px;
+  color: #fff;
+  margin: 0!important;
+  padding: 10px 0 0;min-height: 150px;font-family: "Open Sans",sans-serif;
+  font-size: 16px;
+}
+
+#force input, #force button, #force select, #force textarea {
+  color: #000;
+}
+
+.header-block-1{
+  background-color: #51589c;
+}
+
+.header-block-2{
+  background-color: #9c5190;
+  }
+
+.header-block-3{
+  background-color: #9c5151;
+}
+#Map area {
+  cursor: pointer;
+}
+.saveline_btn {
+  margin: 0 0 0 15px;
+}
+.crossMark{
+    background-image: url("{!$Resource.dealer__Cross_Mark}") !important;
+    background-position: 2px 2px !important;
+    background-repeat: no-repeat !important;
+    background-size: 75% auto !important;
+}
+
+.button-margin {
+    float: left;
+    margin-left: 20px;
+}
+#default-car{
+    position: relative;
+    }
+
+#default-car .default-body {
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  height: 20px;
+  left: 350px;
+  position: absolute;
+  top: 161px;
+  width: 20px;
+}
+#default-car .default-bottom-door {
+  
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  bottom: 40px;
+  height: 20px;
+  left: 240px;
+  position: absolute;
+  width: 20px;
+}
+
+#default-car .default-top-door {
+  
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  bottom: 280px;
+  height: 20px;
+  left: 240px;
+  position: absolute;
+  width: 20px;
+}
+
+#default-car .default-driverfront-wheel {
+  
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  height: 20px;
+  left: 333px;
+  position: absolute;
+  top: 310px;
+  width: 20px;
+}
+
+#default-car .default-driverrear-wheel {
+  
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  height: 20px;
+  left: 169px;
+  position: absolute;
+  top: 310px;
+  width: 20px;
+}
+
+#default-car .default-passengerfront-wheel {
+  
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  height: 20px;
+  left: 340px;
+  position: absolute;
+  top: 18px;
+  width: 20px;
+}
+
+#default-car .default-passengerrear-wheel {
+  
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  height: 20px;
+  left: 175px;
+  position: absolute;
+  top: 18px;
+  width: 20px;
+}
+
+
+#default-car .sedan-body {
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  height: 20px;
+  //left: 350px;
+  left: {!xCoord}px;
+  position: absolute;
+  //top: 200px;
+  top: {!yCoord}px;
+  width: 20px;
+}
+#default-car .sedan-bottom-door {
+  
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  bottom: 67px;
+  //bottom: {!yCoord}px;
+  height: 20px;
+  left: 240px;
+  //left: {!xCoord}px;
+  position: absolute;
+  width: 20px;
+}
+
+#default-car .sedan-top-door {
+  
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  //bottom: 357px;
+  top: {!yCoordPassengerDoor}px;
+  height: 20px;
+  //left: 240px;
+  left: {!xCoordPassengerDoor}px;
+  position: absolute;
+  width: 20px;
+}
+
+#default-car .sedan-driverfront-wheel {
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  height: 20px;
+  left: 350px;
+  position: absolute;
+  top: 391px;
+  width: 20px;
+}
+
+#default-car .sedan-driverrear-wheel {
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  height: 20px;
+  left: 139px;
+  position: absolute;
+  top: 391px;
+  width: 20px;
+}
+
+#default-car .sedan-passengerfront-wheel {
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  height: 20px;
+  left: 351px;
+  position: absolute;
+  top: 26px;
+  width: 20px;
+}
+
+#default-car .sedan-passengerrear-wheel {
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  height: 20px;
+  left: 139px;
+  position: absolute;
+  top: 26px;
+  width: 20px;
+}
+
+#default-car .sedan-driverfront-body {
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  height: 415px;    
+  //left: 383px;
+  left: {!xCoordDriverFrontDoor}px;
+  position: absolute;
+  //top: 360px;
+  top: {!yCoordDriverFrontDoor}px;
+  width: 20px;
+}
+#default-car .sedan-driverrear-body {
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  height: 280px;
+  //left: 84px;
+  left: {!xCoordDriverRearDoor}px;
+  position: absolute;
+  //top: 360px;
+  top: {!yCoordDriverRearDoor}px;
+  width: 20px;
+}
+#default-car .sedan-passengerfront-body {
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  height: 63px;
+  //left: 388px;
+  left: {!xCoordPassengerFrontDoor}px;
+  position: absolute;
+  //top: 58px;
+  top: {!yCoordPassengerFrontDoor}px;
+  width: 20px;
+}
+#default-car .sedan-passengerrear-body {
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  height: 63px;
+  //left: 88px;
+  left: {!xCoordPassengerRearDoor}px;
+  position: absolute;
+  //top: 62px;
+  top: {!yCoordPassengerRearDoor}px;
+  width: 20px;
+}
+
+
+
+#default-car .van-body {
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  height: 20px;
+  //left: {!xCoord}px;
+  position: absolute;
+  //top: {!yCoord}px;
+  //left: 437px;
+  position: absolute;
+  //top: 167px;
+  width: 20px;
+}
+#default-car .van-bottom-door {
+  
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  //bottom: 67px;
+  height: 24px;
+  //left: 213px;
+  left:{!xCoordDriverDoor}px;
+  top:{!yCoordDriverDoor}px;
+  position: absolute;
+  width: 20px;
+}
+#default-car .van-top-door {
+  
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  //bottom: 173px;
+  height: 24px;
+  //left: 288px;
+  left:{!xCoordPassengerDoor}px;
+  top:{!yCoordPassengerDoor}px;
+  position: absolute;
+  width: 20px
+}
+
+#default-car .van-driverfront-wheel {
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  height: 20px;
+  left: 321px;
+  position: absolute;
+  top: 76px;
+  width: 20px;
+}
+#default-car .van-driverrear-wheel {
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  height: 20px;
+  left: 190px;
+  position: absolute;
+  top: 76px;
+  width: 20px;
+}
+#default-car .van-passengerfront-wheel {
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  height: 20px;
+  left: 188px;
+  position: absolute;
+  top: 176px;
+  width: 20px;
+}
+#default-car .van-passengerrear-wheel {
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  height: 20px;
+  left: 318px;
+  position: absolute;
+  top: 176px;
+  width: 20px;
+}
+
+
+
+#default-car .van-driverfront-body {
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  height: 415px;
+  //left: 67px;
+  left:{!xCoordDriverFrontDoor}px;
+  position: absolute;
+  //top: 16px;
+  top:{!yCoordDriverFrontDoor}px;
+  width: 20px;
+}
+#default-car .van-driverrear-body {
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  height: 280px;
+  //left: 67px;
+  left:{!xCoordDriverRearDoor}px;
+  position: absolute;
+  //top: 127px;
+  top:{!yCoordDriverRearDoor}px;
+  width: 20px;
+}
+
+
+
+#default-car .suv-body {
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  height: 20px;
+  //left: 367px;
+  //left: {!xCoord}px;
+  position: absolute;
+  //top: 163px;
+  //top: {!yCoord}px;
+  width: 20px;
+}
+#default-car .suv-bottom-door {
+  
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  //bottom: 67px;
+  height: 20px;
+  top: {!yCoordDriverDoor}px;
+  //left: 281px;
+  left: {!xCoordDriverDoor}px;
+  position: absolute;
+  width: 20px;
+}
+#default-car .suv-top-door {
+  
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  bottom: 284px;
+  top: {!yCoordPassengerDoor}px;
+  height: 20px;
+  //left: 281px;
+  left: {!xCoordPassengerDoor}px;
+  position: absolute;
+  width: 20px;
+} 
+#default-car .suv-driverfront-wheel {
+  
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  bottom: 18px;
+  
+  height: 20px;
+  left: 401px;
+  position: absolute;
+  width: 20px;
+}
+
+#default-car .suv-driverrear-wheel {
+  
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  bottom: 18px;
+  height: 20px;
+  left: 179px;
+  position: absolute;
+  width: 20px;
+}
+
+#default-car .suv-passengerfront-wheel {
+  
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  bottom: 316px;
+  height: 20px;
+  left: 400px;
+  position: absolute;
+  width: 20px;
+}
+#default-car .suv-passengerrear-wheel {
+  
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  bottom: 316px;
+  height: 20px;
+  left: 180px;
+  position: absolute;
+  width: 20px;
+}
+
+#default-car .suv-driverfront-body {
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  height: 415px;
+  //left: 416px;
+  left: {!xCoordDriverFrontDoor}px;
+  position: absolute;
+  //top: 276px;
+  top: {!yCoordDriverFrontDoor}px;
+  width: 20px;
+}
+#default-car .suv-driverrear-body {
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  height: 280px;
+  //left: 141px;
+  left: {!xCoordDriverRearDoor}px;
+  position: absolute;
+  //top: 272px;
+  top: {!yCoordDriverRearDoor}px;
+  width: 20px;
+}
+#default-car .suv-passengerfront-body {
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  height: 63px;
+  //left: 429px;
+  left: {!xCoordPassengerFrontDoor}px;
+  position: absolute;
+  //top: 52px;
+  top: {!yCoordPassengerFrontDoor}px;
+  width: 20px;
+}
+#default-car .suv-passengerrear-body {
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  height: 63px;
+  //left: 145px;
+  left: {!xCoordPassengerRearDoor}px;
+  position: absolute;
+  //top: 62px;
+  top: {!yCoordPassengerRearDoor}px;
+  width: 20px;
+}
+
+
+
+#default-car .stationwagon-driverfront-body {
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  height: 63px;
+  //left: 95px;
+  left: {!xCoordDriverFrontDoor}px;
+  position: absolute;
+  //top: 42px;
+  top: {!yCoordDriverFrontDoor}px;
+  width: 20px;
+}
+#default-car .stationwagon-driverrear-body {
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  height: 280px;
+  //left: 280px;
+  left: {!xCoordDriverRearDoor}px;
+  position: absolute;
+  //top: 42px;
+  top: {!yCoordDriverRearDoor}px;
+  width: 20px;
+}
+#default-car .stationwagon-passengerfront-body {
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  height: 63px;
+  //left: 92px;
+  left: {!xCoordPassengerFrontDoor}px;
+  position: absolute;
+  //top: 241px;
+  top: {!yCoordPassengerFrontDoor}px;
+  width: 20px;
+}
+#default-car .stationwagon-passengerrear-body {
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  height: 63px;
+  //left: 279px;
+  left: {!xCoordPassengerRearDoor}px;
+  position: absolute;
+  //top: 241px;
+  top: {!yCoordPassengerRearDoor}px;
+  width: 20px;
+}
+
+
+
+#pgdpndtpklstId  select,#popdpndtpklstId  select, #edtpopdpndtpklstId  select {
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+  color: #555555;
+  display: block;
+  font-size: 14px;
+  height: 34px;
+  line-height: 1.42857;
+  padding: 6px 12px;
+  transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+  width: 100%;
+}
+
+#default-car .hatchback-body {
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  height: 20px;
+  //left: 457px;
+ // left: {!xCoord}px;
+  position: absolute;
+  //top: 200px;
+  //top: {!yCoord}px;
+  width: 20px;
+}
+#default-car .hatchback-bottom-door {
+  
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  //bottom: 67px;
+  top: {!yCoordDriverDoor}px;
+  height: 20px;
+  //left: 285px;
+  left: {!xCoordDriverDoor}px;
+  position: absolute;
+  width: 20px;
+}
+
+#default-car .hatchback-top-door {
+  
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  //bottom: 300px;
+  top: {!yCoordPassengerDoor}px;
+  height: 20px;
+  left: 282px;
+  left: {!xCoordPassengerDoor}px;
+  position: absolute;
+  width: 20px;
+}
+
+#default-car .hatchback-driverfront-wheel {
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  height: 20px;
+  left: 433px;
+  position: absolute;
+  top: 337px;
+  width: 20px;
+}
+
+#default-car .hatchback-driverrear-wheel {
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  height: 20px;
+  left: 183px;
+  position: absolute;
+  top: 337px;
+  width: 20px;
+}
+
+#default-car .hatchback-passengerfront-wheel {
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  height: 20px;
+  left: 432px;
+  position: absolute;
+  top: 26px;
+  width: 20px;
+}
+
+#default-car .hatchback-passengerrear-wheel {
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  height: 20px;
+  left: 183px;
+  position: absolute;
+  top: 26px;
+  width: 20px;
+}
+
+
+
+
+#default-car .hatchback-driverfront-body {
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  height: 415px;
+  //left: 486px;
+  left: {!xCoordDriverFrontDoor}px;
+  position: absolute;
+  //top: 327px;
+  top: {!yCoordDriverFrontDoor}px;
+  width: 20px;
+}
+#default-car .hatchback-driverrear-body {
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  height: 280px;
+  //left: 130px;
+  left: {!xCoordDriverRearDoor}px;
+  position: absolute;
+  //top: 327px;
+  top: {!yCoordDriverRearDoor}px;
+  width: 20px;
+}
+#default-car .hatchback-passengerfront-body {
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  height: 63px;
+  //left: 474px;
+  left: {!xCoordPassengerFrontDoor}px;
+  position: absolute;
+  //top: 61px;
+  top: {!yCoordPassengerFrontDoor}px;
+  width: 20px;
+}
+#default-car .hatchback-passengerrear-body {
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  height: 63px;
+  left: 137px;
+  left: {!xCoordPassengerRearDoor}px;
+  position: absolute;
+  //top: 72px;
+  top: {!yCoordPassengerRearDoor}px;
+  width: 20px;
+}
+
+
+
+
+
+#default-car .stationwagon-body {
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  height: 20px;
+  //left: 111px;
+  //left: {!xCoord}px;
+  position: absolute;
+  //top: 144px;
+  //top: {!yCoord}px;
+  width: 20px;
+}
+#default-car .stationwagon-bottom-door {
+  
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  //bottom: 67px;
+  top: {!yCoordPassengerDoor}px;
+  height: 20px;
+  //left: 198px;
+  left: {!xCoordPassengerDoor}px;
+  position: absolute;
+  width: 20px;
+}
+
+#default-car .stationwagon-top-door {
+  
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  //bottom: 233px;
+  top: {!yCoordPassengerDoor}px;
+  height: 18px;
+  //left: 195px;
+  left: {!xCoordDriverDoor}px;
+  position: absolute;
+  width: 20px;
+}
+
+#default-car .stationwagon-driverfront-wheel {
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  height: 20px;
+  left: 253px;
+  position: absolute;
+  top: 31px;
+  width: 20px;
+}
+
+#default-car .stationwagon-driverrear-wheel {
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  height: 63px;
+  left: 123px;
+  position: absolute;
+  top: 33px;
+  width: 20px;
+}
+
+#default-car .stationwagon-passengerfront-wheel {
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  height: 20px;
+  left: 251px;
+  position: absolute;
+  top: 247px;
+  width: 20px;
+}
+
+#default-car .stationwagon-passengerrear-wheel {
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  height: 20px;
+  left: 124px;
+  position: absolute;
+  top: 249px;
+  width: 20px;
+}
+
+
+
+#default-car .stationwagon-driverfront-body {
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  height: 63px;
+  //left: 95px;
+  left: {!xCoordDriverFrontDoor}px;
+  position: absolute;
+  //top: 42px;
+  top: {!yCoordDriverFrontDoor}px;
+  width: 20px;
+}
+#default-car .stationwagon-driverrear-body {
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  height: 280px;
+  left: 280px;
+  //left: {!xCoordDriverRearDoor}px;
+  position: absolute;
+  //top: 42px;
+  top: {!yCoordDriverRearDoor}px;
+  width: 20px;
+}
+#default-car .stationwagon-passengerfront-body {
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  height: 63px;
+  //left: 92px;
+  left: {!xCoordPassengerFrontDoor}px;
+  position: absolute;
+  //top: 241px;
+  top: {!yCoordPassengerFrontDoor}px;
+  width: 20px;
+}
+#default-car .stationwagon-passengerrear-body {
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  height: 63px;
+  //left: 279px;
+  left: {!xCoordPassengerRearDoor}px;
+  position: absolute;
+  //top: 241px;
+  top: {!yCoordPassengerRearDoor}px;
+  width: 20px;
+}
+
+
+
+
+#default-car .pickup-body {
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  height: 20px;
+  //left: 367px;
+  //left: {!xCoord}px;
+  position: absolute;
+  //top: 163px;
+  //top: {!yCoord}px;
+  width: 20px;
+}
+#default-car .pickup-bottom-door {
+  
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  //bottom: 67px;
+  top: {!yCoordDriverDoor}px;
+  height: 20px;
+  //left: 281px;
+  left: {!xCoordDriverDoor}px;
+  position: absolute;
+  width: 20px;
+}
+#default-car .pickup-top-door {
+  
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  //bottom: 284px;
+  top: {!yCoordPassengerDoor}px;
+  height: 20px;
+  //left: 281px;
+  left: {!xCoordPassengerDoor}px;
+  position: absolute;
+  width: 20px;
+} 
+#default-car .pickup-driverfront-wheel {
+  
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  bottom: 18px;
+  height: 20px;
+  left: 401px;
+  position: absolute;
+  width: 20px;
+}
+
+#default-car .pickup-driverrear-wheel {
+  
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  bottom: 18px;
+  height: 20px;
+  left: 179px;
+  position: absolute;
+  width: 20px;
+}
+
+#default-car .pickup-passengerfront-wheel {
+  
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  bottom: 316px;
+  height: 20px;
+  left: 400px;
+  position: absolute;
+  width: 20px;
+}
+#default-car .pickup-passengerrear-wheel {
+  
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  bottom: 316px;
+  height: 20px;
+  left: 180px;
+  position: absolute;
+  width: 20px;
+}
+
+
+#default-car .pickup-driverfront-body {
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  height: 415px;
+  //left: 416px;
+  left: {!xCoordDriverFrontDoor}px;
+  position: absolute;
+  //top: 276px;
+  top: {!yCoordDriverFrontDoor}px;
+  width: 20px;
+}
+#default-car .pickup-driverrear-body {
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  height: 280px;
+  //left: 141px;
+  left: {!xCoordDriverRearDoor}px;
+  position: absolute;
+  //top: 272px;
+  top: {!yCoordDriverRearDoor}px;
+  width: 20px;
+}
+#default-car .pickup-passengerfront-body {
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  height: 63px;
+  left: 429px;
+  //left: {!xCoordPassengerFrontDoor}px;
+  position: absolute;
+  top: 52px;
+  //top: {!yCoordPassengerFrontDoor}px;
+  width: 20px;
+}
+#default-car .pickup-passengerrear-body {
+  background-image: url("{!$Resource.dealer__Tick_Mark}") !important;
+  background-position: 2px 2px !important;
+  background-repeat: no-repeat !important;
+  background-size: 75% auto !important;
+  height: 63px;
+  left: 145px;
+  //left: {!xCoordPassengerRearDoor}px;
+  position: absolute;
+  top: 62px;
+  //top: {!yCoordPassengerRearDoor}px;
+  width: 20px;
+}
+
+</style>
+
+<div id="force">
+    <apex:form id="inspectionForm" styleClass="">
+        <apex:pageMessages />
+        <apex:actionStatus onstart="blockPage()" onstop="unblockPage()" id="blockUI"/>
+        <apex:actionFunction name="calcAppraialValue" action="{!calcAppraialValue}" rerender="appraiseValue" status="blockUI"/>
+        <apex:actionFunction name="initValue" action="{!init}" />
+        <apex:actionFunction name="decodeRefresh" action="{!fetchImageName}" rerender="bodyImage, mapPanelId" />
+        <apex:actionFunction name="saveInspection" action="{!saveInspection}" rerender="inspectionForm" />
+        <input type="hidden" name="body" value="{!body}" />
+<!--         <apex:actionFunction name="imageName" action="{!imageName}" rerender="bodyImage"/> -->
+        <div class="clearfix"></div>
+        
+        <!--New Block Header -->
+        
+        <div class="header-block">
+        <div class="row">
+        <div class="col-md-4">
+        <div class="row header-block-1">
+        
+            
+            <div class="col-md-12 form-group">   
+                <div class="input-group">
+<!--                     <apex:outputField styleClass="form-control" value="{!serviceVeh.dealer__Body_Type_Picklist__c}"/> -->
+                    <apex:outputField styleClass="form-control" value="{!appraisal.dealer__Sales_Up__c}" rendered="{!appraisal.dealer__Sales_Up__c != null}"/>
+                    <apex:inputField styleClass="form-control" id="salesUp" value="{!appraisal.dealer__Sales_Up__c}" html-placeholder="Enter sales Up" rendered="{!appraisal.dealer__Sales_Up__c == null}">
+                        <apex:actionSupport event="onchange" action="{!init}" reRender="inspectionForm, salesPerson,carSection" status="blockUI"/>
+                    </apex:inputField>
+                   
+                </div>
+            </div>
+            
+            
+            
+           <div class="col-md-12 form-group">  
+                <div class="input-group">
+                    <apex:outputPanel layout="none">
+                        <apex:outputPanel layout="none" rendered="{!selectedVehicle != null}">
+<!--                             <apex:actionRegion > -->
+                            <apex:selectList value="{!selectedVehicle}" size="1" id="selectedVeh">
+                                
+                                <apex:selectOptions value="{!serviceVehicles}"/>
+                                <apex:actionSupport event="onchange" action="{!changeVehicle}" reRender="inspectionForm,bodyImage, mapPanelId" status="blockUI"/>
+                            </apex:selectList>
+<!--                         </apex:actionRegion> -->
+                        
+                        </apex:outputPanel>
+                    </apex:outputPanel>
+                </div>
+            </div>
+             
+            
+            
+        </div>
+        </div>
+        <div class="col-md-4">
+        <div class="row form-inline header-block-2">
+        
+        <div class="col-md-12 form-group">   
+                <div class="output-group">
+<!--                     <apex:outputfield id="vehOwner" value="{!serviceVeh.dealer__Veh_Owner_Contact__r.Name}" /> -->
+                         <apex:outputlink value="/{!serviceVeh.dealer__Veh_Owner_Contact__c}">
+                            {!serviceVeh.dealer__Veh_Owner_Contact__r.Name}
+                         </apex:outputlink>
+                </div>
+            </div>
+        
+            <div class="col-md-12 form-group">   
+                <div class="output-group">
+<!--                    <apex:outputField id="vehPhone" value="{!serviceVeh.Veh_Owner__r.Phone}" /> -->
+                       <apex:outputText id="vehPhone" value="{!ContactPhone}" /> 
+                </div>
+            </div>
+            
+            <div class="col-md-12 form-group">   
+                <div class="output-group">
+                   <apex:outputField id="vehEmail" value="{!serviceVeh.dealer__Veh_Owner_Contact__r.Email}" />
+                </div>
+            </div>
+
+           
+
+           
+            
+        </div>
+        </div>
+        
+         <div class="col-md-4">
+         <div class="row form-inline header-block-3">
+            
+              <div class="col-md-12 form-group">   
+                <div class="output-group">
+                <label for="apprOwner">Appraiser:&nbsp;</label>
+                    <apex:outputField id="apprOwner" value="{!appraisal.OwnerId}" />
+                </div>
+            </div>
+            
+             <div class="col-md-12 form-group">    
+                <div class="output-group">
+                <label for="salesPerson">SalesPerson 1:&nbsp;</label>
+                    <apex:outputField id="salesPerson" value="{!sup.dealer__Salesperson_1__c}" />
+                </div>
+            </div>
+            
+           
+            
+            <div class="col-md-6 form-group">   
+                <div class="input-group">
+                    <apex:inputField styleClass="form-control" id="appr-Type" value="{!appraisal.dealer__Type__c}" />
+                </div>
+            </div>
+            
+            <div class="col-md-6 form-group">   
+                <div class="input-group">
+                    <apex:inputField styleClass="form-control" id="status" value="{!appraisal.dealer__Status__c}" />
+                </div>
+            </div>
+             
+        </div>
+         </div>
+        
+        
+        </div>
+        
+        
+        </div>
+  
+       
+        
+        <div class="clearfix marginbottom15"></div>
+        
+        <apex:outputPanel layout="none" rendered="{! NOT(ISBLANK(serviceVeh.dealer__Sales_Inventory__c)) }">
+            <div class="alert alert-danger" role="alert"><strong>This Appraised Vehicle is in Stock!</strong> View the record <a href="/{!serviceVeh.dealer__Sales_Inventory__c}">here</a></div>
+        </apex:outputPanel>
+        
+        <!--Start of Save -->
+        <apex:outputPanel id="recalculate">
+        <div class="block-save">
+        <div class="row">
+        <div class="button-margin"><apex:commandButton value="Save" action="{!saveInspection}" styleClass="btn-primary" reRender="inspectionForm"/></div>
+        <div class="button-margin"><apex:commandButton value="Save & Close" action="{!saveAndCloseInspection}" styleClass="btn-primary" reRender="inspectionForm"/></div> 
+<!--         <div class="col-md-1"><apex:commandButton value="Add to Inventory" action="{!saveInspection}" styleClass="btn-primary" reRender="inspectionForm"/></div> -->
+<!--         <div class="col-md-1"><apex:commandButton value="Create PO" action="{!saveInspection}" styleClass="btn-primary" reRender="inspectionForm"/></div> -->
+            <div class="button-margin" style="display:if({!$CurrentPage.Parameters.sid} != null,'block','none')">
+                
+                    <apex:outputlink target="_blank"  styleClass="btn btn-primary"  value="/apex/AppraisalForm?sid={!$CurrentPage.Parameters.sid}&vid={!$CurrentPage.Parameters.vid}">
+                    Print Appraisal Form</apex:outputlink>
+                
+            </div>
+        </div>
+        <!-- End of Save -->
+        
+         <div class="clearfix marginbottom15"></div>
+        
+        <div class="row">       
+            <div class="col-md-2 form-group">   
+                <label for="appraiseValue">Appraised Value:&nbsp; </label>
+                <div class="input-group">
+                    <apex:inputtext styleClass="form-control input-lg" id="appraiseValue" value="{!appraisalValue}" />
+                </div>
+                <apex:outputLink onclick="calcAppraialValue();return false;">Recalculate </apex:outputLink>
+            </div>
+            
+            <div class="col-md-3 form-group">   
+                <label for="askingPrice">Asking Price:&nbsp; </label>
+                <div class="input-group">
+                    <apex:inputField styleClass="form-control input-lg" id="askingPrice" value="{!appraisal.dealer__Asking_Price__c}" />
+                </div>
+            </div>
+            
+            <div class="col-md-3 form-group">   
+                <label for="profitObj">Profit Objective:&nbsp; </label>
+                <div class="input-group">
+                    <apex:inputField styleClass="form-control input-lg" id="profitObj" value="{!appraisal.dealer__Profit_Objective__c}" />
+                </div>
+            </div>
+            
+            <div class="col-md-3 form-group">   
+                <div><label for="expCosts">Expected Costs:&nbsp; </label></div>
+                <span class="form-control input-lg">
+                <apex:outputText id="expCosts" value="{0, number, ###,###,###,##0.00}"> 
+                    <apex:param value="{!appraisal.dealer__Expected_Costs__c}"/>  
+                </apex:outputText>
+                </span>  
+<!--                 <span class="form-control input-lg"><apex:outputField styleClass="form-control input-lg" id="expCosts" value="{!appraisal.dealer__Expected_Costs__c}" /></span> -->
+            </div>
+        </div>
+        
+        </div>
+       </apex:outputPanel> 
+        <!--End of save-->
+        
+        
+        
+        
+        
+        <div class="details acc-but"><a href="#">Details</a></div>
+        
+        <div class="block-details">
+        <div class="row form-inline">
+            <div class="col-md-2 form-group">   
+                <label for="AcqMethod">Acquisition method</label>
+                <div class="input-group">
+                    <apex:inputField styleClass="form-control" id="AcqMethod" value="{!appraisal.dealer__Acquisition_method__c}" />
+                </div>
+            </div>
+            
+            <div class="col-md-3 form-group">   
+                <label for="storeLocation">Store Location</label>
+                <div class="input-group">
+                    <apex:inputField styleClass="form-control" id="storeLocation" value="{!appraisal.dealer__Store_Location__c}" />
+                </div>
+            </div> 
+            <div class="col-md-3 form-group">   
+                <label for="lostAppraisal">Lost Appraisal</label>
+                <div >
+                    <apex:inputField id="lostAppraisal" value="{!appraisal.dealer__Lost_Appraisal__c}" />
+                </div>
+            </div>
+            
+        </div>
+        <div class="clearfix marginbottom15"></div>
+        </div>
+        <!-- Start Of Valuation -->
+         <div class="valuation acc-but"><a href="#">Valuation</a></div>
+        <div class="block-valuation">
+        <div class="row">
+            <apex:repeat value="{!fields}" var="val"> 
+                <div class="col-md-3 form-group"> 
+                    <label for="valtion">{!$ObjectType.dealer__Appraisal__c.Fields[val].label}</label>
+                    <div class="input-group">
+                        <apex:inputField styleClass="form-control" value="{!appraisal[val.fieldPath]}" />
+                    </div>
+                </div>
+            </apex:repeat>
+        </div>
+         <div class="row">
+            <div class="col-md-2 form-group">   
+                <label for="trnspotation">Transportation</label>
+                <div class="input-group">
+                    <apex:inputField styleClass="form-control" id="trnspotation" value="{!appraisal.dealer__Transportation__c}" />           
+                </div>
+            </div>
+            
+            <div class="col-md-2 form-group">   
+                <label for="certification">Certification</label>
+                <div class="input-group">
+                    <apex:inputField styleClass="form-control" id="certification" value="{!appraisal.dealer__Certification__c}" />           
+                </div>
+            </div>
+            
+            <div class="col-md-2 form-group">   
+                <label for="auctionFee">Auction Fee</label>
+                <div class="input-group">
+                    <apex:inputField styleClass="form-control" id="auctionFee" value="{!appraisal.dealer__Auction_Fee__c}" />           
+                </div>
+            </div>
+        </div>
+         
+         
+         
+        </div>
+        <!-- End Of Valuation -->
+        
+        
+        
+         <!--Vehicle Start-->
+         <div class="vehicleinfo acc-but"><a href="#">Vehicle Info</a></div>
+        
+        <div class="block-vehicleinfo">
+        
+        <apex:outputPanel id="vehVinInfoId"> 
+        <div class="row">
+            <div class="col-md-5 form-group">   
+                <label for="vin">VIN</label> 
+                <div class="input-group">
+                    <apex:inputText styleClass="form-control" id="vin" value="{!vinNumber}">
+<!--                      <apex:actionSupport event="onchange" action="{!fetchServiceVehFromVIN}" reRender="inspectionForm" status="blockUI"/> -->
+                    </apex:inputText>
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" id="decode_vin"><i class="glyphicon glyphicon-search"></i> Decode</button>
+                    </span>
+                </div>
+            </div>
+            
+            <div class="col-md-2 form-group">   
+                <label for="odomtr">Odometer</label>
+                <apex:inputField styleClass="form-control input-sm" id="odomtr" value="{!serviceVeh.dealer__Last_Odometer__c}" html-size="4" />
+            </div>
+            
+        </div>
+    </apex:outputPanel>
+    
+    <apex:outputPanel id="vehInfoId">
+        <div class="row">
+            <div class="col-md-2 form-group">   
+                <label for="year">Year</label>
+                <apex:inputField styleClass="form-control input-sm" id="year" value="{!serviceVeh.dealer__Year__c}" html-size="4" />
+            </div>
+
+            <div class="col-md-3 form-group">
+                <label for="make">Make</label>
+                <apex:inputField styleClass="form-control input-sm" id="make" value="{!serviceVeh.dealer__Make__c}" />
+            </div>
+
+            <div class="col-md-3 form-group">
+                <label for="model">Model</label>
+                <apex:inputField styleClass="form-control input-sm" id="model" value="{!serviceVeh.dealer__Carline__c}" />
+            </div>
+
+            <div class="col-md-3 form-group">
+                <label for="trim">Trim</label>
+                 <apex:inputField styleClass="form-control input-sm" id="trim" value="{!serviceVeh.dealer__Trim_Level__c}" />
+            </div>
+        </div>
+<!--     </apex:outputPanel> -->
+        
+        <div class="row">
+            <div class="col-md-2 form-group">   
+                <label for="transmission">Transmission</label>
+                <apex:inputField styleClass="form-control input-sm" id="transmission" value="{!serviceVeh.dealer__Transmission_Type__c}" html-size="4" />
+            </div>
+
+            <div class="col-md-3 form-group">
+                <label for="cylinders"># Cylinders</label>
+                <apex:inputField styleClass="form-control input-sm" id="cylinders" value="{!inspection.dealer__Cylinders__c}" />
+            </div>
+
+            <div class="col-md-3 form-group">
+                <label for="bodyType">Body Type</label>
+                <apex:inputField styleClass="form-control input-sm" id="bodyType" value="{!serviceVeh.dealer__Body_Type_Picklist__c}">
+                    <apex:actionSupport event="onchange" action="{!fetchImageName}" reRender="imageStyleRender,bodyImage, mapPanelId" status="blockUI"/>
+                </apex:inputField>
+            </div>
+
+            <div class="col-md-3 form-group">
+                <label for="exteriorColor">Exterior Color</label>
+                 <apex:inputField styleClass="form-control input-sm" id="exteriorColor" value="{!serviceVeh.dealer__Ext_Color__c}" />
+            </div>
+        </div>
+      </apex:outputPanel>  
+        
+        </div>
+       
+    <!--Vehicle End  -->
+        
+        
+        
+         <!-- Start Of Appraisals -->
+         <div class="appraisals acc-but"><a href="#">Appraisals History</a></div>
+        <div class="block-appraisals">
+        
+        <div class="row">
+        <div class="col-md-12">
+            <table class="table table-striped table-bordered" >
+                <tr>
+                    <th><label for="valtion">Appraisal Number</label></th>
+                    <th><label for="valtion">Appraiser</label></th>
+                    <th><label for="valtion">Appraisal Date</label></th>
+                    <th><label for="valtion">Appraisal Value</label></th>
+                    <th><label for="valtion">ACV</label></th>
+                    <th><label for="valtion">Repair Estimate</label></th>
+                </tr>
+                
+                <apex:repeat value="{!previousAppraisals}" var="prevAppraisal">
+                <tr>
+                    <td><apex:outputField styleClass="form-control" value="{!prevAppraisal.Name}" /></td>
+                    <td><apex:outputField styleClass="form-control" value="{!prevAppraisal.dealer__Appraised_By__c}" /></td>
+                    <td><apex:outputField styleClass="form-control" value="{!prevAppraisal.CreatedDate}" /></td>
+                    <td><apex:outputField styleClass="form-control" value="{!prevAppraisal.dealer__Appraised_Value__c}" /></td>
+                    <td><apex:outputField styleClass="form-control" value="{!prevAppraisal.dealer__ACV_Actual_Cash_Value__c}" /></td>
+                    <td><apex:outputField styleClass="form-control" value="{!prevAppraisal.dealer__Expected_Costs__c}" /></td>
+                </tr>   
+                </apex:repeat>
+            </table>
+            </div>
+        </div> 
+        </div>
+         
+        
+        <!-- End Of Appraisals -->
+        
+        
+         <!--Mechnical Start-->
+         <apex:outputPanel id="reconEst">
+         <div class="mechanical acc-but"><a href="#">Reconditioning Estimate</a></div>
+         
+         <div class="block-mechanical">
+        
+        <div class="row">
+            <div class="col-md-2 form-group">   
+                <div><label for="mechanical">Mechanical Recon</label></div>
+                <apex:outputText styleClass="form-control input-sm" id="mechanical" value="{0, number, ###,###,###,##0.00}"> 
+                    <apex:param value="{!inspection.dealer__Mechanical_Recon__c}"/>  
+                </apex:outputText>
+<!--                 <span class="form-control"><apex:outputField styleClass="form-control input-sm" id="mechanical" value="{!inspection.dealer__Mechanical_Recon__c}"/></span> -->
+            </div>
+
+            <div class="col-md-2 form-group">
+                <div><label for="body">Body/Glass Recon</label></div>
+                <apex:outputText styleClass="form-control input-sm" id="body" value="{0, number, ###,###,###,##0.00}"> 
+                    <apex:param value="{!inspection.dealer__Body_Glass_Recon__c}"/>  
+                </apex:outputText>
+<!--                 <span class="form-control"><apex:outputField styleClass="form-control input-sm" id="body" value="{!inspection.dealer__Body_Glass_Recon__c}"  /></span> -->
+            </div>
+
+            <div class="col-md-2 form-group">
+               <div><label for="interior">Interior Recon</label></div>
+                <apex:outputText styleClass="form-control input-sm" id="interior" value="{0, number, ###,###,###,##0.00}"> 
+                    <apex:param value="{!inspection.dealer__Interior_Recon__c}"/>  
+                </apex:outputText>
+<!--                 <span class="form-control"><apex:outputField styleClass="form-control input-sm" id="interior" value="{!inspection.dealer__Interior_Recon__c}"  /></span> -->
+            </div>
+
+            <div class="col-md-2 form-group">
+               <div><label for="tire_recon">Tires</label></div>
+                <apex:outputText styleClass="form-control input-sm" id="tire_recon" value="{0, number, ###,###,###,##0.00}"> 
+                    <apex:param value="{!inspection.dealer__Tires_Recon__c}"/>  
+                </apex:outputText>
+<!--                 <span class="form-control"><apex:outputField styleClass="form-control input-sm" id="tire_recon" value="{!inspection.dealer__Tires_Recon__c}"  /></span> -->
+            </div>
+            
+            <div class="col-md-2 form-group">
+               <div><label for="brake_recon">Brakes</label></div>
+               <apex:outputText styleClass="form-control input-sm" id="brake_recon" value="{0, number, ###,###,###,##0.00}"> 
+                    <apex:param value="{!inspection.dealer__Brakes_Recon__c}"/>  
+                </apex:outputText>
+<!--                <span class="form-control"><apex:outputField styleClass="form-control input-sm" id="brake_recon" value="{!inspection.dealer__Brakes_Recon__c}"  /></span> -->
+            </div>
+            
+        </div>
+        
+        
+
+        <div class="row">
+            <div class="col-md-6 form-group">
+                <label for="int_comments"><h5>Comments</h5></label>
+                <apex:inputField styleClass="input-sm form-control" id="int_comments" value="{!inspection.dealer__Internal_Comments__c}" />
+            </div>
+
+        </div>
+          </div>
+         </apex:outputPanel> 
+          <!--Mechnical End -->
+  
+  <apex:outputPanel id="carSection">
+  <div class="container container_block">
+<!--   <div class="text-center title">Dealer Team</div> -->
+  <div class="margintb">
+    <div class="block-color block-color-1">
+      <div>
+        <div class="sub-title">Tires</div>
+        <div class="green-color"><a id="greenTire1" href="" > </a></div>
+        <div class="yellow-color"><a class="{!if(passengerrear_yellow_tire == '1', 'crossMark', '')}" id="passengerrear_yellow_tire" data-toggle="modal" data-target="#popup-body" onclick="setBrakeAndTire(this.id);"> </a></div>
+        <div class="red-color"><a class="{!if(passengerrear_red_tire == '1', 'crossMark', '')}" id="passengerrear_red_tire" data-toggle="modal" data-target="#popup-body" onclick="setBrakeAndTire(this.id);"> </a></div>
+      </div>
+      <div class="clearfix"></div>
+      <div >
+        <div class="sub-title">Brakes </div>
+        <div class="green-color"><a id="greenBrake1" href=""> </a></div>
+        <div class="yellow-color"><a class="{!if(passengerrear_yellow_brake == '1', 'crossMark', '')}" id="passengerrear_yellow_brake" data-toggle="modal" data-target="#popup-body" onclick="setBrakeAndTire(this.id);"> </a></div>
+        <div class="red-color"><a class="{!if(passengerrear_red_brake == '1', 'crossMark', '')}" id="passengerrear_red_brake" data-toggle="modal" data-target="#popup-body" onclick="setBrakeAndTire(this.id);"> </a></div>
+      </div>
+    </div>
+    <div class="block-color block-color-2">
+      <div>
+        <div class="sub-title">Tires</div>
+        <div class="green-color"><a id="greenTire2" href="" > </a></div>
+        <div class="yellow-color"><a class="{!if(passengerfront_yellow_tire == '1', 'crossMark', '')}" id="passengerfront_yellow_tire" data-toggle="modal" data-target="#popup-body" onclick="setBrakeAndTire(this.id);"> </a></div>
+        <div class="red-color"><a class="{!if(passengerfront_red_tire == '1', 'crossMark', '')}" id="passengerfront_red_tire" data-toggle="modal" data-target="#popup-body" onclick="setBrakeAndTire(this.id);"> </a></div>
+      </div>
+      <div class="clearfix"></div>
+      <div >
+        <div class="sub-title">Brakes </div>
+        <div class="green-color"><a id="greenBrake2" href=""> </a></div>
+        <div class="yellow-color"><a class="{!if(passengerfront_yellow_brake == '1', 'crossMark', '')}" id="passengerfront_yellow_brake" data-toggle="modal" data-target="#popup-body" onclick="setBrakeAndTire(this.id);"> </a></div>
+        <div class="red-color"><a class="{!if(passengerfront_red_brake == '1', 'crossMark', '')}" id="passengerfront_red_brake" data-toggle="modal" data-target="#popup-body" onclick="setBrakeAndTire(this.id);"> </a></div>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+    
+    <apex:outputPanel id="imageStyleRender">
+    <!-- <div id="demo-box" class="main"> -->
+    <div id="demo-box" class="{!imageStyleClass}">
+    <div id="default-car" class="imgblock">
+        
+<!--     <img src="{!$Resource.carimage}" width="442" height="480" usemap="#Map" border="0" /> -->
+    
+    <apex:image url="{!URLFOR($Resource.dealer__Body_Type, imageName)}" usemap="#Map" id="bodyImage" style="vertical-align:center"/> 
+
+    <apex:outputPanel id="mapPanelId">
+      <map name="Map" id="Map">
+      
+      <apex:outputPanel rendered="{!imageName == 'Sedan.jpg'}">
+      <apex:variable value="{!0}" var="rowNum" />
+                    <apex:repeat value="{!InspectionReportLines}" var="line">               
+                     <apex:variable var="rowNum" value="{!rowNum + 1}"/> 
+ <apex:outputPanel rendered="{!line.dealer__damageCoordinateY__c != null && line.dealer__damageCoordinateX__c != null}">
+                <div align="center" style="
+                        background: #000;
+                        background-position: 2px 2px !important;
+                        background-repeat: no-repeat !important;
+                        background-size: 75% auto !important;
+                        top: {!line.dealer__damageCoordinateY__c}px;
+                        height: 20px;
+                        left: {!line.dealer__damageCoordinateX__c}px;
+                        position: absolute;
+                        width: 20px;
+                        color: #fff;
+                        border-radius: 100%;
+                        font-size: 15px;
+                        padding: 1px 0 0 0;">{!rowNum}</div>
+                        </apex:outputPanel>
+            </apex:repeat>
+            <!--
+          <div class="{!if(body == '1', 'sedan-body', '')}"></div>
+          <div class="{!if(driverdoor == '1', 'sedan-bottom-door', '')}"></div>
+          <div class="{!if(passengerdoor == '1', 'sedan-top-door', '')}"></div>
+          <div class="{!if(driverfront_wheel == '1', 'sedan-driverfront-wheel', '')}"></div>
+          <div class="{!if(driverrear_wheel == '1', 'sedan-driverrear-wheel', '')}"></div>
+          <div class="{!if(passengerfront_wheel == '1', 'sedan-passengerfront-wheel', '')}"></div>
+          <div class="{!if(passengerrear_wheel == '1', 'sedan-passengerrear-wheel', '')}"></div>
+          
+          <div class="{!if(driverfront_body == '1', 'sedan-driverfront-body', '')}"></div>
+          <div class="{!if(driverrear_body == '1', 'sedan-driverrear-body', '')}"></div>
+          <div class="{!if(passengerfront_body == '1', 'sedan-passengerfront-body', '')}"></div>
+          <div class="{!if(passengerrear_body == '1', 'sedan-passengerrear-body', '')}"></div>
+          -->
+      </apex:outputPanel>
+      <apex:outputPanel rendered="{!imageName == 'Sedan.jpg'}">
+        <area shape="circle" id="driverfront-tire" coords="359,400,36" data-toggle="modal" data-target="#popup-body" onclick="setSedanValues(this.id);"/>
+        <area shape="circle" id="passengerfront-tire" coords="357,36,36" data-toggle="modal" data-target="#popup-body" onclick="setSedanValues(this.id);"/>
+        <area shape="circle" id="passengerrear-tire" coords="148,36,36" data-toggle="modal" data-target="#popup-body" onclick="setSedanValues(this.id);"/>
+        <area shape="circle" id="driverrear-tire" coords="146,402,36" data-toggle="modal" data-target="#popup-body" onclick="setSedanValues(this.id);"/>
+        <area shape="poly" id="body_cord" coords="4,147,474,146,475,284,70,276,6,286" data-toggle="modal" data-target="#popup-body" onclick="setSedanValues(this.id);"/>
+        <area shape="poly" id="driverdoor" coords="181,308,166,319,166,344,181,375,189,402,234,405,311,404,307,351,261,307" data-toggle="modal" data-target="#popup-body" onclick="setSedanValues(this.id);"/>
+        <area shape="poly" id="passengerdoor" coords="191,32,185,57,171,79,163,103,180,130,223,130,259,125,285,119,306,86,311,32"  data-toggle="modal" data-target="#popup-body" onclick="setSedanValues(this.id);"/>       
+        <area shape="poly" id="sedan_passengerfront-body" coords="401,38,418,41,420,51,420,66,416,82,393,85,358,91,323,96,317,95,310,78,313,63,325,64,336,74,357,74,373,72,386,67,394,59,397,39" data-toggle="modal" data-target="#popup-body" onclick="setSedanValues(this.id);"/>
+        <area shape="poly" id="sedan_passengerrear-body" coords="107,33,74,43,56,69,67,98,103,102,134,113,158,121,161,113,161,96,164,83,153,79,129,75,113,60" data-toggle="modal" data-target="#popup-body" onclick="setSedanValues(this.id);"/>
+        <area shape="poly" id="sedan_driverfront-body" coords="322,381,314,367,313,338,345,340,368,345,395,350,414,360,420,371,421,382,421,391,404,395,391,382,383,365,367,363,351,361,332,363" data-toggle="modal" data-target="#popup-body" onclick="setSedanValues(this.id);"/>
+        <area shape="poly" id="sedan_driverrear-body" coords="152,314,157,332,163,358,143,365,121,370,107,389,102,404,73,403,60,382,62,342" data-toggle="modal" data-target="#popup-body" onclick="setSedanValues(this.id);"/>
+      </apex:outputPanel>
+      
+      <apex:outputPanel rendered="{!imageName == 'SUV.jpg' }">
+      <apex:variable value="{!0}" var="rowNum" />
+                    <apex:repeat value="{!InspectionReportLines}" var="line">               
+                     <apex:variable var="rowNum" value="{!rowNum + 1}"/> 
+ <apex:outputPanel rendered="{!line.dealer__damageCoordinateY__c != null && line.dealer__damageCoordinateX__c != null}">
+                <div align="center" style="
+                        background: #000;
+                        background-position: 2px 2px !important;
+                        background-repeat: no-repeat !important;
+                        background-size: 75% auto !important;
+                        top: {!line.dealer__damageCoordinateY__c}px;
+                        height: 20px;
+                        left: {!line.dealer__damageCoordinateX__c}px;
+                        position: absolute;
+                        width: 20px;
+                        color: #fff;
+                        border-radius: 100%;
+                        font-size: 15px;
+                        padding: 1px 0 0 0;">{!rowNum}</div>
+                        </apex:outputPanel>
+            </apex:repeat>
+            <!--
+          <div class="{!if(body == '1', 'suv-body', '')}"></div>
+          <div class="{!if(driverdoor == '1', 'suv-bottom-door', '')}"></div>
+          <div class="{!if(passengerdoor == '1', 'suv-top-door', '')}"></div>
+          <div class="{!if(driverfront_wheel == '1', 'suv-driverfront-wheel', '')}"></div>
+          <div class="{!if(driverrear_wheel == '1', 'suv-driverrear-wheel', '')}"></div>
+          <div class="{!if(passengerfront_wheel == '1', 'suv-passengerfront-wheel', '')}"></div>
+          <div class="{!if(passengerrear_wheel == '1', 'suv-passengerrear-wheel', '')}"></div>
+          
+          <div class="{!if(driverfront_body == '1', 'suv-driverfront-body', '')}"></div>
+          <div class="{!if(driverrear_body == '1', 'suv-driverrear-body', '')}"></div>
+          <div class="{!if(passengerfront_body == '1', 'suv-passengerfront-body', '')}"></div>
+          <div class="{!if(passengerrear_body == '1', 'suv-passengerrear-body', '')}"></div>
+          -->
+      </apex:outputPanel>
+      <apex:outputPanel rendered="{!imageName == 'SUV.jpg' }">
+        <area shape="poly" id="suv_body" coords="4,111,76,115,142,132,326,134,384,116,456,121,515,110,548,113,543,248,463,237,382,242,328,226,140,223,81,243,6,246" data-toggle="modal" data-target="#popup-body" onclick="setSuvValues(this.id);"/>
+        <area shape="poly" id="suv_driverdoor" coords="206,230,169,245,160,264,195,276,221,296,230,331,294,332,367,328,377,273,318,232" data-toggle="modal" data-target="#popup-body" onclick="setSuvValues(this.id);"/>
+        <area shape="poly" id="suv_passengerdoor" coords="230,25,224,51,193,69,205,124,271,128,339,116,376,88,373,27" data-toggle="modal" data-target="#popup-body" onclick="setSuvValues(this.id);"/>
+        <area shape="circle" id="suv_driverfront-wheel" coords="410,324,28" data-toggle="modal" data-target="#popup-body" onclick="setSuvValues(this.id);"/>
+        <area shape="circle" id="suv_driverrear-wheel" coords="188,328,28" data-toggle="modal" data-target="#popup-body" onclick="setSuvValues(this.id);"/>
+        <area shape="circle" id="suv_passengerfront-wheel" coords="410,34,28" data-toggle="modal" data-target="#popup-body" onclick="setSuvValues(this.id);"/>
+        <area shape="circle" id="suv_passengerrear-wheel" coords="190,33,28" data-toggle="modal" data-target="#popup-body" onclick="setSuvValues(this.id);"/>       
+        <area shape="poly" id="suv_driverfront-body" coords="385,267,462,280,479,310,480,332,468,334,445,336,445,322,437,300,417,295,391,292" data-toggle="modal" data-target="#popup-body" onclick="setSuvValues(this.id);"/>
+        <area shape="poly" id="suv_driverrear-body" coords="188,296,183,277,157,273,149,256,166,236,143,232,132,256,116,281,111,313,146,326,157,312,170,297,181,290" data-toggle="modal" data-target="#popup-body" onclick="setSuvValues(this.id);"/>
+        <area shape="poly" id="suv_passengerfront-body" coords="442,23,471,23,479,47,475,67,460,82,438,86,397,86,382,68,402,66,433,62,446,23" data-toggle="modal" data-target="#popup-body" onclick="setSuvValues(this.id);"/>
+        <area shape="poly" id="suv_passengerrear-body" coords="157,33,113,35,119,75,135,108,173,120,194,122,187,73" data-toggle="modal" data-target="#popup-body" onclick="setSuvValues(this.id);"/>
+      </apex:outputPanel>
+      
+      <apex:outputPanel rendered="{!imageName == 'Van.jpg'}">
+      <apex:variable value="{!0}" var="rowNum" />
+                    <apex:repeat value="{!InspectionReportLines}" var="line">               
+                     <apex:variable var="rowNum" value="{!rowNum + 1}"/> 
+ <apex:outputPanel rendered="{!line.dealer__damageCoordinateY__c != null && line.dealer__damageCoordinateX__c != null}">
+                <div align="center" style="
+                        background: #000;
+                        background-position: 2px 2px !important;
+                        background-repeat: no-repeat !important;
+                        background-size: 75% auto !important;
+                        top: {!line.dealer__damageCoordinateY__c}px;
+                        height: 20px;
+                        left: {!line.dealer__damageCoordinateX__c}px;
+                        position: absolute;
+                        width: 20px;
+                        color: #fff;
+                        border-radius: 100%;
+                        font-size: 15px;
+                        padding: 1px 0 0 0;">{!rowNum}</div>
+                        </apex:outputPanel>
+            </apex:repeat>
+            <!--
+          <div class="{!if(body == '1', 'van-body', '')}"></div>
+          <div class="{!if(driverdoor == '1', 'van-bottom-door', '')}"></div>
+          <div class="{!if(passengerdoor == '1', 'van-top-door', '')}"></div>
+          <div class="{!if(driverfront_wheel == '1', 'van-driverfront-wheel', '')}"></div>
+          <div class="{!if(driverrear_wheel == '1', 'van-driverrear-wheel', '')}"></div>
+          <div class="{!if(passengerfront_wheel == '1', 'van-passengerfront-wheel', '')}"></div>
+          <div class="{!if(passengerrear_wheel == '1', 'van-passengerrear-wheel', '')}"></div>
+          
+            <div class="{!if(driverfront_body == '1', 'van-driverfront-body', '')}"></div>
+            <div class="{!if(driverrear_body == '1', 'van-driverrear-body', '')}"></div>
+            -->
+      </apex:outputPanel>
+      <apex:outputPanel rendered="{!imageName == 'Van.jpg'}">
+        <area shape="rect" id="van_body" coords="402,16,488,213" data-toggle="modal" data-target="#popup-body" onclick="setVanValues(this.id);"/>
+        <area shape="poly" id="van_driverdoor" coords="162,9,153,81,174,83,197,68,216,69,227,81,268,84,310,83,331,65,358,67,370,61,334,39,301,11" data-toggle="modal" data-target="#popup-body" onclick="setVanValues(this.id);"/>
+        <area shape="poly" id="van_passengerdoor" coords="201,162,220,175,231,187,278,186,305,185,308,166,329,160,351,168,372,165,366,113,229,113,185,135,160,157,155,175,161,186,177,176,187,164,197,158" data-toggle="modal" data-target="#popup-body" onclick="setVanValues(this.id);"/>
+        <area shape="circle" id="van_driverfront-wheel" coords="332,87,17" data-toggle="modal" data-target="#popup-body" onclick="setVanValues(this.id);"/>
+        <area shape="circle" id="van_driverrear-wheel" coords="200,87,17" data-toggle="modal" data-target="#popup-body" onclick="setVanValues(this.id);"/>
+        <area shape="circle" id="van_passengerfront-wheel" coords="196,185,17" data-toggle="modal" data-target="#popup-body" onclick="setVanValues(this.id);"/>
+        <area shape="circle" id="van_passengerrear-wheel" coords="328,184,17" data-toggle="modal" data-target="#popup-body" onclick="setVanValues(this.id);"/>      
+        <area shape="rect" id="van_front-body" coords="23,6,120,102" data-toggle="modal" data-target="#popup-body" onclick="setVanValues(this.id);"/>
+        <area shape="rect" id="van_rear-body" coords="29,115,122,208" data-toggle="modal" data-target="#popup-body" onclick="setVanValues(this.id);"/>
+      </apex:outputPanel>
+      
+      <apex:outputPanel rendered="{!imageName == 'Default.jpg'}">
+     <apex:variable value="{!0}" var="rowNum" />
+                    <apex:repeat value="{!InspectionReportLines}" var="line">               
+                     <apex:variable var="rowNum" value="{!rowNum + 1}"/> 
+ <apex:outputPanel rendered="{!line.dealer__damageCoordinateY__c != null && line.dealer__damageCoordinateX__c != null}">
+                <div align="center" style="
+                        background: #000;
+                        background-position: 2px 2px !important;
+                        background-repeat: no-repeat !important;
+                        background-size: 75% auto !important;
+                        top: {!line.dealer__damageCoordinateY__c}px;
+                        height: 20px;
+                        left: {!line.dealer__damageCoordinateX__c}px;
+                        position: absolute;
+                        width: 20px;
+                        color: #fff;
+                        border-radius: 100%;
+                        font-size: 15px;
+                        padding: 1px 0 0 0;">{!rowNum}</div>
+                        </apex:outputPanel>
+            </apex:repeat>
+            <!--
+          <div class="{!if(body == '1', 'default-body', '')}"></div>
+          <div class="{!if(driverdoor == '1', 'default-bottom-door', '')}"></div>
+          <div class="{!if(passengerdoor == '1', 'default-top-door', '')}"></div>
+          <div class="{!if(driverfront_wheel == '1', 'default-driverfront-wheel', '')}"></div>
+          <div class="{!if(driverrear_wheel == '1', 'default-driverrear-wheel', '')}"></div>
+          <div class="{!if(passengerfront_wheel == '1', 'default-passengerfront-wheel', '')}"></div>
+          <div class="{!if(passengerrear_wheel == '1', 'default-passengerrear-wheel', '')}"></div>
+          -->
+      </apex:outputPanel>
+      <apex:outputPanel rendered="{!imageName == 'Default.jpg'}">
+        <area shape="rect" id="default_body" coords="129,129,392,215" data-toggle="modal" data-target="#popup-body" onclick="setDefaultVehValues(this.id);"/>
+        <area shape="poly" id="default_driverdoor" coords="202,255,189,283,202,305,212,320,241,324,310,326,311,286,287,269,266,258" data-toggle="modal" data-target="#popup-body" onclick="setDefaultVehValues(this.id);"/>
+        <area shape="poly" id="default_passengerdoor" coords="219,23,208,45,195,66,208,88,254,90,285,87,317,64,318,34,317,22" data-toggle="modal" data-target="#popup-body" onclick="setDefaultVehValues(this.id);"/>
+        <area shape="circle" id="default_driverfront-wheel" coords="340,320,20" data-toggle="modal" data-target="#popup-body" onclick="setDefaultVehValues(this.id);"/>
+        <area shape="circle" id="default_driverrear-wheel" coords="179,322,20" data-toggle="modal" data-target="#popup-body" onclick="setDefaultVehValues(this.id);"/>
+        <area shape="circle" id="default_passengerfront-wheel" coords="349,28,20" data-toggle="modal" data-target="#popup-body" onclick="setDefaultVehValues(this.id);"/>
+        <area shape="circle" id="default_passengerrear-wheel" coords="186,28,20" data-toggle="modal" data-target="#popup-body" onclick="setDefaultVehValues(this.id);"/>
+      </apex:outputPanel>
+      
+      <apex:outputPanel rendered="{!imageName == 'Hatchback.jpg'}">
+      <apex:variable value="{!0}" var="rowNum" />
+                   <apex:repeat value="{!InspectionReportLines}" var="line">                
+                     <apex:variable var="rowNum" value="{!rowNum + 1}"/> 
+ <apex:outputPanel rendered="{!line.dealer__damageCoordinateY__c != null && line.dealer__damageCoordinateX__c != null}">
+                <div align="center" style="
+                        background: #000;
+                        background-position: 2px 2px !important;
+                        background-repeat: no-repeat !important;
+                        background-size: 75% auto !important;
+                        top: {!line.dealer__damageCoordinateY__c}px;
+                        height: 20px;
+                        left: {!line.dealer__damageCoordinateX__c}px;
+                        position: absolute;
+                        width: 20px;
+                        color: #fff;
+                        border-radius: 100%;
+                        font-size: 15px;
+                        padding: 1px 0 0 0;">{!rowNum}</div>
+                        </apex:outputPanel>
+            </apex:repeat>
+            <!--
+              <div class="{!if(body == '1', 'hatchback-body', '')}"></div>
+              <div class="{!if(driverdoor == '1', 'hatchback-bottom-door', '')}"></div>
+              <div class="{!if(passengerdoor == '1', 'hatchback-top-door', '')}"></div>
+              <div class="{!if(driverfront_wheel == '1', 'hatchback-driverfront-wheel', '')}"></div>
+              <div class="{!if(driverrear_wheel == '1', 'hatchback-driverrear-wheel', '')}"></div>
+              <div class="{!if(passengerfront_wheel == '1', 'hatchback-passengerfront-wheel', '')}"></div>
+              <div class="{!if(passengerrear_wheel == '1', 'hatchback-passengerrear-wheel', '')}"></div>
+              
+              <div class="{!if(driverfront_body == '1', 'hatchback-driverfront-body', '')}"></div>
+              <div class="{!if(driverrear_body == '1', 'hatchback-driverrear-body', '')}"></div>
+              <div class="{!if(passengerfront_body == '1', 'hatchback-passengerfront-body', '')}"></div>
+              <div class="{!if(passengerrear_body == '1', 'hatchback-passengerrear-body', '')}"></div>
+              -->
+          </apex:outputPanel>
+          <apex:outputPanel rendered="{!imageName == 'Hatchback.jpg'}">
+            <area shape="poly" id="hatchback_body" coords="593,114,592,133,574,136,563,134,566,253,583,254,593,264,580,276,555,272,538,271,520,266,514,231,506,254,422,265,350,251,242,243,196,246,142,254,111,253,103,267,69,268,20,272,15,253,37,252,44,208,41,130,17,129,17,111,78,118,106,127,148,132,187,135,250,144,341,136,403,121,479,114,505,127,529,116,590,113" data-toggle="modal" data-target="#popup-body" onclick="setHatchBackValues(this.id);"/>
+            <area shape="poly" id="hatchback_driverdoor" coords="222,252,206,279,205,306,226,331,245,354,295,348,346,350,392,350,394,307,380,283,331,260,272,252" data-toggle="modal" data-target="#popup-body" onclick="setHatchBackValues(this.id);"/>
+            <area shape="poly" id="hatchback_passengerdoor" coords="231,28,227,49,219,66,204,83,210,117,224,136,280,136,325,134,369,110,392,91,393,46,390,32" data-toggle="modal" data-target="#popup-body" onclick="setHatchBackValues(this.id);"/>
+            <area shape="circle" id="hatchback_driverfront-wheel" coords="443,345,31" data-toggle="modal" data-target="#popup-body" onclick="setHatchBackValues(this.id);"/>
+            <area shape="circle" id="hatchback_driverrear-wheel" coords="191,346,31" data-toggle="modal" data-target="#popup-body" onclick="setHatchBackValues(this.id);"/>
+            <area shape="circle" id="hatchback_passengerfront-wheel" coords="444,37,31" data-toggle="modal" data-target="#popup-body" onclick="setHatchBackValues(this.id);"/>
+            <area shape="circle" id="hatchback_passengerrear-wheel" coords="191,37,31" data-toggle="modal" data-target="#popup-body" onclick="setHatchBackValues(this.id);"/>       
+            <area shape="poly" id="hatchback_passengerfront-body" coords="395,30,400,83,394,101,365,116,349,134,411,110,474,90,514,80,518,41,513,28,480,27,474,56,447,72,422,68,406,33" data-toggle="modal" data-target="#popup-body" onclick="setHatchBackValues(this.id);"/>
+            <area shape="poly" id="hatchback_passengerrear-body" coords="156,32,106,35,103,63,111,99,147,113,176,127,203,131,210,117,197,85,190,72,166,68,155,55,154,33" data-toggle="modal" data-target="#popup-body" onclick="setHatchBackValues(this.id);"/>
+            <area shape="poly" id="hatchback_driverfront-body" coords="361,257,421,284,483,298,524,329,516,350,488,354,476,326,444,308,423,317,415,334,406,353,399,353,401,327,402,299,383,280,363,258" data-toggle="modal" data-target="#popup-body" onclick="setHatchBackValues(this.id);"/>
+            <area shape="poly" id="hatchback_driverrear-body" coords="213,251,203,270,200,293,198,307,176,312,160,329,152,348,106,349,103,323,109,286,155,264,198,252" data-toggle="modal" data-target="#popup-body" onclick="setHatchBackValues(this.id);"/>
+          </apex:outputPanel>
+          
+         <apex:outputPanel rendered="{!imageName == 'Station_Wagon.jpg'}">
+         <apex:variable value="{!0}" var="rowNum" />
+                    <apex:repeat value="{!InspectionReportLines}" var="line">               
+                     <apex:variable var="rowNum" value="{!rowNum + 1}"/> 
+ <apex:outputPanel rendered="{!line.dealer__damageCoordinateY__c != null && line.dealer__damageCoordinateX__c != null}">
+                <div align="center" style="
+                        background: #000;
+                        background-position: 2px 2px !important;
+                        background-repeat: no-repeat !important;
+                        background-size: 75% auto !important;
+                        top: {!line.dealer__damageCoordinateY__c}px;
+                        height: 20px;
+                        left: {!line.dealer__damageCoordinateX__c}px;
+                        position: absolute;
+                        width: 20px;
+                        color: #fff;
+                        border-radius: 100%;
+                        font-size: 15px;
+                        padding: 1px 0 0 0;">{!rowNum}</div>
+                        </apex:outputPanel>
+            </apex:repeat>
+        
+            <!--
+              <div class="{!if(body == '1', 'stationwagon-body', '')}"></div>
+              <div class="{!if(driverdoor == '1', 'stationwagon-top-door', '')}"></div>
+              <div class="{!if(passengerdoor == '1', 'stationwagon-bottom-door', '')}"></div>
+              <div class="{!if(driverfront_wheel == '1', 'stationwagon-driverrear-wheel', '')}"></div>
+              <div class="{!if(driverrear_wheel == '1', 'stationwagon-driverfront-wheel', '')}"></div>
+              <div class="{!if(passengerfront_wheel == '1', 'stationwagon-passengerrear-wheel', '')}"></div>
+              <div class="{!if(passengerrear_wheel == '1', 'stationwagon-passengerfront-wheel', '')}"></div>
+              
+              <div class="{!if(driverfront_body == '1', 'stationwagon-driverfront-body', '')}"></div>
+              <div class="{!if(driverrear_body == '1', 'stationwagon-driverrear-body', '')}"></div>
+              <div class="{!if(passengerfront_body == '1', 'stationwagon-passengerfront-body', '')}"></div>
+              <div class="{!if(passengerrear_body == '1', 'stationwagon-passengerrear-body', '')}"></div>
+              -->
+          </apex:outputPanel>
+          <apex:outputPanel rendered="{!imageName == 'Station_Wagon.jpg'}">
+            <area shape="rect" id="stationwagon_body" coords="41,106,360,198" data-toggle="modal" data-target="#popup-body" onclick="setStationWagonValues(this.id);"/>
+            <area shape="poly" id="stationwagon_driverdoor" coords="156,41,159,74,197,93,239,95,247,69,235,42" data-toggle="modal" data-target="#popup-body" onclick="setStationWagonValues(this.id);"/>
+            <area shape="poly" id="stationwagon_passengerdoor" coords="184,208,158,227,156,260,202,264,231,261,249,232,242,211" data-toggle="modal" data-target="#popup-body" onclick="setStationWagonValues(this.id);"/>
+            <area shape="circle" id="stationwagon_driverfront-wheel" coords="132,42,16" data-toggle="modal" data-target="#popup-body" onclick="setStationWagonValues(this.id);"/>
+            <area shape="circle" id="stationwagon_driverrear-wheel" coords="260,44,17" data-toggle="modal" data-target="#popup-body" onclick="setStationWagonValues(this.id);"/>
+            <area shape="circle" id="stationwagon_passengerfront-wheel" coords="131,258,17" data-toggle="modal" data-target="#popup-body" onclick="setStationWagonValues(this.id);"/>
+            <area shape="circle" id="stationwagon_passengerrear-wheel" coords="260,257,17" data-toggle="modal" data-target="#popup-body" onclick="setStationWagonValues(this.id);"/>            
+            <area shape="poly" id="stationwagon_passengerfront-body" coords="148,222,110,230,92,233,88,251,101,262,110,248,116,240,137,236,149,241,154,231" data-toggle="modal" data-target="#popup-body" onclick="setStationWagonValues(this.id);"/>
+            <area shape="poly" id="stationwagon_passengerrear-body" coords="247,207,272,208,289,209,294,229,302,239,306,255,296,264,282,259,266,239,254,235,248,210" data-toggle="modal" data-target="#popup-body" onclick="setStationWagonValues(this.id);"/>
+            <area shape="poly" id="stationwagon_driverfront-body" coords="111,36,88,41,89,55,104,65,122,68,153,78,153,67,140,64,124,64,115,59" data-toggle="modal" data-target="#popup-body" onclick="setStationWagonValues(this.id);"/>
+            <area shape="poly" id="stationwagon_driverrear-body" coords="283,34,299,45,301,67,294,87,281,89,259,92,240,92,254,70,269,65,280,63,282,53,282,35" data-toggle="modal" data-target="#popup-body" onclick="setStationWagonValues(this.id);"/>
+          </apex:outputPanel>
+          
+          <apex:outputPanel rendered="{!imageName == 'Pickup.jpg'}">
+          <apex:variable value="{!0}" var="rowNum" />
+                    <apex:repeat value="{!InspectionReportLines}" var="line">               
+                     <apex:variable var="rowNum" value="{!rowNum + 1}"/> 
+ <apex:outputPanel rendered="{!line.dealer__damageCoordinateY__c != null && line.dealer__damageCoordinateX__c != null}">
+                <div align="center" style="
+                        background: #000;
+                        background-position: 2px 2px !important;
+                        background-repeat: no-repeat !important;
+                        background-size: 75% auto !important;
+                        top: {!line.dealer__damageCoordinateY__c}px;
+                        height: 20px;
+                        left: {!line.dealer__damageCoordinateX__c}px;
+                        position: absolute;
+                        width: 20px;
+                        color: #fff;
+                        border-radius: 100%;
+                        font-size: 15px;
+                        padding: 1px 0 0 0;">{!rowNum}</div>
+                        </apex:outputPanel>
+            </apex:repeat>
+            <!--
+              <div class="{!if(body == '1', 'pickup-body', '')}"></div>
+              <div class="{!if(driverdoor == '1', 'pickup-bottom-door', '')}"></div>
+              <div class="{!if(passengerdoor == '1', 'pickup-top-door', '')}"></div>
+              <div class="{!if(driverfront_wheel == '1', 'pickup-driverfront-wheel', '')}"></div>
+              <div class="{!if(driverrear_wheel == '1', 'pickup-driverrear-wheel', '')}"></div>
+              <div class="{!if(passengerfront_wheel == '1', 'pickup-passengerfront-wheel', '')}"></div>
+              <div class="{!if(passengerrear_wheel == '1', 'pickup-passengerrear-wheel', '')}"></div>
+              
+              <div class="{!if(driverfront_body == '1', 'pickup-driverfront-body', '')}"></div>
+              <div class="{!if(driverrear_body == '1', 'pickup-driverrear-body', '')}"></div>
+              <div class="{!if(passengerfront_body == '1', 'pickup-passengerfront-body', '')}"></div>
+              <div class="{!if(passengerrear_body == '1', 'pickup-passengerrear-body', '')}"></div>
+              -->
+          </apex:outputPanel>
+          <apex:outputPanel rendered="{!imageName == 'Pickup.jpg'}">    
+        <area shape="poly" id="pickup_body" coords="4,111,76,115,142,132,326,134,384,116,456,121,515,110,548,113,543,248,463,237,382,242,328,226,140,223,81,243,6,246" data-toggle="modal" data-target="#popup-body" onclick="setpickupValues(this.id);"/>
+        <area shape="poly" id="pickup_driverdoor" coords="206,230,169,245,160,264,195,276,221,296,230,331,294,332,367,328,377,273,318,232" data-toggle="modal" data-target="#popup-body" onclick="setpickupValues(this.id);"/>
+        <area shape="poly" id="pickup_passengerdoor" coords="230,25,224,51,193,69,205,124,271,128,339,116,376,88,373,27" data-toggle="modal" data-target="#popup-body" onclick="setpickupValues(this.id);"/>
+        <area shape="circle" id="pickup_driverfront-wheel" coords="410,324,28" data-toggle="modal" data-target="#popup-body" onclick="setpickupValues(this.id);"/>
+        <area shape="circle" id="pickup_driverrear-wheel" coords="188,328,28" data-toggle="modal" data-target="#popup-body" onclick="setpickupValues(this.id);"/>
+        <area shape="circle" id="pickup_passengerfront-wheel" coords="410,34,28" data-toggle="modal" data-target="#popup-body" onclick="setpickupValues(this.id);"/>
+        <area shape="circle" id="pickup_passengerrear-wheel" coords="190,33,28" data-toggle="modal" data-target="#popup-body" onclick="setpickupValues(this.id);"/>       
+        <area shape="poly" id="pickup_driverfront-body" coords="385,267,462,280,479,310,480,332,468,334,445,336,445,322,437,300,417,295,391,292" data-toggle="modal" data-target="#popup-body" onclick="setpickupValues(this.id);"/>
+        <area shape="poly" id="pickup_driverrear-body" coords="188,296,183,277,157,273,149,256,166,236,143,232,132,256,116,281,111,313,146,326,157,312,170,297,181,290" data-toggle="modal" data-target="#popup-body" onclick="setpickupValues(this.id);"/>
+        <area shape="poly" id="pickup_passengerfront-body" coords="442,23,471,23,479,47,475,67,460,82,438,86,397,86,382,68,402,66,433,62,446,23" data-toggle="modal" data-target="#popup-body" onclick="setpickupValues(this.id);"/>
+        <area shape="poly" id="pickup_passengerrear-body" coords="157,33,113,35,119,75,135,108,173,120,194,122,187,73" data-toggle="modal" data-target="#popup-body" onclick="setpickupValues(this.id);"/>      
+          </apex:outputPanel> 
+      
+      </map>
+      </apex:outputPanel>
+    </div>
+    </div>
+    </apex:outputPanel>
+    
+    <div class="clearfix"></div>
+    <div class="block-color block-color-3">
+      <div>
+        <div class="sub-title">Tires</div>
+        <div class="green-color"><a id="greenTire3" href="" > </a></div>
+        <div class="yellow-color"><a class="{!if(driverrear_yellow_tire == '1', 'crossMark', '')}" id="driverrear_yellow_tire" data-toggle="modal" data-target="#popup-body" onclick="setBrakeAndTire(this.id);"> </a></div>
+        <div class="red-color"><a class="{!if(driverrear_red_tire == '1', 'crossMark', '')}" id="driverrear_red_tire" data-toggle="modal" data-target="#popup-body" onclick="setBrakeAndTire(this.id);"> </a></div>
+      </div>
+      <div>
+        <div class="sub-title">Brakes </div>
+        <div class="green-color"><a id="greenBrake3" href=""> </a></div>
+        <div class="yellow-color"><a class="{!if(driverrear_yellow_brake == '1', 'crossMark', '')}" id="driverrear_yellow_brake" data-toggle="modal" data-target="#popup-body" onclick="setBrakeAndTire(this.id);"> </a></div>
+        <div class="red-color"><a class="{!if(driverrear_red_brake == '1', 'crossMark', '')}" id="driverrear_red_brake" data-toggle="modal" data-target="#popup-body" onclick="setBrakeAndTire(this.id);"> </a></div>
+      </div>
+    </div>
+  </div>
+  <div class="block-color block-color-4">
+    <div>
+      <div class="sub-title">Tires</div>
+      <div class="green-color"><a id="greenTire4" href="" > </a></div>
+      <div class="yellow-color"><a class="{!if(driverfront_yellow_tire == '1', 'crossMark', '')}" id="driverfront_yellow_tire" data-toggle="modal" data-target="#popup-body" onclick="setBrakeAndTire(this.id);"> </a></div>
+      <div class="red-color"><a class="{!if(driverfront_red_tire == '1', 'crossMark', '')}" id="driverfront_red_tire" data-toggle="modal" data-target="#popup-body" onclick="setBrakeAndTire(this.id);"> </a></div>
+    </div>
+    <div class="clearfix"></div>
+    <div >
+      <div class="sub-title">Brakes </div>
+      <div class="green-color"><a id="greenBrake4" href=""> </a></div>
+      <div class="yellow-color"><a class="{!if(driverfront_yellow_brake == '1', 'crossMark', '')}" id="driverfront_yellow_brake" data-toggle="modal" data-target="#popup-body" onclick="setBrakeAndTire(this.id);"> </a></div>
+      <div class="red-color"><a class="{!if(driverfront_red_brake == '1', 'crossMark', '')}" id="driverfront_red_brake" data-toggle="modal" data-target="#popup-body" onclick="setBrakeAndTire(this.id);"> </a></div>
+    </div>
+  </div>
+</div>
+  </apex:outputPanel>
+<!-- Car 1 popup one End--> 
+
+    
+    <div class="clearfix marginbottom15 margintop85"></div>
+        <apex:outputPanel id="linePanel">    
+        <!-- Start Of Inspection Report Line -->
+        <div class="row">
+            <div class="col-md-12">
+            
+            
+            <div class="row">
+            <div class="col-md-3">
+           <label> Repair Type</label>
+            <apex:inputField styleClass="form-control" value="{!inspectionReportLine.dealer__Repair_Type__c}" />
+            </div>
+            
+            <div class="col-md-3">
+            <label>Repair Description</label>
+            <div id="pgdpndtpklstId"><apex:inputField styleClass="form-control" value="{!inspectionReportLine.dealer__Repair_Description__c}" /> </div>
+            </div>
+            
+            <div class="col-md-3">
+            <label>Notes</label>
+            <apex:inputField styleClass="form-control" value="{!inspectionReportLine.dealer__Notes__c}" /> 
+            </div>
+            
+            <div class="col-md-3">
+            <label>Repair Estimate</label>
+            <apex:inputField styleClass="form-control" value="{!inspectionReportLine.dealer__Repair_Estimate__c}" />
+            </div>
+            <div class="marginbottom15 clearfix"></div>
+            <div class="saveline_btn"> <apex:commandButton value="Save Line" action="{!saveInspectionReportLine}" styleClass="btn btn-primary" reRender="linePanel, mapPanelId, reconEst, recalculate"/></div>
+           
+            
+            </div>
+            
+            <div class="marginbottom15 clearfix"></div>
+            
+                <table class="table table-striped table-bordered" id="lineItemTable">
+                    <apex:variable value="{!0}" var="rowNum" />
+                    <apex:repeat value="{!InspectionReportLines}" var="line">
+                     <apex:variable var="rowNum" value="{!rowNum + 1}"/>
+                    <tr>
+                        <td width="5%"><apex:outputText styleClass="form-control" value="{!rowNum}" /></td>
+                        <td width="20%"><apex:outputField styleClass="form-control" value="{!line.dealer__Repair_Type__c}" /></td>
+                        <td width="20%"><apex:outputField styleClass="form-control" value="{!line.dealer__Repair_Description__c}" /></td>
+                        <td width="25%"><apex:outputField styleClass="form-control" value="{!line.dealer__Notes__c}" /></td>
+                        <td width="18%"><apex:outputField styleClass="form-control" value="{!line.dealer__Repair_Estimate__c}" /></td>
+                        <td width="12%"> <apex:commandButton value="Edit"  onclick="editLineItem('{!line.id}'); return false;" styleClass="btn" html-data-target="#popup-body1" />  &nbsp; 
+                            <apex:commandButton value="Delete" onclick="deleteInspectionReportLine('{!line.Id}'); return false;" styleClass="btn btn-primary"/>
+                        </td>
+                    </tr>   
+                    </apex:repeat>
+                </table>
+              
+            </div>
+        
+        </div>
+        </apex:outputPanel> 
+        <!-- End Of Inspection Report Line -->
+  
+        <!-- Save -->
+        <div class="row">
+            <div class="button-margin">
+                <apex:commandButton id="saveInspection" value="Save" action="{!saveInspection}" styleClass="btn btn-primary" reRender="inspectionForm"/>
+
+            </div>
+            <div class="button-margin">                  
+                <apex:commandButton value="Save & Close" action="{!saveAndCloseInspection}" styleClass="btn btn-primary" reRender="inspectionForm"/>
+<!--                    <button id="stockIn" class="btn btn-primary" data-toggle="modal" data-target="#stockInModal" >Add to Inventory</button>  -->
+            </div>
+            
+             
+            <apex:outputPanel rendered="{!appraisal.id !=null}">
+                <apex:outputPanel rendered="{!appraisal.dealer__Type__c=='Wholesale'}">
+                <div class="button-margin">                  
+                    <button id="stockIn" class="btn btn-primary" data-toggle="modal" data-target="#stockInModal" >Add to Inventory</button>
+                </div>
+                </apex:outputPanel>
+                <apex:outputPanel rendered="{!appraisal.dealer__Type__c=='Wholesale'}">
+                <div class="button-margin">                  
+                    <button id="purchaseOrder" class="btn btn-primary" data-toggle="modal" data-target="#purchaseOrderModal" >Create Purchase Order</button>
+                </div>
+                </apex:outputPanel>
+                <!-- ******************************* -->
+                <apex:outputPanel rendered="{!appraisal.dealer__Type__c=='Wholesale'}">
+                <div class="button-margin">                  
+                    <button id="stockIn" class="btn btn-primary" data-toggle="modal" data-target="#purchaseOrderModal1" >Create PO and Add to Inventory</button>
+                </div>
+                </apex:outputPanel>
+                <!-- ************************* -->
+            </apex:outputPanel>
+        </div>
+        <apex:actionFunction name="deleteInspectionReportLine" action="{!deleteLineItem}" rerender="appraiseValue, linePanel, mapPanelId, reconEst, recalculat,carSection"> <apex:param value="" name="recId"/></apex:actionFunction>     
+         <apex:actionFunction name="getInspectionReportLines" action="{!getInspectionReportLines}" />     
+    </apex:form>
+
+    <!-- Modal -->
+    <apex:form id="StockIn" styleClass="">
+        <div class="modal fade" id="stockInModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel"> Add Vehicle to Inventory </h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-4 form-group">   
+                                <label for="purchaseAmt">Purchase Amount</label> 
+                                <div class="input-group">
+                                    <span class="input-group-addon">$</span>
+                                    <apex:input styleClass="form-control" id="purchaseAmt" value="{!purchaseAmt}"  />
+                                </div>                      
+                            </div>
+
+                            <div class="col-md-4 form-group">
+                                <label for="stockNumber">Stock #</label>
+                                <apex:input styleClass="form-control" id="stockNumber" value="{!stockNumber}" />
+                            </div>
+
+                            <div class="col-md-4 form-group">
+                                <label for="invRef">Inv. Ref.</label>
+                                <apex:input styleClass="form-control" id="invRef" value="{!invoiceRef}" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        
+                        <apex:commandButton id="stockInVehicle" value="Add to Inventory" action="{!stockInServiceVehicle}" styleClass="btn btn-primary" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </apex:form>
+    <!-- Modal -->
+    
+    <!-- Modal -->
+    <apex:form id="purchaseOrder" styleClass="">
+        <div class="modal fade" id="purchaseOrderModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="purchaseOrderModalLabel"> Create Purchase Order </h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 form-group">   
+                                <label for="vendor">Vendor</label>
+                                <div class="input-group">
+                                    <apex:inputField styleClass="form-control" id="vendor" value="{!pOrder.dealer__Vendor__c}"  />
+                                </div>                      
+                            </div>
+
+<!--                             <div class="col-md-4 form-group"> -->
+<!--                                 <label for="stockNumber">Stock #</label> -->
+<!--                                 <apex:input styleClass="form-control" id="stockNumber" value="{!stockNumber}" /> -->
+<!--                             </div> -->
+
+<!--                             <div class="col-md-4 form-group"> -->
+<!--                                 <label for="invRef">Inv. Ref.</label> -->
+<!--                                 <apex:input styleClass="form-control" id="invRef" value="{!invoiceRef}" /> -->
+<!--                             </div> -->
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        
+                        <apex:commandButton id="purchaseOrderId" value="Create Purchase Order" action="{!createPurchaseOrder}" styleClass="btn btn-primary" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </apex:form>
+    <!-- Modal -->
+    
+    <!-- ********************************* START MODAL FOR CREATE RO AND ADD TO INVENTORY ******************************************* -->
+    
+    <!-- Modal -->
+    <apex:form id="purchaseOrder1" styleClass="">
+        <div class="modal fade" id="purchaseOrderModal1" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="purchaseOrderModalLabel1"> Add to Inventory and Create Purchase Order  </h4>
+                    </div>
+                    <div class="modal-body">
+                        
+                        <div class="row">
+                            <div class="col-md-4 form-group">   
+                                <label for="purchaseAmt">Purchase Amount</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon">$</span>
+                                    <apex:input styleClass="form-control" id="purchaseAmt1" value="{!purchaseAmt}"  />
+                                </div>                      
+                            </div>
+
+                            <div class="col-md-4 form-group">
+                                <label for="stockNumber">Stock #</label>
+                                <apex:input styleClass="form-control" id="stockNumber1" value="{!stockNumber}" />
+                            </div>
+
+                            <div class="col-md-4 form-group">
+                                <label for="invRef">Inv. Ref.</label>
+                                <apex:input styleClass="form-control" id="invRef1" value="{!invoiceRef}" />
+                            </div>
+                        </div>
+                    
+                        <div class="row">
+                            <div class="col-md-6 form-group">   
+                                <label for="vendor">Vendor</label>
+                                <div class="input-group">
+                                    <apex:inputField styleClass="form-control" id="vendor11" value="{!pOrder.dealer__Vendor__c}"  />
+                                </div>                      
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        
+                        <apex:commandButton id="purchaseOrderId" value="Create PO & Add to Inventory" action="{!stockInServiceVehicles}" styleClass="btn btn-primary" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </apex:form>
+    <!-- Modal -->
+    <!-- *****************************************ENDDDDDDD MODAL FOR CREATE RO AND ADD TO INVENTORY *********************************** -->
+    
+    <!--
+    <apex:form id="addVehicle" styleClass="">
+        <div class="modal fade" id="serviceVehModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Add Service Vehicle</h4>
+              </div>
+              <div class="modal-body">
+                Service Vehicle with this VIN Number already exists.<br></br>
+                do you want to add this to Sales Up?
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <apex:commandButton id="addSerVehicle" value="Save" action="{!saveInspection}" styleClass="btn btn-primary" />
+              </div>
+            </div>
+          </div>
+        </div>
+    </apex:form>
+    -->
+    
+    
+<!-- Car 1 popup one start-->
+<apex:form id="frm_popup">
+<input type="hidden" name="imageName" value="{!imageName}" id="imageId"/>
+
+<apex:actionFunction name="saveInspectionRLPop"  action="{!saveInspectionRLPopup}" oncomplete="saveInspection();" >
+<apex:param value="x" name="xCoord" assignTo="{!xCoord}"/>
+<apex:param value="y" name="yCoord" assignTo="{!yCoord}"/>
+</apex:actionFunction> 
+<apex:outputPanel id="bodyPanel">
+<div class="modal fade" id="popup-body" tabindex="-1" role="dialog" aria-labelledby="popup-body" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel"><div id="header_name">Body/Glass Repair</div></h4>
+      </div>
+      
+
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="exampleInputEmail1">Repair Type</label>
+          <apex:inputField styleClass="form-control input-sm" id="repair_Type_IRL" value="{!inspectionRLPopup.dealer__Repair_Type__c}" >
+<!--             <apex:actionsupport event="onchange" rerender=""/> -->
+          </apex:inputField>
+          <input type="text" id="focusMe" style="display:none">
+            <apex:actionSupport event="ondblclick" reRender="dependPick"/>
+          </input>
+        </div>
+        <div class="marginb15"></div>
+        <div class="form-group" styleClass="form-control input-sm">
+          <label for="exampleInputEmail1">Repair Description</label>
+          <apex:outputPanel id="dependPick">
+          <div id="popdpndtpklstId"><apex:inputField styleClass="form-control" id="repair_Desc_IRL" value="{!inspectionRLPopup.dealer__Repair_Description__c}"/> </div>
+          </apex:outputPanel>
+        </div>
+        
+        <div class="form-group" id="tread_depth">
+          <label for="exampleInputEmail1">Tread Depth</label>
+          <apex:inputField id="tread_depth_IRL" styleClass="form-control input-sm" value="{!inspectionRLPopup.dealer__Tread_Depth__c}"  />
+        </div>
+        
+        <div class="form-group" id="break_wear">
+          <label for="exampleInputEmail1">Brake Wear</label>
+          <apex:inputField id="break_wear_IRL" styleClass="form-control input-sm" value="{!inspectionRLPopup.dealer__Brake_Wear__c}"  />
+        </div>
+        
+        <div class="marginb15"></div>
+        <div class="form-group" id="notes_Id">
+          <label for="exampleInputEmail1">Notes</label>
+          <apex:inputField styleClass="form-control input-sm" id="notes_IRL" value="{!inspectionRLPopup.dealer__Notes__c}"  />
+        </div>
+        <div class="marginb15"></div>
+        <div class="form-group">
+          <label for="exampleInputEmail1">Repair Estimate</label>
+          <apex:outputPanel id="bodyPanel1">    
+            <apex:inputField styleClass="form-control input-sm" id="repair_Est_IRL" value="{!inspectionRLPopup.dealer__Repair_Estimate__c}"  />
+          </apex:outputPanel>
+        </div>
+        <div class="form-group">
+            <apex:inputHidden id="value_To_Store" value="{!inspectionRLPopup.dealer__Hidden_Value__c}" />
+        </div>
+      </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <!--    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="uitest();return false;">Save</button> -->
+        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="callSave();return false;" oncomplete="scrollDownPage();">Save</button>
+<!--             <apex:actionFunction name="saveData" action="{!saveInspectionReportLine}" rerender="bodyPanel"/> -->
+       <!--     <apex:commandButton value="Save" onclick="saveInspectionReportLine();" styleClass="btn btn-primary"/> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+</apex:outputPanel>
+</apex:form>
+
+<!--Start Edit pop up -->
+
+<apex:form id="frm_popup1">
+<apex:actionFunction name="updateInspectionReportLine" action="{!updateInspectionReportLine}" rerender="linePanel"/>
+
+<apex:actionFunction name="editLineItem" action="{!editLineItem}" oncomplete="openMyModal(); return false;" reRender="bodyPanel1">
+                     <apex:param id="recEditId" name="recEditId" value="" assignTo="{!recEditIds}"/>      
+                     </apex:actionFunction>
+
+<apex:outputPanel id="bodyPanel1">
+<div class="modal fade" id="popup-body1" tabindex="-1" role="dialog" aria-labelledby="popup-body" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel1"><div id="header_name1">Body/Glass Repair</div></h4>
+      </div>
+      
+
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="exampleInputEmail1">Repair Type</label>
+          <apex:inputField styleClass="form-control input-sm" id="repair_Type_IRL1" value="{!inspectionRL.dealer__Repair_Type__c}"  />
+          
+        </div>
+        <div class="marginb15"></div>
+        <div class="form-group">
+          <label for="exampleInputEmail1">Repair Description</label>
+          <div id="edtpopdpndtpklstId"> <apex:inputField styleClass="form-control input-sm" id="repair_Desc_IRL1" value="{!inspectionRL.dealer__Repair_Description__c}"/></div>
+        </div>
+        
+        <div class="form-group" id="tread_depth1">
+          <label for="exampleInputEmail1">Tread Depth</label>
+          <apex:inputField id="tread_depth_IRL1" styleClass="form-control input-sm" value="{!inspectionRL.dealer__Tread_Depth__c}"  />
+        </div>
+        
+        <div class="form-group" id="break_wear1">
+          <label for="exampleInputEmail1">Brake Wear</label>
+          <apex:inputField id="break_wear_IRL1" styleClass="form-control input-sm" value="{!inspectionRL.dealer__Brake_Wear__c}"  />
+        </div>
+        
+        <div class="marginb15"></div>
+        <div class="form-group" id="notes_Id1">
+          <label for="exampleInputEmail1">Notes</label>
+          <apex:inputField styleClass="form-control input-sm" id="notes_IRL1" value="{!inspectionRL.dealer__Notes__c}"  />
+        </div>
+        <div class="marginb15"></div>
+        <div class="form-group">
+          <label for="exampleInputEmail1">Repair Estimate</label>
+          <apex:outputPanel id="bodyPanel11">    
+            <apex:inputField styleClass="form-control input-sm" id="repair_Est_IRL1" value="{!inspectionRL.dealer__Repair_Estimate__c}"  />
+          </apex:outputPanel>
+        </div>
+      </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="updateInspectionReportLine();return false;" rerender="bodyPanel">Update</button>
+<!--             <apex:actionFunction name="saveData" action="{!saveInspectionReportLine}" rerender="bodyPanel"/> -->
+<!--             <apex:commandButton value="Save" action="{!saveInspectionReportLine}" styleClass="btn btn-primary"/> -->
+      </div>
+    </div>
+  </div>
+</div>
+</apex:outputPanel>
+</apex:form>
+
+<!-- ENd of Edit pop up -->
+
+
+
+    
+</div>
+
+<script>
+    var x = null;
+    var y = null;
+    var xx = null;
+    var yy = null;
+
+var $dt = jQuery.noConflict();
+$dt(function() {
+$dt("#demo-box").click(function(e) {
+
+  var offset = $dt(this).offset();
+  var relativeX = (e.pageX - offset.left);
+  var relativeY = (e.pageY - offset.top);
+  
+  x = relativeX - 5;
+  y = relativeY - 5;
+  console.log("X: " + relativeX + "  Y: " + relativeY);
+  //alert('######'+relativeX+relativeY);
+  //$('#popuup_div').css({left:relativeX,top:relativeY}).show();
+
+});
+});
+
+
+
+    function callSave(){    
+        //alert('coords'+x+' Y value  '+y);
+        
+        if(x != null && y != null){
+            saveInspectionRLPop(x ,y );
+        }else{
+            //alert('Xand Y'+x+y);
+            saveInspectionRLPop(0,0);
+        }
+        
+    }
+    
+</script>
+
+<script type="text/javascript">
+
+    var $dt = jQuery.noConflict();
+   
+    j$ = jQuery.noConflict();
+/* function uitest(){
+   alert(1);
+   location.reload();
+   $('body,html').animate({
+    scrollTop: 1000
+}, 600);
+
+   } */
+   
+    
+    function openMyModal1(lineId){
+        alert('test'+lineId);
+        editLineItem(lineId);
+        alert('test'+lineId);
+        j$('#popup-body1').modal('show');
+    };
+    
+    function openMyModal(){
+        
+        j$('#popup-body1').modal('show');
+    };
+    
+    var inspectOptions = [
+        {value:'G',label:'OK'},
+        {value:'Y',label:'Alert'},
+        {value:'R',label:'Repair'},
+    ];
+    var serviceVehReady =  {!IF( NOT(ISBLANK(serviceVeh.Id)) , true, false )};
+    // var serviceVehReady =  false;
+    
+    
+    /* Start of collapse function*/
+    
+    
+  
+    
+    $dt( ".details" ).click(function() {
+        $dt( ".block-details" ).toggle( "swing" );
+        return false;
+    });
+    
+    $dt( ".valuation" ).click(function() {
+        $dt( ".block-valuation" ).toggle( "swing" );
+        return false;
+    });
+
+    $dt( ".vehicleinfo" ).click(function() {
+        $dt( ".block-vehicleinfo" ).toggle( "swing" );
+        return false;
+    });
+    
+    $dt( ".appraisals" ).click(function() {
+        $dt( ".block-appraisals" ).toggle( "swing" );
+        return false;
+    });
+    
+    $dt( ".mechanical" ).click(function() {
+        $dt( ".block-mechanical" ).toggle( "swing" );
+        return false;
+    });
+    
+    $dt( "#greenTire1" ).click(function() {
+      $dt( this ).toggleClass( "crossMark" );
+    });
+    
+    $dt( "#greenTire2" ).click(function() {
+      $dt( this ).toggleClass( "crossMark" );
+    });
+    
+    $dt( "#greenTire3" ).click(function() {
+      $dt( this ).toggleClass( "crossMark" );
+    });
+    
+    $dt( "#greenTire4" ).click(function() {
+      $dt( this ).toggleClass( "crossMark" );
+    });
+    
+    $dt( "#greenBrake1" ).click(function() {
+      $dt( this ).toggleClass( "crossMark" );
+    });
+    
+    $dt( "#greenBrake2" ).click(function() {
+      $dt( this ).toggleClass( "crossMark" );
+    });
+    
+    $dt( "#greenBrake3" ).click(function() {
+      $dt( this ).toggleClass( "crossMark" );
+    });
+    
+    $dt( "#greenBrake4" ).click(function() {
+      $dt( this ).toggleClass( "crossMark" );
+    });
+    
+    /* End of collapse function*/
+    
+    $dt(document).ready(function() {
+        
+        //var vehicleImg = '{!imageName}';
+         //alert('Image Name is'+vehicleImg);       
+        // Is the service vehicle created?
+        // if(!serviceVehReady) {
+            $dt('#stockIn').prop('disabled', !serviceVehReady);
+        // }
+
+        // Setup Dropdown List
+        $dt(".iStatus").kendoDropDownList({
+            dataSource: { data: inspectOptions },
+            dataValueField: 'value',
+            dataTextField: 'label'
+        });
+
+        // Total Recon Fields
+        $dt(".sub_recon").keyup(function() {
+            var sum = 0;
+            $dt(".sub_recon").each(function(){
+                sum += +$dt(this).val().replace(',','');
+            });
+            $dt('[id$="estTotalRecon"').val(sum);
+        });
+
+        // Decode VIN
+        $dt('#decode_vin').click(function(e){
+            e.preventDefault();
+            // set local _vin to user entered vin
+            var _vin = $dt('[id$="vin"]').val();
+
+            // Display loading while waiting for response.
+            $dt('.glyphicon-search').removeClass('glyphicon-search').addClass('glyphicon-refresh spin');
+            
+            // Call remote action
+            dealer.StockInInspection.decodedVin( _vin, function(result, event) {
+                if(event.status) {
+
+                    $dt('[id$="year"]').val( result.dealer__Year__c );
+                    $dt('[id$="make"]').val( result.dealer__Make__c );
+                    $dt('[id$="model"]').val( result.dealer__Carline__c );
+                    $dt('[id$="bodyType"]').val( result.dealer__Body_Type_Picklist__c );
+                    
+                    if(result.dealer__Trim_Level__c.length > 1) {
+                        $dt('[id$="trim"]').kendoDropDownList({
+                            dataSource: result.dealer__Trim_Level__c
+                        }).parent('span').removeClass('form-control');
+                    } else {
+                        $dt('[id$="trim"]').val( result.dealer__Trim_Level__c[0] );
+                    }
+                    
+                    $dt('.glyphicon-refresh.spin').removeClass('glyphicon-refresh spin').addClass('glyphicon-search');
+                    //Method to call on click of decode
+                    decodeRefresh();
+                }
+            }); 
+            
+        });
+    });
+    
+  
+    
+    
+    // function to show loading image
+    function blockPage(){   
+        $dt.blockUI({ message: '<img src="/img/loading32.gif" /><h1> Loading...</h1>',   
+        css: {   
+            border: 'none',   
+            padding: '15px',   
+            '-webkit-border-radius': '10px',   
+            '-moz-border-radius': '10px',   
+            opacity: .9  
+        }   
+      });   
+      return false;  
+    }
+      
+    //function to unblock the page  
+    function unblockPage(){  
+      $dt.unblockUI();  
+    }
+    
+    // function to set the popup fields values
+    function setPopUpVal(t){
+        
+    }
+    
+    // function to set the default fields values
+    function setBrakeAndTire(t){
+        if(t=='passengerfront_yellow_tire' || t=='passengerfront_red_tire' || t == 'passengerrear_yellow_tire' || t=='passengerrear_red_tire' ){
+            if(t=='passengerfront_yellow_tire'){
+                $dt('[id$=value_To_Store]').val('passengerfront_yellow_tire');
+            }
+            if(t=='passengerfront_red_tire'){
+                $dt('[id$=value_To_Store]').val('passengerfront_red_tire');
+            }
+            if(t=='passengerrear_yellow_tire'){
+                $dt('[id$=value_To_Store]').val('passengerrear_yellow_tire');
+            }
+            if(t=='passengerrear_red_tire'){
+                $dt('[id$=value_To_Store]').val('passengerrear_red_tire');
+            }
+            $dt('#header_name').html('Passenger Front Tire');
+            setTires();
+            setRepair_Desc();
+            $dt('#tread_depth').show();
+            $dt('#break_wear').hide();
+            
+        }
+        
+        if(t=='driverfront_yellow_tire' || t=='driverfront_red_tire' || t=='driverrear_yellow_tire' || t=='driverrear_red_tire' ){
+            if(t=='driverfront_yellow_tire'){
+                $dt('[id$=value_To_Store]').val('driverfront_yellow_tire');
+            }
+            if(t=='driverfront_red_tire'){
+                $dt('[id$=value_To_Store]').val('driverfront_red_tire');
+            }
+            if(t=='driverrear_yellow_tire'){
+                $dt('[id$=value_To_Store]').val('driverrear_yellow_tire');
+            }
+            if(t=='driverrear_red_tire'){
+                $dt('[id$=value_To_Store]').val('driverrear_red_tire');
+            }
+            $dt('#header_name').html('Driver Front Tire');
+            setTires();
+            setRepair_Desc();
+            $dt('#tread_depth').show();
+            $dt('#break_wear').hide();
+        }
+        
+        if( t=='passengerfront_yellow_brake' || t=='passengerfront_red_brake' || t=='passengerrear_yellow_brake' || t=='passengerrear_red_brake'){
+            if(t=='passengerfront_yellow_brake'){
+                $dt('[id$=value_To_Store]').val('passengerfront_yellow_brake');
+            }
+            if(t=='passengerfront_red_brake'){
+                $dt('[id$=value_To_Store]').val('passengerfront_red_brake');
+            }
+            if(t=='passengerrear_yellow_brake'){
+                $dt('[id$=value_To_Store]').val('passengerrear_yellow_brake');
+            }
+            if(t=='passengerrear_red_brake'){
+                $dt('[id$=value_To_Store]').val('passengerrear_red_brake');
+            }
+            $dt('#header_name').html('Passenger Front Brake');
+            setBrakes();
+            setRepair_Desc();
+            $dt('#tread_depth').hide();
+            $dt('#break_wear').show();
+        }
+        
+        if(t=='driverfront_yellow_brake' || t=='driverfront_red_brake' || t=='driverrear_yellow_brake' || t=='driverrear_red_brake'){
+            if(t=='driverfront_yellow_brake'){
+                $dt('[id$=value_To_Store]').val('driverfront_yellow_brake');
+            }
+            if(t=='driverfront_red_brake'){
+                $dt('[id$=value_To_Store]').val('driverfront_red_brake');
+            }
+            if(t=='driverrear_yellow_brake'){
+                $dt('[id$=value_To_Store]').val('driverrear_yellow_brake');
+            }
+            if(t=='driverrear_red_brake'){
+                $dt('[id$=value_To_Store]').val('driverrear_red_brake');
+            }
+            $dt('#header_name').html('Driver Front Brake');
+            setBrakes();
+            setRepair_Desc();
+            $dt('#tread_depth').hide();
+            $dt('#break_wear').show();
+        }
+    
+    }
+    
+    // Function to set sedan popup values
+    function setSedanValues(t){
+    
+      if(t == 'sedan_passengerfront-body'){
+            $dt('[id$=value_To_Store]').val('default_passengerfront-body');
+            $dt('#header_name').html('Body/Glass Repair');
+            $dt('#tread_depth').hide();
+            $dt('#break_wear').hide();
+            setBody();
+            
+        }
+        
+          if(t == 'sedan_passengerrear-body'){
+            $dt('[id$=value_To_Store]').val('default_passengerrear-body');
+            $dt('#header_name').html('Body/Glass Repair');
+            $dt('#tread_depth').hide();
+            $dt('#break_wear').hide();
+            setBody();
+            
+        }
+      if(t == 'sedan_driverfront-body'){
+            $dt('[id$=value_To_Store]').val('default_driverfront-body');
+            $dt('#header_name').html('Body/Glass Repair');
+            $dt('#tread_depth').hide();
+            $dt('#break_wear').hide();
+            setBody();
+            
+        }
+      if(t == 'sedan_driverrear-body'){
+            $dt('[id$=value_To_Store]').val('default_driverrear-body');
+            $dt('#header_name').html('Body/Glass Repair');
+            $dt('#tread_depth').hide();
+            $dt('#break_wear').hide();
+            setBody();
+            
+        }   
+        
+        if(t == 'body_cord'){
+            $dt('[id$=value_To_Store]').val('default_body');
+            $dt('#header_name').html('Body/Glass Repair');
+            $dt('#tread_depth').hide();
+            $dt('#break_wear').hide();
+            setBody();
+            
+        }
+        
+    
+        if(t == 'driverfront-tire'){
+            $dt('[id$=value_To_Store]').val('default_driverfront-wheel');
+            $dt('#break_wear').hide();
+            $dt('#header_name').html('Wheel');
+            $dt('#tread_depth').hide();
+            $dt('#break_wear').hide();
+            setWheels();
+            
+        }
+    
+        if(t == 'passengerfront-tire'){
+            $dt('[id$=value_To_Store]').val('default_passengerfront-wheel');
+            $dt('#break_wear').hide();
+            $dt('#header_name').html('Wheel');
+            $dt('#tread_depth').hide();
+            $dt('#break_wear').hide();
+            setWheels();
+            setRepair_Desc();
+            
+        }
+        
+        if(t == 'passengerrear-tire'){
+            $dt('[id$=value_To_Store]').val('default_passengerrear-wheel');
+            $dt('#break_wear').hide();
+            $dt('#header_name').html('Wheel');
+            $dt('#tread_depth').hide();
+            setWheels();
+            
+        }
+        
+        if(t == 'driverrear-tire'){
+            $dt('[id$=value_To_Store]').val('default_driverrear-wheel');
+            $dt('#break_wear').hide();
+            $dt('#header_name').html('Wheel');
+            $dt('#tread_depth').hide();
+            setWheels();
+            
+        }
+        
+        if(t == 'driverdoor'){
+            $dt('[id$=value_To_Store]').val('default_driverdoor');
+            $dt('#header_name').html('Door');
+            $dt('#tread_depth').hide();
+            $dt('#break_wear').hide();
+            setDoors();
+            
+        }
+        
+        if(t == 'passengerdoor'){
+            $dt('[id$=value_To_Store]').val('default_passengerdoor');
+            $dt('#header_name').html('Door');
+            $dt('#tread_depth').hide();
+            $dt('#break_wear').hide();
+            setDoors();
+            
+        }
+        setBrakeAndTire(t);
+    }
+    
+    // Function to set VAN popup values
+    function setVanValues(t){
+        if(t=='van_front-body'){
+            $dt('[id$=value_To_Store]').val('default_driverfront-body');
+            
+            $dt('#header_name').html('Body/Glass Repair');
+            $dt('#tread_depth').hide();
+            $dt('#break_wear').hide();
+            setBody();
+        }
+        
+         if(t=='van_rear-body'){
+            $dt('[id$=value_To_Store]').val('default_driverrear-body');
+            
+            $dt('#header_name').html('Body/Glass Repair');
+            $dt('#tread_depth').hide();
+            $dt('#break_wear').hide();
+            setBody();
+        }
+        
+         if(t=='van_body'){
+            $dt('[id$=value_To_Store]').val('default_body');
+            
+            $dt('#header_name').html('Body/Glass Repair');
+            $dt('#tread_depth').hide();
+            $dt('#break_wear').hide();
+            setBody();
+        }
+        
+        if(t=='van_driverdoor'){
+            $dt('[id$=value_To_Store]').val('default_driverdoor');
+            $dt('#header_name').html('Door');
+            $dt('#tread_depth').hide();
+            $dt('#break_wear').hide();
+            setDoors();
+        }
+        
+        if(t=='van_passengerdoor'){
+            $dt('[id$=value_To_Store]').val('default_passengerdoor');
+            $dt('#header_name').html('Door');
+            $dt('#tread_depth').hide();
+            $dt('#break_wear').hide();
+            setDoors();
+        }
+        
+        if(t=='van_driverfront-wheel'){
+            $dt('[id$=value_To_Store]').val('default_driverfront-wheel');
+            $dt('#break_wear').hide();
+            $dt('#header_name').html('Wheel');
+            $dt('#tread_depth').hide();
+            $dt('#break_wear').hide();
+            setWheels();
+        }
+        
+        if(t=='van_driverrear-wheel'){
+            $dt('[id$=value_To_Store]').val('default_driverrear-wheel');
+            $dt('#break_wear').hide();
+            $dt('#header_name').html('Wheel');
+            $dt('#tread_depth').hide();
+            setWheels();
+        }
+        
+        if(t=='van_passengerfront-wheel'){
+            $dt('[id$=value_To_Store]').val('default_passengerfront-wheel');
+            $dt('#break_wear').hide();
+            $dt('#header_name').html('Wheel');
+            $dt('#tread_depth').hide();
+            $dt('#break_wear').hide();
+            setWheels();
+        }
+        
+        if(t=='van_passengerrear-wheel'){
+            $dt('[id$=value_To_Store]').val('default_passengerrear-wheel');
+            $dt('#break_wear').hide();
+            $dt('#header_name').html('Wheel');
+            $dt('#tread_depth').hide();
+            setWheels();
+        }
+        setBrakeAndTire(t);
+    }
+    
+    // Function to set Default Vehicle Values
+    function setDefaultVehValues(t){
+        if(t=='default_body'){
+            $dt('[id$=value_To_Store]').val('default_body');
+            $dt('#header_name').html('Body/Glass Repair');
+            $dt('#tread_depth').hide();
+            $dt('#break_wear').hide();
+            setBody();
+        }
+        
+        if(t=='default_driverdoor'){
+            $dt('[id$=value_To_Store]').val('default_driverdoor');
+            $dt('#header_name').html('Door');
+            $dt('#tread_depth').hide();
+            $dt('#break_wear').hide();
+            setDoors();
+        }
+        
+        if(t=='default_passengerdoor'){
+            $dt('[id$=value_To_Store]').val('default_passengerdoor');
+            $dt('#header_name').html('Door');
+            $dt('#break_wear').hide();
+            $dt('#tread_depth').hide();
+            setDoors();
+        }
+        
+        if(t=='default_driverfront-wheel'){
+            $dt('[id$=value_To_Store]').val('default_driverfront-wheel');
+            $dt('#break_wear').hide();
+            $dt('#header_name').html('Wheel');
+            $dt('#tread_depth').hide();
+            $dt('#break_wear').hide();
+            setWheels();
+        }
+        
+        if(t=='default_driverrear-wheel'){
+            $dt('[id$=value_To_Store]').val('default_driverrear-wheel');
+            $dt('#break_wear').hide();
+            $dt('#header_name').html('Wheel');
+            $dt('#tread_depth').hide();
+            setWheels();
+        }
+        
+        if(t=='default_passengerfront-wheel'){
+            $dt('[id$=value_To_Store]').val('default_passengerfront-wheel');
+            $dt('#break_wear').hide();
+            $dt('#header_name').html('Wheel');
+            $dt('#tread_depth').hide();
+            $dt('#break_wear').hide();
+            setWheels();
+        }
+        
+        if(t=='default_passengerrear-wheel'){
+            $dt('[id$=value_To_Store]').val('default_passengerrear-wheel');
+            $dt('#break_wear').hide();
+            $dt('#header_name').html('Wheel');
+            $dt('#tread_depth').hide();
+            setWheels();
+        }
+        setBrakeAndTire(t);
+    }
+    
+    // Function to set the SUV values
+    function setSuvValues(t){
+        
+        if(t=='suv_driverfront-body'){
+            $dt('[id$=value_To_Store]').val('default_driverfront-body');
+            
+            $dt('#header_name').html('Body/Glass Repair');
+            $dt('#tread_depth').hide();
+            $dt('#break_wear').hide();
+            setBody();
+        }
+        if(t=='suv_passengerrear-body'){
+            $dt('[id$=value_To_Store]').val('default_passengerrear-body');
+            
+            $dt('#header_name').html('Body/Glass Repair');
+            $dt('#tread_depth').hide();
+            $dt('#break_wear').hide();
+            setBody();
+        }
+        if(t=='suv_driverrear-body'){
+            $dt('[id$=value_To_Store]').val('default_driverrear-body');
+            
+            $dt('#header_name').html('Body/Glass Repair');
+            $dt('#tread_depth').hide();
+            $dt('#break_wear').hide();
+            setBody();
+        }
+        if(t=='suv_passengerfront-body'){
+            $dt('[id$=value_To_Store]').val('default_passengerfront-body');
+            
+            $dt('#header_name').html('Body/Glass Repair');
+            $dt('#tread_depth').hide();
+            $dt('#break_wear').hide();
+            setBody();
+        }
+        
+        if(t=='suv_body'){
+            $dt('[id$=value_To_Store]').val('default_body');
+            
+            $dt('#header_name').html('Body/Glass Repair');
+            $dt('#tread_depth').hide();
+            $dt('#break_wear').hide();
+            setBody();
+        }
+        
+        if(t=='suv_driverdoor'){
+            $dt('[id$=value_To_Store]').val('default_driverdoor');
+            $dt('#header_name').html('Door');
+            $dt('#break_wear').hide();
+            $dt('#tread_depth').hide();
+            setDoors();
+        }
+        
+        if(t=='suv_passengerdoor'){
+            $dt('[id$=value_To_Store]').val('default_passengerdoor');
+            $dt('#header_name').html('Door');
+            $dt('#break_wear').hide();
+            $dt('#tread_depth').hide();
+            setDoors();
+        }
+        
+        if(t=='suv_driverfront-wheel'){
+            $dt('[id$=value_To_Store]').val('default_driverfront-wheel');
+            $dt('#break_wear').hide();
+            $dt('#header_name').html('Wheel');
+            $dt('#tread_depth').hide();
+            $dt('#break_wear').hide();
+            setWheels();
+        }
+        
+        if(t=='suv_driverrear-wheel'){
+            $dt('[id$=value_To_Store]').val('default_driverrear-wheel');
+            $dt('#break_wear').hide();
+            $dt('#header_name').html('Wheel');
+            $dt('#tread_depth').hide();
+            setWheels();
+        }
+        
+        if(t=='suv_passengerfront-wheel'){
+            $dt('[id$=value_To_Store]').val('default_passengerfront-wheel');
+            $dt('#break_wear').hide();
+            $dt('#header_name').html('Wheel');
+            $dt('#tread_depth').hide();
+            $dt('#break_wear').hide();
+            setWheels();
+        }
+        
+        if(t=='suv_passengerrear-wheel'){
+            $dt('[id$=value_To_Store]').val('default_passengerrear-wheel');
+            $dt('#break_wear').hide();
+            $dt('#header_name').html('Wheel');
+            $dt('#tread_depth').hide();
+            setWheels();
+        }
+    }
+    
+    //Function to set Pickup values/
+    // Function to set the SUV values
+    function setpickupValues(t){
+        
+        if(t=='pickup_driverfront-body'){
+            $dt('[id$=value_To_Store]').val('default_driverfront-body');
+            
+            $dt('#header_name').html('Body/Glass Repair');
+            $dt('#tread_depth').hide();
+            $dt('#break_wear').hide();
+            setBody();
+        }
+        if(t=='pickup_passengerrear-body'){
+            $dt('[id$=value_To_Store]').val('default_passengerrear-body');
+            
+            $dt('#header_name').html('Body/Glass Repair');
+            $dt('#tread_depth').hide();
+            $dt('#break_wear').hide();
+            setBody();
+        }
+        if(t=='pickup_driverrear-body'){
+            $dt('[id$=value_To_Store]').val('default_driverrear-body');
+            
+            $dt('#header_name').html('Body/Glass Repair');
+            $dt('#tread_depth').hide();
+            $dt('#break_wear').hide();
+            setBody();
+        }
+        if(t=='pickup_passengerfront-body'){
+            $dt('[id$=value_To_Store]').val('default_passengerfront-body');
+            
+            $dt('#header_name').html('Body/Glass Repair');
+            $dt('#tread_depth').hide();
+            $dt('#break_wear').hide();
+            setBody();
+        }
+        
+        if(t=='pickup_body'){
+            $dt('[id$=value_To_Store]').val('default_body');
+            
+            $dt('#header_name').html('Body/Glass Repair');
+            $dt('#tread_depth').hide();
+            $dt('#break_wear').hide();
+            setBody();
+        }
+        
+        if(t=='pickup_driverdoor'){
+            $dt('[id$=value_To_Store]').val('default_driverdoor');
+            $dt('#header_name').html('Door');
+            $dt('#break_wear').hide();
+            $dt('#tread_depth').hide();
+            setDoors();
+        }
+        
+        if(t=='pickup_passengerdoor'){
+            $dt('[id$=value_To_Store]').val('default_passengerdoor');
+            $dt('#header_name').html('Door');
+            $dt('#break_wear').hide();
+            $dt('#tread_depth').hide();
+            setDoors();
+        }
+        
+        if(t=='pickup_driverfront-wheel'){
+            $dt('[id$=value_To_Store]').val('default_driverfront-wheel');
+            $dt('#break_wear').hide();
+            $dt('#header_name').html('Wheel');
+            $dt('#tread_depth').hide();
+            $dt('#break_wear').hide();
+            setWheels();
+        }
+        
+        if(t=='pickup_driverrear-wheel'){
+            $dt('[id$=value_To_Store]').val('default_driverrear-wheel');
+            $dt('#break_wear').hide();
+            $dt('#header_name').html('Wheel');
+            $dt('#tread_depth').hide();
+            setWheels();
+        }
+        
+        if(t=='pickup_passengerfront-wheel'){
+            $dt('[id$=value_To_Store]').val('default_passengerfront-wheel');
+            $dt('#break_wear').hide();
+            $dt('#header_name').html('Wheel');
+            $dt('#tread_depth').hide();
+            $dt('#break_wear').hide();
+            setWheels();
+        }
+        
+        if(t=='pickup_passengerrear-wheel'){
+            $dt('[id$=value_To_Store]').val('default_passengerrear-wheel');
+            $dt('#break_wear').hide();
+            $dt('#header_name').html('Wheel');
+            $dt('#tread_depth').hide();
+            setWheels();
+        }
+    }
+    
+    
+    
+    // Function to set the HatchBack values
+    function setHatchBackValues(t){
+        if(t=='hatchback_passengerfront-body'){
+            $dt('[id$=value_To_Store]').val('default_passengerfront-body');
+            
+            $dt('#header_name').html('Body/Glass Repair');
+            $dt('#tread_depth').hide();
+            $dt('#break_wear').hide();
+            setBody();
+        }
+        
+        if(t=='hatchback_passengerrear-body'){
+            $dt('[id$=value_To_Store]').val('default_passengerrear-body');
+            
+            $dt('#header_name').html('Body/Glass Repair');
+            $dt('#tread_depth').hide();
+            $dt('#break_wear').hide();
+            setBody();
+        }
+        if(t=='hatchback_driverfront-body'){
+            $dt('[id$=value_To_Store]').val('default_driverfront-body');
+            
+            $dt('#header_name').html('Body/Glass Repair');
+            $dt('#tread_depth').hide();
+            $dt('#break_wear').hide();
+            setBody();
+        }
+        if(t=='hatchback_driverrear-body'){
+            $dt('[id$=value_To_Store]').val('default_driverrear-body');
+            
+            $dt('#header_name').html('Body/Glass Repair');
+            $dt('#tread_depth').hide();
+            $dt('#break_wear').hide();
+            setBody();
+        }
+        if(t=='hatchback_body'){
+            $dt('[id$=value_To_Store]').val('default_body');
+            
+            $dt('#header_name').html('Body/Glass Repair');
+            $dt('#tread_depth').hide();
+            $dt('#break_wear').hide();
+            setBody();
+        }
+        
+        if(t=='hatchback_driverdoor'){
+            $dt('[id$=value_To_Store]').val('default_driverdoor');
+            $dt('#header_name').html('Door');
+            $dt('#break_wear').hide();
+            $dt('#tread_depth').hide();
+            setDoors();
+        }
+        
+        if(t=='hatchback_passengerdoor'){
+            $dt('[id$=value_To_Store]').val('default_passengerdoor');
+            $dt('#header_name').html('Door');
+            $dt('#break_wear').hide();
+            $dt('#tread_depth').hide();
+            setDoors();
+        }
+        
+        if(t=='hatchback_driverfront-wheel'){
+            $dt('[id$=value_To_Store]').val('default_driverfront-wheel');
+            $dt('#break_wear').hide();
+            $dt('#header_name').html('Wheel');
+            $dt('#tread_depth').hide();
+            $dt('#break_wear').hide();
+            setWheels();
+        }
+        
+        if(t=='hatchback_driverrear-wheel'){
+            $dt('[id$=value_To_Store]').val('default_driverrear-wheel');
+            $dt('#break_wear').hide();
+            $dt('#header_name').html('Wheel');
+            $dt('#tread_depth').hide();
+            setWheels();
+        }
+        
+        if(t=='hatchback_passengerfront-wheel'){
+            $dt('[id$=value_To_Store]').val('default_passengerfront-wheel');
+            $dt('#break_wear').hide();
+            $dt('#header_name').html('Wheel');
+            $dt('#tread_depth').hide();
+            $dt('#break_wear').hide();
+            setWheels();
+        }
+        
+        if(t=='hatchback_passengerrear-wheel'){
+            $dt('[id$=value_To_Store]').val('default_passengerrear-wheel');
+            $dt('#break_wear').hide();
+            $dt('#header_name').html('Wheel');
+            $dt('#tread_depth').hide();
+            setWheels();
+        }
+    }
+    
+    // Function to set the Station Wagon values
+    function setStationWagonValues(t){
+        
+        if(t=='stationwagon_passengerfront-body'){
+            $dt('[id$=value_To_Store]').val('default_passengerfront-body');
+            
+            $dt('#header_name').html('Body/Glass Repair');
+            $dt('#tread_depth').hide();
+            $dt('#break_wear').hide();
+            setBody();
+        }
+        if(t=='stationwagon_passengerrear-body'){
+            $dt('[id$=value_To_Store]').val('default_passengerrear-body');
+            
+            $dt('#header_name').html('Body/Glass Repair');
+            $dt('#tread_depth').hide();
+            $dt('#break_wear').hide();
+            setBody();
+        }
+        if(t=='stationwagon_driverfront-body'){
+            $dt('[id$=value_To_Store]').val('default_driverfront-body');
+            
+            $dt('#header_name').html('Body/Glass Repair');
+            $dt('#tread_depth').hide();
+            $dt('#break_wear').hide();
+            setBody();
+        }
+        if(t=='stationwagon_driverrear-body'){
+            $dt('[id$=value_To_Store]').val('default_driverrear-body');
+            
+            $dt('#header_name').html('Body/Glass Repair');
+            $dt('#tread_depth').hide();
+            $dt('#break_wear').hide();
+            setBody();
+        }
+        
+        if(t=='stationwagon_body'){
+            $dt('[id$=value_To_Store]').val('default_body');
+            
+            $dt('#header_name').html('Body/Glass Repair');
+            $dt('#tread_depth').hide();
+            $dt('#break_wear').hide();
+            setBody();
+        }
+        
+        if(t=='stationwagon_driverdoor'){
+            $dt('[id$=value_To_Store]').val('default_driverdoor');
+            $dt('#header_name').html('Door');
+            $dt('#break_wear').hide();
+            $dt('#tread_depth').hide();
+            setDoors();
+        }
+        
+        if(t=='stationwagon_passengerdoor'){
+            $dt('[id$=value_To_Store]').val('default_passengerdoor');
+            $dt('#header_name').html('Door');
+            $dt('#break_wear').hide();
+            $dt('#tread_depth').hide();
+            setDoors();
+        }
+        
+        if(t=='stationwagon_driverfront-wheel'){
+            $dt('[id$=value_To_Store]').val('default_driverfront-wheel');
+            $dt('#break_wear').hide();
+            $dt('#header_name').html('Wheel');
+            $dt('#tread_depth').hide();
+            $dt('#break_wear').hide();
+            setWheels();
+        }
+        
+        if(t=='stationwagon_driverrear-wheel'){
+            $dt('[id$=value_To_Store]').val('default_driverrear-wheel');
+            $dt('#break_wear').hide();
+            $dt('#header_name').html('Wheel');
+            $dt('#tread_depth').hide();
+            setWheels();
+        }
+        
+        if(t=='stationwagon_passengerfront-wheel'){
+            $dt('[id$=value_To_Store]').val('default_passengerfront-wheel');
+            $dt('#break_wear').hide();
+            $dt('#header_name').html('Wheel');
+            $dt('#tread_depth').hide();
+            $dt('#break_wear').hide();
+            setWheels();
+        }
+        
+        if(t=='stationwagon_passengerrear-wheel'){
+            $dt('[id$=value_To_Store]').val('default_passengerrear-wheel');
+            $dt('#break_wear').hide();
+            $dt('#header_name').html('Wheel');
+            $dt('#tread_depth').hide();
+            setWheels();
+        }
+    }
+
+    // Function to set the Station Pickup values
+    function setStationPickupValues(t){
+        if(t=='pickup_driverfront-body'){
+            $dt('[id$=value_To_Store]').val('default_driverfront-body');
+            
+            $dt('#header_name').html('Body/Glass Repair');
+            $dt('#tread_depth').hide();
+            $dt('#break_wear').hide();
+            setBody();
+        }
+        if(t=='pickup_passengerrear-body'){
+            $dt('[id$=value_To_Store]').val('default_passengerrear-body');
+            
+            $dt('#header_name').html('Body/Glass Repair');
+            $dt('#tread_depth').hide();
+            $dt('#break_wear').hide();
+            setBody();
+        }
+        if(t=='pickup_driverrear-body'){
+            $dt('[id$=value_To_Store]').val('default_driverrear-body');
+            
+            $dt('#header_name').html('Body/Glass Repair');
+            $dt('#tread_depth').hide();
+            $dt('#break_wear').hide();
+            setBody();
+        }
+        if(t=='pickup_passengerfront-body'){
+            $dt('[id$=value_To_Store]').val('default_passengerfront-body');
+            
+            $dt('#header_name').html('Body/Glass Repair');
+            $dt('#tread_depth').hide();
+            $dt('#break_wear').hide();
+            setBody();
+        }
+    
+        if(t=='pickup_body'){
+            $dt('[id$=value_To_Store]').val('default_body');
+            
+            $dt('#header_name').html('Body/Glass Repair');
+            $dt('#tread_depth').hide();
+            $dt('#break_wear').hide();
+            setBody();
+        }
+        
+        if(t=='pickup_driverdoor'){
+            $dt('[id$=value_To_Store]').val('default_driverdoor');
+            $dt('#header_name').html('Door');
+            $dt('#break_wear').hide();
+            $dt('#tread_depth').hide();
+            setDoors();
+        }
+        
+        if(t=='pickup_passengerdoor'){
+            $dt('[id$=value_To_Store]').val('default_passengerdoor');
+            $dt('#header_name').html('Door');
+            $dt('#break_wear').hide();
+            $dt('#tread_depth').hide();
+            setDoors();
+        }
+        
+        if(t=='pickup_driverfront-wheel'){
+            $dt('[id$=value_To_Store]').val('default_driverfront-wheel');
+            $dt('#break_wear').hide();
+            $dt('#header_name').html('Wheel');
+            $dt('#tread_depth').hide();
+            $dt('#break_wear').hide();
+            setWheels();
+        }
+        
+        if(t=='pickup_driverrear-wheel'){
+            $dt('[id$=value_To_Store]').val('default_driverrear-wheel');
+            $dt('#break_wear').hide();
+            $dt('#header_name').html('Wheel');
+            $dt('#tread_depth').hide();
+            setWheels();
+        }
+        
+        if(t=='pickup_passengerfront-wheel'){
+            $dt('[id$=value_To_Store]').val('default_passengerfront-wheel');
+            $dt('#break_wear').hide();
+            $dt('#header_name').html('Wheel');
+            $dt('#tread_depth').hide();
+            $dt('#break_wear').hide();
+            setWheels();
+        }
+        
+        if(t=='pickup_passengerrear-wheel'){
+            $dt('[id$=value_To_Store]').val('default_passengerrear-wheel');
+            $dt('#break_wear').hide();
+            $dt('#header_name').html('Wheel');
+            $dt('#tread_depth').hide();
+            setWheels();
+        }
+    }   
+    
+    // function to set the 'Body/Glass' value
+    function setBody(){
+        document.getElementById('StockInInspection:frm_popup:repair_Type_IRL').value= 'Body/Glass';
+        $dt('#focusMe').dblclick();
+    }
+    
+    // function to set the 'Tiers' value
+    function setTires(){
+        document.getElementById('StockInInspection:frm_popup:repair_Type_IRL').value= 'Tires';
+        $dt('#focusMe').dblclick();
+    }
+    
+    // function to set the 'Wheels' value
+    function setWheels(){
+        document.getElementById('StockInInspection:frm_popup:repair_Type_IRL').value= 'Wheels';
+        $dt('#focusMe').dblclick();
+    }
+    
+    // function to set the 'Brakes' value
+    function setBrakes(){
+        document.getElementById('StockInInspection:frm_popup:repair_Type_IRL').value= 'Brakes';
+        $dt('#focusMe').dblclick();
+    }
+    
+    // function to set the 'Doors' value
+    function setDoors(){
+        document.getElementById('StockInInspection:frm_popup:repair_Type_IRL').value= 'Doors';
+        $dt('#focusMe').dblclick();
+    }
+    
+    // function to set the 'Interier' value
+    function setInterier(){
+        document.getElementById('StockInInspection:frm_popup:repair_Type_IRL').value= 'Interier';
+        $dt('#focusMe').dblclick();
+    }
+    
+    // function to set the 'Mechinacal' value
+    function setMechanical(){
+        document.getElementById('StockInInspection:frm_popup:repair_Type_IRL').value= 'Mechinacal';
+        $dt('#focusMe').dblclick();
+    }
+    
+    // function to set the 'Alert' value
+    function setRepair_Desc(){
+        //document.getElementById('StockInInspection:frm_popup:repair_Desc_IRL').value= 'Alert';
+    }
+    
+   /* $dt(document).ready(function(){
+        //scrollToImage();
+        //$dt('input[id$=appraiseValue]').maskMoney({precision:'0'});
+        /$dt('input[id$=appraiseValue]').blur(function(){
+           //$dt('input[id$=appraiseValue]').maskMoney('destroy');
+           //var a= this.value.replace(",",""); 
+           //alert(a);
+        });
+    });*/ 
+
+        
+    /*  jQuery(document).ready(function(pagetop){
+          jQuery('[id$=appraiseValue]').blur();
+                jQuery('body,html').animate({
+                    scrollTop: 2100
+                }, 1000);
+           });
+    */     
+           function scrollDownPage(){
+              jQuery('[id$=appraiseValue]').blur();
+                jQuery('body,html').animate({
+                    scrollTop: 2100
+                }, 1000); 
+           }
+</script>
+
+
+<style>
+
+    h5 {
+        display: block;
+    }
+
+    .bPageTitle {
+        float: left;
+    }
+
+    #force .k-widget.input-sm {
+        height: auto; 
+        padding: 0; 
+    }
+
+    .k-list li.k-item {
+        margin-left: 0;
+    }
+
+    span.table-inline label {
+        width: 40px;
+    }
+
+    .input-textarea {
+        height: 100px;
+    }
+
+    .iStatus {
+        width: 50%;
+    }
+
+    .k-dropdown-wrap {
+        height: 30px;
+    }
+
+    .spin {
+      -webkit-animation: spin 1s infinite linear;
+      -moz-animation: spin 1s infinite linear;
+      -o-animation: spin 1s infinite linear;
+      animation: spin 1s infinite linear;
+         -webkit-transform-origin: 50% 50%;
+             transform-origin:50% 50%;
+             -ms-transform-origin:50% 58%; /* IE 9 */
+    }
+
+    @-moz-keyframes spin {
+      from {
+        -moz-transform: rotate(0deg);
+      }
+      to {
+        -moz-transform: rotate(360deg);
+      }
+    }
+
+    @-webkit-keyframes spin {
+      from {
+        -webkit-transform: rotate(0deg);
+      }
+      to {
+        -webkit-transform: rotate(360deg);
+      }
+    }
+
+    @keyframes spin {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 1030;
+      background-color: #000;
+      opacity: .5;
+    }
+
+
+</style>
+
+</apex:page>

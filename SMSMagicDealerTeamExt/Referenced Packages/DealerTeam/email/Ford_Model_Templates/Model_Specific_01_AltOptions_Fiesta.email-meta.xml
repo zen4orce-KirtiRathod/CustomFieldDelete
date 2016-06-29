@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Model-Specific-01-AltOptions Fiesta</name>
+    <style>none</style>
+    <subject>Pricing for your Ford Fiesta</subject>
+    <textOnly>dealer__FirstName__c,
+
+Here is the pricing information you requested.  I have also taken the liberty of including pricing on several other vehicles that might save you some money.
+
+Vehicle of Interest
+dealer__Year_High__c dealer__Make__c dealer__Model__c
+Price: $XX,XXX
+Savings: $X,XXX
+Your Price: $XX,XXX
+
+New Option 1
+INSERT YEAR INSERT MAKE INSERT MODEL
+MSRP: $XX,XXX
+Savings: $X,XXX
+Your Price: $XX,XXX
+
+Used Option 2
+INSERT YEAR INSERT MAKE INSERT MODEL
+Price: $XX,XXX
+Savings: $X,XXX
+Your Price: $XX,XXX
+
+Used Option 3
+INSERT YEAR INSERT MAKE INSERT MODEL
+Price: $XX,XXX
+Savings: $X,XXX
+Your Price: $XX,XXX
+
+If for some reason these vehicles do not interest you, please let us know.  We have access to a large number of vehicles and are committed to finding the vehicle that best fits your needs.  If we don&apos;t have it on our lot, we&apos;ll do whatever it takes to find it for you, usually within 24 to 48 hours.
+
+Thank you in advance for your reply.  I look forward to servicing your needs.
+
+dealer__Salesperson_1__r.Name
+Organization.Name
+Organization.Phone
+
+Follow us on Facebook        Follow us on Twitter        Click for Directions
+
+Franklin Ford | 1235 Street Name Your City, State 11111| (555) 555-5555</textOnly>
+    <type>custom</type>
+</EmailTemplate>

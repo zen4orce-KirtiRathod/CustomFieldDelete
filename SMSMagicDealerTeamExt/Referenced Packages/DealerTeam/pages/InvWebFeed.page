@@ -1,0 +1,6 @@
+<apex:page controller="dealer.InvFeed" contentType="application/x-JavaScript; charset=utf-8" 
+			showHeader="false" 
+			standardStylesheets="false" 
+			sidebar="false">
+	<apex:outputText value="{!displayFeed}" />
+</apex:page>

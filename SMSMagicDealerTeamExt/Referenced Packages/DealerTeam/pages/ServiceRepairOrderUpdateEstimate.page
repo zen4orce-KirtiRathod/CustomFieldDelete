@@ -1,0 +1,29 @@
+<apex:page title="Service Update Estimate" standardController="dealer__Service_Repair_Order__c" extensions="dealer.ServiceRepairOrder_EXT" id="ServiceROUpdateEstimate">
+	<apex:sectionHeader title="Service Repair Order" subtitle="Update Estimate">
+		<apex:form id="estForm">
+			<apex:pageBlock id="estFormBlock" title="Estimate">
+					<apex:pageMessages />
+					<apex:pageBlockButtons >
+		                
+		                <apex:commandButton action="{!updateEstimate}" value="Update Estimate" />
+		                <apex:commandButton action="{!cancel}" value="Cancel" />
+		                
+		             </apex:pageBlockButtons>
+		             <apex:pageBlockSection columns="1">
+		             	<apex:outputField value="{!dealer__Service_Repair_Order__c.dealer__Estimate__c}" label="Current Estimate" />
+		             	<apex:inputText value="{!newEstimate}" label="Revised Estimate" required="true" />
+		             	<apex:inputText value="{!estimateApprovedBy}" label="Estimate Approved By" required="true" />
+		             	
+					     	<apex:selectList id="approvalContactMethod" value="{!estimateApprovalMethod}" size="1" label="Contact Method">
+					            <apex:selectOption itemValue="Call" itemLabel="Call"/>
+					            <apex:selectOption itemValue="Email" itemLabel="Email"/>
+					            <apex:selectOption itemValue="SMS" itemLabel="SMS"/>
+					            <apex:selectOption itemValue="In Person" itemLabel="In Person"/>
+					       </apex:selectList> 
+					       
+		             	<apex:inputTextArea value="{!estimateNotes}" label="Estimate Comments" required="true" />
+		             </apex:pageBlockSection>
+			</apex:pageBlock>
+		</apex:form>
+	</apex:sectionHeader>
+</apex:page>

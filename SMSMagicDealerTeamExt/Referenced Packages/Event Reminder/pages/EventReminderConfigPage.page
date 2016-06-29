@@ -1,0 +1,159 @@
+<apex:page tabStyle="Event_Reminder__tab" standardcontroller="smagicreminder__EventReminderConfig__c" extensions="smagicreminder.EventReminderConfigPageController" docType="html-5.0">
+
+<style>
+
+.labelCl{
+	 text-align: right;
+	 font-weight: 600;
+}
+
+</style>
+<apex:form >
+	<apex:pageMessages id="pageMsg" />
+	 <apex:pageBlock title="Configuration" >
+	 	
+	 	<apex:pageBlockSection title="Create new coniguration for Event Reminder">
+	 	<apex:inputField value="{!eventConfig.smagicreminder__Short_Name__c}" label="Name :"/>
+	 	<apex:inputField value="{!eventConfig.smagicreminder__Description__c}" label=" Description :"/>
+	 	 <apex:outputPanel id="eventReminderConfigPanel" >
+	 	 <table>
+        <tr>
+            <apex:actionRegion >
+            <td class="labelCl" style="width:115px;" title="Related Object">
+                Related Object
+            </td>
+            <td class="labelCl">
+                :
+            </td>
+            <td>
+                <apex:selectList id="allObjectDropDown" value="{!selectedObjName}" size="1" disabled="{!isConfigExisting}">
+                <apex:actionSupport event="onchange" action="{!updateFields}" rerender="searchFieldDropDown,availableBooleanFields"/>
+                <apex:selectOption itemValue="" itemLabel="Select"/>
+               <apex:selectOptions value="{!lookupObjects}" />
+                </apex:selectList>
+            </td>
+            </apex:actionRegion>
+            
+        </tr>
+        </table>
+        
+        <table>
+        <tr>
+            <apex:actionRegion >
+            <td class="labelCl" style="width:115px;" title="Selected phone field to send SMS">
+                Selected PhoneField
+            </td>
+            <td class="labelCl">
+                :
+            </td>
+            <td>
+               <apex:selectList id="searchFieldDropDown" value="{!selectedFieldName}" title="Available phone fields" size="1" style="width:130px;">
+               <apex:selectOption itemValue="" itemLabel="Select"/>
+               <apex:selectOptions value="{!searchFields}" />
+               </apex:selectList>
+            </td>
+            </apex:actionRegion>
+        </tr>
+        </table>
+        
+        <br/>
+	 	<table>
+            <tr>
+                <td class="labelCl" style="width:115px;" title="Name of the Sender will show up in SMS HIstory.">
+                    SenderId
+                </td>
+                <td class="labelCl">
+                    :
+                </td>
+                <td>
+                  <apex:selectList id="senderIdDropDown" size="1"  value="{!SenderId}" style="width:130px;">
+                  		<apex:selectOption itemValue="" itemLabel="Select"/>
+                        <apex:selectOptions value="{!SenderIdItems}" />  
+                  </apex:selectList>
+                </td>
+            </tr>
+        </table>
+       
+       
+		<table>
+            <tr>
+                <td class="labelCl" style="width:115px;" title="Text Message which will be sent in SMS">
+                    Template
+                </td>
+                <td class="labelCl">
+                    :
+                </td>
+                <td>
+                  <apex:selectList id="templateListDropDown" value="{!TemplateId}" size="1" style="width:130px;">
+                        <apex:selectOption itemValue="" itemLabel="Select"/>
+                        <apex:selectOptions value="{!TemplateItems}" />  
+                  </apex:selectList>
+                </td>
+            </tr>
+        </table>
+        
+        <table>
+            <tr>
+                <td class="labelCl" style="width:115px;" title="Seend SMS to OptOut members">
+                    Send to OptOut 
+                </td>
+                <td class="labelCl">
+                    :
+                </td>
+                <td>
+                  <apex:selectList id="smsOptOutDropdown" value="{!SMSOptOut}" size="1" style="width:130px;">
+                  		<apex:selectOption itemValue="" itemLabel="Select"/>
+                        <apex:selectOptions value="{!SMSOptOutItems}" />  
+                  </apex:selectList>
+                </td>
+                <td>
+                  <apex:selectList id="availableBooleanFields" value="{!selectedBooleanFieldName}" size="1" style="width:130px;">
+                        <apex:selectOption itemValue="" itemLabel="Select"/>
+                        <apex:selectOptions value="{!AvailableBooleanFields}" />  
+                  </apex:selectList>
+                </td>
+            </tr>
+        </table>
+        
+         <table>
+            <tr>
+                <td class="labelCl" style="width:115px;" title="If checked, this configuration will be used to send SMS on Event Deletion">
+                Use for Delete
+                </td>
+                <td class="labelCl">
+                    :
+                </td>
+                <td>
+                 <apex:inputCheckbox value="{!isDeleteConfiguration}" title="Check to use this configuration on Event Deleteion"></apex:inputCheckbox>
+                </td>
+            </tr>
+        </table>
+        </apex:outputPanel> 
+        <apex:outputPanel > </apex:outputPanel>
+        </apex:pageBlockSection>
+        <apex:outputPanel > </apex:outputPanel>
+        <apex:commandButton value="Save" title="Create Configuration" action="{!generate}" rerender="uniqueKey,pageMsg"/>
+      	<apex:commandButton value="Reset" title="Reset Configuration" action="{!reset}" oncomplete="this.form.reset();return false;" rerender="pageMsg" />
+      	
+        
+        
+      	<apex:pageBlockSection title="Configuration Name" collapsible="false"></apex:pageBlockSection>
+      		<apex:outputPanel id="configNamePanel" title="Copy the follwoing unique key">
+      		<table>
+                <tr>
+                    <td class="labelCl" style="width:115px;">
+                        Name
+                    </td>
+                    <td class="labelCl">
+                        :
+                    </td>
+                    <td>
+                    	<apex:outputLabel value="{!eventConfig.smagicreminder__Configuration_Name__c}" id="uniqueKey" style="font-weight:bold;"/>&nbsp;&nbsp;&nbsp;&nbsp;
+                    </td>
+            	</tr>
+            </table>
+            </apex:outputPanel>
+      	
+	 </apex:pageBlock>
+</apex:form>
+</apex:page>

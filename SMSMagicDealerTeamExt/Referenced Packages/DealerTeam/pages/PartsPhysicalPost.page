@@ -1,0 +1,26 @@
+<apex:page standardController="dealer__PartPhysicalInventory__c" extensions="dealer.PartsPhysical_EXT" showHeader="true" sidebar="true">
+	<apex:sectionHeader title="Parts Physical Inventory" subtitle="{!IF(dealer__PartPhysicalInventory__c.Id!=null, dealer__PartPhysicalInventory__c.Name, 'Complete this Physical Inventoy')}" />
+
+	<apex:form >
+		<apex:pageMessages />
+		<apex:pageBlock title="Complete Physical - Post Inventory">
+			<apex:pageBlockButtons >
+				<apex:commandButton action="{!completePhysical}" value="Complete Physical" />
+				<apex:commandButton action="{!cancel}" value="Cancel" />
+			</apex:pageBlockButtons>
+
+			<apex:pageBlockSection collapsible="false" columns="1" title="Outstanding Variance">
+
+				<apex:pageBlockTable value="{!detail_records}" var="d">
+					<apex:column value="{!d.dealer__Part__r.dealer__Part_Number__c}" headerValue="Part Number" />
+					<apex:column value="{!d.dealer__Part__r.dealer__Description__c}" headerValue="Part Description" />
+					<apex:column value="{!d.dealer__Net__c}" headerValue="NET" />
+					<apex:column value="{!d.dealer__Variance_Value__c}" headerValue="Variance" />
+					<apex:column value="{!d.dealer__Initial_Quantity__c}" headerValue="On hand" />
+					<apex:column value="{!d.dealer__Count__c}" headerValue="Count" />
+					<apex:column value="{!d.dealer__Count_Variance__c}" headerValue="Count Variance" />
+				</apex:pageBlockTable>
+			</apex:pageBlockSection>
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>

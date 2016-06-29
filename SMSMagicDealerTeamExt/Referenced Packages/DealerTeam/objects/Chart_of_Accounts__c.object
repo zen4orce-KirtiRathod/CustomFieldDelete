@@ -1,0 +1,950 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <content>ChartofAccountsNew</content>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Visualforce</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <customHelpPage>SuccessDocumentation_Tab</customHelpPage>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <deprecated>false</deprecated>
+    <description>Chart of accounts for use when determining account style, setup and for use in the GL.</description>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableEnhancedLookup>true</enableEnhancedLookup>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <fields>
+        <fullName>Account_Number__c</fullName>
+        <caseSensitive>false</caseSensitive>
+        <deprecated>false</deprecated>
+        <description>Account number, must be a unique ID</description>
+        <externalId>true</externalId>
+        <label>Acct#</label>
+        <length>25</length>
+        <required>true</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>true</unique>
+    </fields>
+    <fields>
+        <fullName>Active__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Active</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Company_Number__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Company Number</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Location 1</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Location 2</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Control_By__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Control By</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Control Number</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Document Number</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Last 6 of VIN</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Stock Number</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Reference Number</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Employee Number</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Department__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Department</label>
+        <picklist>
+            <picklistValues>
+                <fullName>General</fullName>
+                <default>true</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Sales</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Finance</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Service</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Parts</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Body Shop</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Rental</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Detail</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Description__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Description</label>
+        <length>64</length>
+        <required>true</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Typical_Balance__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Typical Balance</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Debit</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Credit</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <label>Chart of Accounts</label>
+    <nameField>
+        <label>Account Number</label>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Chart of Accounts</pluralLabel>
+    <recordTypeTrackHistory>false</recordTypeTrackHistory>
+    <recordTypes>
+        <fullName>Asset</fullName>
+        <active>true</active>
+        <description>Asset account</description>
+        <label>Asset</label>
+        <picklistValues>
+            <picklist>Company_Number__c</picklist>
+            <values>
+                <fullName>Location 1</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Location 2</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Control_By__c</picklist>
+            <values>
+                <fullName>Control Number</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Document Number</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Employee Number</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Last 6 of VIN</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Reference Number</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Stock Number</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Department__c</picklist>
+            <values>
+                <fullName>Body Shop</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Detail</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Finance</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>General</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Parts</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Rental</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sales</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Service</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Typical_Balance__c</picklist>
+            <values>
+                <fullName>Credit</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Debit</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Cost_of_Goods_Sold</fullName>
+        <active>true</active>
+        <description>COGS Account</description>
+        <label>Cost of Goods Sold</label>
+        <picklistValues>
+            <picklist>Company_Number__c</picklist>
+            <values>
+                <fullName>Location 1</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Location 2</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Control_By__c</picklist>
+            <values>
+                <fullName>Control Number</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Document Number</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Employee Number</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Last 6 of VIN</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Reference Number</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Stock Number</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Department__c</picklist>
+            <values>
+                <fullName>Body Shop</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Detail</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Finance</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>General</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Parts</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Rental</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sales</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Service</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Typical_Balance__c</picklist>
+            <values>
+                <fullName>Credit</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Debit</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Equity</fullName>
+        <active>true</active>
+        <description>Equity Account</description>
+        <label>Equity</label>
+        <picklistValues>
+            <picklist>Company_Number__c</picklist>
+            <values>
+                <fullName>Location 1</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Location 2</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Control_By__c</picklist>
+            <values>
+                <fullName>Control Number</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Document Number</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Employee Number</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Last 6 of VIN</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Reference Number</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Stock Number</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Department__c</picklist>
+            <values>
+                <fullName>Body Shop</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Detail</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Finance</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>General</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Parts</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Rental</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sales</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Service</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Typical_Balance__c</picklist>
+            <values>
+                <fullName>Credit</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Debit</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Expense</fullName>
+        <active>true</active>
+        <description>Expense Account</description>
+        <label>Expense</label>
+        <picklistValues>
+            <picklist>Company_Number__c</picklist>
+            <values>
+                <fullName>Location 1</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Location 2</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Control_By__c</picklist>
+            <values>
+                <fullName>Control Number</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Document Number</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Employee Number</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Last 6 of VIN</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Reference Number</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Stock Number</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Department__c</picklist>
+            <values>
+                <fullName>Body Shop</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Detail</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Finance</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>General</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Parts</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Rental</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sales</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Service</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Typical_Balance__c</picklist>
+            <values>
+                <fullName>Credit</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Debit</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Income</fullName>
+        <active>true</active>
+        <description>Income Account</description>
+        <label>Income</label>
+        <picklistValues>
+            <picklist>Company_Number__c</picklist>
+            <values>
+                <fullName>Location 1</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Location 2</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Control_By__c</picklist>
+            <values>
+                <fullName>Control Number</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Document Number</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Employee Number</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Last 6 of VIN</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Reference Number</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Stock Number</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Department__c</picklist>
+            <values>
+                <fullName>Body Shop</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Detail</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Finance</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>General</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Parts</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Rental</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sales</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Service</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Typical_Balance__c</picklist>
+            <values>
+                <fullName>Credit</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Debit</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Liability</fullName>
+        <active>true</active>
+        <description>Liability Account Type</description>
+        <label>Liability</label>
+        <picklistValues>
+            <picklist>Company_Number__c</picklist>
+            <values>
+                <fullName>Location 1</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Location 2</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Control_By__c</picklist>
+            <values>
+                <fullName>Control Number</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Document Number</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Employee Number</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Last 6 of VIN</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Reference Number</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Stock Number</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Department__c</picklist>
+            <values>
+                <fullName>Body Shop</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Detail</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Finance</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>General</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Parts</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Rental</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sales</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Service</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Typical_Balance__c</picklist>
+            <values>
+                <fullName>Credit</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Debit</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Other_Income</fullName>
+        <active>true</active>
+        <description>Other Income Account</description>
+        <label>Other Income</label>
+        <picklistValues>
+            <picklist>Company_Number__c</picklist>
+            <values>
+                <fullName>Location 1</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Location 2</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Control_By__c</picklist>
+            <values>
+                <fullName>Control Number</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Document Number</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Employee Number</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Last 6 of VIN</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Reference Number</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Stock Number</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Department__c</picklist>
+            <values>
+                <fullName>Body Shop</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Detail</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Finance</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>General</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Parts</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Rental</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sales</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Service</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Typical_Balance__c</picklist>
+            <values>
+                <fullName>Credit</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Debit</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Sale</fullName>
+        <active>true</active>
+        <description>Sale Account</description>
+        <label>Sale</label>
+        <picklistValues>
+            <picklist>Company_Number__c</picklist>
+            <values>
+                <fullName>Location 1</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Location 2</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Control_By__c</picklist>
+            <values>
+                <fullName>Control Number</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Document Number</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Employee Number</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Last 6 of VIN</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Reference Number</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Stock Number</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Department__c</picklist>
+            <values>
+                <fullName>Body Shop</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Detail</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Finance</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>General</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Parts</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Rental</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sales</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Service</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Typical_Balance__c</picklist>
+            <values>
+                <fullName>Credit</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Debit</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <searchLayouts/>
+    <sharingModel>ReadWrite</sharingModel>
+</CustomObject>

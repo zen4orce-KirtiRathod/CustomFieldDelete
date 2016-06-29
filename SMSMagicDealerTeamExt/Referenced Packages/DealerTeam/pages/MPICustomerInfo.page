@@ -1,0 +1,259 @@
+<apex:page docType="html" showChat="true" showHeader="false" applyHtmlTag="false" sidebar="false" standardController="dealer__Inspection_Report__c" extensions="dealer.MPI2_EXT" id="MPICI">
+    
+    <apex:stylesheet value="{!URLFOR($Resource.dealer__Customer_Check,'/css/foundation.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.dealer__Customer_Check,'/css/foundation.min.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.dealer__Customer_Check,'/css/mpi2.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.dealer__Customer_Check,'/css/normalize.css')}" />  
+    
+    <apex:includescript value="{!URLFOR($Resource.dealer__Customer_Check, '/js/vendor/jquery.js')}"/>
+    <apex:includescript value="{!URLFOR($Resource.dealer__Customer_Check, '/js/vendor/custom.modernizr.js')}"/>
+    <apex:includescript value="{!URLFOR($Resource.dealer__Customer_Check, '/js/foundation/foundation.js')}"/>
+    <apex:includescript value="{!URLFOR($Resource.dealer__Customer_Check, '/js/foundation/foundation.forms.js')}"/>
+    <apex:includescript value="{!URLFOR($Resource.dealer__Customer_Check, '/js/foundation/foundation.abide.js')}"/>
+    <apex:includescript value="{!URLFOR($Resource.dealer__Customer_Check, '/js/foundation/foundation.dropdown.js')}"/>
+    <apex:includescript value="{!URLFOR($Resource.dealer__Customer_Check, '/js/foundation/foundation.placeholder.js')}"/>
+     
+    <apex:includeScript value="{!$Resource.dealer__consoleFix}" />
+    <html class="no-js" lang="en" >
+        <head>
+            <meta charset="utf-8"/>
+            <meta name="viewport" content="width=device-width, user-scalable=no"/>
+            <meta name="apple-mobile-web-app-capable" content="yes"/>
+            <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+
+            <title>Digital MPI Customer Check In</title>
+            <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400' rel='stylesheet' type='text/css'/>
+            
+            <script type="text/javascript">
+                $j = jQuery.noConflict();
+            	var waiter = {!waiterCheckbox}; 
+            	var apptId = '{!serviceAppointment.Id}';
+            	var vehicleId = '{!serviceVehicle.Id}';
+     
+            
+            	$j(document).ready(function() {
+                    
+                    $j('#waiterCheckbox').click(function() {
+
+                        var passAlong = apptId+':true';
+                        
+                        dealer.MPI2_EXT.addWaiterToAppt(passAlong, function(result, event){
+                            $j('.footer').slideDown();
+                            /* if(result===false) {
+                                 alert('An error occured when saving the customer data!');
+                             } else {
+                             	
+                                 $j('.'+fieldId+'Content').html(fieldValue);
+                                 
+                                 console.log('Data saved successfully.');
+                             } */
+                         });
+                        
+                    });
+                    
+                    $j('a.editBtn').click(function() {
+                    
+                        var fieldId = $j(this).attr('id');
+                        var fieldContents = $j('.'+fieldId+'Content').html();
+                        console.log("Triggered for "+fieldId);
+                        
+						$j(this).hide();
+                        $j('.'+fieldId+'Content').html('<input type="text" placeholder="'+fieldContents+'" value="'+fieldContents+'" id="'+fieldId+'Input" style="margin-top:5px;" /><button type="button" name="confirmEdit" class="confirmEdit" id="'+fieldId+'" style="float:right;">Save</button><div style="margin-bottom:5px;">&nbsp;</div>');
+                        
+                        
+                   	});
+                    
+                    $j(document).on('click', '.confirmEdit', function() { 
+                    
+                       
+                        var fieldId = $j(this).attr('id');
+                        var fieldValue = $j('#'+fieldId+'Input').val();
+                        
+                        var passAlong = vehicleId+':'+fieldId+':'+fieldValue;
+                        
+                        dealer.MPI2_EXT.updateCustomerField(passAlong, function(result, event){
+                            $j('.footer').slideDown();
+                             if(result===false) {
+                                 alert('An error occured when saving the customer data!');
+                             } else {
+                             	
+                                 $j('.'+fieldId+'Content').html(fieldValue);
+                                 
+                                 console.log('Data saved successfully.');
+                             }
+                         });
+                        
+                    });
+                    
+                });
+            </script>
+        </head>
+        <body>
+            <!-- DISABLE PORTRAIT MODE  
+                ************************************************************************* -->
+            <!--div id="portrait">
+                <img src="{!URLFOR($Resource.Customer_Check,'/img/rotate-ipad.png')}"  width="100" style="margin-top: 200px;"/>
+                <h2>Rotate Device to Landscape</h2>
+            </div-->
+
+            <!-- Wraps All Content -->
+            <apex:form id="MPICustomerInfo">
+            <apex:pageMessages />
+            <div id="contentWrap">
+                <!-- TOP BAR 
+                ************************************************************************* -->
+                <div class="topBar">
+                    <div class="row">
+                        <div class="logo small-6 columns">
+                            <a href="/apex/dealer__MPICheckIn">
+                                <img src="/{!MPIlogo}"  alt="" height="65"/>
+                            </a>
+                        </div>
+                        <div class="small-6 columns text-right">
+                            <table width="" border="0" align="right" cellpadding="0" cellspacing="0" class="advisor">
+                                <tr>
+                                    <th width="60" align="center" valign="middle" scope="col">
+                                        <div class="UserPhoto" style="background: url({!me.SmallPhotoUrl}) no-repeat center center; background-size: 100%;">&nbsp;</div>
+                                    </th>
+                                    <th align="left" valign="middle" scope="col">
+                                        <span class="userTitle">&nbsp;</span>
+                                        <span class="userName"><apex:outputText value="{!me.Name}" /></span>
+                                    </th>
+                                    <th valign="middle" scope="col">
+                                        <div class="Date"><apex:outputText value="{0,date,yyyy.MM.dd}"> <apex:param value="{!NOW()}" /> </apex:outputText></div>
+                                    </th>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BODY CONTENT
+                    ************************************************************************* -->
+                <div class="bodyWrap">
+                    <div class="row fixedHeight">
+                        <!-- Left-hand Column -->
+                        <div class="small-5 columns bodyCol">
+                            <h2 style="margin-top: 0px;">Customer Record</h2>
+                            
+                                <apex:inputText value="{!repairOrderNumber}" id="ronum" html-placeholder="Repair Order Number" style="height: 50px;" />
+                                <apex:inputText value="{!mileage}" id="miles" html-placeholder="Enter Vehicle Mileage" style="height: 50px; "/>
+                                <!--<small class="error">Vehicle Mileage Required.</small>--> 
+                                <apex:inputText value="{!tag}" id="tag" html-placeholder="Enter Tag Number" style="height: 50px; "/>
+                                <!--<small class="error">Tag Number Required.</small>-->
+                            
+        
+                            <h2 style="margin-top: 40px;">Appointment Items</h2>
+                            <table width="100%" cellspacing="0" cellpadding="0">
+                                <thead>
+                                    <tr style="border-bottom: 1px solid #666;">
+                                        <th style="color: #999;">SERVICE</th>
+                                        <th style="color: #999;">TYPE</th>
+                                    </tr>
+                                </thead>
+                                <apex:repeat var="a" value="{!serviceAppointment.dealer__Service_Appointment_Lines__r}">
+                                    <tr>
+                                        <td><apex:outputText value="{!a.dealer__Op_Code_Description__c+' '+a.dealer__Complaint__c}" /></td>                                       
+                                        <td><apex:outputText value="{!a.dealer__Pay_Type__c}" /></td>
+                                    </tr>
+                                </apex:repeat>
+                            </table>
+                            <apex:commandLink value=" Jump To Technician Input" action="{!quickInput}" styleClass="btn" style="text-align: center; padding-right: 15px;" id="doQI"/>
+                        </div>
+        
+                        <!-- Right-hand Column -->
+                        <div class="small-6 columns bodyCol">
+                            <div class="accountInfo">
+                                <span class="infoLabel vinLabel">VIN: </span> 
+                                <span class="infoContent vinContent"><apex:outputText value="{!serviceVehicle.dealer__VIN__c}" /></span> 
+                                <span><a href="#" class="editBtn" id="vin" >Edit</a></span>
+                            </div>
+                            <div class="accountInfo">
+                                <span class="infoLabel yearLabel">Vehicle Year: </span> 
+                                <span class="infoContent yearContent"><apex:outputText value="{!serviceVehicle.dealer__Year__c}" /></span> 
+                                <span><a href="#" class="editBtn" id="year" >Edit</a></span>
+                            </div>
+                            <div class="accountInfo">
+                                <span class="infoLabel makeLabel">Vehicle Make: </span> 
+                                <span class="infoContent makeContent"><apex:outputText value="{!serviceVehicle.dealer__Make__c}" /></span> 
+                                <span><a href="#" class="editBtn" id="make" >Edit</a></span>
+                            </div>
+                            <div class="accountInfo">
+                                <span class="infoLabel modelLabel">Vehicle Model: </span> 
+                                <span class="infoContent modelContent"><apex:outputText value="{!serviceVehicle.dealer__Carline__c}" /></span> 
+                                <span><a href="#" class="editBtn" id="model" >Edit</a></span>
+                            </div>
+                            <div class="accountInfo">
+                                <span class="infoLabel firstNameLabel">First Name: </span> 
+                                <span class="infoContent firstNameContent"><apex:outputText value="{!serviceVehicle.dealer__Veh_Owner_Contact__r.FirstName}" /></span> 
+                                <span><a href="#" class="editBtn" id="firstName" >Edit</a></span>
+                            </div>
+                            <div class="accountInfo">
+                                <span class="infoLabel lastNameLabel">Last Name: </span> 
+                                <span class="infoContent lastNameContent"><apex:outputText value="{!serviceVehicle.dealer__Veh_Owner_Contact__r.LastName}" /></span> 
+                                <span><a href="#" class="editBtn" id="lastName" >Edit</a></span>
+                            </div>
+                            <div class="accountInfo">
+                                <span class="infoLabel emailLabel">Email: </span> 
+                                <span class="infoContent emailContent"><apex:outputText value="{!serviceVehicle.dealer__Veh_Owner_Contact__r.Email}" /></span> 
+                                <span><a href="#" class="editBtn" id="email" >Edit</a></span>
+                            </div>
+                            <div class="accountInfo">
+                                <span class="infoLabel phoneLabel">Phone Number: </span> 
+                                <span class="infoContent phoneContent"><apex:outputText value="{!serviceVehicle.dealer__Veh_Owner_Contact__r.Phone}" /></span> 
+                                <span><a href="#" class="editBtn" id="phone" >Edit</a></span>
+                            </div>
+                            <div class="accountInfo">
+                                <span class="infoLabel cellLabel">Cell Number: </span> 
+                                <span class="infoContent cellContent"><apex:outputText value="{!serviceVehicle.dealer__Veh_Owner_Contact__r.MobilePhone}" /></span> 
+                                <span><a href="#" class="editBtn" id="cell" >Edit</a></span>
+                            </div>
+                            <br />
+                           
+                        </div>
+                   
+                    </div>
+                </div>
+
+                <!-- FOOTER
+                    ************************************************************************* -->
+                <div id="footer" class="footer">
+                    <div class="row">
+                        <div class="small-6 columns">
+                            <apex:commandLink value="< Back" action="{!backCheckIn}" styleClass="btn" style="text-align: left; padding-left: 15px; background-color: #ccc;" id="bCheckIn"/>
+                        </div>
+        
+                        <div class="small-6 columns">
+                            <apex:commandLink value=" Next >" action="{!doCustomerStates}" styleClass="btn" style="text-align: right; padding-right: 15px;" id="doWA"/>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+            </apex:form> 
+            <!-- ENDS class contentWrap -->
+            <!-- FOOTER SCRIPTS
+                //////////////////////////////////////////////////////////////////////// -->
+            <script>
+                $j(document).foundation();
+            </script>
+            <style>
+            /* Portrait */
+                /*
+                @media screen and (orientation:landscape) {
+                    #portrait { display: none;}
+                    #contentWrap {visibility:visible;}
+                }
+                */
+
+            /* Landscape */
+                /*
+                @media screen and (orientation:portrait) {
+                    #portrait { display: block;}
+                    #contentWrap {visibility:hidden;}
+                }
+                #portrait {width: 100%; text-align: center;}
+                */
+            </style>  
+        </body>
+    </html>
+</apex:page>

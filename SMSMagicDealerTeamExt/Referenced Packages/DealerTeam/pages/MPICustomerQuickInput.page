@@ -1,0 +1,198 @@
+<apex:page docType="html" showChat="true" showHeader="false" applyHtmlTag="false" sidebar="false" standardController="dealer__Inspection_Report__c" extensions="dealer.MPI2_EXT" id="MPICI">
+    
+    <apex:stylesheet value="{!URLFOR($Resource.dealer__Customer_Check,'/css/foundation.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.dealer__Customer_Check,'/css/foundation.min.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.dealer__Customer_Check,'/css/mpi2.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.dealer__Customer_Check,'/css/normalize.css')}" />  
+    
+    <apex:includescript value="{!URLFOR($Resource.dealer__Customer_Check, '/js/vendor/jquery.js')}"/>
+    <apex:includescript value="{!URLFOR($Resource.dealer__Customer_Check, '/js/vendor/custom.modernizr.js')}"/>
+    <apex:includescript value="{!URLFOR($Resource.dealer__Customer_Check, '/js/foundation/foundation.js')}"/>
+    <apex:includescript value="{!URLFOR($Resource.dealer__Customer_Check, '/js/foundation/foundation.forms.js')}"/>
+    <apex:includescript value="{!URLFOR($Resource.dealer__Customer_Check, '/js/foundation/foundation.abide.js')}"/>
+    <apex:includescript value="{!URLFOR($Resource.dealer__Customer_Check, '/js/foundation/foundation.dropdown.js')}"/>
+    <apex:includescript value="{!URLFOR($Resource.dealer__Customer_Check, '/js/foundation/foundation.placeholder.js')}"/>
+    
+    
+    <html class="no-js" lang="en" >
+        <head>
+            <meta charset="utf-8"/>
+            <meta name="viewport" content="width=device-width, user-scalable=no"/>
+            <meta name="apple-mobile-web-app-capable" content="yes"/>
+            <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+
+            <title>Digital MPI Customer Check In</title>
+            <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400' rel='stylesheet' type='text/css'/>
+            
+            <script type="text/javascript">
+            
+         
+            
+                function el(s) {
+                    return '#' + s.replace(/(:|\.)/g,'\\\\$1');
+                }
+            
+                $j = jQuery.noConflict();
+            
+            	$j(document).ready(function() {
+                    
+
+                    $j('#decodeVinButton').click(function() {
+                        
+                        var vinD = $j(el('MPICI:MPICustomerInfo:vehVIN')).val();
+                        
+                        dealer.MPI2_EXT.decodeVIN(vinD, function(result, event){
+                            
+                                var decoded = result.split(":");
+                               	
+                           		$j(el('MPICI:MPICustomerInfo:vehYear')).val(decoded[0]);
+                            	$j(el('MPICI:MPICustomerInfo:vehMake')).val(decoded[1]);
+                            	$j(el('MPICI:MPICustomerInfo:vehModel')).val(decoded[2]);
+                            
+                        });
+                        
+                   	});
+                });
+            </script>
+        </head>
+        <body>
+            <!-- DISABLE PORTRAIT MODE  
+                ************************************************************************* -->
+            <!--div id="portrait">
+                <img src="{!URLFOR($Resource.Customer_Check,'/img/rotate-ipad.png')}"  width="100" style="margin-top: 200px;"/>
+                <h2>Rotate Device to Landscape</h2>
+            </div-->
+
+            <!-- Wraps All Content -->
+            <apex:form id="MPICustomerInfo">
+            <apex:pageMessages />
+            <div id="contentWrap">
+                <!-- TOP BAR 
+                ************************************************************************* -->
+                <div class="topBar">
+                    <div class="row">
+                        <div class="logo small-6 columns">
+                            <a href="/apex/dealer__MPICheckIn">
+                                <img src="/{!MPIlogo}"  alt="" height="65"/>
+                            </a>
+                        </div>
+                        <div class="small-6 columns text-right">
+                            <table width="" border="0" align="right" cellpadding="0" cellspacing="0" class="advisor">
+                                <tr>
+                                    <th width="60" align="center" valign="middle" scope="col">
+                                        <div class="UserPhoto" style="background: url({!me.SmallPhotoUrl}) no-repeat center center; background-size: 100%;">&nbsp;</div>
+                                    </th>
+                                    <th align="left" valign="middle" scope="col">
+                                        <span class="userTitle">&nbsp;</span>
+                                        <span class="userName"><apex:outputText value="{!me.Name}" /></span>
+                                    </th>
+                                    <th valign="middle" scope="col">
+                                        <div class="Date"><apex:outputText value="{0,date,yyyy.MM.dd}"> <apex:param value="{!NOW()}" /> </apex:outputText></div>
+                                    </th>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BODY CONTENT
+                    ************************************************************************* -->
+                <div class="bodyWrap">
+                    <div class="row fixedHeight" style="height: 600px !important;">
+                        <!-- Left-hand Column -->
+                        <div class="small-5 columns bodyCol">
+                            <h2 style="margin-top: 0px;">Inspection Report</h2>
+                            <div>
+								<apex:inputText value="{!repairOrderNumber}" id="roNumber" html-placeholder="Repair Order #" style="height: 50px;"/>
+								<apex:inputText value="{!tag}" id="tagNumber" html-placeholder="Tag #" style="height: 50px;" />
+                            </div>
+                            <h2 style="margin-top: 0px;">Customer Details</h2>
+                            <div>
+								<apex:inputText value="{!customerFirstName}" id="custFirstName" html-placeholder="Customers First Name" style="height: 50px;" required="true"/>
+								<apex:inputText value="{!customerLastName}" id="custLastName" html-placeholder="Customers Last Name" style="height: 50px;" required="true"/>
+								<apex:inputText value="{!customerPhoneNumber}" id="custPhoneNumber" html-placeholder="Customers Phone Number" style="height: 50px;" required="true"/>
+                                <apex:inputText value="{!customerCellNumber}" id="custCellNumber" html-placeholder="Customers Cell Phone Number" style="height: 50px;"/>
+                                <apex:inputText value="{!customerEmail}" id="custEmail" html-placeholder="Customers Email Address" style="height: 50px;"/>
+                                <br />
+   								<apex:inputCheckbox value="{!waiterCheckboxQI}"/> Waiter?
+                            </div>
+                        </div>
+        
+                        <!-- Right-hand Column -->
+                        <div class="small-5 columns bodyCol">
+                            <h2 style="margin-top: 0px;">Customer Address</h2>
+                            <div>
+								<apex:inputText value="{!customerAddress}" id="custAddress" html-placeholder="Customers Street" style="height: 50px;"/>
+                                <div>
+                                    <div style="float:left;width:50%">
+                                        <apex:inputText value="{!customerCity}" id="custCity" html-placeholder="Customers City" style="height: 50px;"/>
+                                    </div>
+                                    <div style="float:right;width:45%"> 
+                                        <apex:inputText value="{!customerState}" id="custState" html-placeholder="Customers State" style="height: 50px;"/>
+                                    </div>
+                                </div>
+                                <apex:inputText value="{!customerPostalCode}" id="custPostalCode" html-placeholder="Customers Postal Code" style="height: 50px;"/>
+                            </div>
+                            <h2 style="margin-top: 0px;">Vehicle</h2>
+                            <div>
+                                <div>
+                                    <div style="float:left;width:60%">
+                                        <apex:inputText value="{!vehicleVIN}" id="vehVIN" html-class="vehicleVinInput" html-placeholder="Vehicle VIN" style="height: 50px;" required="true"/>
+                                    </div>
+                                    <div style="float:right;width:40%"> 
+                                        <a href="#" id="decodeVinButton" class="btn" style="background-color:#ccc;font-size:12px;margin-left:5px;margin-top:5px;">Decode VIN</a>
+                                    </div>
+                                </div>
+								<apex:inputText value="{!vehicleYear}" id="vehYear" html-placeholder="Vehicle Year" style="height: 50px;" required="true"/>
+								<apex:inputText value="{!vehicleMake}" id="vehMake" html-placeholder="Vehicle Make" style="height: 50px;" required="true"/>
+								<apex:inputText value="{!vehicleModel}" id="vehModel" html-placeholder="Vehicle Model" style="height: 50px;" required="true"/>
+                                <apex:inputText value="{!vehicleOdometer}" id="vehOdometer" html-placeholder="Vehicle Odometer" style="height: 50px;" required="true"/>
+
+                                <apex:commandLink value=" Jump To Technician Input" action="{!startQuickMPISkipToTech}" styleClass="btn" style="text-align: center; padding-right: 15px;" id="doQI"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FOOTER
+                    ************************************************************************* -->
+                <div id="footer" class="footer">
+                    <div class="row">
+                        <div class="small-6 columns">
+                            <apex:commandLink value="< List" action="{!tab}" styleClass="btn" style="text-align: left; padding-left: 15px; background-color: #ccc;" id="bCheckIn"/>
+                        </div>
+        
+                        <div class="small-6 columns">
+                            <apex:commandLink value="Begin >" action="{!startQuickMPI}" styleClass="btn" style="text-align: right; padding-right: 15px;" id="doWA"/>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+            </apex:form>
+            <!-- ENDS class contentWrap -->
+            <!-- FOOTER SCRIPTS
+                //////////////////////////////////////////////////////////////////////// -->
+            <script>
+                $j(document).foundation();
+                //$j('input, textarea').placeholder();
+            </script>
+            <style>
+            /* Portrait */
+            /*
+                @media screen and (orientation:landscape) {
+                    #portrait { display: none;}
+                    #contentWrap {visibility:visible;}
+                }
+            */
+            /* Landscape */
+                /*
+                @media screen and (orientation:portrait) {
+                    #portrait { display: block;}
+                    #contentWrap {visibility:hidden;}
+                }
+                #portrait {width: 100%; text-align: center;}
+                */
+            </style>  
+        </body>
+    </html>
+</apex:page>

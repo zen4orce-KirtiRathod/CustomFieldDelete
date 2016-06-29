@@ -1,0 +1,109 @@
+body {
+	font-size:14px;
+}
+th {
+    text-align: left;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+form {
+    margin:0px;
+    padding:0px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Verdana', 'Geneva', sans-serif;
+    font-size: 100%;
+    margin:0px;
+    display:inline;
+}
+
+textarea {
+    font-family: 'Arial', 'Helvetica', sans-serif;
+    font-size: 100%;
+}
+
+img { border:0; }
+
+.infoBox {
+	border: 1px solid #000;
+}
+
+.cLabel {
+	font-size:10px;	
+}
+
+.boxHeader {
+	background-color:#000;
+	color:#FFF;
+	font-weight:bold;
+}
+
+.borderB {
+	border-bottom:1px solid #000;
+}
+
+.borderR{
+	border-right:1px solid #000;	
+}
+
+.underL {
+	text-decoration:underline;
+}
+
+.legal {
+	font-size:11px;
+}
+
+.highlightcol {
+    background-color: #CCCCCC;
+}
+
+.infobox {
+  border: 1px dashed #CCCCCC;
+  font-size: 70%;
+}
+
+.extendedrenewalcol {
+  background-color: #33CCCC;
+}
+
+.tablehead {
+    border: 1px dashed #33CCCC;
+    background-color: #0099FF;
+    font-weight: bold;
+}
+
+.totals {
+    background-color: #0099FF;
+    font-weight: bold;
+}
+
+.infohead {
+  font-size: 70%;
+  font-weight: bold;
+}
+
+.odd {
+ border-bottom: 1px solid #000;
+ padding: 1px 1px 2px 2px;
+}
+
+.even {
+ border-bottom: 1px solid #000;
+ padding: 1px 1px 2px 2px;
+
+}
+
+@page {
+/* Landscape orientation */
+size:portrait;
+
+/* Put page numbers in the top right corner of each
+   page in the pdf document. */
+@bottom-left {
+	content: "NRCP-2CA-CRWN";
+}
+
+}

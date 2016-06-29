@@ -1,0 +1,82 @@
+<apex:page standardController="smagicschedule__SMS_Schedule__c" extensions="smagicschedule.ScheduleConfigurationController" tabStyle="smagicschedule__SMS_Schedule__c" action="{!regitserUserForAddon}">
+<apex:includeScript value="/soap/ajax/15.0/connection.js"/>
+<apex:includeScript value="/soap/ajax/15.0/apex.js"/>
+
+<style type="text/css">
+        .custPopup{
+            background-color: white;
+            border-width: 1px;
+            border-style: solid;
+            border-color: #E6E6E6;
+            z-index: 9999;
+            padding:10px;
+            position: absolute;
+            width: 350px;
+            margin:0 10% 0 25%;
+        }
+        .popupBackground{
+            background-color:black;
+            opacity: 0.20;
+            filter: alpha(opacity = 20);
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 9998;
+        }
+
+</style>
+
+<apex:form id="formId">
+<apex:pageMessages /><br/>
+
+<apex:pageBlock id="main" title="Re-Schedule SMS" helpTitle="Help For this Page?" helpUrl="/apex/SchedulerHelpPage" >
+<apex:pageBlockSection id="dateAndTimeSection" columns="1" title="Schedule Date and Time" collapsible="false" />
+<div id="pageBlockSectionId" style="display:block;">
+<apex:outputLabel value="Name" for="jobName"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp; 
+<apex:inputText value="{!scheduleName}" id="jobName" maxlength="20"/> 
+
+<apex:outputPanel id="tstpopup">
+	  <apex:outputPanel styleClass="popupBackground" layout="block" rendered="{!displayPopUp}"/>
+            <apex:outputPanel styleClass="custPopup" layout="block" rendered="{!displayPopUp}"  title="Message Dialog">
+            <div id="popupMessageHeader" style="width:100%; height:10%; background-color:#8BBEC1;">
+        		<div style="color:white; text-align:left; font-family:sans-serif; font-weight:bold; vertical-align: middle; padding-top: 5px; padding-bottom: 5px; padding-left: 5px;">Error Message</div> 
+       		</div> 
+       		<br/> <br/>
+            <apex:outputPanel style="font-size:15px;">
+                {!popupMessage} <br/><br/>
+            </apex:outputPanel>
+            <apex:outputPanel style="margin-left:40%">
+            		<apex:commandButton value="Close" title="Close" action="{!closePopup}" rerender="tstpopup"/>
+            </apex:outputPanel>
+            </apex:outputPanel>
+</apex:outputPanel>
+
+<br/><br/>
+<apex:outputLabel value="Start Date" for="startDate"/> &nbsp;:&nbsp; 
+<apex:inputField id="startDate" value="{!smsSchduleObj.smagicschedule__Date__c}"/> <br/><br/>
+<!-- 
+<apex:outputLabel value="End Date" for="endDate"/> &nbsp;: &nbsp; 
+<apex:inputField id="endDate" value="{!endDateObj.Date__c}"/> <br/><br/>
+ -->
+<apex:outputLabel value="Time" for="timeInHours"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: &nbsp; 
+<apex:selectList id="timeInHours" value="{!timeInHours}" size="1">
+         <apex:selectOptions value="{!hoursList}" />
+</apex:selectList>
+Hour &nbsp;&nbsp;
+<apex:selectList id="timeInMinutes" value="{!timeInMinutes}" size="1">
+         <apex:selectOptions value="{!minutesList}" />
+</apex:selectList>
+Minute &nbsp;&nbsp;
+<br/><br/>
+
+</div>
+<apex:pageBlockButtons location="bottom">
+	<apex:commandButton action="{!save}" value="Schedule" title="Schedule" disabled="{!IF (disableButton,true, false)}"/>
+	<apex:commandButton action="{!cancel}" value="Cancel" title="Cancel"/>
+</apex:pageBlockButtons>
+</apex:pageBlock>
+</apex:form>
+
+</apex:page>

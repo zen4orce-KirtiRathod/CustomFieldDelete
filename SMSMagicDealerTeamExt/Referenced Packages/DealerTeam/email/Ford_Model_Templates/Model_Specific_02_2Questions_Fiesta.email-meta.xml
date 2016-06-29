@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Model-Specific-02-2Questions Fiesta</name>
+    <style>none</style>
+    <subject>Additional Information for Your Ford Fiesta</subject>
+    <textOnly>dealer__FirstName__c,
+
+I&apos;m currently working on finding the vehicle you requested.    Please answer the following two questions so we can provide you with the information you need to make an informed decision.
+
+Are there any colors that you would not accept?
+What options and accessories are most important to you?
+
+We hope to hear from you shortly so we can thoroughly respond to your request with all of your preferences.  If not, we will still attempt to call you.  We want to honor our commitment to get as much relevant information to you as soon as possible.
+
+dealer__Salesperson_1__r.Name
+Organization.Name
+Organization.Phone
+
+Follow us on Facebook        Follow us on Twitter        Click for Directions
+
+Franklin Ford | 1235 Street Name Your City, State 11111| (555) 555-5555</textOnly>
+    <type>custom</type>
+</EmailTemplate>

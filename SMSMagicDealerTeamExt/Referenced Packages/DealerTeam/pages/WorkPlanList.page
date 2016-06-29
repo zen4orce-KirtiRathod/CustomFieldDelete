@@ -1,0 +1,13 @@
+<apex:page title="Work Plans" controller="dealer.WorkPlanList" showChat="true">
+	<apex:form >
+		<apex:pageBlock title="Print Daily Work Planners">
+			<apex:pageBlockSection >
+				<apex:pageBlockTable var="u" value="{!currentUsers}">
+					<apex:column ><apex:image value="{!u.SmallPhotoUrl}" /></apex:column>
+					<apex:column ><apex:outputLink value="/{!u.Id}"><apex:outputText value="{!u.name}" /></apex:outputLink></apex:column>
+					<apex:column ><apex:outputLink value="/apex/dealer__SalesWorkPLannerPDF?id={!u.Id}" target="_blank" styleClass="btn">Print Work plan</apex:outputLink></apex:column>
+				</apex:pageBlockTable>
+			</apex:pageBlockSection>
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>

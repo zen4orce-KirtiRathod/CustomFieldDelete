@@ -1,0 +1,539 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <customHelpPage>SuccessDocumentation_Tab</customHelpPage>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <deprecated>false</deprecated>
+    <description>Location of the dealerships in this Salesforce Organization</description>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableEnhancedLookup>true</enableEnhancedLookup>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableReports>false</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <fields>
+        <fullName>Address__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Address</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Appt_Duration__c</fullName>
+        <defaultValue>30</defaultValue>
+        <deprecated>false</deprecated>
+        <description>In minutes. The default length of Service Appointments.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>In minutes</inlineHelpText>
+        <label>Appt Duration</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>BAR_Number__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Bureau of Automotive Repair#</description>
+        <externalId>false</externalId>
+        <label>B.A.R#</label>
+        <length>80</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>City__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>City</label>
+        <length>80</length>
+        <required>true</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Close_Hour__c</fullName>
+        <deprecated>false</deprecated>
+        <description>HH:MM - The Time the location closes</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Please use HH:MM format.</inlineHelpText>
+        <label>Close Hour</label>
+        <length>5</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Company_Contract_Name__c</fullName>
+        <defaultValue>$Organization.Name</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Company name printed on forms and contracts. Also known as Dealer Name.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Company name printed on forms and contracts. Also known as Dealer Name.</inlineHelpText>
+        <label>Company Contract Name</label>
+        <length>64</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Company_Number__c</fullName>
+        <caseSensitive>false</caseSensitive>
+        <deprecated>false</deprecated>
+        <description>Company number.  This value prefixes all External ID&apos;s of records created by employees of this location.</description>
+        <externalId>true</externalId>
+        <inlineHelpText>Company Number is the Unique prefix of all records in the Enterprise.  Example:  DT1</inlineHelpText>
+        <label>Company Number</label>
+        <length>5</length>
+        <required>true</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>true</unique>
+    </fields>
+    <fields>
+        <fullName>Customer_Pay_Labor_Rate__c</fullName>
+        <defaultValue>95</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Default customer pay labor rate for this location.</description>
+        <externalId>false</externalId>
+        <label>Customer Pay Labor Rate</label>
+        <precision>14</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Deal_Default_Labor_Rate__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Deal Default Labor Rate</label>
+        <precision>10</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Default_Days_to_First_Payment__c</fullName>
+        <defaultValue>45</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Default days to the first payment.</description>
+        <externalId>false</externalId>
+        <label>Default Days to First Payment</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Default_Deal_Status__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Default Deal Status</label>
+        <length>40</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Default_Rate__c</fullName>
+        <defaultValue>8.95</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Default rate for any retail deals</description>
+        <externalId>false</externalId>
+        <label>Default Rate</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>3</scale>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Default_Term__c</fullName>
+        <defaultValue>72</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Default term for the desking screen</description>
+        <externalId>false</externalId>
+        <label>Default Term</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>EPA_Number__c</fullName>
+        <deprecated>false</deprecated>
+        <description>EPA Number</description>
+        <externalId>false</externalId>
+        <label>EPA#</label>
+        <length>80</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Email__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Group email address for the store</description>
+        <externalId>false</externalId>
+        <label>Email</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Email</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>General_Manager__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>General Manager of the dealership location.</description>
+        <externalId>false</externalId>
+        <label>General Manager</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Dealer_Locations</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Internal_Labor_Rate__c</fullName>
+        <defaultValue>65</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Internal Labor Rate</label>
+        <precision>6</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Location_Account__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>The location account is the associated account for when the store owns any business transactions (Internal transactions)</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This account is this Locations Internal Account for all associated internal transactions and inventory ownership.</inlineHelpText>
+        <label>Location Account</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Locations</relationshipLabel>
+        <relationshipName>Locations</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Main_Phone__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Primary phone number for the dealership</description>
+        <externalId>false</externalId>
+        <label>Main Phone</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Phone</type>
+    </fields>
+    <fields>
+        <fullName>Open_Hour__c</fullName>
+        <deprecated>false</deprecated>
+        <description>HH:MM - The time of day the location Opens</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Please use HH:MM format.</inlineHelpText>
+        <label>Open Hour</label>
+        <length>5</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Pack__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Pack</label>
+        <precision>9</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Parts_Invoice_Disclaimer__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Parts invoice disclaimer for use with the dealerteam standard invoice page</description>
+        <externalId>false</externalId>
+        <label>Parts Invoice Disclaimer</label>
+        <length>5000</length>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>10</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Physical_Location__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Physical location of the dealership location.</description>
+        <displayLocationInDecimal>false</displayLocationInDecimal>
+        <externalId>false</externalId>
+        <label>Physical Location</label>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Location</type>
+    </fields>
+    <fields>
+        <fullName>Postal_Code__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Postal code of this dealership location</description>
+        <externalId>false</externalId>
+        <label>Postal Code</label>
+        <length>15</length>
+        <required>true</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Sales_Tax_Account__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Sales Tax Account</label>
+        <referenceTo>codaGeneralLedgerAccount__c</referenceTo>
+        <relationshipLabel>Locations</relationshipLabel>
+        <relationshipName>Locations</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Service_Director__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>Service director for this dealership location</description>
+        <externalId>false</externalId>
+        <label>Service Director</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Lcoation_Service_Director</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Service_Invoice_Disclaimer__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Service Invoice Disclaimer</label>
+        <length>5000</length>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>10</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Service_RO_Disclaimer__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Disclaimer for the bottom of the service repair order</description>
+        <externalId>false</externalId>
+        <label>Service RO Disclaimer</label>
+        <length>5000</length>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>10</visibleLines>
+    </fields>
+    <fields>
+        <fullName>State__c</fullName>
+        <deprecated>false</deprecated>
+        <description>State of this dealership location</description>
+        <externalId>false</externalId>
+        <label>State</label>
+        <length>2</length>
+        <required>true</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Tax_ID__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Tax ID</label>
+        <length>40</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Tax_Local_Rate__c</fullName>
+        <defaultValue>0.08250</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Default rate is 8.250%</description>
+        <externalId>false</externalId>
+        <label>Tax Local Rate</label>
+        <precision>6</precision>
+        <required>false</required>
+        <scale>3</scale>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Tax_Local_Rental_Addition__c</fullName>
+        <defaultValue>0</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Tax Local Rental Addition</label>
+        <precision>9</precision>
+        <required>false</required>
+        <scale>3</scale>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Tax_Parts__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Should parts be taxed by default?</description>
+        <externalId>false</externalId>
+        <label>Tax Parts</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Tax_Service__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Should Service be taxed?</description>
+        <externalId>false</externalId>
+        <label>Tax Service</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Website__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Website for this dealership location</description>
+        <externalId>false</externalId>
+        <label>Website</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Url</type>
+    </fields>
+    <label>Location</label>
+    <listViews>
+        <fullName>AllView</fullName>
+        <columns>NAME</columns>
+        <columns>Company_Number__c</columns>
+        <columns>Open_Hour__c</columns>
+        <columns>Close_Hour__c</columns>
+        <columns>LAST_UPDATE</columns>
+        <columns>UPDATEDBY_USER</columns>
+        <columns>Address__c</columns>
+        <columns>City__c</columns>
+        <columns>State__c</columns>
+        <columns>Postal_Code__c</columns>
+        <columns>Main_Phone__c</columns>
+        <columns>Email__c</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <nameField>
+        <label>Location Name</label>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Locations</pluralLabel>
+    <searchLayouts>
+        <customTabListAdditionalFields>Company_Number__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>General_Manager__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Service_Director__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Main_Phone__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>City__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>State__c</customTabListAdditionalFields>
+        <lookupDialogsAdditionalFields>Company_Number__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>General_Manager__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Service_Director__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Main_Phone__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>City__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>State__c</lookupDialogsAdditionalFields>
+        <lookupFilterFields>Company_Number__c</lookupFilterFields>
+        <lookupFilterFields>City__c</lookupFilterFields>
+        <lookupFilterFields>State__c</lookupFilterFields>
+        <lookupPhoneDialogsAdditionalFields>Company_Number__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>General_Manager__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Service_Director__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Main_Phone__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Open_Hour__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Close_Hour__c</lookupPhoneDialogsAdditionalFields>
+        <searchFilterFields>Company_Number__c</searchFilterFields>
+        <searchFilterFields>City__c</searchFilterFields>
+        <searchFilterFields>State__c</searchFilterFields>
+        <searchResultsAdditionalFields>Company_Number__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>General_Manager__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Service_Director__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Main_Phone__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>City__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>State__c</searchResultsAdditionalFields>
+    </searchLayouts>
+    <sharingModel>ReadWrite</sharingModel>
+</CustomObject>

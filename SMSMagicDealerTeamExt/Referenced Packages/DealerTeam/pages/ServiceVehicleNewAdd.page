@@ -1,0 +1,95 @@
+<apex:page id="ServiceVehicleNewRecord" standardController="dealer__Service_Vehicle__c" extensions="dealer.ServiceVehicle_EXT" title="Service Vehicle Record">
+    <apex:sectionHeader title="Service Vehicle" subtitle="Vehicle Details" />
+    <apex:form id="CreateServiceVehicleRecord">
+    <apex:actionFunction name="updateSerVeh" action="{!updateVehicle}" reRender="">
+    </apex:actionFunction>
+    <apex:actionFunction name="redirectToBack" action="{!redirectToBack}" reRender="">
+    </apex:actionFunction>
+<!--     <apex:outputField value="{!Service_Vehicle__c.Name}"/> -->
+<!--     <apex:outputField value="{!dealer__Service_Vehicle__c.dealer__VIN__c}"/> -->
+    <apex:pageBlock title="Vehicle Details">
+    <apex:pageMessages escape="false"/>
+     <apex:pageBlockButtons >
+        <apex:commandButton oncomplete="getConfirmation();" value="Save" rendered="{!svEquip.size > 0}"/>
+        <apex:commandButton action="{!save}" value="Save" rendered="{!svEquip.size == 0}"/>
+     </apex:pageBlockButtons>
+        <apex:pageBlockSection title="Vehicle Information" collapsible="false" showHeader="false" >
+            <apex:inputField value="{!dealer__Service_Vehicle__c.dealer__VIN__c}" />
+            <apex:outputText />           
+            
+            <apex:inputField value="{!dealer__Service_Vehicle__c.dealer__Year__c}" />
+            <apex:inputField value="{!dealer__Service_Vehicle__c.dealer__Make__c}" />
+            <apex:inputField value="{!dealer__Service_Vehicle__c.dealer__Carline__c}" />
+            
+            <apex:inputField value="{!dealer__Service_Vehicle__c.dealer__Model_Code__c}" />
+            <apex:inputField value="{!dealer__Service_Vehicle__c.dealer__Last_Odometer__c}" taborderhint="6"/>
+            <apex:inputField value="{!dealer__Service_Vehicle__c.dealer__Trim_Level__c}" />
+            
+            <apex:inputField value="{!dealer__Service_Vehicle__c.dealer__Body_Type__c}" />
+            <apex:inputField value="{!dealer__Service_Vehicle__c.dealer__Licence__c}" taborderhint="7"/>
+            <apex:inputField value="{!dealer__Service_Vehicle__c.dealer__Body_Style__c}" />
+
+        </apex:pageBlockSection>
+        
+         <apex:pageBlockSection title="Engine / Transmission" collapsible="false" showheader="true">
+        <apex:pageBlockSectionItem >
+        <apex:outputLabel value="Engine" for="engineSelectElement" />
+        <apex:selectList value="{!selectedEngine}" multiselect="false" size="1" id="engineSelectElement">
+            <apex:selectOptions value="{!engineSelect}" />
+        </apex:selectList>
+        </apex:pageBlockSectionItem>
+
+        <apex:pageBlockSectionItem >
+        <apex:outputLabel value="Transmission" for="transSelectElement" />
+        <apex:selectList value="{!selectedTransmission}" multiselect="false" size="1" id="transSelectElement">
+            <apex:selectOptions value="{!transmissionSelect}" />
+        </apex:selectList>
+        </apex:pageBlockSectionItem>
+    </apex:pageBlockSection>    
+    
+    <apex:pageBlockSection title="Installed Equipment" collapsible="true" showheader="true" columns="1">
+        <apex:pageBlockTable value="{!InstalledEquipment}" var="ie" id="installedEquipmentTable">
+            <apex:column headerValue="Selected"><apex:inputCheckBox value="{!ie.selected}" /></apex:column>
+            <apex:column value="{!ie.category}" headerValue="Category"/>
+            <apex:column value="{!ie.name}" headerValue="Name"/>
+            <apex:column value="{!ie.description}" headerValue="Desc"/>
+        </apex:pageBlockTable>
+    </apex:pageBlockSection>
+    
+    <apex:pageBlockSection title="Optional Equipment" collapsible="true" showheader="true" columns="1">
+        
+        <apex:pageBlockTable value="{!OptEquip}" var="opts" id="OptEquipmentTable">
+            <apex:column headerValue="Selected"><apex:inputCheckBox value="{!opts.selected}" /></apex:column>
+            <apex:column value="{!opts.category}" headerValue="Category"/>
+            <apex:column value="{!opts.name}" headerValue="Name"/>
+            <apex:column value="{!opts.description}" headerValue="Description"/>
+            <apex:column value="{!opts.installedBy}" headerValue="Installed By"/>
+            <apex:column value="{!opts.orderCode}" headerValue="Order Code"/>
+            <apex:column value="{!opts.optionId}" headerValue="Option ID"/>
+        </apex:pageBlockTable>
+    
+    </apex:pageBlockSection> 
+        <apex:inputHidden value="{!dealer__Service_Vehicle__c.dealer__VIN_Decode_Id__c}" />
+        <apex:inputHidden value="{!dealer__Service_Vehicle__c.dealer__Style_Id__c}" />
+    </apex:pageBlock>
+    </apex:form>
+    
+    <script type="text/javascript">
+	    function getConfirmation(){
+			var svId = '{!Service_Vehicle__c.id}';
+			//var retVal = confirm("Do you want update the Service Vehicle ?");
+			var retVal = confirm("You are performing a VIN decode on an existing vehicle. If you proceed all existing Vehicle Equipment will get replaced with the values selected.");
+			if( retVal == true ){
+          		updateSerVeh();
+	          	return true;
+	          	//window.location.href = '/' + svId;
+	       	}
+	       	else{
+	          	redirectToBack();
+	          	return false;
+	          	//window.location.href = '/' + svId;
+	        }
+	    }
+      </script>
+    
+</apex:page>

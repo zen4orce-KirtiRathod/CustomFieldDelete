@@ -1,0 +1,7 @@
+<apex:page standardController="Account" extensions="dealer.Account_EXT" action="{!IF(ShowRecord = 'Account', 
+	urlFor($Action.Account.View, RecordID, null, true),
+	urlFor($Action.Contact.View, RecordID, null, true)
+	)}">
+	<apex:outputText value="{!account.dealer__PersonContactId__c}" rendered="false" />
+	<apex:outputText value="{!account.dealer__B2CRecord__c}" rendered="false" />
+</apex:page>

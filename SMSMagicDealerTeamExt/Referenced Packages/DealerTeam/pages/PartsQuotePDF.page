@@ -1,0 +1,333 @@
+<apex:page standardController="dealer__Parts_Quote__c" extensions="dealer.PartsQuote_Printing" renderAs="pdf" showHeader="false">
+<head>
+<style type="text/css">
+	body {
+	    font-family: Tahoma, Geneva, sans-serif;
+	}
+	td {
+	    font-family: Tahoma, Geneva, sans-serif;
+	    padding: 5px;
+	}
+	th {
+	    font-family: Tahoma, Geneva, sans-serif;
+	    text-align: left;
+	    font-weight: bold;
+	    white-space: nowrap;
+	}
+
+	form {
+	    margin:0px;
+	    padding:0px;
+	}
+
+	h1, h2, h3, h4, h5, h6 {
+	    font-family: Tahoma, Geneva, sans-serif;
+	    font-size: 100%;
+	    margin:0px;
+	    display:inline;
+	}
+
+	textarea {
+	    font-family: Tahoma, Geneva, sans-serif;
+	    font-size: 100%;
+	 }
+
+	img { border:0; }
+
+	.plHead {
+	    background-color: #09F;
+	    boder-bottom:1px solid #999;
+	    padding: 4px;
+	    color: #FFF;  
+	}
+	.plDetailHead {
+		background-color: #696969;
+	    boder-bottom:1px solid #999;
+	    padding: 4px;
+	    color: #FFF;  
+	}
+	.plDetailHeadLeft {
+		background-color: #696969;
+	    boder-bottom:1px solid #999;
+	    padding: 4px;
+	    color: #FFF;  
+	    text-align:left;
+	}
+	.plDetailHeadRight {
+		background-color: #696969;
+	    boder-bottom:1px solid #999;
+	    padding: 4px;
+	    color: #FFF;  
+	    text-align:right;
+	}
+	.plHeadLeft {
+	    background-color: #09F;
+	    padding: 4px;
+	    color: #FFF;
+	    text-align:left;    
+	}
+	.plHeadRight {
+	    background-color: #09F;
+	    padding: 4px;
+	    color: #FFF;
+	    text-align:right;   
+	}
+	.blueBack {
+		background-color: #09F;
+	}
+	.plEve {
+		font-size: 12px;
+		text-align: left;
+	}
+	.plValue {
+		text-align: right;
+		color: #000;
+		padding: 4px;
+	}
+	.plLabel {
+		text-align: left;
+		color: #000;
+		padding: 4px;
+	}
+
+	.pLT {
+		font-size:14px;
+		text-align: left;
+		color: #000;
+		padding: 2px;
+	}
+
+	.pLV {
+		font-size: 14px;
+		text-align: right;
+		color: #000;
+		padding: 2px;
+	}
+
+	.bLeft {
+		border-left: 1px solid #999;
+	}
+	.bRight {
+		border-right: 1px solid #999;
+	}
+	.bTop { 
+		border-top: 1px solid #999;
+	}
+	.bBottom { 
+		border-bottom: 1px solid #999;
+	}
+
+
+	.odd {
+	 background-color: #EEE;
+	 padding: 1px 1px 2px 2px;
+	}
+
+	.even {
+	 padding: 1px 1px 2px 2px;
+	}
+
+	.quoteTag {
+		position: absolute;
+		left: 0px;
+		top: 0px;
+		width: 95px;
+		height: 95px;
+		background-image:url('{!$Resource.QuoteTag}');
+	}
+
+	@page {
+	/* Landscape orientation */
+	size:portrait;
+	margin: 0.25in;
+
+		/* Put page numbers in the top right corner of each
+		page in the pdf document. */
+		@bottom-left {
+			width: 600px;
+			font-size: 12px;
+			content: "No returns on special order items or electronics.  No returns after 30 days.  15% restocking fee may apply";
+		}
+		@bottom-right {
+		width: 200px;
+		font-size: 12px;
+		content: "Page " counter(page) " of " counter(pages);
+		}
+	}
+</style>
+</head>
+<apex:outputPanel layout="block" styleClass="quoteTag"></apex:outputPanel>
+<!-- Top (Header) Content -->
+<table cellpadding="0" cellspacing="0">
+	<tr>
+		<td colspan="2" style="height:55px;"></td>
+	</tr>
+    <tr>
+        <td width="500px" valign="top">
+            <div id="orgDetails" class="plEve">
+                <apex:outputPanel layout="none" rendered="{!ISBLANK(userLoc)}">    
+                	<apex:outputText value="{!$Organization.Name}" style="font-size:18px;font-weight:bold;" /><br />
+                	<apex:outputText value="{!$Organization.Street}" /><br />
+                	<apex:outputText value="{!$Organization.City}" />,&nbsp;<apex:outputText value="{!$Organization.State}" />&nbsp;<apex:outputText value="{!$Organization.PostalCode}" /><br />	
+                    <apex:outputText value="{!DMSDefaults.dealer__Corporate_Website__c}" /><br />
+                    <apex:outputText value="{!DMSDefaults.dealer__Corporate_Facebook_Page__c}" />
+                </apex:outputPanel>
+                <apex:outputPanel layout="none" rendered="{!NOT(ISBLANK(userLoc))}"> 
+                    <apex:outputText value="{!userLoc.Name}" style="font-size:18px;font-weight:bold;" /><br />
+                    <apex:outputText value="{!userLoc.dealer__Address__c}" /><br />
+                    <apex:outputText value="{!userLoc.dealer__City__c}" />,&nbsp;<apex:outputText value="{!userLoc.dealer__State__c}" />&nbsp;<apex:outputText value="{!userLoc.dealer__Postal_Code__c}" /><br />
+                    <apex:outputText value="{!userLoc.dealer__Website__c}" /><br />
+                </apex:outputPanel>
+            </div>
+    	</td>
+        <td width="500px">
+            <div style="float:right;"><apex:image id="businessLogo" url="/{!InvoiceLogo}" /></div>
+            <div style="clear:both"></div>
+            <div style="float:right;">
+			<table style="" cellpadding="0" cellspacing="0">
+				<tr>
+					<td colspan="2" align="center">&nbsp;</td>
+				</tr>
+				<tr>
+					<td width="175px" class="pLT">Quote#</td>
+					<td class="pLV"><apex:outputText value="{!dealer__Parts_Quote__c.dealer__Quote_Number__c}" label="" /></td>
+				</tr>
+				<tr>
+					<td width="175px" class="pLT">Quote Date</td>
+					<td class="pLV"><apex:outputText value="{0,date,MM/dd/yyyy}" ><apex:param value="{!dealer__Parts_Quote__c.CreatedDate}" /></apex:outputText></td>
+				</tr>
+				<tr>
+					<td width="175px" class="pLT blueBack" style="color: #FFF;">Quote Amount</td>
+					<td class="pLV blueBack" style="color: #FFF;"><apex:outputText value="{0,number, $###,##0.00}"><apex:param value="{!dealer__Parts_Quote__c.dealer__Total_Quote_Price__c}" /></apex:outputText></td>
+				</tr>	
+				<tr>
+					<td width="175px"></td>
+					<td style="font-size:10px">Printed&nbsp; 
+						<apex:outputText value="{!printDateTime}" />
+					</td>
+				</tr>			
+			</table>
+        	</div>
+        </td>
+    </tr>
+    <tr>
+        <td width="500px" valign="top">
+            <div id="customerNameBlock">
+            	<div style="font-weight:bold;">Quote Prepared For:</div>
+				<div id="CustomerName"><apex:outputText value="{!dealer__Parts_Quote__c.dealer__Customer_Contact__r.Name}" /></div> 
+				<div id="CustomerStreet"><apex:outputText value="{!dealer__Parts_Quote__c.dealer__Customer_Contact__r.MailingStreet}" /></div>  
+				<div id="CustomerCityStateZip">
+					<apex:outputText value="{!dealer__Parts_Quote__c.dealer__Customer_Contact__r.MailingCity}" /><apex:outputText rendered="{!NOT(ISBLANK(dealer__Parts_Quote__c.dealer__Customer_Contact__r.MailingState))}">,</apex:outputText>&nbsp;
+					<apex:outputText value="{!dealer__Parts_Quote__c.dealer__Customer_Contact__r.MailingState}" />&nbsp;
+					<apex:outputText value="{!dealer__Parts_Quote__c.dealer__Customer_Contact__r.MailingPostalCode}" />
+				</div>
+				         
+            </div>          
+        </td>
+        <td width="500px" valign="top">
+        </td>
+     </tr>
+     <tr>
+		<td colspan="2">
+			<table cellpadding="0" cellspacing="0" width="100%">
+				<tr>
+			        <td width="175px" class="plHead" valign="top">
+			        	<div style="font-size: 10px;color: #EEE;">Quoted By:</div>
+			        	<div style="font-size: 12px;"><apex:outputText value="{!dealer__Parts_Quote__c.dealer__Counterman__r.Name}" /></div>
+			        </td>
+			        <td width="175px" class="plHead" valign="top">
+			        </td>	
+			        <td width="175px" class="plHead" valign="top">
+			        </td>		        
+			        <td width="175px" class="plHead" valign="top">
+			        </td>				
+			        <td width="175px" class="plHead" valign="top">
+			        </td>
+				</tr>
+			</table>
+		</td>
+    </tr>
+    <tr>
+    	<td colspan="2"></td>
+    </tr>
+    <tr>
+    	<td colspan="2">
+<!-- Parts Lines -->	
+<apex:repeat value="{!pageBrokenQuoteLines}" var="aPageOfLineItems" id="partsList">
+    <div> 
+        <apex:dataTable value="{!aPageOfLineItems}" var="l" id="partsLines" headerClass="plDetailHead" rowClasses="odd,even" style="font-size: 80%;" columnsWidth="50px, 100px, 250px, 100px, 100px, 100px, 100px">
+            <apex:column >
+                <apex:facet name="header">QTY</apex:facet>
+                <apex:outputText value="{0, number, 0}">
+                    <apex:param value="{!l.dealer__Quantity__c}" />
+                </apex:outputText>
+            </apex:column>
+            <apex:column >
+                <apex:facet name="header">Part Number</apex:facet>
+                <apex:outputText value="{!l.dealer__Part_Number__c}"/>
+            </apex:column>
+            <apex:column >
+                <apex:facet name="header">Description</apex:facet>
+                <apex:outputText value="{!l.dealer__Part_Description__c}"/>
+            </apex:column>
+            <apex:column style="text-align: left;" headerClass="plDetailHeadLeft">
+                <apex:facet name="header">BIN</apex:facet>
+                <apex:outputText value="{!l.dealer__Bin__c}"/>
+            </apex:column>  
+            <apex:column style="text-align: right;" headerClass="plDetailHeadRight">
+                <apex:facet name="header">List</apex:facet>
+                <apex:outputText value="{0,number, $###,##0.00}">
+                	<apex:param value="{!l.dealer__List__c}" />
+                </apex:outputText>
+            </apex:column>  
+            <apex:column style="text-align: right;" headerClass="plDetailHeadRight">
+                <apex:facet name="header">Price</apex:facet>
+                <apex:outputText value="{0,number, $###,##0.00}">
+                	<apex:param value="{!l.dealer__Price__c}" />
+                </apex:outputText>
+            </apex:column> 
+            <apex:column style="text-align: right;" headerClass="plDetailHeadRight">
+                <apex:facet name="header">Ext Price</apex:facet>
+                <apex:outputText value="{0,number, $###,##0.00}">
+                	<apex:param value="{!l.dealer__Total_Price__c}" />
+                </apex:outputText>
+            </apex:column>                                                                                  
+        </apex:dataTable>
+    </div>
+</apex:repeat>    	
+    	</td>
+    </tr>
+</table>
+
+
+<!--  Invoice Totals -->
+<table>
+	<tr>
+		<td width="500px">&nbsp;</td>
+		<td>
+			<table cellpadding="0" cellspacing="0" style="font-size:80%;">
+				<tr>
+					<td width="175px" class="plLabel odd">Est. Shipping</td>
+					<td class="plValue odd"><apex:outputText value="{0,number, $###,##0.00}"><apex:param value="{!dealer__Parts_Quote__c.dealer__Shipping_Charges__c}" /></apex:outputText></td>
+				</tr>	
+				<tr>
+					<td width="175px" class="plLabel odd">Misc.</td>
+					<td class="plValue odd"><apex:outputText value="{0,number, $###,##0.00}"><apex:param value="{!dealer__Parts_Quote__c.dealer__Misc_Fee__c}" /></apex:outputText></td>
+				</tr>	
+				<tr>
+					<td width="175px" class="plLabel odd">Parts</td>
+					<td class="plValue odd"><apex:outputText value="{0,number, $###,##0.00}"><apex:param value="{!dealer__Parts_Quote__c.dealer__Total_Parts_Price__c}" /></apex:outputText></td>
+				</tr>	
+				<tr>
+					<td width="175px" class="plLabel odd">Tax</td>
+					<td class="plValue odd"><apex:outputText value="{0,number, $###,##0.00}"><apex:param value="{!dealer__Parts_Quote__c.dealer__Tax__c}" /></apex:outputText></td>
+				</tr>																
+				<tr>
+					<td width="175px" class="plLabel odd">Quote Total</td>
+					<td class="plValue odd"><apex:outputText value="{0,number, $###,##0.00}"><apex:param value="{!dealer__Parts_Quote__c.dealer__Total_Quote_Price__c}" /></apex:outputText></td>
+				</tr>													
+			</table>
+		</td>
+	</tr>
+</table>	
+</apex:page>

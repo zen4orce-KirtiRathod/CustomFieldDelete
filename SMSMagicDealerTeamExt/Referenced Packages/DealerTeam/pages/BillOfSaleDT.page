@@ -1,0 +1,490 @@
+<apex:page standardController="dealer__Sales_Up__c" showHeader="false" applyHtmlTag="false" applyBodyTag="false" renderAs="pdf">
+  <table frame="VOID" cols="5" rules="NONE" border="1" cellspacing="0">
+    <colgroup>
+        <col width="175"/>
+        <col width="217"/>
+        <col width="31"/>
+        <col width="160"/>
+        <col width="234"/>
+    </colgroup>
+    <tbody>
+        <tr>
+            <td colspan="2" rowspan="3" align="CENTER" height="84" valign="MIDDLE" width="392">
+                <strong><em>Bill of Sale (Buying Contract)</em></strong>
+            </td>
+            <td rowspan="1048576" align="CENTER" valign="MIDDLE" width="31">
+                <br/>
+            </td>
+            <td colspan="2" rowspan="6" align="CENTER" valign="MIDDLE" width="394">
+            <apex:image url="{!$Resource.dealer__The_Used_Car_Guys_Logo}" />
+                <br/>
+            </td>
+        </tr>
+        <tr>
+        </tr>
+        <tr>
+        </tr>
+        <tr>
+            <td colspan="2" align="CENTER" height="28" valign="MIDDLE">
+                <br/>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" align="LEFT" height="28" valign="MIDDLE">
+                <strong>SELLERS DETAILS</strong>
+            </td>
+        </tr>
+        <tr>
+            <td align="LEFT" height="28" valign="MIDDLE">
+                Seller:
+            </td>
+            <td align="LEFT" valign="MIDDLE">
+                {!Sales_Up__c.dealer__Buyer_Contact__r.name}
+            </td>
+        </tr>
+        <tr>
+            <td align="LEFT" height="28" valign="MIDDLE">
+                SSN: 
+            </td>
+            <td align="LEFT" valign="BOTTOM">
+                 {!Sales_Up__c.dealer__Car_Deal__r.Buyer_Social_Security_Number__c}<br/>
+            </td>
+            <td colspan="2" align="LEFT" valign="MIDDLE">
+                <strong>ZOLL DETAILS</strong>
+            </td>
+        </tr>
+        <tr>
+            <td align="LEFT" height="28" valign="MIDDLE">
+                Co-Seller:
+            </td>
+            <td align="LEFT" valign="BOTTOM">
+            {!Sales_Up__c.dealer__Co_Buyer_Contact__r.name}
+               <br/>
+            </td>
+            <td align="LEFT" valign="MIDDLE">
+                Zollager:
+            </td>
+            <td align="LEFT" valign="MIDDLE">
+                <strong>DE/9300/LC0003</strong>
+            </td>
+        </tr>
+        <tr>
+            <td align="LEFT" height="28" valign="MIDDLE">
+                SSN:
+            </td>
+            <td align="LEFT" valign="BOTTOM">
+               {!Sales_Up__c.dealer__Car_Deal__r.dealer__Co_Buyer_Social_Security_Number__c}
+            </td>
+            <td align="LEFT" valign="MIDDLE">
+                EORI:
+            </td>
+            <td align="LEFT" valign="MIDDLE">
+                <strong>DE530306934761723</strong>
+            </td>
+        </tr>
+        <tr>
+            <td align="LEFT" height="28" valign="MIDDLE">
+                Branch of Service:
+            </td>
+            <td align="LEFT" valign="MIDDLE">
+                <br/>
+            </td>
+            <td colspan="2" align="LEFT" valign="MIDDLE">
+                <strong>VEHICLE DETAILS</strong>
+            </td>
+        </tr>
+        <tr>
+            <td align="LEFT" height="28" valign="MIDDLE">
+                Paygrade:
+            </td>
+            <td align="LEFT" valign="MIDDLE">
+                <br/>
+            </td>
+            <td align="LEFT" valign="MIDDLE">
+                VIN:
+            </td>
+            <td align="LEFT" valign="BOTTOM">
+                {!Sales_Up__c.dealer__Desired_Stock_Num__r.dealer__VIN__c}
+            </td>
+        </tr>
+        <tr>
+            <td align="LEFT" height="28" valign="MIDDLE">
+                ETS/DOS:
+            </td>
+            <td align="LEFT" valign="MIDDLE">
+                <br/>
+            </td>
+            <td align="LEFT" valign="MIDDLE">
+                Stock Number:
+            </td>
+            <td align="LEFT" valign="MIDDLE">
+                {!Sales_Up__c.dealer__Desired_Stock_Num__r.dealer__Stock_Number__c} 
+            </td>
+        </tr>
+        <tr>
+            <td align="LEFT" height="28" valign="MIDDLE">
+                DEROS/PRD:
+            </td>
+            <td align="LEFT" valign="MIDDLE">
+                <br/>
+            </td>
+            <td align="LEFT" valign="MIDDLE">
+                Year/Make/Model
+            </td>
+            <td align="LEFT" valign="MIDDLE">
+               {!Sales_Up__c.dealer__Desired_Stock_Num__r.dealer__Year__c}/{!Sales_Up__c.dealer__Desired_Stock_Num__r.dealer__Make__c}/{!Sales_Up__c.dealer__Desired_Stock_Num__r.dealer__Model__c}
+            </td>
+        </tr>
+        <tr>
+            <td align="LEFT" height="28" valign="MIDDLE">
+                Date of Birth:
+            </td>
+            <td align="LEFT" valign="MIDDLE">
+                   {!Sales_Up__c.dealer__Buyer_Contact__r.dealer__BirthDay__c} 
+            </td>
+            <td align="LEFT" valign="MIDDLE">
+                Trim &amp; Engine Size
+            </td>
+            <td align="LEFT" valign="MIDDLE">
+                {!Sales_Up__c.dealer__Desired_Stock_Num__r.dealer__Trim_Level__c}
+            </td>
+        </tr>
+        <tr>
+            <td align="LEFT" height="28" valign="MIDDLE">
+                Years in Service:
+            </td>
+            <td align="LEFT" valign="MIDDLE">
+                <br/>
+            </td>
+            <td align="LEFT" valign="MIDDLE">
+                Trans &amp; Drive Train
+            </td>
+            <td align="LEFT" valign="MIDDLE">
+             <br/>
+
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" align="LEFT" height="28" valign="MIDDLE">
+                <strong>MILITARY ADDRESS INFORMATION</strong>
+            </td>
+            <td align="LEFT" valign="MIDDLE">
+                Ext/Int Color
+            </td>
+            <td align="LEFT" valign="MIDDLE">
+               {!Sales_Up__c.dealer__Desired_Stock_Num__r.dealer__Exterior_Color__c}/{!Sales_Up__c.dealer__Desired_Stock_Num__r.dealer__Interior_Color__c}
+            </td>
+        </tr>
+        <tr>
+            <td align="LEFT" height="28" valign="MIDDLE">
+                Organization:
+            </td>
+            <td align="LEFT" valign="BOTTOM">
+               {!Sales_Up__c.dealer__Customer_Account__c} 
+            </td>
+            <td align="LEFT" valign="MIDDLE">
+                Number of Keys
+            </td>
+            <td align="LEFT" valign="MIDDLE">
+                <br/>
+            </td>
+        </tr>
+        <tr>
+            <td align="LEFT" height="28" valign="MIDDLE">
+                PSC/CMR/Box:
+            </td>
+            <td align="LEFT" valign="BOTTOM">
+                <br/>
+            </td>
+            <td align="LEFT" valign="MIDDLE">
+                Additional Options:
+            </td>
+            <td align="LEFT" valign="MIDDLE">
+                <br/>
+            </td>
+        </tr>
+        <tr>
+            <td align="LEFT" height="28" valign="MIDDLE">
+                APO:
+            </td>
+            <td align="LEFT" valign="BOTTOM">
+                <br/>
+            </td>
+            <td align="LEFT" valign="MIDDLE">
+                Additional Options:
+            </td>
+            <td align="LEFT" valign="MIDDLE">
+                <br/>
+            </td>
+        </tr>
+        <tr>
+            <td align="LEFT" height="28" valign="MIDDLE">
+                Overseas Address:
+            </td>
+            <td align="LEFT" valign="BOTTOM">
+                <br/>
+            </td>
+            <td align="LEFT" valign="MIDDLE">
+                Mileage:
+            </td>
+            <td align="LEFT" valign="MIDDLE">
+                <br/>
+            </td>
+        </tr>
+        <tr>
+            <td align="LEFT" height="28" valign="MIDDLE">
+                Town/Zipcode:
+            </td>
+            <td align="LEFT" valign="BOTTOM">
+                <br/>
+            </td>
+            <td colspan="2" align="LEFT" valign="MIDDLE">
+                <strong>
+                    <br/>
+                </strong>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" align="LEFT" height="28" valign="MIDDLE">
+                 Email:  
+            </td>
+            <td align="LEFT" valign="MIDDLE">
+                Total Price
+            </td>
+            <td align="LEFT" valign="MIDDLE">
+                <br/>
+            </td>
+        </tr>
+        <tr>
+            <td align="LEFT" height="28" valign="MIDDLE">
+                Work Phone: (civ)
+            </td>
+            <td align="LEFT"  valign="BOTTOM">
+                <br/>
+            </td>
+            <td align="LEFT" colspan="2" valign="MIDDLE" >
+                <br/>
+            </td>
+            
+        </tr>
+        <tr>
+            <td align="LEFT" height="28" valign="MIDDLE">
+                Cell Phone:
+            </td>
+            <td align="LEFT" valign="MIDDLE">
+                {!Sales_Up__c.dealer__Buyer_Contact__r.Phone}
+            </td>
+            <td colspan="2"  align="LEFT" valign="MIDDLE">
+                <br/>
+            </td>
+           
+        </tr>
+        <tr>
+            <td colspan="2" align="LEFT" height="28" valign="MIDDLE">
+                <strong>FINANCE INFORMATION</strong>
+            </td>
+            <td colspan="2" rowspan="11" align="LEFT" valign="TOP" >
+            <p style="font-size:11px;" >1 - The vehicle described above is free of any mechanical defects other than those previously noted.  I understand that The Used Car Guys (UCG) reserves the right to reverse this sale within 14 (FOURTEEN) Days if any mechanical defects are found that are not listed, or if a clear paper title cannot be provided.</p>
+           <p style="font-size:11px;"> 2- In the event the vehicle is financed, I understand that The Used Car Guys will make payment upon receipt of the vehicle, all keys, copy of title, a 30 day payoff amount and account information. Unless otherwise agreed, payment will be made within 21 days of receipt of vehicle</p> 
+            <p style="font-size:11px;">3- I understand that as part of this transaction, I am responsible to provide a title and lien release once the vehicle has been paid for, and will assist in obtaining these documents from my lien holder if necessary</p>
+            <p style="font-size:11px;">4- If this vehicle is electronically titled in the USA, UCG has the right to withhold $500 of the funds until a paper title is received. </p>
+            <p style="font-size:11px;">5 -By signing this bill of sale I authorize my lien holder to provide The Used Car Guys with a 30 day pay off and a copy of the title or certificate of origin for the vehicle, and authorize all documents to be mailed to them directly. </p>
+                <br/>
+            </td>
+            
+        </tr>
+        <tr>
+            <td align="LEFT" height="28" valign="MIDDLE">
+                Lien Holder:
+            </td>
+            <td align="LEFT" valign="MIDDLE">
+               <br/>
+            </td>
+   
+        </tr>
+        <tr>
+            <td align="LEFT" height="28" valign="MIDDLE">
+                Loan Account #
+            </td>
+            <td align="LEFT" valign="MIDDLE">
+            <br/>
+                
+            </td>
+           
+        </tr>
+        <tr>
+            <td align="LEFT" height="29" valign="MIDDLE">
+                Lien Holder Address:
+            </td>
+            
+           
+            
+            <td align="LEFT" valign="MIDDLE">
+                <br/>
+            </td>
+        </tr>
+        <tr>
+            <td align="LEFT" height="28" valign="MIDDLE">
+                Pay Off / Good Thru
+            </td>
+            <td align="LEFT" valign="BOTTOM">
+                <br/>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" align="LEFT" height="28" valign="MIDDLE">
+                Notes:
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" align="LEFT" height="28" valign="MIDDLE">
+                <br/>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" align="LEFT" height="28" valign="MIDDLE">
+                <strong>DEALER INFORMATION </strong>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" align="LEFT" height="28" valign="MIDDLE">
+                <strong>The Used Car Guys GmbH</strong>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" align="LEFT" height="28" valign="MIDDLE">
+                <strong>Address and Zollager:</strong>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" align="LEFT" height="28" valign="MIDDLE">
+                <strong>Weilerbacher Str 110, 67661 Kaiserslautern</strong>
+            </td>
+        </tr>
+        <tr>
+            <td align="LEFT" height="28" valign="MIDDLE">
+                Zollamt:
+            </td>
+            <td align="LEFT" valign="MIDDLE">
+                Zollamt Kaiserslautern
+            </td>
+            <td align="LEFT" valign="MIDDLE">
+                <strong>
+                    <br/>
+                </strong>
+            </td>
+            <td rowspan="2" align="CENTER" valign="MIDDLE">
+                <strong>
+                    <br/>
+                </strong>
+            </td>
+        </tr>
+        <tr>
+            <td align="LEFT" height="28" valign="MIDDLE">
+                VAT ID
+            </td>
+            <td align="LEFT" valign="MIDDLE">
+                DE 28 288 7501
+            </td>
+            <td align="LEFT" valign="MIDDLE">
+                <strong>Sellers Sign:</strong>
+            </td>
+        </tr>
+        <tr>
+            <td align="LEFT" height="28" valign="MIDDLE">
+                Geschäftsführer
+            </td>
+            <td align="LEFT" valign="MIDDLE">
+                David/James Sweeney
+            </td>
+            <td align="LEFT" valign="MIDDLE">
+                <strong>
+                    <br/>
+                </strong>
+            </td>
+            <td rowspan="2" align="CENTER" valign="MIDDLE">
+                <strong>
+                    <br/>
+                </strong>
+            </td>
+        </tr>
+        <tr>
+            <td align="LEFT" height="28" valign="MIDDLE">
+                Email:
+            </td>
+            <td align="LEFT" valign="MIDDLE">
+                <u><a href="mailto:info@usedcarguys.net">info@usedcarguys.net </a></u>
+            </td>
+            <td align="LEFT" valign="MIDDLE">
+                <strong>Co-seller Sign:</strong>
+            </td>
+        </tr>
+        <tr>
+            <td align="LEFT" height="28" valign="MIDDLE">
+                Telephone K'lautern
+            </td>
+            <td align="LEFT" valign="MIDDLE">
+                0631 680 31 210
+            </td>
+            <td align="LEFT" valign="MIDDLE">
+                <strong>Place/ Date:</strong>
+            </td>
+            <td align="LEFT" valign="MIDDLE">
+                <strong>
+                    <br/>
+                </strong>
+            </td>
+        </tr>
+        <tr>
+            <td align="LEFT" height="28" valign="MIDDLE">
+                Telephone Ramstein
+            </td>
+            <td align="LEFT" valign="MIDDLE">
+                06371 920 000
+            </td>
+            <td colspan="2" align="CENTER" valign="MIDDLE">
+                <strong>
+                    <br/>
+                </strong>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" align="LEFT" height="28" valign="MIDDLE">
+                Notes:
+            </td>
+            <td align="LEFT" valign="MIDDLE">
+                <strong>
+                    <br/>
+                </strong>
+            </td>
+            <td rowspan="2" align="CENTER" valign="MIDDLE">
+                <strong>
+                    <br/>
+                </strong>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" align="CENTER" height="28" valign="MIDDLE">
+                <br/>
+            </td>
+            <td align="LEFT" valign="MIDDLE">
+                <strong>Purchaser Sign: </strong>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" align="CENTER" height="28" valign="MIDDLE">
+                <br/>
+            </td>
+            <td align="LEFT" valign="MIDDLE">
+                <strong>Place/ Date:</strong>
+            </td>
+            <td align="LEFT" valign="MIDDLE">
+                <strong>
+                    <br/>
+                </strong>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+</apex:page>

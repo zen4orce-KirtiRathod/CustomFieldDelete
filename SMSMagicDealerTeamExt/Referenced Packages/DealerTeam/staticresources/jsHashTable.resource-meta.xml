@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StaticResource xmlns="http://soap.sforce.com/2006/04/metadata">
+    <cacheControl>Public</cacheControl>
+    <contentType>application/octet-stream</contentType>
+    <description>A standalone implementation of hash table in JavaScript. It associates keys with values, and allows any object to be used as the key (unlike JavaScript&apos;s built-in Object, which only allows strings as property names). http://code.google.com/p/jshashtable/</description>
+</StaticResource>

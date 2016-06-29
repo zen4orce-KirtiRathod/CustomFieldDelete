@@ -1,0 +1,57 @@
+<apex:page standardController="dealer__Service_Vehicle__c">
+    <apex:form >
+        <apex:pageBlock >
+            <apex:pageBlockSection title="Appointment Details" collapsible="false" columns="1">
+                <table width="100%" border="0" cellspacing="2" cellpadding="0">
+  <tr>
+    <th>OpCode</th>
+    <th>Desc</th>
+    <th>Pay Type</th>
+    <th>Est</th>
+  </tr>  
+  <tr>
+    <td>01BRKFRT</td>
+    <td>Brake Service / Surface Rotors FRONT</td>
+    <td>C</td>
+    <td>$119</td>
+  </tr>
+  <tr>
+    <td>MPI</td>
+    <td>Complimentary MPI</td>
+    <td>I</td>
+    <td>$0</td>
+  </tr>  
+</table>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="Action Items" collapsible="false" columns="1">
+            <table width="100%" border="0" cellspacing="2" cellpadding="0">
+  <tr>
+    <th>Code</th>
+    <th>Item</th>
+    <th>Previously Presented</th>
+    <th>Est</th>
+  </tr>  
+  <tr>
+    <td>RED</td>
+    <td>Battery CCA 221 : Expected 650</td>
+    <td>No</td>
+    <td>$85</td>
+  </tr>
+  <tr>
+    <td>YELLOW</td>
+    <td>Front Brakes 5mm</td>
+    <td>YES</td>
+    <td>$119</td>
+  </tr> 
+  <tr>
+    <td>YELLOW</td>
+    <td>Brake Fluid Flush</td>
+    <td>No</td>
+    <td>$99</td>
+  </tr>       
+     
+</table>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

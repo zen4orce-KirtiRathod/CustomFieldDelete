@@ -1,0 +1,198 @@
+<apex:page renderAs="pdf" standardController="dealer__Dealer_Trade__c">
+<head>
+ <style type="text/css">
+  @page
+  {
+
+    /* Landscape orientation */
+    size:portrait;
+
+    /* Put page numbers in the bottom right corner of each page in the pdf document. */
+    @bottom-right {
+      content: "Crown Motors Dealer Trade Form";
+    }
+    @top-right {
+      content: "Trade Request Date: {!MONTH(dealer__Dealer_Trade__c.Date__c)}/{!DAY(dealer__Dealer_Trade__c.Date__c)}/{!YEAR(dealer__Dealer_Trade__c.Date__c)}";
+    }
+  }
+
+  body {
+   font-family: Arial Unicode MS;
+   font-size:9pt;
+  }
+
+
+  td {
+    font-size:11pt;
+    font-family:Verdana;
+  }
+  
+  .invbox {
+      border-bottom: solid thin;   
+  }
+
+  </style>
+</head>
+<body>
+    <apex:image id="DealershipLogo" url="{!$Resource.dealer__DealershipLogo}" width="300" height="60"/>
+<table width="100%" border="0">
+  <tr>
+      <td colspan="4"><h4>{!dealer__Dealer_Trade__c.Name}</h4></td>
+  </tr>  
+  <tr>
+    <td width="225"><em>Dealer:</em></td>
+    <td width="350">{!dealer__Dealer_Trade__c.Dealer__r.Name}</td>
+    <td width="225"><em>Ours / Yours:</em></td>
+    <td width="350">{!dealer__Dealer_Trade__c.Ours_Yours__c}</td>
+  </tr>
+  <tr>
+    <td><em>Address:</em></td>
+    <td>{!dealer__Dealer_Trade__c.Dealer__r.ShippingStreet}</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><em>City, State:</em></td>
+    <td>{!dealer__Dealer_Trade__c.Dealer__r.ShippingCity}, {!dealer__Dealer_Trade__c.Dealer__r.ShippingState}</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><em>Phone:</em></td>
+    <td>{!dealer__Dealer_Trade__c.Dealer__r.Phone}</td>
+    <td><em>Created:</em></td>
+    <td>{!dealer__Dealer_Trade__c.CreatedBy.Name}</td>
+  </tr>
+  <tr>
+    <td><em>Driver:</em></td>
+    <td>{!dealer__Dealer_Trade__c.Driver__c}</td>
+    <td><em>Modified:</em></td>
+    <td>{!dealer__Dealer_Trade__c.LastModifiedBy.Name}</td>
+  </tr> 
+  <tr>
+      <td colspan="4"><br /><br /></td>
+  </tr>   
+  <tr>
+      <td colspan="4"><u>Vehicle Delivered</u></td>
+  </tr> 
+  <tr>
+    <td><em>Our Stock No.</em></td>
+    <td>{!dealer__Dealer_Trade__c.Stock_No__r.Name}</td>
+    <td><em>Outbound Make:</em></td>
+    <td>{!dealer__Dealer_Trade__c.Make_Outbound__c}</td>
+  </tr>
+  <tr>
+    <td><em>Outbound VIN:</em></td>
+    <td>{!dealer__Dealer_Trade__c.VIN_Outbound__c}</td>
+    <td><em>Outbound Model:</em></td>
+    <td>{!dealer__Dealer_Trade__c.Model_Outbound__c}</td>
+  </tr> 
+  <tr>
+    <td><em>Outbound Year:</em></td>
+    <td>{!dealer__Dealer_Trade__c.Year_Outbound__c}</td>
+    <td><em>Color:</em></td>
+    <td>{!dealer__Dealer_Trade__c.Outgoing_Color__c}</td>
+  </tr>
+  <tr>
+      <td colspan="4"><br /></td>
+  </tr> 
+  <tr>
+    <td colspan="2" rowspan="5" valign="top"><em><u>Notes:</u></em><br />{!dealer__Dealer_Trade__c.Trade_Notes__c}</td>
+    <td class="invbox"><em>Our Invoice:</em></td>
+    <td class="invbox">{!dealer__Dealer_Trade__c.Invoice_Outbound__c}</td>
+  </tr> 
+  <tr>
+    <td class="invbox"><em>Our Holdback:</em></td>
+    <td class="invbox">{!dealer__Dealer_Trade__c.Our_Holdback__c}</td>
+  </tr>
+  <tr>
+    <td class="invbox"><em>Our Advertising:</em></td>
+    <td class="invbox">{!dealer__Dealer_Trade__c.Our_Advertising__c}</td>
+  </tr>
+  <tr>
+    <td class="invbox"><em>Accessories:</em></td>
+    <td class="invbox">{!dealer__Dealer_Trade__c.Accessories_Ours__c}</td>
+  </tr>  
+  <tr>
+    <td class="invbox"><em>Net Value Out:</em></td>
+    <td class="invbox">{!dealer__Dealer_Trade__c.Net_Value_Out__c}</td>
+  </tr>          
+  <tr>
+      <td colspan="4"><br /><br /></td>
+  </tr>       
+  <tr>
+      <td colspan="4"><u>Vehicle Received</u></td>
+  </tr> 
+  <tr>
+    <td><em>Inbound Stock No.</em></td>
+    <td>{!dealer__Dealer_Trade__c.Stock_No_Inbound__c}</td>
+    <td><em>Inbound Make:</em></td>
+    <td>{!dealer__Dealer_Trade__c.Make_Inbound__c}</td>
+  </tr>
+  <tr>
+    <td><em>Inbound VIN:</em></td>
+    <td>{!dealer__Dealer_Trade__c.VIN_Inbound__c}</td>
+    <td><em>Inbound Model:</em></td>
+    <td>{!dealer__Dealer_Trade__c.Model_Inbound__c}</td>
+  </tr> 
+  <tr>
+    <td><em>Inbound Year:</em></td>
+    <td>{!dealer__Dealer_Trade__c.Year_Inbound__c}</td>
+    <td><em>Color:</em></td>
+    <td>{!dealer__Dealer_Trade__c.Color_Inbound__c}</td>
+  </tr> 
+  <tr>
+      <td colspan="4"><br /></td>
+  </tr>   
+  <tr>
+    <td colspan="2" rowspan="5"><em><u>Notes:</u></em><br />{!dealer__Dealer_Trade__c.Trade_Notes_Inbound__c}</td>
+    <td class="invbox"><em>Inbound Invoice:</em></td>
+    <td class="invbox">{!dealer__Dealer_Trade__c.Invoice_Inbound__c}</td>
+  </tr> 
+  <tr>
+    <td class="invbox"><em>Your Holdback:</em></td>
+    <td class="invbox">{!dealer__Dealer_Trade__c.Holdback_Inbound__c}</td>
+  </tr>
+  <tr>
+    <td class="invbox"><em>Your Advertising:</em></td>
+    <td class="invbox">{!dealer__Dealer_Trade__c.Advertising_Inbound__c}</td>
+  </tr>
+  <tr>
+    <td class="invbox"><em>Your Accessories:</em></td>
+    <td class="invbox">{!dealer__Dealer_Trade__c.Accessories_Inbound__c}</td>
+  </tr>  
+  <tr>
+    <td class="invbox"><em>Net Value In:</em></td>
+    <td class="invbox">{!dealer__Dealer_Trade__c.Net_Value_In__c}</td>
+  </tr> 
+  <tr>
+      <td colspan="4"><br /><br /></td>
+  </tr>     
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td colspan="2"><em><u><b>Trade Totals:</b></u></em></td>
+  </tr>  
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td><em>Due:</em></td>
+    <td>{!dealer__Dealer_Trade__c.Due__c}</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>{!dealer__Dealer_Trade__c.Balance__c}</td>
+  </tr>
+  <tr>
+      <td colspan="4"><br /><br /></td>
+  </tr> 
+  <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td colspan="2">Accepted: ______________________________________</td>
+  </tr>                      
+</table>
+</body>
+</apex:page>

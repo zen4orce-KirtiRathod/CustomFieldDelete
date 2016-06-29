@@ -1,0 +1,23 @@
+<apex:page showHeader="true" sidebar="true" showChat="true" title="Parts Returns" controller="dealer.PartsReturnTab">
+		<apex:sectionHeader title="Parts Invoices" subtitle="Parts Return To Vendor" />
+		<apex:form >
+		<apex:pageBlock title="Recent Returns">
+			<apex:pageBlockButtons >
+				<apex:commandButton action="{!newReturn}" value="New Return" />
+			</apex:pageBlockButtons>
+			<apex:pageBlockTable value="{!returns}" var="r">
+				<apex:column headerValue="Action">
+					<apex:outputLink value="/apex/dealer__PartsReturnToVendor?id={!r.Id}">{!r.Name}</apex:outputLink>
+				</apex:column>
+				<apex:column headerValue="Vendor" value="{!r.dealer__Customer__c}" />
+				<apex:column headerValue="Location" value="{!r.dealer__Location__c}" />
+				<apex:column headerValue="RMA" value="{!r.dealer__RMA_No__c}" />
+				<apex:column headerValue="Status" value="{!r.dealer__Status__c}" />
+				<apex:column headerValue="Created By" value="{!r.CreatedById}" />
+				<apex:column headerValue="Created Date">
+					<apex:outputField value="{!r.CreatedDate}" />
+				</apex:column>
+			</apex:pageBlockTable>
+		</apex:pageBlock>
+		</apex:form>
+</apex:page>

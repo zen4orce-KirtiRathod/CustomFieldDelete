@@ -1,0 +1,110 @@
+<apex:page controller="dealer.DMSSettings" setup="true">
+<style type="text/css">
+/*
+ * This code is for Internal Salesforce use only, and subject to change without notice.
+ * Customers shouldn't reference this file in any web pages.
+ */
+.setupTabPanel{margin-top:.75em !important;background-color:#8e9dbe;padding-top:2px}.theTabPanel img{margin:0}.activeTab{background-image:url(/img/tab/miniTab_on.gif);border:1px solid #747e96;border-bottom:2px solid #fff;font-weight:bold}.inactiveTab{background:url(/img/tab/miniTab_off.gif);border:1px solid #747e96;border-bottom:2px solid #8e9dbe;font-weight:bold}.tabContent{background:#fff}.dr-tbpnl-cntnt{font-size:.91em}.apexp .totalRow{background-color:#fff;border-bottom:medium none;border-top:1px solid #e3deb8;padding-bottom:10px;padding-top:10px}.classDefTypeHeader{font-size:91%;font-weight:bold;margin-bottom:2px;margin-top:8px;overflow:hidden;padding:2px 2px 2px 5px;background-color:#ebecf2;color:#333}.classDefBody{padding-top:12px;padding-right:12px;padding-left:12px;padding-bottom:0}.classDefBodyName{padding-bottom:8px}.acSizeLimitMessageWrapper .message{margin-bottom:15px}.apexClassDetailTabPanelWrapper{margin-top:20px}.classDef .codeGroupHeader .codeGroupHeaderSig{font-size:1.45em;font-weight:bold}.customSettingEditWrapper .requiredInput,.editCSDataPageWrapper .requiredInput{display:inline-block}.manageSettingDefaultOrgValuesWrapper{margin-top:10px;margin-bottom:30px}body .theTabPanel{background-color:transparent}body .rich-tab-bottom-line,body .rich-tabpanel-content,body .rich-tabpanel-content-position,body .rich-tabhdr-side-cell,body .rich-tab-header,body .rich-tab-active,body .dr-tbpnl-tb-dsbl,body .dr-tbpnl-tb-dsbld,body .rich-tab-inactive,body .dr-tbpnl-tb-sel,body .rich-tabhdr-side-border,body .dr-tbpnl-tbcell-dsbld,body .rich-tabhdr-cell-inactive{border:0 none;padding:0;background:transparent none;font-size:1em}body .rich-tabpanel-content{border:1px solid #d4dadc;border-top:3px solid #747e96;-moz-border-radius:4px;-webkit-border-radius:4px;background-color:#f8f8f8;padding:6px}body .activeTab,body .inactiveTab{font-weight:bold;color:#333;text-decoration:none}body .rich-tabhdr-cell-active>table[id$="shifted"] td.rich-tabhdr-side-cell{padding-right:9px}body .rich-tabhdr-cell-inactive>table[id$="shifted"] td.rich-tabhdr-side-cell{padding-right:4px}body .rich-tabhdr-cell-active>table[id$="shifted"] td.rich-tabhdr-side-cell,body .rich-tabhdr-cell-inactive>table[id$="shifted"] td.rich-tabhdr-side-cell,body .rich-tabhdr-cell-active>table[id$="shifted"] td.rich-tabhdr-side-cell td.rich-tab-active,body .rich-tabhdr-cell-inactive>table[id$="shifted"] td.rich-tabhdr-side-cell td.rich-tab-inactive{background:transparent url('/img/alohaSkin/subtab_sprite.png') no-repeat right -299px !important;cursor:pointer}body .rich-tabhdr-cell-active>table[id$="shifted"] td.rich-tabhdr-side-cell{background-position:right -100px !important}body .rich-tabhdr-cell-active>table[id$="shifted"] td.rich-tabhdr-side-cell td.rich-tab-active{padding:8px 2px 4px 11px;background-position:left top !important}body .rich-tabhdr-cell-inactive>table[id$="shifted"] td.rich-tabhdr-side-cell td.rich-tab-inactive{padding:8px 4px 4px 8px;background-position:left -199px !important}body table[id$="connectionTab_shifted"],body table[id$="apexClassTab_shifted"],body table[id$="classCodeTab_shifted"],body table[id$="apexTriggerTab_shifted"],body table[id$="emailContentTab_shifted"],body table[id$="visualforceMarkupTab_shifted"]{margin-left:1px}body table[id$="templateTab_shifted"],body table[id$="versionSettingsTab_shifted"],body table[id$="classDocTab_shifted"],body table[id$="traceSettingsTab_shifted"]{margin-left:-6px}body .rich-tabhdr-cell-active>table[id$="shifted"]{top:0 !important;margin-bottom:-3px;height:29px !important;z-index:1}body .rich-tabhdr-cell-inactive>table[id$="shifted"]{height:24px !important}body.setupTab a.acDownloadLink{text-decoration:none;padding:3px 5px 4px}body.setupTab a.acDownloadLink:hover{color:#333;text-decoration:none}.compRefLink{margin-left:5px}.newSpacer{padding:5px}.vfPageDetailWrapper{margin-top:15px;margin-bottom:15px}
+</style> 
+
+    <apex:form >
+        <apex:pageBlock id="dmsPB" title="DealerTeam DMS Settings">
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!save}" value="Save Settings" />
+            </apex:pageBlockButtons>
+            
+            <apex:tabPanel switchType="client" tabClass="setupTabPanel" selectedTab="cws" id="tabSettings">
+            <apex:tab label="Company Settings" id="cws" name="cwsTab">
+            <apex:pageBlockSection title="Company Wide Settings" columns="1" collapsible="false" showHeader="false">
+                
+                
+                
+                <apex:inputText value="{!corporate_website}" label="Website" style="width:450px;"/>
+                <apex:inputText value="{!corporate_facebook}" label="Facebook"  style="width:450px;"/>
+                
+            </apex:pageBlockSection>
+
+            </apex:tab>
+            
+            <apex:tab label="Tax Settings" id="taxSettings" name="taxTab">
+            <apex:pageBlockSection title="Tax Settings" columns="1" collapsible="false" showHeader="false">
+                                <apex:inputText value="{!defaultTaxRate}" label="Default Tax Rate" />
+                <apex:inputcheckbox value="{!serviceTaxIfPartsSoldOnly}" label="Repair Order Tax Only When Parts Are Sold"/>
+                <apex:inputcheckbox value="{!serviceTaxLabor}" label="Repair Order Tax Labor" />
+            </apex:pageBlockSection>
+            </apex:tab>
+
+            <apex:tab label="Sales Department Settings" id="salesSettings" name="salesTab">
+            <apex:pageBlockSection title="Sales Department" columns="1" collapsible="false" showHeader="false">
+                <apex:inputText value="{!dealNumber}" label="Next available Deal#" />
+                <apex:inputCheckbox value="{!leadsAutoAssignManager}" label="Auto Assign Salespersons Manager to New Leads?"/>
+                <apex:inputCheckbox value="{!assignStockNumber}" label="Assign Stock Number Automatically?" />
+                <apex:inputCheckbox value="{!assignStockNumberBySequence}" label="Assign Stock Number by Sequence?"/>
+                <apex:inputText value="{!stockLength}" label="Stock# Length if Last of VIN" />
+                <apex:inputText value="{!stocknumberindex}" label="Current Stock Number Sequence" />
+                <apex:inputText value="{!deal_days}" label="Default Days to First Pyament" />
+                <apex:inputText value="{!deal_payments}" label="Default Payments per Year" />
+                <apex:inputText value="{!deal_rate}" label="Deafult Rate" />
+                <apex:inputText value="{!deal_term}" label="Default Term" />
+                <apex:inputText value="{!deal_docfee}" label="Documentation Fee" />
+<!--                 <apex:inputText value="{!status}" label="Status" /> -->
+                <apex:inputText value="{!askingPrice}" label="Asking Price Default" />
+                <apex:inputText value="{!auctionFee}" label="Auction Fee Default" />
+                <apex:inputText value="{!certification}" label="Certification Fee Default" />
+                <apex:inputText value="{!profitObjective}" label="Profit Objective Default" />
+                <apex:inputText value="{!transportation}" label="Transportation Cost Default" />
+<!--                 <apex:inputText value="{!dealStatusForInv}" label="Deal Status To Create Inventory" /> -->
+                <apex:inputText value="{!dealStatusForInv}" label="Deal Status to Execute Transaction (sell inventory vehicle, stock in trade)" />
+                <apex:inputText value="{!invStatusForSoldVehicle}" label="Inventory Status for Sold Vehicle" />
+                <apex:inputText value="{!salesupStatusForInv}" label="Sales Up Status To Create Inventory" />
+<!--                 <apex:inputText value="{!roStatus}" label="RO Status" /> -->
+                <apex:inputText value="{!vehSearchDefaultStatus}" label="Vehicle Search Default Status" />
+                <apex:inputText value="{!dealCreatedDefaultStatus}" label="Deal Created Default Status" />
+                <apex:inputText value="{!inStockDefaultStatus}" label="Retail Inventory Default Status" />
+
+<!--            // MKS 1-16-16       m-->
+                <apex:inputCheckbox value="{!dealControlsSalesUp}" label="Disable Sales Up Lead Status changes when Deal attached?" />
+
+            </apex:pageBlockSection>
+            </apex:tab>
+            
+            <apex:tab label="Service Department Settings" id="serviceSettings" name="serviceTab">
+            <apex:pageBlockSection title="Service Department" columns="1" collapsible="false" showHeader="false">
+                <apex:inputText value="{!serviceInvoiceNumber}" required="true" label="Current Service Invoice Number"/>
+                <apex:inputText value="{!serviceAppointmentNumber}" required="true" label="Currenct Service Appointment Number" />
+                <apex:inputText value="{!laborRate}" label="Customer Labor Rate" />
+                <apex:inputText value="{!warrantyLaborRate}" label="Warranty Labor Rate" />
+                <apex:inputText value="{!internalLaborRate}" label="Internal Labor Rate" />
+                <apex:inputCheckBox value="{!printEstimate}" label="Print Estimate on Invoice" />
+                <apex:inputCheckbox value="{!printTechTimes}" label="Print Tech Book Time on Invoice" />
+                <apex:inputText value="{!barnumber}" label="Regulator Repair Agency Id" />
+                <apex:inputText value="{!epanumber}" label="Environmental Agency Id" />                
+                
+            </apex:pageBlockSection>
+            </apex:tab>
+            
+            <apex:tab label="Parts Settings" id="partsSettings" name="partsTab">
+            <apex:pageBlockSection title="Parts Department" columns="1" collapsible="false" showHeader="false">
+                <apex:inputText value="{!partsInvoiceNumber}" label="Current Parts Invoice Number" />
+                <apex:inputText value="{!partsQuoteNumber}" label="Current Parts Quote Number" />
+            </apex:pageBlockSection>
+            </apex:tab>
+            
+            <apex:tab label="DMS Integration" id="dmsSettings" name="dmsIntegrationTab">
+                <apex:pageBlockSection title="DMS Integration Settings" columns="1" collapsible="false" showHeader="false">
+                    <apex:outputText >
+                    Settings on this tab are used to determine how the system should interact with an existing DMS.
+                    </apex:outputText>
+                    <apex:inputCheckBox value="{!dmsIntegrationMode}" label="Stand Alone Mode"/>
+                    <apex:inputText value="{!dmsName}" label="DMS Name" />
+                    <apex:inputCheckBox value="{!serviceLineTotalTrigger}" label="Service Lines compute RO Totals" />
+                    <apex:inputCheckBox value="{!cashierAutoClose}" label="Close Invoices when Cashier receives payment totaling amount due?" />
+                </apex:pageBlockSection>
+            </apex:tab>
+            
+            </apex:tabPanel>
+            
+        </apex:pageBlock>
+        
+    </apex:form>
+</apex:page>

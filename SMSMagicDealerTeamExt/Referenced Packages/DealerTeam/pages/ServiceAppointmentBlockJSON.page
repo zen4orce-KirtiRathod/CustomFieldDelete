@@ -1,0 +1,3 @@
+<apex:page id="SAB" showHeader="false" controller="dealer.ServiceAppointmentEvents" contentType="application/json">
+[{"id":111,"title":"Block Appointment","start":"{!YEAR(startDate)}-{!MONTH(startDate)}-{!DAY(startDate)} 08:00:00", "allDay":false},{"id":222,"title":"Block Appointment","start":"{!YEAR(startDate)}-{!MONTH(startDate)}-{!DAY(startDate)} 12:00:00","allDay":false}]
+</apex:page>

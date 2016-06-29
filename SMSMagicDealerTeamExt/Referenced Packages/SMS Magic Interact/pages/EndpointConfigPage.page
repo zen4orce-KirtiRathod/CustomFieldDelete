@@ -1,0 +1,31 @@
+<apex:page controller="smagicinteract.EndpointConfigController"> 
+
+<apex:form >
+<apex:pageMessages id="pageMessage"/> 
+
+<apex:pageBlock id="main" title="{!$Label.CONFG_ENDPNT}"  rendered="{! isConfigAllowable }" >
+ 
+	<apex:pageBlockSection id="sectionURL" title="{!$Label.SET_URL}"  >
+	<apex:facet name="header">
+		<h3>{!$Label.SET_URL}</h3>
+	</apex:facet>
+
+		<label>{!$Label.CUR_ENDPNT}</label> 
+		<apex:outputText value="{!currentURL}" />	
+
+ 		<label>{!$Label.NEW_ENDPNT}</label> 
+		<apex:inputText value="{!newURL}" style="width:600px"/>
+	</apex:pageBlockSection>
+
+
+ 
+<apex:pageBlockButtons id="buttonsBlock">
+    <apex:commandButton id="Save" action="{!save}" value="{!$Label.SAVE}" title="{!$Label.SAVE}"    />
+    <apex:commandButton id="Cancel" action="{!redirectToHome}"   value="{!$Label.CANCEL}" title="{!$Label.CANCEL}" />
+</apex:pageBlockButtons>
+
+
+</apex:pageBlock>
+</apex:form>
+
+</apex:page>

@@ -1,0 +1,174 @@
+<apex:page standardController="dealer__Service_Estimate__c" extensions="dealer.ServiceEstimate_EXT" id="ServiceEstimate" title="Service Estimate" showChat="true">
+    <apex:sectionHeader title="Service Estimate" subtitle="Estimate Worksheet" />
+    <chatter:feedWithFollowers entityId="{!dealer__Service_Estimate__c.Id}" />
+    <apex:form id="x4S">
+        <apex:pageBlock title="Service Estimate Detail" mode="maindetail" id="seHeader">
+        <apex:pageMessages />
+            <apex:pageBlockButtons location="top">
+                <apex:commandButton action="{!save}" value="Save" />
+                <apex:commandButton action="{!edit}" value="Edit" />
+                <apex:commandButton rerender="blankpanel" onClick="window.open('{!$Page.dealer__ServiceEstimatePDF}?id={!URLENCODE(dealer__Service_Estimate__c.Id)}');" value="Print Estimate (PDF)" />
+                <apex:commandButton action="{!emailButton}" value="Email Estimate" />
+                <apex:commandButton action="{!convertTORO}" value="Convert To RO" />
+             </apex:pageBlockButtons>
+             <apex:pageBlockSection columns="2" collapsible="false">
+                 <apex:outputField value="{!dealer__Service_Estimate__c.dealer__Service_Vehicle__c}">
+                    <apex:inlineEditSupport showOnEdit="saveButton, cancelButton"  hideOnEdit="editButton" event="ondblclick"  changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>
+                </apex:outputField>
+                <apex:outputField value="{!dealer__Service_Estimate__c.Name}" /> 
+                <apex:outputField value="{!dealer__Service_Estimate__c.dealer__Customer_Contact__c}">
+                    <apex:inlineEditSupport showOnEdit="saveButton, cancelButton"  hideOnEdit="editButton" event="ondblclick"  changedStyleClass="myBoldClass" />
+                </apex:outputField> 
+                <apex:outputField value="{!dealer__Service_Estimate__c.dealer__Total_Labor_Charges__c}" />  
+                <apex:outputField value="{!dealer__Service_Estimate__c.Inventory_Vehicle__r.dealer__Mileage__c}" /> 
+                
+                <apex:outputField value="{!dealer__Service_Estimate__c.dealer__Total_Parts_Charges__c}" />  
+                <apex:outputField value="{!dealer__Service_Estimate__c.Inventory_Vehicle__r.dealer__VIN__c}" />
+                <apex:outputField value="{!dealer__Service_Estimate__c.dealer__Total_Sublet_Charges__c}" /> 
+                <apex:outputField value="{!dealer__Service_Estimate__c.Inventory_Vehicle__r.dealer__Exterior_Color__c}" /> 
+                <apex:outputField value="{!dealer__Service_Estimate__c.dealer__Estimate_Total__c}" />
+                <apex:outputField value="{!dealer__Service_Estimate__c.dealer__Status__c}">
+                  <apex:inlineEditSupport showOnEdit="saveButton, cancelButton"  hideOnEdit="editButton" event="ondblclick"  changedStyleClass="myBoldClass"/>
+                </apex:outputField>
+                <apex:outputText />                           
+             </apex:pageBlockSection>
+             <apex:pageBlockSection columns="2" title="System Information" collapsible="true">
+                <apex:outputText value="{0}, {1}" label="Created By">
+                    <apex:param value="{!dealer__Service_Estimate__c.CreatedBy.Name}" />
+                    <apex:param value="{!dealer__Service_Estimate__c.CreatedDate}" />
+                </apex:outputText>
+                
+                <apex:outputText value="{0}, {1}" label="Last Modified By">
+                    <apex:param value="{!dealer__Service_Estimate__c.LastModifiedBy.Name}" />
+                    <apex:param value="{!dealer__Service_Estimate__c.LastModifiedDate}" />
+                </apex:outputText>  
+             </apex:pageBlockSection>
+             </apex:pageBlock>
+             
+             <apex:pageBlock id="seLineItems" title="Line Items">
+             <apex:pageBlockButtons location="top">
+                <apex:commandButton action="{!addService}" value="Add Service Work" />
+                <apex:commandButton action="{!addPart}" value="Add Part(s)" />
+                <apex:commandButton action="{!addSublet}" value="Add Sublet" />
+             </apex:pageBlockButtons>
+             
+                <table>
+                <tr>
+                    <td width="35%">
+                        <!--  Parts Table -->
+                        <apex:variable var="PartCount" value="{!1}"/>
+                        <table class="list" cellspacing="0" cellpadding="0" border="0" width="35%">
+                        <tr class="headerRow">
+                            <th class="actionColumn" colspan="2">Action</th>
+                            <th class="dataCell">Part</th>
+                            <th class="dataCell">Cost</th>
+                        </tr>                       
+                        <apex:repeat value="{!dealer__Service_Estimate__c.Service_Estimate_Lines__r}" var="p">
+                            <!-- Parts Only Lines -->
+                            <apex:outputText rendered="{!IF(OR(p.dealer__Part_Item__c != null, p.dealer__Part_Description__c != null), true, false)}">
+                            
+                                <tr class="dataRow even first">
+                                    <td class="dataCol"><apex:outputText value="{0,number,#,####}"><apex:param value="{!PartCount}" /></apex:outputText></td>
+                                    <td class="dataCol" width="30px"><apex:outputLink value="{!$Page.dealer__ServiceEstimatePartLine}?id={!p.Id}&sId={!dealer__Service_Estimate__c.Id}&retURL=/apex/UsedRecon4Square?id={!dealer__Service_Estimate__c.Id}" styleClass="actionLink">Edit</apex:outputLink></td>
+                                    <td class="dataCol" width="250px">
+                                        <apex:outputText value="{0} {1}">
+                                            <apex:param value="{!p.dealer__Part_Item__r.Name}" />
+                                            <apex:param value="{!p.dealer__Part_Description__c}" />
+                                        </apex:outputText>  
+                                    </td>
+                                    <td class="dataCell  CurrencyElement" width="100px"><apex:outputField value="{!p.dealer__Parts__c}" /></td>
+                                </tr>
+                                <apex:variable var="PartCount" value="{!PartCount + 1}"/>
+                            </apex:outputText>
+                        </apex:repeat>
+                        <tr class="dataRow odd">
+                            <td colspan="4" align="right" class="dataCell  CurrencyElement"><b><apex:outputField value="{!dealer__Service_Estimate__c.dealer__Total_Parts_Charges__c}" /> </b></td>
+                        </tr>
+                        </table>  
+                        
+                        <!--  Sublet  -->
+                        <apex:variable var="SubletCount" value="{!1}"/>
+                        <table class="list" cellspacing="0" cellpadding="0" border="0" width="35%">
+                        <tr class="headerRow">
+                            <th class="actionColumn" colspan="2">Action</th>
+                            <th class="dataCell">Sublet</th>
+                            <th class="dataCell">Cost</th>
+                        </tr>                       
+                        <apex:repeat value="{!dealer__Service_Estimate__c.Service_Estimate_Lines__r}" var="p">
+                            <!-- Parts Only Lines -->
+                            <apex:outputText rendered="{!IF(OR(p.dealer__Sublet_Work__c != null), true, false)}">
+                            
+                                <tr class="dataRow even first">
+                                    <td class="dataCol"><apex:outputText value="{0,number,#,####}"><apex:param value="{!SubletCount}" /></apex:outputText></td>
+                                    <td class="dataCol" width="30px"><apex:outputLink value="{!$Page.dealer__ServiceEstimateSubletLine}?id={!p.Id}&sId={!dealer__Service_Estimate__c.Id}&retURL=/apex/UsedRecon4Square?id={!dealer__Service_Estimate__c.Id}" styleClass="actionLink">Edit</apex:outputLink></td>
+                                    <td class="dataCol" width="250px">
+                                        <apex:outputText value="{0}">
+                                            <apex:param value="{!p.dealer__Sublet_Work__c}" />
+                                        </apex:outputText>  
+                                    </td>
+                                    <td class="dataCell  CurrencyElement" width="100px"><apex:outputField value="{!p.dealer__Sublet_Charges__c}" /></td>
+                                </tr>
+                                <apex:variable var="PartCount" value="{!SubletCount + 1}"/>
+                            </apex:outputText>
+                        </apex:repeat>
+                        <tr class="dataRow odd last">
+                            <td colspan="4" align="right" class="dataCell  CurrencyElement"><b><apex:outputField value="{!dealer__Service_Estimate__c.dealer__Total_Sublet_Charges__c}" /></b> </td>
+                        </tr>
+                        </table> 
+                    </td>
+                    <td width="65%">
+                        <!--  Labor Items -->
+                        <apex:variable var="LaborCount" value="{!1}"/>
+                        <table class="list" cellspacing="0" cellpadding="0" border="0">
+                        
+                        <tr class="headerRow">
+                            <th colspan="2">Action</th>
+                            <th>Op Code</th>
+                            <th>Description</th>
+                            <th>Tech Time</th>
+                            <th>Labor Cost</th>
+                            <th>Parts Cost</th>
+                            <th>Total</th>
+                        </tr>
+                        <apex:repeat value="{!dealer__Service_Estimate__c.Service_Estimate_Lines__r}" var="l">
+                            <apex:outputText rendered="{!IF(OR(l.dealer__Labor_Operation__c != null, l.dealer__Description__c != null), true, false)}">
+                                <tr class="dataRow even">
+                                    <td class="dataCell"><apex:outputText value="{0,number,#,####}"><apex:param value="{!LaborCount}" /></apex:outputText></td>
+                                    <td class="dataCell"><apex:outputLink value="{!$Page.dealer__ServiceEstimateServiceLine}?id={!l.Id}&sId={!dealer__Service_Estimate__c.Id}&retURL=/apex/UsedRecon4Square?id={!dealer__Service_Estimate__c.Id}" styleClass="actionLink">Edit</apex:outputLink></td>
+                                    <td class="dataCell"><apex:outputField value="{!l.Labor_Operation__r.Name}" /></td>
+                                    <td class="dataCell"><apex:outputField value="{!l.dealer__Description__c}" /></td>
+                                    <td class="dataCell"><apex:outputField value="{!l.dealer__Book_Time__c}" /></td>
+                                    <td class="dataCell  CurrencyElement"><apex:outputField value="{!l.dealer__Labor__c}" /></td>
+                                    <td class="dataCell  CurrencyElement"><apex:outputField value="{!l.dealer__Parts__c}" /></td>
+                                    <td class="dataCell  CurrencyElement"><apex:outputField value="{!l.dealer__Sub_Total__c}" /></td>
+                                </tr>
+                                <apex:variable var="LaborCount" value="{!LaborCount + 1}"/>
+                            </apex:outputText>
+                        </apex:repeat>
+                        <tr class="dataRow odd last">
+                            <td colspan="8" align="right" class="dataCell  CurrencyElement"><b><apex:outputField value="{!dealer__Service_Estimate__c.dealer__Total_Labor_Charges__c}" /> </b> </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="dataCol">
+                                Cosmetic Notes
+                            </td>
+                            <td colspan="5" class="dataCol">
+                                
+                             <apex:outputField label="Cosmetic Notes" value="{!dealer__Service_Estimate__c.dealer__Cosmetic_Notes__c}">
+                                <apex:inlineEditSupport showOnEdit="saveButton, cancelButton"  hideOnEdit="editButton" event="ondblclick"  changedStyleClass="myBoldClass" />
+                            </apex:outputField>
+                            </td>
+                        </tr>
+                        </table>
+                    </td>
+                </tr>
+                </table>
+             
+            </apex:pageBlock>
+        
+            <apex:outputPanel id="blankPanel"></apex:outputPanel>
+    </apex:form>
+    <apex:relatedList list="OpenActivities" />
+    <apex:relatedList list="ActivityHistories" id="activityList" />
+    <apex:relatedList list="NotesAndAttachments" />
+</apex:page>

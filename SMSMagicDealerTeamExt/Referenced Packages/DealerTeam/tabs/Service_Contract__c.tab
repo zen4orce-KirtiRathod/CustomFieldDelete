@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomTab xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customObject>true</customObject>
+    <description>Service Contracts are both related to Car Deals or can be simply sold independently.</description>
+    <icon>DealerTeam_Icons/Service_Contracts_Tab.png</icon>
+    <mobileReady>false</mobileReady>
+    <motif>Custom354: TV Widescreen</motif>
+</CustomTab>

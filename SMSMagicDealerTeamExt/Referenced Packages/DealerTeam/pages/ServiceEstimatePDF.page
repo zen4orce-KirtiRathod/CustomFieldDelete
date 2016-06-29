@@ -1,0 +1,212 @@
+<apex:page standardController="dealer__Service_Estimate__c" renderAs="PDF" showHeader="false" extensions="dealer.ServiceEstimate_EXT" >
+<head>
+<style type="text/css">
+
+@page{
+    size: landscape;
+   margin:0.05in;
+}
+.borderB {
+    border-bottom:1px solid #000;
+}
+
+.borderR{
+    border-right:1px solid #000;    
+}
+.borderL {
+    border-left: 1px solid #000;
+}
+.borderLRB {
+    border-right:1px solid #000;
+    border-left: 1px solid #000;
+    border-bottom: 1px solid #000;
+}
+.borderBR {
+    border-right:1px solid #000;
+    border-bottom: 1px solid #000;
+}
+.HEADER {
+    color: #FFF;
+    background-color: #000;
+    text-align: center;
+    font-size:12px;
+}
+.HEADERL {
+    color: #FFF;
+    background-color: #000;
+    text-align: left;
+    font-size:12px;
+}
+.HEADERR {
+    color: #FFF;
+    text-align: right;
+    font-size:12px;    
+}
+.HEADERBL {
+    color: #000;
+    text-align: left;
+    font-size:12px;
+}
+.Title {
+    font-size: 16px;
+}
+.BigPrint {
+    font-size: 14px;
+    text-indent: 4px;
+}
+
+.TinyPrint {
+    font-size: 12px;
+}
+
+.mPrint {
+    margin-left: 5px;
+    font-size: 10px;
+    text-indent: 4px;
+}
+
+
+</style>
+</head>
+<table width="100%" border="0" id="ServiceEstiamte" cellpadding="0" cellspacing="0" style="border: 1px solid #000;">
+  <tr>
+    <td colspan="2" align="center" class="borderB Title">{!$Organization.Name}</td>
+  </tr>
+  <tr>
+    <!-- Parts &  Section -->
+    <td width="264" valign="top">
+        <table width="100%" border="0" id="PSTable" cellpadding="0" cellspacing="0">
+          <tr>
+            <td class="borderBR BigPrint" width="180"><b>Parts and Sublet</b></td>
+            <td width="74" class="borderBR BigPrint"><b>Cost</b></td>
+          </tr>
+            <apex:variable var="PartCount" value="{!1}"/>
+            <apex:repeat value="{!EstimateLines}" var="p">
+                <!-- Parts Only Lines -->
+                <apex:outputText rendered="{!IF(OR(p.dealer__Part_Item__c != null, p.dealer__Part_Description__c != null), true, false)}">
+                
+                    <tr>
+                    <td class="borderBR mPrint">
+                            <apex:outputText value="{!PartCount} {0} {1}">
+                                <apex:param value="{!p.dealer__Part_Item__r.Name}" />
+                                <apex:param value="{!p.dealer__Part_Description__c}" />
+                            </apex:outputText>  
+                    </td>
+                    <td class="borderBR mPrint"><apex:outputField value="{!p.dealer__Parts__c}" /></td>
+                    </tr>
+                    <apex:variable var="PartCount" value="{!PartCount + 1}"/>
+                </apex:outputText>
+            </apex:repeat> 
+            <!--  Sublet Lines -->  
+            <apex:repeat value="{!EstimateLines}" var="p">
+                <!-- Parts Only Lines -->
+                <apex:outputText rendered="{!IF(OR(p.dealer__Sublet_Work__c != null), true, false)}">
+                
+                    <tr>
+                        <td class="borderBR mPrint">
+                            <apex:outputText value="{!PartCount} {0}">
+                                <apex:param value="{!p.dealer__Sublet_Work__c}" />
+                            </apex:outputText>  
+                        </td>
+                        <td class="borderBR mPrint"><apex:outputField value="{!p.dealer__Sublet_Charges__c}" /></td>
+                    </tr>
+                    <apex:variable var="PartCount" value="{!PartCount + 1}"/>
+                </apex:outputText>
+            </apex:repeat>                
+          <tr>
+            <td class="borderBR mPrint">&nbsp;</td>
+            <td class="borderBR mPrint">&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="borderBR TinyPrint">Keys (2) min</td>
+            <td class="borderBR mPrint">&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="borderBR TinyPrint">Owners Manual</td>
+            <td class="borderBR mPrint">&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="borderBR TinyPrint">Navigation Disc</td>
+            <td class="borderBR mPrint">&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="borderBR BigPrint"><b>Total</b></td>
+            <td class="borderBR BigPrint"><apex:outputField value="{!dealer__Service_Estimate__c.dealer__Parts_Sublet_Total__c}" /></td>
+          </tr>
+        </table>
+    </td>
+    <!-- Vehicle Info  - Labor & Default Items Section -->
+    <td width="1177" valign="top">
+        <table width="100%" border="0" id="VehicleLaborDetail" cellpadding="0" cellspacing="0">
+          <tr class="borderBR mPrint">
+            <td colspan="2" class="borderBR BigPrint"><b>Stock#</b>&nbsp;<apex:outputField value="{!dealer__Service_Estimate__c.Inventory_Vehicle__r.dealer__Stock_Number__c}" /></td>
+            <td colspan="3" class="borderBR BigPrint"><b>Year/Model</b> &nbsp;<apex:outputField value="{!dealer__Service_Estimate__c.Inventory_Vehicle__r.dealer__Year__c}" />&nbsp;/&nbsp;<apex:outputField value="{!dealer__Service_Estimate__c.Inventory_Vehicle__r.dealer__Model__c}" /></td>
+            <td colspan="2" class="borderBR BigPrint"><b>Trim</b>&nbsp;<apex:outputField value="{!dealer__Service_Estimate__c.Inventory_Vehicle__r.dealer__Trim_Level__c}" /></td>
+            <td width="203" class="borderB BigPrint"><b>RO#</b></td>
+          </tr>
+          <tr>
+            <td colspan="2" class="borderBR BigPrint"><b>VIN</b>&nbsp;<apex:outputField value="{!dealer__Service_Estimate__c.Inventory_Vehicle__r.dealer__VIN__c}" /></td>
+            <td colspan="3" class="borderBR BigPrint"><b>Color</b>&nbsp;<apex:outputField value="{!dealer__Service_Estimate__c.Inventory_Vehicle__r.dealer__Exterior_Color__c}" /></td>
+            <td colspan="2" class="borderBR BigPrint"><b>Miles</b>&nbsp;<apex:outputField value="{!dealer__Service_Estimate__c.Inventory_Vehicle__r.dealer__Mileage__c}" /></td>
+            <td class="borderB mPrint"><b>Date</b>&nbsp;<apex:outputField value="{!dealer__Service_Estimate__c.CreatedDate}" /></td>
+          </tr>
+          <tr>
+            <td width="216" class="borderBR HEADER">&nbsp;</td>
+            <td width="158" class="borderBR BigPrint"><b>Work Desc</b></td>
+            <td width="117" class="borderBR BigPrint"><b>Tech Time</b></td>
+            <td width="117" class="borderBR BigPrint"><b>Labor Cost</b></td>
+            <td width="131" class="borderBR BigPrint"><b>Used Parts</b></td>
+            <td width="124" class="borderBR BigPrint"><b>A/M Parts</b></td>
+            <td width="141" class="borderBR BigPrint"><b>OEM Parts</b></td>
+            <td class="borderB BigPrint"><b>Total Cost</b></td>
+          </tr>
+           <apex:repeat value="{!dealer__Service_Estimate__c.Service_Estimate_Lines__r}" var="l">
+                <apex:outputText rendered="{!IF(OR(l.dealer__Labor_Operation__c != null, l.dealer__Description__c != null), true, false)}">
+                    <tr>
+                        <td class="borderLRB mPrint"><apex:outputField value="{!l.Labor_Operation__r.Name}" /></td>
+                        <td class="borderBR mPrint" width="250px"><apex:outputField value="{!l.dealer__Description__c}" /></td>
+                        <td class="borderBR mPrint" width="50px"><apex:outputField value="{!l.dealer__Book_Time__c}" /></td>
+                        <td class="borderBR mPrint"><apex:outputField value="{!l.dealer__Labor__c}" /></td>
+                        <td class="borderBR mPrint" colspan="3"><apex:outputField value="{!l.dealer__Parts__c}" /></td>
+                        <td class="borderBR mPrint"><apex:outputField value="{!l.dealer__Sub_Total__c}" /></td>
+                    </tr>
+                </apex:outputText>
+            </apex:repeat>
+          <tr>
+            <td colspan="3" class="borderLRB  BigPrint"><b>Cosmetic Notes:</b></td>
+            <td colspan="5" class="borderB BigPrint"><apex:outputField value="{!dealer__Service_Estimate__c.dealer__Cosmetic_Notes__c}" /></td>
+          </tr>  
+          <tr>
+            <td colspan="6" class="HEADER">&nbsp;</td>
+            <td class="borderLRB  BigPrint"><b>TOTAL</b></td>
+            <td class="borderB BigPrint"><b>Parts &amp; Labor</b>&nbsp;<apex:outputField value="{!dealer__Service_Estimate__c.dealer__Estimate_Total__c}" /></td>
+          </tr>
+        </table>
+        <table>
+            <tr>
+                <td class="TinyPrint">Created By:</td>
+                <td class="TinyPrint">
+                <apex:outputText value="{0}, {1}" label="Created By">
+                    <apex:param value="{!dealer__Service_Estimate__c.CreatedBy.Name}" />
+                    <apex:param value="{!dealer__Service_Estimate__c.CreatedDate}" />
+                </apex:outputText>
+                </td>
+            </tr>
+            <tr>    
+                <td class="TinyPrint">Last Modified By:</td>
+                <td class="TinyPrint">
+                <apex:outputText value="{0}, {1}" label="Last Modified By">
+                    <apex:param value="{!dealer__Service_Estimate__c.LastModifiedBy.Name}" />
+                    <apex:param value="{!dealer__Service_Estimate__c.LastModifiedDate}" />
+                </apex:outputText> 
+                </td>
+            </tr>
+        </table>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">&nbsp; </td>
+  </tr>
+</table>
+
+</apex:page>

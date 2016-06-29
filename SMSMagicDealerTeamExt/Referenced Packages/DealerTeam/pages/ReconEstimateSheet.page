@@ -1,0 +1,397 @@
+<apex:page standardController="dealer__Service_Estimate__c" >
+<head>
+<style type="text/css">
+
+@page{
+   margin:0.05in;
+}
+.borderB {
+    border-bottom:1px solid #000;
+}
+
+.borderR{
+    border-right:1px solid #000;    
+}
+.borderL {
+    border-left: 1px solid #000;
+}
+.borderLRB {
+    border-right:1px solid #000;
+    border-left: 1px solid #000;
+    border-bottom: 1px solid #000;
+}
+.borderBR {
+    border-right:1px solid #000;
+    border-bottom: 1px solid #000;
+}
+.HEADER {
+    color: #FFF;
+    background-color: #000;
+    text-align: center;
+    font-size:12px;
+}
+.HEADERL {
+    color: #FFF;
+    background-color: #000;
+    text-align: left;
+    font-size:12px;
+}
+.HEADERR {
+    color: #FFF;
+    text-align: right;
+    font-size:12px;    
+}
+.HEADERBL {
+    color: #000;
+    text-align: left;
+    font-size:12px;
+}
+.BigPrint {
+    font-size: 14px;
+    font-weight:400;
+}
+
+.TinyPrint {
+    font-size: 10px;
+}
+
+.mPrint {
+    margin-left: 5px;
+    font-size: 12px;
+}
+
+
+</style>
+</head>
+<table width="100%" border="0" id="4SquareRecon" cellpadding="0" cellspacing="0" style="border: 1px solid #000;">
+  <tr>
+    <td colspan="2" align="center" class="borderB BigPrint">Auction Direct USA</td>
+  </tr>
+  <tr>
+    <!-- Parts & Sublet Section -->
+    <td width="264" valign="top">
+        <table width="100%" border="0" id="PSTable" cellpadding="0" cellspacing="0">
+          <tr>
+            <td class="borderBR mPrint" width="180">Parts and Sublet</td>
+            <td width="74" class="borderBR mPrint">Cost</td>
+          </tr>
+          <tr>
+            <td class="borderBR mPrint">&nbsp;</td>
+            <td class="borderBR mPrint">&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="borderBR TinyPrint">Keys (2) min</td>
+            <td class="borderBR">&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="borderBR TinyPrint">Owners Manual</td>
+            <td class="borderBR">&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="borderBR TinyPrint">Navigation Disc</td>
+            <td class="borderBR">&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="borderBR mPrint">TOTAL</td>
+            <td class="borderBR">&nbsp;</td>
+          </tr>
+        </table>
+    </td>
+    <!-- Vehicle Info  - Labor & Default Items Section -->
+    <td width="1177" valign="top">
+        <table width="100%" border="0" id="VehicleLaborDetail" cellpadding="0" cellspacing="0">
+          <tr class="borderBR">
+            <td colspan="2" class="borderBR mPrint">Stock#</td>
+            <td colspan="3" class="borderBR mPrint">Year/Model</td>
+            <td colspan="2" class="borderBR mPrint">Trim</td>
+            <td width="203" class="borderB mPrint">RO#</td>
+          </tr>
+          <tr>
+            <td colspan="2" class="borderBR mPrint">VIN</td>
+            <td colspan="3" class="borderBR mPrint">Color</td>
+            <td colspan="2" class="borderBR mPrint">Miles</td>
+            <td class="borderB mPrint">Date</td>
+          </tr>
+          <tr>
+            <td width="216" class="borderBR HEADER">&nbsp;</td>
+            <td width="158" class="borderBR mPrint">Work Desc</td>
+            <td width="117" class="borderBR mPrint">Tech Time</td>
+            <td width="117" class="borderBR mPrint">Labor Cost</td>
+            <td width="131" class="borderBR mPrint">Used Parts</td>
+            <td width="124" class="borderBR mPrint">A/M Parts</td>
+            <td width="141" class="borderBR mPrint">OEM Parts</td>
+            <td class="borderB mPrint">Total Cost</td>
+          </tr>
+          <tr>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderB">&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderB">&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderB">&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderB">&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderB">&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderB">&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderB">&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderB">&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderB">&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderB">&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderB">&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderB">&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderB">&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderB">&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderB">&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderB">&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderB">&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderB">&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderBR">&nbsp;</td>
+            <td class="borderB">&nbsp;</td>
+          </tr>
+          <tr>
+            <td colspan="6" class="HEADER">&nbsp;</td>
+            <td class="borderLRB  mPrint">TOTAL</td>
+            <td class="borderB">&nbsp;</td>
+          </tr>
+        </table>
+
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">&nbsp; </td>
+  </tr>
+</table>
+
+</apex:page>

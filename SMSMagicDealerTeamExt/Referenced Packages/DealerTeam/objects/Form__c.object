@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <comment>Form manager page related to dealing with the various form types present in the document solution.</comment>
+        <content>FormManager</content>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Visualforce</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <customHelpPage>SuccessDocumentation_Tab</customHelpPage>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <deprecated>false</deprecated>
+    <description>Deal forms for printing and contracting of invoices</description>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableEnhancedLookup>true</enableEnhancedLookup>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableReports>false</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <fields>
+        <fullName>Active__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Active forms appear in menus as available</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Is this form active and available for use?</inlineHelpText>
+        <label>Active</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>DocumentContentId__c</fullName>
+        <caseSensitive>false</caseSensitive>
+        <deprecated>false</deprecated>
+        <description>External document content Id.  This ID represents the form content stored within the dealerteam document generation server.</description>
+        <externalId>true</externalId>
+        <label>DocumentContentId</label>
+        <length>64</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>true</unique>
+    </fields>
+    <fields>
+        <fullName>FDF_Code__c</fullName>
+        <deprecated>false</deprecated>
+        <description>FDF Merge Data</description>
+        <externalId>false</externalId>
+        <label>FDF Code</label>
+        <length>75000</length>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>15</visibleLines>
+    </fields>
+    <fields>
+        <fullName>FPDF_File_Name__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Name of the pdf file that is to be merged with the fpdf file.</inlineHelpText>
+        <label>FPDF File Name</label>
+        <length>80</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Flatten__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Flatten the output PDF.  This boolean value tells the document merge server if the returned document should be flattened.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Flatten the output PDF?</inlineHelpText>
+        <label>Flatten</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Form_ID__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Unique ID for the Form</description>
+        <externalId>false</externalId>
+        <label>Form ID</label>
+        <length>25</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Impact_Code__c</fullName>
+        <deprecated>false</deprecated>
+        <description>ESC/P Impact Printer Logic</description>
+        <externalId>false</externalId>
+        <label>Impact Code</label>
+        <length>75000</length>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>15</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Library__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>DealerTeam managed forms library.  Forms downloaded and linked to the Library can be modified however are tracked to their original state.</description>
+        <externalId>false</externalId>
+        <label>Library</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Page_Name__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Page name of this form.  The page name is a reference to the Visualforce page that contains the code.</description>
+        <externalId>false</externalId>
+        <label>Page Name</label>
+        <length>64</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Print_Type__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Print Type</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Laser</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Impact</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>FDF</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Proofed_by__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>Use who has proofed the form for completeness</description>
+        <externalId>false</externalId>
+        <label>Proofed by</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Forms</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Revision_Date__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Date this form was last revised</description>
+        <externalId>false</externalId>
+        <label>Revision Date</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Sequence__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Logical order of this form in the page layout</description>
+        <externalId>false</externalId>
+        <label>Sequence</label>
+        <precision>6</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <label>Form</label>
+    <listViews>
+        <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>Print_Type__c</columns>
+        <columns>UPDATEDBY_USER</columns>
+        <columns>LAST_UPDATE</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <nameField>
+        <label>Form Name</label>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Forms</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ReadWrite</sharingModel>
+    <validationRules>
+        <fullName>Print_Type_Must_be_Set</fullName>
+        <active>true</active>
+        <description>Print type of the form must be set to save a record.</description>
+        <errorConditionFormula>IF(ISBLANK(TEXT(Print_Type__c )), true, false)</errorConditionFormula>
+        <errorDisplayField>Print_Type__c</errorDisplayField>
+        <errorMessage>Print Type must be selected to save this record.</errorMessage>
+    </validationRules>
+</CustomObject>

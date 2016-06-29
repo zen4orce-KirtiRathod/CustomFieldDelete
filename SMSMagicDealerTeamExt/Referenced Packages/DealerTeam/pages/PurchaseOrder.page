@@ -1,0 +1,282 @@
+<apex:page tabStyle="dealer__Purchase_Order__c" title="Purchase Order" standardController="dealer__Purchase_Order__c" extensions="dealer.PurchaseOrder_EXT" showChat="true">
+
+		<style>
+			.aright {text-align: right;}
+		</style>
+	
+		<apex:sectionHeader title="Purchase Order" subtitle="PO#{!Purchase_Order__c.dealer__PO_Number__c}" rendered="{!NOT(ISBLANK(dealer__Purchase_Order__c.Id))}" />
+		<apex:sectionHeader title="Purchase Order" subtitle="Create a new Purchase Order" description="Assign a vendor and save to create a new purchase order.  Once created you can add details to the purchase order before issuing to the vendor." rendered="{!ISBLANK(dealer__Purchase_Order__c.Id)}" />
+
+		<chatter:feedwithfollowers entityId="{!dealer__Purchase_Order__c.Id}"/>
+		
+		<apex:form >
+		<apex:pageMessages />
+		<apex:pageBlock mode="maindetail">
+
+			<apex:pageBlockButtons location="top">
+				<apex:commandButton action="{!save}" value="Save" rendered="{!ISBLANK(dealer__Purchase_Order__c.dealer__Accepted_DateTime__c)}" />
+
+				<apex:commandButton action="{!returnToRepairOrder}" value="Return to Repair Order" rendered="{!NOT(ISBLANK(dealer__Purchase_Order__c.dealer__Service_Repair_Order__c))}" />				
+				<apex:commandButton onClick="window.open('{!ops.dealer__Purchase_Order_PDF__c}?id={!dealer__Purchase_Order__c.Id}')" value="Print Purchase Order" reRender="renderPanel" rendered="{!NOT(ISBLANK(dealer__Purchase_Order__c.Id))}" />
+				<apex:commandButton action="{!emailPO}" value="Email Purchase Order" rendered="{!NOT(ISBLANK(dealer__Purchase_Order__c.Id))}"/>
+				<apex:commandButton action="{!closePurchaseOrder}" value="Receive Purchase Order" rendered="{!AND(NOT(ISBLANK(dealer__Purchase_Order__c.Id)), ISBLANK(dealer__Purchase_Order__c.dealer__Accepted_DateTime__c))}" />
+				<apex:commandButton action="{!postPO}" value="Post Purchase Order" rendered="{!NOT(ISBLANK(dealer__Purchase_Order__c.dealer__Accepted_DateTime__c))}" />
+
+				<apex:commandButton action="{!voidPO}" value="Void PO" rendered="{!AND( NOT(ISBLANK(dealer__Purchase_Order__c.Id)), ISBLANK(dealer__Purchase_Order__c.dealer__Accepted_DateTime__c) )}" />
+			</apex:pageBlockButtons>
+
+			<apex:pageBlockSection >
+				<apex:inputField value="{!dealer__Purchase_Order__c.dealer__Vendor__c}" rendered="{!ISBLANK(dealer__Purchase_Order__c.dealer__Accepted_DateTime__c)}"/>
+				<apex:outputField value="{!dealer__Purchase_Order__c.dealer__Vendor__c}" rendered="{!NOT(ISBLANK(dealer__Purchase_Order__c.dealer__Accepted_DateTime__c))}"/>
+				<apex:outputField value="{!dealer__Purchase_Order__c.RecordTypeId}" />
+				
+				<apex:outputField value="{!dealer__Purchase_Order__c.dealer__PO_Lines__c}" rendered="{!NOT(ISBLANK(dealer__Purchase_Order__c.Id))}"/> 
+				<apex:outputField value="{!dealer__Purchase_Order__c.dealer__Status__c}" rendered="{!NOT(ISBLANK(dealer__Purchase_Order__c.Id))}"/> 
+				
+				<apex:outputText />
+				<apex:inputField value="{!dealer__Purchase_Order__c.dealer__Requested_By__c}" />
+
+				<apex:outputText rendered="{!ISBLANK(dealer__Purchase_Order__c.Id)}" />
+				<apex:outputField value="{!dealer__Purchase_Order__c.dealer__PO_Amount__c}" rendered="{!NOT(ISBLANK(dealer__Purchase_Order__c.Id))}"/> 
+
+				<apex:inputField value="{!dealer__Purchase_Order__c.dealer__Company__c}" required="true" rendered="{!ISBLANK(dealer__Purchase_Order__c.Id)}"/>
+				<apex:outputField value="{!dealer__Purchase_Order__c.dealer__Company__c}" rendered="{!NOT(ISBLANK(dealer__Purchase_Order__c.Id))}"/>
+
+				<apex:outputText rendered="{!AND(ISBLANK(dealer__Purchase_Order__c.dealer__Service_Repair_Order__c), OR(IF(recordTypeName='Sublet', true, false), IF(recordTypeName='Parts_Purchase', true, false)))}"/>
+				<apex:inputField value="{!dealer__Purchase_Order__c.dealer__Service_Repair_Order__c}" rendered="{!AND(ISBLANK(dealer__Purchase_Order__c.dealer__Service_Repair_Order__c), OR(IF(recordTypeName='Sublet', true, false), IF(recordTypeName='Parts_Purchase', true, false)))}" />
+				<apex:outputField value="{!dealer__Purchase_Order__c.dealer__Service_Repair_Order__c}" rendered="{!NOT(ISBLANK(dealer__Purchase_Order__c.dealer__Service_Repair_Order__c))}"/>
+
+				<apex:outputText />
+				<apex:inputField value="{!dealer__Purchase_Order__c.dealer__Estimated_Arrival_Time__c}" rendered="{!NOT(ISBLANK(dealer__Purchase_Order__c.Id))}" />
+
+				<apex:outputText />
+				<apex:inputField value="{!dealer__Purchase_Order__c.dealer__Tracking__c}" rendered="{!NOT(ISBLANK(dealer__Purchase_Order__c.Id))}"/>
+
+
+			</apex:pageBlockSection>
+
+			<apex:pageBlockSection columns="1" collapsible="false">
+				<apex:inputField value="{!dealer__Purchase_Order__c.dealer__Comments__c}" style="width:450px;" label="Internal Comments" />
+			</apex:pageBlockSection>
+
+			<apex:pageBlockSection columns="2" collapsible="false" id="auditfields" rendered="{!NOT(ISBLANK(dealer__Purchase_Order__c.Id))}">
+				<apex:pageBlockSectionItem >
+				    <apex:outputLabel for="CreatedBy" value="Created By" />   
+				    <apex:outputPanel >
+				        <apex:commandLink id="CreatedBy" action="/{!Purchase_Order__c.CreatedBy.Id}" value="{!dealer__Purchase_Order__c.CreatedBy.Name}" />
+				        <apex:outputText value=", {!dealer__Purchase_Order__c.CreatedDate}" /> 
+				    </apex:outputPanel>
+				</apex:pageBlockSectionItem>
+
+				<apex:pageBlockSectionItem >
+				    <apex:outputLabel for="LastModifiedBy" value="Last Modified By" />   
+				    <apex:outputPanel >
+				        <apex:commandLink id="LastModifiedBy" action="/{!Purchase_Order__c.LastModifiedBy.Id}" value="{!dealer__Purchase_Order__c.LastModifiedBy.Name}" />
+				        <apex:outputText value=", {!dealer__Purchase_Order__c.LastModifiedDate}" /> 
+				    </apex:outputPanel>
+				</apex:pageBlockSectionItem>				
+			</apex:pageBlockSection>
+
+			<apex:pageBlockSection title="Accepted Purchase Order" collapsible="false" rendered="{!NOT(ISBLANK(dealer__Purchase_Order__c.dealer__Accepted_DateTime__c))}">
+				<apex:outputField value="{!dealer__Purchase_Order__c.dealer__Invoice_Amount__c}" />
+				<apex:outputText />
+
+				<apex:outputField value="{!dealer__Purchase_Order__c.dealer__Invoice_Date__c}" />
+				<apex:outputField value="{!dealer__Purchase_Order__c.dealer__Invoice_Number__c}" />
+
+				<apex:outputField value="{!dealer__Purchase_Order__c.dealer__Accepted_By__c}" />
+				<apex:outputField value="{!dealer__Purchase_Order__c.dealer__Accepted_DateTime__c}" />
+				<apex:outputText />
+				<apex:outputField value="{!dealer__Purchase_Order__c.dealer__Post_Date_Time__c}" />
+			</apex:pageBlockSection>
+		</apex:pageBlock>
+
+		<!-- Vehicle PO Page Block -->
+		<apex:pageBlock title="Vehicle Purchase Order" rendered="{!AND(IF(recordTypeName='Vehicle_Purchase',true,false), NOT(ISBLANK(dealer__Purchase_Order__c.Id)))}" id="vdPB">
+			<apex:pageBlockButtons location="top">
+				<apex:commandButton value="Decode VIN" action="{!decodeVIN}" reRender="vdPB" />
+				<apex:commandButton value="Lookup Existing Vehicle" action="{!findExisting}" reRender="vdPB" />
+			</apex:pageBlockButtons>
+			<apex:pageBlockSection columns="2" collapsible="false">
+				<apex:inputField value="{!dealer__Purchase_Order__c.dealer__VIN__c}" />
+				<apex:pageBlockSectionItem >
+					<apex:outputLabel value="Vehicle Status Code" for="statusCodeOption" />
+					<apex:selectList value="{!vehicleStatusCode}" size="1" id="statusCodeOption">
+						<apex:selectOptions value="{!VehicleStatusOptions}" />
+					</apex:selectList>
+				</apex:pageBlockSectionItem>
+
+				<apex:inputField value="{!dealer__Purchase_Order__c.dealer__Year__c}" />
+				<apex:inputField value="{!dealer__Purchase_Order__c.dealer__StockNumber__c}" label="Control# / Stock#" />
+
+				<apex:inputField value="{!dealer__Purchase_Order__c.dealer__Make__c}" />
+				<apex:outputField value="{!dealer__Purchase_Order__c.dealer__Vehicle_Inventory__c}" />
+
+				<apex:inputField value="{!dealer__Purchase_Order__c.dealer__Model__c}" />
+				<apex:outputText />
+
+			</apex:pageBlockSection>
+
+			<apex:pageBlockSection columns="1">
+				<apex:iframe src="{!ops.dealer__PurchaseOrderLineManager__c}?id={!dealer__Purchase_Order__c.Id}" height="650" frameborder="false" scrolling="true" rendered="{!NOT(ISBLANK(ops.dealer__PurchaseOrderLineManager__c))}" />
+			</apex:pageBlockSection>		
+
+		</apex:pageBlock>
+		
+		<!-- Service PO Page Block -->
+		<apex:pageBlock title="Add Sublet Service to Purchase Order" rendered="{!AND(IF(recordTypeName='Sublet',true,false), NOT(ISBLANK(dealer__Purchase_Order__c.Id)), ISBLANK(dealer__Purchase_Order__c.dealer__Accepted_DateTime__c))}">
+			<apex:panelGrid columns="11" style="width:100%;">
+
+				<apex:outputLabel value="Repair Order Line" for="ServiceRepairOrderJobLine" />
+				<!-- <apex:inputField value="{!SUBLET_JOBLINE.Service_Job_Line__c}" id="ServiceRepairOrderJobLine" /> -->
+				<apex:selectList size="1" value="{!job_line_id}">
+					<apex:selectOptions value="{!roLines}" />
+				</apex:selectList>
+
+				<apex:outputLabel value="Description" for="lineDescription" />
+				<apex:inputText value="{!SUBLET_LINEDESC}" id="lineDescription"/>
+
+				<apex:outputLabel value="Notes" for="subNotes" />
+				<apex:inputText value="{!SUBLET_NOTES}" id="subNotes" />
+
+				<apex:outputLabel value="Amount" for="subletAmount" />
+				<apex:inputText value="{!SUBLET_AMOUNT}" id="subletAmount"/>
+
+				<apex:outputLabel value="Customer Charges" for="customerCharges" />
+				<apex:inputText value="{!CHARGE_AMOUNT}" id="customerCharges"/>
+
+				<apex:commandButton action="{!addSublet}" value="Add Sublet" />
+			</apex:panelGrid>
+		</apex:pageBlock>
+
+		<!-- Misc Items -->
+		<!--
+		<apex:pageBlock title="Miscellaneous Expense Purchase Order" rendered="{!AND(IF(recordTypeName=='Misc',true,false), NOT(ISBLANK(Purchase_Order__c.Id)))}">
+
+			<apex:repeat value="{!$ObjectType.Purchase_Order__c.FieldSets.PurchaseOrderCustomFields}" var="f"> 
+		        <apex:outputText value="{!Purchase_Order__c[f]}" /><br/>
+		    </apex:repeat>
+		</apex:pageBlock>
+		-->
+
+		<!-- Sublet Items -->
+		<apex:pageBlock rendered="{!AND(IF(recordTypeName=='Sublet',true,false), NOT(ISBLANK(dealer__Purchase_Order__c.Id)))}">
+			<apex:pageBlockTable value="{!dealer__Purchase_Order__c.dealer__Purchase_Order_Line__r}" var="l" id="subletLines">
+				<apex:column headerValue="Action">
+					<apex:outputLink value="/{!l.Id}">Edit</apex:outputLink>
+				</apex:column>
+				<apex:column headerValue="Repair Order Line" value="{!l.dealer__Service_Job_Line__c}" />
+				<apex:column headerValue="Description" value="{!l.dealer__Description__c}" />
+				<apex:column headerValue="Special Instructions" value="{!l.dealer__Special_Instructions__c}" />
+				<apex:column headerValue="Amount" headerClass="aright" value="{!l.dealer__Amount__c}" style="text-align:right;" />
+				<apex:column headerValue="Customer Charge" headerClass="aright" value="{!l.dealer__Customer_Total__c}" style="text-align:right;" />
+			</apex:pageBlockTable>
+		</apex:pageBlock>
+
+		<!-- Parts Purchase Order Input Block -->
+		<apex:pageBlock title="Add Part to Purchase Order" rendered="{!AND(IF(recordTypeName=='Parts_Purchase',true,false), NOT(ISBLANK(dealer__Purchase_Order__c.Id)), ISBLANK(dealer__Purchase_Order__c.dealer__Accepted_DateTime__c))}">
+			<apex:panelGrid columns="9">
+				<apex:outputLabel value="Part" for="partlookup" styleClass="labelCol" />
+				<apex:inputField value="{!LINEPO.dealer__Parts_Master__c}" id="partlookup" />
+				<apex:outputLabel value="Quantity" for="pqty" styleClass="labelCol" />
+				<apex:inputText value="{!LINEQTY}" id="pqty"/>
+				<apex:outputLabel value="Notes" for="pnotes" styleClass="labelCol" />
+				<apex:inputText value="{!SUBLET_LINEDESC}" id="pnotes" />
+				<apex:outputLabel value="Service Job Line" style="labelCol" for="sroline" rendered="{!NOT(ISBLANK(dealer__Purchase_Order__c.dealer__Service_Repair_Order__c))}" />
+				<apex:selectList size="1" value="{!job_line_id}" id="sroline" rendered="{!NOT(ISBLANK(dealer__Purchase_Order__c.dealer__Service_Repair_Order__c))}">
+					<apex:selectOptions value="{!roLines}" />
+				</apex:selectList>
+				<apex:commandButton action="{!newPartLine}" value="Add Part to Purchase Order" />
+			</apex:panelGrid>
+
+			<apex:pageBlockSection columns="1" collapsible="false" title="Parts on this RO to Order">
+				<apex:pageBlockTable value="{!orderLines}" var="o">
+
+					<apex:column headerValue="Item" value="{!o.dealer__Parts_Master__r.dealer__Part_No__c}"/>
+					<apex:column headerValue="Description" value="{!o.dealer__Parts_Master__r.dealer__Part_Description__c}"/>
+					<apex:column headerValue="QTY" value="{!o.dealer__Quantity_Ordered__c}" />
+					<apex:column headerValue="Job Line" value="{!o.dealer__Service_Job_Line_Description__c}" />
+					<apex:column headerValue="Created By" value="{!o.CreatedById}" />
+					<apex:column headerValue="Action">
+						<apex:commandButton action="{!selectExistingPartLine}" id="selectPLine" value="Add to Purchase Order" reRender="renderPanel">
+							<apex:param name="selectLineItem" assignTo="{!select_part_order_id}" value="{!o.Id}"/>
+						</apex:commandButton>
+					</apex:column>					
+				</apex:pageBlockTable>
+			</apex:pageBlockSection>
+		</apex:pageBlock>		
+
+		<!-- Parts Lines -->
+		<apex:pageBlock title="Purchase Order Lines" rendered="{!AND(IF(recordTypeName=='Parts_Purchase',true,false), NOT(ISBLANK(dealer__Purchase_Order__c.Id)))}">
+		        <apex:pageBlockTable value="{!dealer__Purchase_Order__c.dealer__Purchase_Order_Line__r}" var="l" id="partsLines">
+		        	<apex:column >
+		        		<apex:facet name="header">Action</apex:facet>
+		        		<apex:outputPanel rendered="{!ISBLANK(dealer__Purchase_Order__c.dealer__Accepted_DateTime__c)}">
+		        			<apex:outputLink value="/{!l.Id}?retURL=/apex/PurchaseOrder?id={!dealer__Purchase_Order__c.Id}">View</apex:outputLink>&nbsp;/&nbsp;
+		        			<apex:outputLink value="/{!l.Id}/e?retURL=/apex/PurchaseOrder?id={!dealer__Purchase_Order__c.Id}">Edit</apex:outputLink>
+		        		</apex:outputPanel>
+		        	</apex:column>
+		            <apex:column >
+		                <apex:facet name="header">Item</apex:facet>
+		                <apex:outputLink value="/{!l.Parts_Master__r}" target="_blank">
+		                	<apex:outputText value="{!l.Parts_Master__r.dealer__Part_No__c}"/>
+		                </apex:outputLink>
+		            </apex:column>
+		            <apex:column >
+		                <apex:facet name="header">Description</apex:facet>
+		                <apex:outputText value="{!l.Parts_Master__r.dealer__Part_Description__c}"/>
+		            </apex:column>
+		            <apex:column >
+		                <apex:facet name="header">QTY</apex:facet>
+		                <apex:outputText value="{0, number, 0}">
+		                    <apex:param value="{!l.dealer__Part_Quantity__c}" />
+		                </apex:outputText>
+		            </apex:column>
+		            <apex:column >
+		                <apex:facet name="header">Received</apex:facet>
+		                <apex:outputText value="{0, number, 0}">
+		                    <apex:param value="{!l.dealer__Part_Quantity_Received__c}" />
+		                </apex:outputText>
+		            </apex:column>		            
+		            <apex:column style="text-align: right;" headerValue="Cost" headerClass="aright">
+		            	<apex:outputText value="{0, number, $###,###.00}">
+		            		<!-- <apex:param value="{!l.Amount__c / l.Part_Quantity__c}" /> -->
+                             <apex:param value="{! IF((l.Part_Quantity__c>0),(l.Amount__c / l.Part_Quantity__c), 0)}" />
+		            	</apex:outputText>
+		            </apex:column>
+		            <apex:column style="text-align: right;" headerClass="aright">
+		                <apex:facet name="header">Total</apex:facet>
+		                <apex:outputText value="{0,number, $###,##0.00}">
+		                	<apex:param value="{!l.dealer__Amount__c}" />
+		                </apex:outputText>
+		            </apex:column> 
+		            <apex:column headerValue="Service Line">
+		            	<apex:outputField value="{!l.dealer__Service_Job_Line__c}" />
+		            </apex:column>
+		            <apex:column style="text-align: left;vertical-align:text-top; border-bottom: 1px solid #EEE;" breakBefore="true" rendered="{!OR(NOT(ISBLANK(l.dealer__Drop_Ship_Address__c)), NOT(ISBLANK(l.dealer__Special_Instructions__c)))}">
+		            	<apex:outputText />
+		            </apex:column>
+		            <apex:column style="text-align: left;vertical-align:text-top; border-bottom: 1px solid #EEE;" rendered="{!OR(NOT(ISBLANK(l.dealer__Drop_Ship_Address__c)), NOT(ISBLANK(l.dealer__Special_Instructions__c)))}">
+		            	<apex:outputText value="Notes:"/>
+		            </apex:column>
+		            <apex:column style="text-align: left;vertical-align:text-top;border-bottom: 1px solid #EEE;" rendered="{!OR(NOT(ISBLANK(l.dealer__Drop_Ship_Address__c)), NOT(ISBLANK(l.dealer__Special_Instructions__c)))}">
+		                <apex:outputText value="{!l.dealer__Special_Instructions__c}"/>
+		            </apex:column>  
+		   			<apex:column style="text-align: left;vertical-align:text-top;border-bottom: 1px solid #EEE;" rendered="{!NOT(ISBLANK(l.dealer__Drop_Ship_Address__c))}">
+		   				<apex:outputText value="Drop Ship Address:"/>
+		   			</apex:column>
+		            <apex:column style="text-align: right;border-bottom: 1px solid #EEE;" rendered="{!NOT(ISBLANK(l.dealer__Drop_Ship_Address__c))}" >
+		   				<apex:outputField value="{!l.dealer__Parts_Invoice__r.dealer__Customer_Contact__c}" /><br/>
+		                <apex:outputText value="{!l.dealer__Drop_Ship_Address__c}" escape="false"/> 
+		            </apex:column>                                                                                   
+		        </apex:pageBlockTable>  
+		</apex:pageBlock>
+
+
+		
+		<apex:outputPanel id="renderPanel"></apex:outputPanel>	
+		</apex:form>
+
+		<apex:relatedList list="Purchase_Order_Line__r" rendered="{!OR(IF(recordTypeName=='Misc',true,false), IF(recordTypeName=='Vehicle_Purchase',false,false))}" />
+		<apex:relatedList list="CombinedAttachments" />
+</apex:page>

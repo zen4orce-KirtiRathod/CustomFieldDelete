@@ -1,0 +1,377 @@
+<apex:page title="Parts Invoice: {!HTMLENCODE(dealer__Parts_Invoice__c.Name)}" id="partInvoice" tabStyle="dealer__Parts_Invoice__c" standardController="dealer__Parts_Invoice__c" extensions="dealer.PartsInvoice_EXT" showchat="true" action="{!directView}">
+<apex:includeScript value="{!URLFOR($Resource.dealer__jQuery_UI_1820, 'js/jquery-1.7.2.min.js')}" />
+<apex:includeScript value="{!URLFOR($Resource.dealer__jQuery_UI_1820, 'js/jquery-ui-1.8.20.custom.min.js')}" />
+<apex:includeScript value="{!$Resource.dealer__jsHashTable}" />
+<apex:includeScript value="{!$Resource.dealer__jQueryNumberFormatting}" />
+<apex:includeScript value="{!$Resource.dealer__jQueryTools}" />
+<apex:includeScript value="{!$Resource.dealer__jsEncoder}" />
+<script type="text/javascript">
+
+    Visualforce.remoting.timeout = 120000;
+    // Elements used in Page Logic
+    var pageMode               = "edit";  // Must be set to create or edit
+    var countermanName         = "{!CounterManName}";
+    var countermanId           = "{!CounterMan}";
+    var invoiceId              = "{!JSENCODE(dealer__Parts_Invoice__c.Id)}";
+    var invoiceName            = "{!JSENCODE(dealer__Parts_Invoice__c.Name)}";
+    var invoiceDateTime        = "{!JSENCODE(TEXT(dealer__Parts_Invoice__c.dealer__Invoice_Date_Time__c))}";
+    
+    var partId_element         = "partInvoice:partsInvoiceForm:partid";
+    var partName_element       = "partInvoice:partsInvoiceForm:partid:partCommandBar:partnamejs";
+    var partQuantity_element   = "partInvoice:partsInvoiceForm:partid:partCommandBar:partQTY";
+    var partCommandBar_element = "partInvoice:partsInvoiceForm:partid:partCommandBar";
+
+    var initPL_ID              = "{!defaultPriceLevel.Id}";
+    var initPL_Method          = "{!defaultPriceLevel.dealer__Method__c}";
+    var initPL_Percent         = parseInt("{!defaultPriceLevel.dealer__Parts_Variable_Amount__c}");
+    
+    // Service Line# Selection
+    var selectedLineId         =    "";
+
+</script>
+<apex:includeScript value="{!$Resource.dealer__PartsInvoiceJS}" />
+
+<apex:stylesheet value="{!URLFOR($Resource.dealer__jQuery_UI_1820,'css/Aristo/Aristo.css')}"/>
+<apex:stylesheet value="{!$Resource.dealer__PartsCSS}"/>
+
+<!-- FONT-AWESOME -->
+<apex:stylesheet value="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"/>
+
+<style type="text/css">
+    .tooltip {
+    display:none;
+    background:transparent url({!$Resource.dealer__PartsInvoiceBlackArrowCommands});
+    font-size:12px;
+    height:70px;
+    width:160px;
+    padding:25px;
+    color:#eee;
+    }
+
+    [id$="partid"]{
+    position: relative;
+    }
+
+    #loader {
+    position: absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    background-color: #fff;
+    background-color: rgba(255,255,255,0.7);
+
+    font-size: 3.5em;
+    color: gray;
+    }
+
+    #loader .fa-spinner {
+    position: absolute; 
+    top: 30%;
+    left: 45%;
+    }
+
+</style>
+
+    <apex:sectionHeader title="Parts Invoice" subtitle="{!dealer__Parts_Invoice__c.Name}" id="invoiceHeader" />           
+    <chatter:feedWithFollowers entityId="{!dealer__Parts_Invoice__c.Id}" />  
+            
+            <apex:form id="partsInvoiceForm"> 
+            <apex:inputHidden id="initPL_ID" value="{!defaultPriceLevel.Id}" />
+            <apex:inputHidden id="initPL_Method" value="{!defaultPriceLevel.dealer__Method__c}" />
+            <apex:inputHidden id="initPLPercent" value="{!defaultPriceLevel.dealer__Parts_Variable_Amount__c}" />
+            
+            <apex:pageBlock id="headBlock" title="Parts Invoice Detail"  mode="maindetail" >
+                <apex:pageBlockButtons location="top" id="commandButtonBlock">
+                    <apex:outputPanel style="width:200px;">
+                    <apex:commandButton action="{!save}" value="Save" rendered="{!ISBLANK(dealer__Parts_Invoice__c.dealer__Invoice_Date_Time__c)}" />
+                    <apex:commandButton action="{!cashierInvoice}" value="Cashier" rendered="{!ISBLANK(dealer__Parts_Invoice__c.dealer__Post_Date_Time__c)}" />
+                    </apex:outputPanel>
+                    <apex:commandButton onClick="window.open('/apex/PartsPreInvoicePDF?id={!dealer__Parts_Invoice__c.Id}')" value="Print Pre-Invoice" rendered="{!ISBLANK(dealer__Parts_Invoice__c.dealer__Invoice_Date_Time__c)}" reRender="renderPanel" />
+                    <apex:commandButton onClick="window.open('/apex/PartsInvoicePDF?id={!dealer__Parts_Invoice__c.Id}')" value="Print Invoice" disabled="{!ISBLANK(dealer__Parts_Invoice__c.dealer__Invoice_Date_Time__c)}" reRender="renderPanel" />
+                    <apex:commandButton onClick="window.open('/apex/PartsPickTicket?id={!dealer__Parts_Invoice__c.Id}')" value="Print Pick Ticket" reRender="renderPanel" />
+                    
+                    <apex:commandButton action="{!emailInvoice}" value="Email Invoice" disabled="{!ISBLANK(dealer__Parts_Invoice__c.dealer__Invoice_Date_Time__c)}" />
+                    <apex:commandButton action="{!closeInvoice}" value="Close Invoice" rendered="{!IF(dealer__Parts_Invoice__c.dealer__Status__c = 'Open', true, false)}" />
+                    <apex:commandButton action="{!voidInvoice}" value="Void" rendered="{!IF(dealer__Parts_Invoice__c.dealer__Status__c = 'Open', true, false)}" />
+                    <apex:commandButton action="{!reopenInvoice}" value="Re-Open Invoice" rendered="{!AND(NOT(ISBLANK(dealer__Parts_Invoice__c.dealer__Invoice_Date_Time__c)), ISBLANK(dealer__Parts_Invoice__c.dealer__Post_Date_Time__c))}" />
+                    <apex:outputPanel style="width: 350px; text-align: right; font-size: 16px; font-weight: bold; float:right;">
+                        <apex:outputText value="Invoice Status: {!dealer__Parts_Invoice__c.dealer__Status__c}"/>
+                        <!--
+                        <apex:outputText value="Invoice Status: At Cashier" rendered="{!AND(NOT(ISBLANK(dealer__Parts_Invoice__c.dealer__Invoice_Date_Time__c)), ISBLANK(dealer__Parts_Invoice__c.dealer__Post_Date_Time__c))}" />
+                        <apex:outputText value="Invoice Status: Closed" rendered="{!NOT(ISBLANK(Parts_Invoice__c.Post_Date_Time__c))}" />
+                        -->
+                    </apex:outputPanel>
+                </apex:pageBlockButtons>
+            <apex:pageMessages />
+            <apex:pageBlockSection id="headSection">
+            
+                <apex:outputField value="{!dealer__Parts_Invoice__c.dealer__Customer__c}">
+                    <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                            hideOnEdit="editButton" event="ondblclick" 
+                            changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>
+                </apex:outputField>    
+               <apex:outputField value="{!dealer__Parts_Invoice__c.dealer__Counterman__c}">
+                    <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                            hideOnEdit="editButton" event="ondblclick" 
+                            changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>
+                </apex:outputField>
+
+                <apex:outputField value="{!dealer__Parts_Invoice__c.dealer__Customer_Contact__c}" 
+                    rendered="{!AND(NOT(ISBLANK(dealer__Parts_Invoice__c.dealer__Customer_Contact__c)), NOT(dealer__Parts_Invoice__c.Customer__r.IsPersonAccount))}">
+                    <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                            hideOnEdit="editButton" event="ondblclick" 
+                            changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>
+                </apex:outputField>
+                <apex:outputText rendered="{!AND(NOT(ISBLANK(dealer__Parts_Invoice__c.dealer__Customer_Contact__c)), NOT(dealer__Parts_Invoice__c.Customer__r.IsPersonAccount))}"/>
+                
+
+                <apex:outputField value="{!dealer__Parts_Invoice__c.Customer_Contact__r.Email}" rendered="{!NOT(ISBLANK(dealer__Parts_Invoice__c.Customer_Contact__r.Email))}" />
+                <apex:outputText rendered="{!ISBLANK(dealer__Parts_Invoice__c.Customer_Contact__r.Email)}"/>
+           
+                <apex:outputField value="{!dealer__Parts_Invoice__c.dealer__Comments__c}">
+                    <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                            hideOnEdit="editButton" event="ondblclick" 
+                            changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>
+                </apex:outputField>
+                
+                <apex:outputField value="{!dealer__Parts_Invoice__c.Customer__r.Phone}" />
+        
+   
+                
+                <apex:outputField value="{!dealer__Parts_Invoice__c.dealer__Customer_Purchase_Order__c}">
+                    <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                            hideOnEdit="editButton" event="ondblclick" 
+                            changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>
+                </apex:outputField>
+
+                <apex:outputField value="{!dealer__Parts_Invoice__c.dealer__Required_Date__c}">
+                    <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                            hideOnEdit="editButton" event="ondblclick" 
+                            changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>
+                </apex:outputField> 
+                
+                <apex:outputField value="{!dealer__Parts_Invoice__c.dealer__Open_Date_Time__c}">
+                    <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                            hideOnEdit="editButton" event="ondblclick" 
+                            changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>
+                </apex:outputField>     
+
+                <apex:outputField value="{!dealer__Parts_Invoice__c.dealer__Shipping_Tracking_No__c}">
+                    <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                            hideOnEdit="editButton" event="ondblclick" 
+                            changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>
+                </apex:outputField>     
+                                
+                <apex:outputField value="{!dealer__Parts_Invoice__c.dealer__Invoice_Date_Time__c}">
+                     <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                            hideOnEdit="editButton" event="ondblclick" 
+                            changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>
+                </apex:outputField>
+                
+                <apex:outputField value="{!dealer__Parts_Invoice__c.dealer__Shipping_Charges__c}">
+                <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                            hideOnEdit="editButton" event="ondblclick" 
+                            changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>
+                </apex:outputField>
+                                
+                <apex:outputField value="{!dealer__Parts_Invoice__c.dealer__RMA_No__c}">
+                    <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                            hideOnEdit="editButton" event="ondblclick" 
+                            changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>
+                </apex:outputField> 
+                            
+                <apex:outputField value="{!dealer__Parts_Invoice__c.dealer__Ship_Via__c}">
+                    <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                            hideOnEdit="editButton" event="ondblclick" 
+                            changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>
+                </apex:outputField> 
+                                                            
+                <apex:outputField value="{!dealer__Parts_Invoice__c.dealer__Misc_Fee__c}">
+                    <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                            hideOnEdit="editButton" event="ondblclick" 
+                            changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>
+                </apex:outputField> 
+                
+                <apex:outputField value="{!dealer__Parts_Invoice__c.dealer__Shipping_Notes__c}">
+                    <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                            hideOnEdit="editButton" event="ondblclick" 
+                            changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>
+                </apex:outputField>
+                
+ 
+                
+                <!-- Repeat PL -->
+                <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Price Level" for="selectPL"/>
+                <apex:outputText rendered="{!ISBLANK(dealer__Parts_Invoice__c.dealer__Invoice_Date_Time__c)}">
+                <select id="PLselect" onChange="setPL(invoiceId);">
+                    <apex:repeat value="{!PriceLevels}" var="pl" id="selectPL">
+                        <apex:outputText rendered="{!IF(pl.Id==dealer__Parts_Invoice__c.dealer__Wholesale_Pricing_Strategy__c, true, false)}">
+                            <option value="{!pl.Id}" selected="selected">{!pl.Name}</option>
+                        </apex:outputText>
+                        <apex:outputText rendered="{!IF(pl.Id==dealer__Parts_Invoice__c.dealer__Wholesale_Pricing_Strategy__c, false, true)}">
+                            <option value="{!pl.Id}">{!pl.Name}</option>
+                        </apex:outputText>
+                    </apex:repeat>
+                </select>
+                </apex:outputText>
+                
+                </apex:pageBlockSectionItem>
+                
+
+                <apex:pageBlockSectionItem id="customShipping">
+                        <apex:outputLabel value="Shipping Address" for="shipping_address" />
+                        <apex:outputText id="shipBlock">
+                            <apex:outputField value="{!dealer__Parts_Invoice__c.dealer__Customer_ShipTo_AddressFormatted__c}" id="customShipToAddress" rendered="{!NOT(ISBLANK(dealer__Parts_Invoice__c.dealer__Customer_ShipTo_Street__c))}"/>
+                            <apex:outputText value="Customer has no address set" rendered="{!ISBLANK(dealer__Parts_Invoice__c.dealer__Customer_ShipTo_Street__c)}" />
+                        </apex:outputText>
+                </apex:pageBlockSectionItem>
+            
+                <apex:outputField value="{!dealer__Parts_Invoice__c.dealer__Tax_Exempt__c}">
+                 <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                            hideOnEdit="editButton" event="ondblclick" 
+                            changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>
+                </apex:outputField>
+                
+                <apex:outputField value="{!dealer__Parts_Invoice__c.dealer__Location__c}">
+                 <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                            hideOnEdit="editButton" event="ondblclick" 
+                            changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>
+                </apex:outputField>
+                
+                <apex:outputField value="{!dealer__Parts_Invoice__c.dealer__Company_Number__c}">
+                 <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                            hideOnEdit="editButton" event="ondblclick" 
+                            changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>
+                </apex:outputField>
+                
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="System Information" collapsible="true" id="sysinfo">
+                <apex:pageBlockSectionItem >
+                    <apex:outputText >
+                        Created By
+                    </apex:outputText>
+                    <apex:outputText >
+                        <apex:outputField value="{!dealer__Parts_Invoice__c.CreatedById}" />&nbsp;
+                        <apex:outputField value="{!dealer__Parts_Invoice__c.CreatedDate}" />
+                    </apex:outputText>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputText >
+                        Last Modified By
+                    </apex:outputText>
+                    <apex:outputText >
+                        <apex:outputField value="{!dealer__Parts_Invoice__c.LastModifiedById}" />&nbsp;
+                        <apex:outputField value="{!dealer__Parts_Invoice__c.LastModifiedDate}" />
+                    </apex:outputText>  
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>            
+         
+        <apex:pageBlockSection title="Totals" collapsible="false">
+        <apex:outputText >
+        <div id="totals" style="width: 100%;margin: auto;display:block;float:left;">
+            <table cellspacing="0" cellpadding="0">
+                <tr>
+                    <td width="75"><b>Price:</b> </td>
+                    <td width="150"><div id="totalprice" style="float:right;clear:both;"></div></td>
+                </tr>
+                <tr>    
+                    <td width="75"><b>Tax:</b> </td>
+                    <td width="150"><div id="totaltax" style="float:right;clear:both;"></div></td>
+                </tr>
+                <tr>
+                    <td width="75"><b>Total:</b></td>
+                    <td width="150"><div id="totalinvoice" style="float:right;clear:both;"></div></td>
+                </tr>
+            </table>
+        </div>  
+        </apex:outputText>
+        <apex:outputText >
+            <div style="display:block;float:right; width: 100%; margin: auto;">
+            <table cellspacing="0" cellpadding="0">
+                <apex:repeat value="{!clines}" var="dep">
+                <tr>
+                    <td width="125"><b>Deposit Amount</b> </td>
+                    <td width="125">
+                        <apex:outputText value="{0,date,MM'/'dd'/'yyyy}">
+                            <apex:param value="{!dep.dealer__Close_Date__c}" /> 
+                        </apex:outputText>                      
+                    </td>
+                    <td width="150"><div style="float:right;clear:both;"><apex:outputText value="{!dep.dealer__Amount__c}" /></div></td>
+                </tr>
+                </apex:repeat>
+            </table>
+            </div>
+        </apex:outputText>
+        </apex:pageBlockSection>
+        </apex:pageBlock>  
+        <div id="log-js"> </div>
+        <div id="errors-js"> </div>
+        <apex:pageBlock id="partid" title="Part Lines">
+         <apex:pageBlockButtons location="top" id="partCommandBar">
+                <apex:outputPanel layout="block" id="functionBar">
+                 <b>Lookup Part(s):</b> <apex:inputText id="partnamejs" onkeypress="return noenter(event);"/>&nbsp;<b>QTY Overide:</b>&nbsp;<apex:inputText id="partQTY" size="4" maxlength="4" disabled="true" />
+                     <c:AutoComplete objectname="dealer__Parts_Inventory__c" 
+                        additionalfield="dealer__Description__c,dealer__UPC__c,dealer__Raw_Part_Number__c" 
+                        resultfields="dealer__Part_No__c,dealer__Description__c" 
+                        autocomplete_textbox="{!$Component.partnamejs}" />
+                </apex:outputPanel>
+         </apex:pageBlockButtons>
+         <table class="list" border="0" cellpadding="0" cellspacing="0" id="partList">
+            <tr class="headerRow">
+                <th class="actionColumn" scope="col">Action</th>
+                <th scope="col" class=" zen-deemphasize">Part</th>
+                <th scope="col" class=" zen-deemphasize">Bin/Source</th>
+                <th scope="col" class=" zen-deemphasize">DS</th>
+                <th scope="col" class=" zen-deemphasize">QTY/Avail</th>
+                <th scope="col" class=" zen-deemphasize">PL</th>
+                <th scope="col" class="CurrencyElement zen-deemphasize">List</th>
+                <th scope="col" class="CurrencyElement zen-deemphasize">Net</th>
+                <th scope="col" class="CurrencyElement zen-deemphasize">Ext</th>
+            </tr>
+         </table>
+    </apex:pageBlock>
+    <c:PartsInvoiceSubDialogs id="subDialog" />
+    <div id="menuActions">
+        <div id="triangle"></div>
+        <div id="tooltip_menu">
+            <a href="#" class="update_price menu_top" id="menuActionPricing">
+                Update Pricing
+            </a>
+            <a href="#" class="update_qty " id="menuActionQuantity">
+                Change Quantity
+            </a>
+            <a href="#" class="remove_part menu_bottom" id="menuActionRemove">
+                Remove Part
+            </a>
+        </div>
+    </div>
+    <div id="ShippingAddressOverride" title="Modify Shipping Address" style="display:none;">
+               <table border="0">
+            <tbody>
+            <tr><td class="labelCol"><label >Shipping Street</label></td>
+                <td>
+                    <textarea id="shippingStreet">{!HTMLEncode(Parts_Invoice__c.Customer_ShipTo_Street__c)}</textarea>
+                </td></tr>
+            <tr><td class="labelCol"><label >Shipping City</label></td>
+                <td><input id="shippingCity" value="{!HTMLEncode(Parts_Invoice__c.Customer_ShipTo_City__c)}" maxlength="25"/></td>
+            </tr>
+            <tr><td class="labelCol"><label >Shipping State/Province</label></td>
+                <td><input id="shippingState" value="{!HTMLEncode(Parts_Invoice__c.Customer_ShipTo_State__c)}"  maxlength="48" size="10"/></td></tr>
+            <tr><td class="labelCol"><label >Shipping Zip/Postal Code</label></td>
+                <td><input id="shippingZip" value="{!HTMLEncode(Parts_Invoice__c.Customer_ShipTo_Zip__c)}" maxlength="15" size="15" /></td></tr>
+            <tr><td class="labelCol"><label >Shipping Country</label></td>
+                <td><input id="shippingCountry" value="{!HTMLEncode(Parts_Invoice__c.Customer_ShipTo_Country__c)}" maxlength="25" /></td></tr>
+            </tbody>
+        </table>
+    </div>      
+    <apex:outputPanel id="renderPanel"></apex:outputPanel>
+    
+    </apex:form>
+    <apex:relatedList list="Cashiering__r" />
+    <apex:relatedList list="Parts_Orders__r" id="OrderRelatedList" />
+    <apex:relatedList list="NotesAndAttachments" />
+    <apex:relatedList list="OpenActivities" />
+    <apex:relatedList list="ActivityHistories" />
+</apex:page>

@@ -1,0 +1,2534 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <customHelpPage>SuccessDocumentation_Tab</customHelpPage>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <deprecated>false</deprecated>
+    <description>Vehicle Inspection reporting and workflow data</description>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableEnhancedLookup>true</enableEnhancedLookup>
+    <enableFeeds>true</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <fields>
+        <fullName>Acquisition_Method__c</fullName>
+        <deprecated>false</deprecated>
+        <description>What method was used to acquire this vehicle into inventory</description>
+        <externalId>false</externalId>
+        <inlineHelpText>What method was used to acquire this vehicle into inventory</inlineHelpText>
+        <label>Acquisition Method</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Trade-in</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Curb Purchase</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Auction</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Dealer Trade</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Consignment</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Action_Item_Count__c</fullName>
+        <defaultValue>0</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Number of items that will require immediate or future attention</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Number of items that will require immediate or future attention</inlineHelpText>
+        <label>Action Item Count</label>
+        <precision>2</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Advisor__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Advisor</label>
+        <length>80</length>
+        <required>false</required>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Agreed_to_ToS__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Agreed to ToS</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Alignment__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Alignment</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Balance_Recommended__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Text representation of balance needed G/Y</description>
+        <externalId>false</externalId>
+        <label>Balance Recommended</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Battery_1_Actual_CCA__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Measured Cold Cranking Amps for Battery 1 this visit</inlineHelpText>
+        <label>Battery 1 Actual CCA</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Battery_1_Spec_CCA__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Battery 1 Spec CCA</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Battery_1_Status__c</fullName>
+        <deprecated>false</deprecated>
+        <description>G = Good, A = Attention, R = Replace</description>
+        <externalId>false</externalId>
+        <label>Battery 1 Status</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Battery_2_Actual_CCA__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Battery 2 Actual CCA</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Battery_2_Spec_CCA__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Battery 2 Spec CCA</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Battery_2_Status__c</fullName>
+        <deprecated>false</deprecated>
+        <description>G = Good, A = Attention, R = Replace</description>
+        <externalId>false</externalId>
+        <label>Battery 2 Status</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Body_Damage_URL__c</fullName>
+        <deprecated>false</deprecated>
+        <description>URL of body damage image</description>
+        <externalId>false</externalId>
+        <label>Body Damage URL</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>Body_Desc__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Description of any body issues including glass</description>
+        <externalId>false</externalId>
+        <label>Body Desc</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Body_Est__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Estimated cost of body recon</description>
+        <externalId>false</externalId>
+        <label>Body Est</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Body_Glass_Recon__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Body/Glass Recon</label>
+        <summarizedField>Inspection_Report_Lines__c.Repair_Estimate__c</summarizedField>
+        <summaryFilterItems>
+            <field>Inspection_Report_Lines__c.Repair_Type__c</field>
+            <operation>equals</operation>
+            <value>Body/Glass, Doors, Wheels</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Inspection_Report_Lines__c.Inspection_Report__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Body_Type__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>Service_Vehicle__r.Body_Type__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Body Type</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Brake_DF__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Brake (DF)</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Brake_DR__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Brake (DR)</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Brake_Fluid__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Brake Fluid</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Brake_Lights__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Brake Lights</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Brake_Lines_Hoses__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Brake Lines &amp; Hoses</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Brake_PF__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Brake (PF)</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Brake_PR__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Brake (PR)</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Brake_Recon_Est__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Brake Recon Estimate</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Brake_Wear_DF__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Brake Wear (DF)</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Brake_Wear_DR__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Brake Wear (DR)</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Brake_Wear_PF__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Brake Wear (PF)</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Brake_Wear_PR__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Brake Wear (PR)</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Brakes_Recon__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Brakes Recon</label>
+        <summarizedField>Inspection_Report_Lines__c.Repair_Estimate__c</summarizedField>
+        <summaryFilterItems>
+            <field>Inspection_Report_Lines__c.Repair_Type__c</field>
+            <operation>equals</operation>
+            <value>Brakes</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Inspection_Report_Lines__c.Inspection_Report__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Break_DF__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>deprecate__Break_DF</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Cabin_Air_Filter__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Cabin Air Filter</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Charging_System_Output__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Charging System Output</label>
+        <precision>4</precision>
+        <required>false</required>
+        <scale>1</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Clutch_Fluid__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Clutch Fluid</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Clutch_Operation__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Clutch Operation</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Company_Number__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Company Number</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Location 1</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Location 2</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Cooling_System__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Radiator, Hoses</description>
+        <externalId>false</externalId>
+        <label>Cooling System</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Current_User__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>OR(Service_Advisor__c == $User.Id, Technician__c == $User.Id)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Current User</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Customer_Comments__c</fullName>
+        <deprecated>false</deprecated>
+        <description>customer facing comments</description>
+        <externalId>false</externalId>
+        <label>Customer Comments</label>
+        <length>7500</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Customer_Contact__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Customer Contact</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipLabel>Inspection Reports (Contact)</relationshipLabel>
+        <relationshipName>Inspection_Reports</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Customer_Name__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Text representation of the customers name</description>
+        <externalId>false</externalId>
+        <label>Customer Name</label>
+        <length>80</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Customer_Signature_URL__c</fullName>
+        <deprecated>false</deprecated>
+        <description>URL of customer signature image</description>
+        <externalId>false</externalId>
+        <label>Customer Signature URL</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>Customer__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>Service_Vehicle__r.Veh_Owner_Contact__r.FirstName &amp;&quot; &quot;&amp; Service_Vehicle__r.Veh_Owner_Contact__r.LastName</formula>
+        <label>Customer</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Cylinders__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Cylinders</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Door_Handles__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Door Handles</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Door_Locks__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Door Locks</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Doors__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Doors</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Drive_Belts__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Are the drive belts in good working condition?</inlineHelpText>
+        <label>Drive Belts</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Drive_Shaft__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Drive Shaft</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Email__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>Service_Vehicle__r.Veh_Owner_Contact__r.Email</formula>
+        <label>Email</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Engine_Air_Filter__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Engine Air Filter</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Engine_Oil__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Engine Oil</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Est_Value__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Estimated Value</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Exhaust_System__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Exhaust System</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Existing_Vehicle_Damage_Description__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Existing Vehicle Damage Description</label>
+        <length>32768</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Html</type>
+        <visibleLines>15</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Exterior_Color__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>Service_Vehicle__r.Ext_Color__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Exterior Color</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Exterior_Lights__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Headlights / Taillights / Brake lights / Hazard lights / Turn signals</description>
+        <externalId>false</externalId>
+        <label>Exterior Lights</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Fluid_Leaks_Engine_Oil_Quality__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Fluid Leaks &amp; Engine Oil Quality</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Fluid_Levels__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Fluid levels measure ok?</inlineHelpText>
+        <label>Fluid Levels</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Frame__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Frame</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Clean</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Noted Items</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Bolt On Aftermarket Items</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Welded On Aftermarket Items</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Fuel_Lines__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Fuel Lines</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>HVAC_System__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>HVAC System</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Head_Lights__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Head Lights</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Horn_Operational__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Does the vehicles horn work as designed?</inlineHelpText>
+        <label>Horn Operational</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Horn__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Horn</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Hoses_Check__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Hoses Check</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Information_Center__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Information Center</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Interior_Desc__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Interior Desc</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Interior_Est__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Interior Est</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Interior_Lights__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Interior lights</description>
+        <externalId>false</externalId>
+        <label>Interior Lights</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Interior_Recon__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Interior Recon</label>
+        <summarizedField>Inspection_Report_Lines__c.Repair_Estimate__c</summarizedField>
+        <summaryFilterItems>
+            <field>Inspection_Report_Lines__c.Repair_Type__c</field>
+            <operation>equals</operation>
+            <value>Interior</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Inspection_Report_Lines__c.Inspection_Report__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Internal_Comments__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Internal Comments</label>
+        <length>7500</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Inventoried_Vehicle__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>For inspection reports related to vehicle(s) in stock</description>
+        <externalId>false</externalId>
+        <label>Inventoried Vehicle</label>
+        <referenceTo>Vehicle_Inventory__c</referenceTo>
+        <relationshipLabel>Inspection Reports</relationshipLabel>
+        <relationshipName>Inspection_Reports</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Inventory_Vehicle__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>IF(Inventoried_Vehicle__c != null, &quot;In-Stock&quot;, &quot;Not In-Stock&quot;)</formula>
+        <label>Inventory Vehicle?</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Key_Fob_Operation__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Key Fob Operation</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Licence_State__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>TEXT(Service_Vehicle__r.Licence_State__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Licence State</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Licence__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>Service_Vehicle__r.Licence__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Licence</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Lights_Exterior__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Lights Op (Exterior)</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Lights_Op_Interior__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Are the interior cabin lights all in working order?</inlineHelpText>
+        <label>Lights Op (Interior)</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Make__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>Service_Vehicle__r.Make__c</formula>
+        <label>Make</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Mechanical_Desc__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Description of any mechanical Issues</description>
+        <externalId>false</externalId>
+        <label>Mechanical Desc</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Mechanical_Est__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Estimated Mechanical Recon</description>
+        <externalId>false</externalId>
+        <label>Mechanical Est</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Mechanical_Recon__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Mechanical Recon</label>
+        <summarizedField>Inspection_Report_Lines__c.Repair_Estimate__c</summarizedField>
+        <summaryFilterItems>
+            <field>Inspection_Report_Lines__c.Repair_Type__c</field>
+            <operation>equals</operation>
+            <value>Mechanical</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Inspection_Report_Lines__c.Inspection_Report__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Mileage__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Mileage</label>
+        <precision>7</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Mobile__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>Service_Vehicle__r.Veh_Owner_Contact__r.MobilePhone</formula>
+        <label>Mobile</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Model__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>Service_Vehicle__r.Carline__c</formula>
+        <label>Model</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Parking_Brake_Operational__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Is the vehicles parking brake fully functional as designed?</inlineHelpText>
+        <label>Parking Brake Operational</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Parking_Brake__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Parking brake</description>
+        <externalId>false</externalId>
+        <label>Parking Brake</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Phone__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>Service_Vehicle__r.Veh_Owner_Contact__r.Phone</formula>
+        <label>Phone</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Power_Points_Accessories__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Power Points / Accessories</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Power_Steering_Fluid__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Power Steering Fluid</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Radio_CD_Speakers__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Radio / CD / Speakers</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Rear_Differential__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Rear Differential</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Repair_Order_Number__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Text representation of the repair order number</description>
+        <externalId>false</externalId>
+        <label>Repair Order Number</label>
+        <length>20</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Repair_Order__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Repair Order</label>
+        <referenceTo>Service_Repair_Order__c</referenceTo>
+        <relationshipLabel>Inspection Reports</relationshipLabel>
+        <relationshipName>Inspection_Reports</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Rotation_Recommended__c</fullName>
+        <deprecated>false</deprecated>
+        <description>G/Y representation of if a rotation</description>
+        <externalId>false</externalId>
+        <label>Rotation Recommended</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>SMS_Updates__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Customer wishes to receive text messages with completion of MPI</inlineHelpText>
+        <label>SMS Updates</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Sales_Up__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Sales Up</label>
+        <referenceTo>Sales_Up__c</referenceTo>
+        <relationshipLabel>Inspection Reports</relationshipLabel>
+        <relationshipName>Inspection_Reports</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Seat_Operation__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Seat Operation</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Service_Advisor__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Service Advisor</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>MPI_ServiceAdvisor</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Service_Vehicle__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Service Vehicle</label>
+        <referenceTo>Service_Vehicle__c</referenceTo>
+        <relationshipLabel>Inspection Reports</relationshipLabel>
+        <relationshipName>Inspection_Reports</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Shocks_Struts_Suspension__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Shocks Struts &amp; Suspension</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Status__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Status</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Pending Dispatch</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Technician In-Process</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Advisor Review</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Customer Review</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Walk Around</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Steering_Linkages__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Steering/Linkages</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Store_Location__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>Location of the dealership location this inspection report is for</description>
+        <externalId>false</externalId>
+        <label>Store Location</label>
+        <referenceTo>Dealer_Location__c</referenceTo>
+        <relationshipLabel>Inspection Reports</relationshipLabel>
+        <relationshipName>Inspection_Reports</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Tag__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Hat tag number</inlineHelpText>
+        <label>Tag#</label>
+        <length>25</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Technician__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Technician</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Inspection_Reports</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Time_m_to_Advisor_Completion__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>IF( NOT(ISBLANK(Time_to_Advisor_Completion__c)), TEXT( ROUND( MOD( (Time_to_Advisor_Completion__c - Time_to_Tech_Completion__c)* 24 * 60, 60 ), 0 ) ) , &quot;&quot;)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Time(m) to Advisor Completion</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Time_m_to_Tech_Completion__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>IF( NOT(ISBLANK(Time_to_Tech_Completion__c)), TEXT( ROUND( MOD( (Time_to_Tech_Completion__c -  CreatedDate)* 24 * 60, 60 ), 0 ) ) , &quot;&quot;)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Time(m) to Tech Completion</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Time_to_Advisor_Completion__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Time set when the advisor sets the status to Advisor Completed</description>
+        <externalId>false</externalId>
+        <label>Time to Advisor Completion</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Time_to_Tech_Completion__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Time set when the tech sets the status to Advisor Review</description>
+        <externalId>false</externalId>
+        <label>Time to Tech Completion</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Tire_DF_Under_Inflated__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Tire DF Under Inflated</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Tire_DF__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Tire (DF)</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Tire_DR_Under_Inflated__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Tire DR Under Inflated</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Tire_DR__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Tire (DR)</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Tire_MMS_DF__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Tire MMS (DF)</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Tire_MMS_DR__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Tire MMS (DR)</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Tire_MMS_PF__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Tire MMS (PF)</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Tire_MMS_PR__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Tire MMS (PR)</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Tire_PF_Under_Inflated__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Tire PF Under Inflated</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Tire_PF__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Tire (PF)</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Tire_PR_Under_Inflated__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Tire PR Under Inflated</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Tire_PR__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Tire (PR)</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Tire_PSI_DF_Pre_Inspection__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Pre-Inspection tire pressure Drivers front</description>
+        <externalId>false</externalId>
+        <label>Tire PSI DF (Pre-Inspection)</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Tire_PSI_DF__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Drivers front tire PSI</description>
+        <externalId>false</externalId>
+        <label>Tire PSI (DF)</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Tire_PSI_DR_Inside__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Tire PSI Dual Rear Wheel inside tire.</inlineHelpText>
+        <label>Tire PSI (DR) (Inside)</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Tire_PSI_DR_Pre_Inspection__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Pre-Inspection tire pressure drivers rear</description>
+        <externalId>false</externalId>
+        <label>Tire PSI DR (Pre-Inspection)</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Tire_PSI_DR__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Tire PSI Drivers rear, if this is a dual rear wheel vehicle this represents the outside tire.</inlineHelpText>
+        <label>Tire PSI (DR)</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Tire_PSI_PF_Pre_Inspection__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Tire pressure Passenger Front</description>
+        <externalId>false</externalId>
+        <label>Tire PSI PF (Pre-Inspection)</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Tire_PSI_PF__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Tire PSI for the passenger side front tire.</inlineHelpText>
+        <label>Tire PSI (PF)</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Tire_PSI_PR_Inside__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Tire PSI for a dual rear wheel inside tire.</inlineHelpText>
+        <label>Tire PSI (PR) (Inside)</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Tire_PSI_PR_Pre_Inspection__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Tire pressure pre-inspection on passenger rear</description>
+        <externalId>false</externalId>
+        <label>Tire PSI PR (Pre-Inspection)</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Tire_PSI_PR__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Tire PSI for the passenger rear wheel (if this vehicle has dual rear wheels this represents the outside tire)</inlineHelpText>
+        <label>Tire PSI (PR)</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Tire_Recon_Est__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Tire Recon Estimate</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Tire_Spare_PSI__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Spare tire PSI if equipped.</inlineHelpText>
+        <label>Tire Spare PSI</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Tire_Tread_DF__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Tire Tread (DF)</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Tire_Tread_DR__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Tire Tread (DR)</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Tire_Tread_PF__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Tire Tread (PF)</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Tire_Tread_PR__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Tire Tread (PR)</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Tire_Wear_DF__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Field is deprecated and should not be used.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Drivers front tire PSI upon inspection</inlineHelpText>
+        <label>Tire Wear (DF) Deprecated</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Tires_Recon__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Tires Recon</label>
+        <summarizedField>Inspection_Report_Lines__c.Repair_Estimate__c</summarizedField>
+        <summaryFilterItems>
+            <field>Inspection_Report_Lines__c.Repair_Type__c</field>
+            <operation>equals</operation>
+            <value>Tires</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Inspection_Report_Lines__c.Inspection_Report__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Total_Est_Recon__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Total Estimated Recon</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Transfer_Case__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Transfer Case</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Transmission_Fluid__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Transmission Fluid</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Trim_Level_del__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>Service_Vehicle__r.Trim_Level__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Trim Level</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Turn_Signals__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Turn Signals</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>U_Joints_CV_Boots_Output_Shaft_Seals__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>U-Joints / CV Boots &amp; Output Shaft Seals</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Under_Hood_General_Condition__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Under Hood General Condition</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>VIN_Last_6__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>Service_Vehicle__r.Last_6__c</formula>
+        <label>VIN Last 6</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>VIN_Number__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Text representation of the VIN number</description>
+        <externalId>false</externalId>
+        <label>VIN Number</label>
+        <length>17</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>VIN__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>Service_Vehicle__r.VIN__c</formula>
+        <label>VIN</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Vehicle_Damage_Coordaintes__c</fullName>
+        <deprecated>false</deprecated>
+        <description>JSON payload of damage coordinates</description>
+        <externalId>false</externalId>
+        <label>Vehicle Damage Coordaintes</label>
+        <length>5000</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Vehicle_Owner__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Vehicle Owner</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Inspection Reports</relationshipLabel>
+        <relationshipName>Inspection_Reports</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Widshield_Wipers_Ok__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Are the vehicles windshield wipers ok?  This includes any rear glass wipers if equipped.</inlineHelpText>
+        <label>Widshield Wipers Ok</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Windshield_Washer_Fluid__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Windshield Washer Fluid</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Year__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>Service_Vehicle__r.Year__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Year</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>Inspection Report</label>
+    <listViews>
+        <fullName>AllService</fullName>
+        <columns>NAME</columns>
+        <columns>Customer_Name__c</columns>
+        <columns>Repair_Order_Number__c</columns>
+        <columns>Tag__c</columns>
+        <columns>Status__c</columns>
+        <columns>Service_Advisor__c</columns>
+        <columns>Technician__c</columns>
+        <columns>Service_Vehicle__c</columns>
+        <columns>CREATED_DATE</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <listViews>
+        <fullName>Brakes_Today</fullName>
+        <booleanFilter>(1 AND 2) AND (3 OR 4 OR 5 OR 6)</booleanFilter>
+        <columns>NAME</columns>
+        <columns>Customer_Name__c</columns>
+        <columns>Repair_Order_Number__c</columns>
+        <columns>Tag__c</columns>
+        <columns>Brake_DF__c</columns>
+        <columns>Brake_DR__c</columns>
+        <columns>Brake_PF__c</columns>
+        <columns>Brake_PR__c</columns>
+        <columns>Technician__c</columns>
+        <columns>Service_Advisor__c</columns>
+        <columns>Service_Vehicle__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Status__c</field>
+            <operation>equals</operation>
+            <value>,Walk-Around,Pending Dispatch,Technician In-Process,Pending Review,Completed</value>
+        </filters>
+        <filters>
+            <field>CREATED_DATE</field>
+            <operation>equals</operation>
+            <value>TODAY</value>
+        </filters>
+        <filters>
+            <field>Brake_DF__c</field>
+            <operation>equals</operation>
+            <value>Y,R</value>
+        </filters>
+        <filters>
+            <field>Brake_DR__c</field>
+            <operation>equals</operation>
+            <value>Y,R</value>
+        </filters>
+        <filters>
+            <field>Brake_PF__c</field>
+            <operation>equals</operation>
+            <value>Y,R</value>
+        </filters>
+        <filters>
+            <field>Brake_PR__c</field>
+            <operation>equals</operation>
+            <value>Y,R</value>
+        </filters>
+        <label>Brakes Today</label>
+    </listViews>
+    <listViews>
+        <fullName>Created_Today</fullName>
+        <columns>NAME</columns>
+        <columns>Customer__c</columns>
+        <columns>Service_Vehicle__c</columns>
+        <columns>Repair_Order_Number__c</columns>
+        <columns>Tag__c</columns>
+        <columns>Mileage__c</columns>
+        <columns>Customer_Name__c</columns>
+        <columns>Action_Item_Count__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CREATED_DATE</field>
+            <operation>equals</operation>
+            <value>TODAY</value>
+        </filters>
+        <label>Created Today</label>
+    </listViews>
+    <listViews>
+        <fullName>Edited_Today</fullName>
+        <columns>NAME</columns>
+        <columns>Action_Item_Count__c</columns>
+        <columns>Current_User__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>LAST_UPDATE</field>
+            <operation>equals</operation>
+            <value>TODAY</value>
+        </filters>
+        <label>Edited Today</label>
+    </listViews>
+    <listViews>
+        <fullName>My_Inspection_Reports</fullName>
+        <booleanFilter>(1 OR 2) AND 3</booleanFilter>
+        <columns>NAME</columns>
+        <columns>Customer__c</columns>
+        <columns>Repair_Order_Number__c</columns>
+        <columns>Tag__c</columns>
+        <columns>Status__c</columns>
+        <columns>Service_Advisor__c</columns>
+        <columns>Technician__c</columns>
+        <columns>Service_Vehicle__c</columns>
+        <columns>CREATED_DATE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Current_User__c</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </filters>
+        <filters>
+            <field>Technician__c</field>
+            <operation>equals</operation>
+        </filters>
+        <filters>
+            <field>CREATED_DATE</field>
+            <operation>equals</operation>
+            <value>TODAY</value>
+        </filters>
+        <label>My MPI&apos;s Today</label>
+    </listViews>
+    <listViews>
+        <fullName>RBA_Today</fullName>
+        <booleanFilter>(1 AND 2) AND (3 OR 4 OR 5)</booleanFilter>
+        <columns>NAME</columns>
+        <columns>Customer_Name__c</columns>
+        <columns>Repair_Order_Number__c</columns>
+        <columns>Tag__c</columns>
+        <columns>Alignment__c</columns>
+        <columns>Rotation_Recommended__c</columns>
+        <columns>Balance_Recommended__c</columns>
+        <columns>Technician__c</columns>
+        <columns>Service_Advisor__c</columns>
+        <columns>Service_Vehicle__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Status__c</field>
+            <operation>equals</operation>
+            <value>,Walk-Around,Pending Dispatch,Technician In-Process,Pending Review,Completed</value>
+        </filters>
+        <filters>
+            <field>CREATED_DATE</field>
+            <operation>equals</operation>
+            <value>TODAY</value>
+        </filters>
+        <filters>
+            <field>Balance_Recommended__c</field>
+            <operation>equals</operation>
+            <value>Y</value>
+        </filters>
+        <filters>
+            <field>Rotation_Recommended__c</field>
+            <operation>equals</operation>
+            <value>Y</value>
+        </filters>
+        <filters>
+            <field>Alignment__c</field>
+            <operation>equals</operation>
+            <value>Y</value>
+        </filters>
+        <label>RBA Today</label>
+    </listViews>
+    <listViews>
+        <fullName>TIRES_TODAY</fullName>
+        <booleanFilter>(1 AND 2) AND (3 OR 4 OR 5 OR 6 OR 7 OR 8 OR 9 OR 10)</booleanFilter>
+        <columns>NAME</columns>
+        <columns>Customer_Name__c</columns>
+        <columns>Repair_Order_Number__c</columns>
+        <columns>Tag__c</columns>
+        <columns>Tire_DF__c</columns>
+        <columns>Tire_DR__c</columns>
+        <columns>Tire_PF__c</columns>
+        <columns>Tire_PR__c</columns>
+        <columns>Tire_Tread_DF__c</columns>
+        <columns>Tire_Tread_DR__c</columns>
+        <columns>Tire_Tread_PF__c</columns>
+        <columns>Tire_Tread_PR__c</columns>
+        <columns>Technician__c</columns>
+        <columns>Service_Advisor__c</columns>
+        <columns>Service_Vehicle__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Status__c</field>
+            <operation>equals</operation>
+            <value>,Walk-Around,Pending Dispatch,Technician In-Process,Pending Review,Completed</value>
+        </filters>
+        <filters>
+            <field>CREATED_DATE</field>
+            <operation>equals</operation>
+            <value>LAST_WEEK</value>
+        </filters>
+        <filters>
+            <field>Tire_DF__c</field>
+            <operation>equals</operation>
+            <value>Y,R</value>
+        </filters>
+        <filters>
+            <field>Tire_DR__c</field>
+            <operation>equals</operation>
+            <value>Y,R</value>
+        </filters>
+        <filters>
+            <field>Tire_PF__c</field>
+            <operation>equals</operation>
+            <value>Y,R</value>
+        </filters>
+        <filters>
+            <field>Tire_PR__c</field>
+            <operation>equals</operation>
+            <value>Y,R</value>
+        </filters>
+        <filters>
+            <field>Tire_Tread_DF__c</field>
+            <operation>equals</operation>
+            <value>Y,R</value>
+        </filters>
+        <filters>
+            <field>Tire_Tread_DR__c</field>
+            <operation>equals</operation>
+            <value>Y,R</value>
+        </filters>
+        <filters>
+            <field>Tire_Tread_PF__c</field>
+            <operation>equals</operation>
+            <value>Y,R</value>
+        </filters>
+        <filters>
+            <field>Tire_Tread_PR__c</field>
+            <operation>equals</operation>
+            <value>Y,R</value>
+        </filters>
+        <label>Tires Today</label>
+    </listViews>
+    <listViews>
+        <fullName>Technician_Queue</fullName>
+        <columns>NAME</columns>
+        <columns>Customer__c</columns>
+        <columns>Customer_Name__c</columns>
+        <columns>Repair_Order_Number__c</columns>
+        <columns>Tag__c</columns>
+        <columns>Status__c</columns>
+        <columns>Service_Advisor__c</columns>
+        <columns>Technician__c</columns>
+        <columns>Service_Vehicle__c</columns>
+        <columns>Mileage__c</columns>
+        <columns>Time_m_to_Tech_Completion__c</columns>
+        <columns>Time_m_to_Advisor_Completion__c</columns>
+        <columns>CREATED_DATE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CREATED_DATE</field>
+            <operation>equals</operation>
+            <value>TODAY</value>
+        </filters>
+        <label>Today&apos;s MPIs - ALL</label>
+    </listViews>
+    <listViews>
+        <fullName>Yesterday_s_MPIs</fullName>
+        <columns>NAME</columns>
+        <columns>Customer__c</columns>
+        <columns>Customer_Name__c</columns>
+        <columns>Repair_Order_Number__c</columns>
+        <columns>Tag__c</columns>
+        <columns>Service_Advisor__c</columns>
+        <columns>Technician__c</columns>
+        <columns>Status__c</columns>
+        <columns>Service_Vehicle__c</columns>
+        <columns>CREATED_DATE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CREATED_DATE</field>
+            <operation>equals</operation>
+            <value>YESTERDAY</value>
+        </filters>
+        <label>Yesterday&apos;s MPIs</label>
+    </listViews>
+    <nameField>
+        <displayFormat>MPI#-{0}</displayFormat>
+        <label>Inspection Report</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Inspection Reports</pluralLabel>
+    <recordTypeTrackFeedHistory>false</recordTypeTrackFeedHistory>
+    <recordTypes>
+        <fullName>Appraisal</fullName>
+        <active>true</active>
+        <description>Perform an appraisal on a vehicle including a high level reconditioning estimate</description>
+        <label>Appraisal</label>
+        <picklistValues>
+            <picklist>Acquisition_Method__c</picklist>
+            <values>
+                <fullName>Auction</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Consignment</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Curb Purchase</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Dealer Trade</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Trade-in</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Company_Number__c</picklist>
+            <values>
+                <fullName>Location 1</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Location 2</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Frame__c</picklist>
+            <values>
+                <fullName>Bolt On Aftermarket Items</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Clean</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Noted Items</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Welded On Aftermarket Items</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Status__c</picklist>
+            <values>
+                <fullName>Advisor Review</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Review</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pending Dispatch</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Technician In-Process</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Walk Around</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Inspection</fullName>
+        <active>true</active>
+        <description>Perform a multi-point inspection for a vehicle, generally in the service drive</description>
+        <label>Inspection</label>
+        <picklistValues>
+            <picklist>Acquisition_Method__c</picklist>
+            <values>
+                <fullName>Auction</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Consignment</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Curb Purchase</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Dealer Trade</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Trade-in</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Company_Number__c</picklist>
+            <values>
+                <fullName>Location 1</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Location 2</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Frame__c</picklist>
+            <values>
+                <fullName>Bolt On Aftermarket Items</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Clean</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Noted Items</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Welded On Aftermarket Items</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Status__c</picklist>
+            <values>
+                <fullName>Advisor Review</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Review</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pending Dispatch</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Technician In-Process</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Walk Around</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <searchLayouts/>
+    <sharingModel>ReadWrite</sharingModel>
+</CustomObject>

@@ -1,0 +1,44 @@
+<apex:page standardController="dealer__Service_Estimate_Line__c" extensions="dealer.ServiceEstimateLine_EXT" id="x4SquareCosmeticLine" >
+    <apex:sectionHeader title="4-Square" subtitle="Line Item" />
+    <apex:form id="x4SCL">
+        <apex:pageBlock mode="maindetail">
+        <apex:pageMessages />
+            <apex:pageBlockButtons location="top">
+                <apex:commandButton action="{!save}" value="Save" />
+                <apex:commandButton action="{!edit}" value="Edit" />
+                <apex:commandButton action="{!delete}" value="Delete" />
+             </apex:pageBlockButtons>
+             <apex:pageBlockSection >
+                <apex:outputField value="{!dealer__Service_Estimate_Line__c.dealer__Service_Estimate__c}" />
+                <apex:outputField value="{!se.dealer__Inventory_Vehicle__c}" />
+             </apex:pageBlockSection>
+        </apex:pageBlock>
+        
+        <apex:pageBlock id="SubletLineBlock" >
+            
+            	<table class="list" cellspacing="0" cellpadding="0" border="0">
+            		<tr class="headerRow">
+            			<th>Description</th>
+            			<th>Repair Type</th>
+            			<th>Vendor</th>
+            			<th>Cosmetic Est</th>
+            		</tr>
+            		<tr class="dataRow even">
+            		<td>
+	                <apex:inputField value="{!dealer__Service_Estimate_Line__c.dealer__Description__c}" id="pm" style="width:250px;" />
+	                </td>
+	                <td>
+	                	<apex:inputField value="{!dealer__Service_Estimate_Line__c.dealer__Repair_Type__c}" />
+	                </td>
+	                <td>
+	                	<apex:inputField value="{!dealer__Service_Estimate_Line__c.dealer__Vendor__c}" />
+	                </td>
+
+	                <td><apex:inputField value="{!dealer__Service_Estimate_Line__c.dealer__Cosmetic_Estimate__c}" id="CosEst"/></td>
+	               </tr>
+               </table>
+            
+        </apex:pageBlock>
+    </apex:form>
+   
+</apex:page>

@@ -1,0 +1,672 @@
+<apex:page label="Image Uploader" title="Image Uploader" showChat="true" id="image_upload" docType="html-5.0" controller="dealer.ImageEditor"> 
+    <apex:includeScript value="{!URLFOR($Resource.dealer__ImageUploaderResources, 'js/vendor/jquery-1.11.0.min.js')}" loadOnReady="false" />
+    
+    <!-- Include Checkbox -->
+    <apex:stylesheet value="{!URLFOR($Resource.dealer__SDLResources, '/css/bootstrap-checkbox.css')}" />
+
+    <apex:stylesheet value="{!URLFOR($Resource.dealer__SDLResources,'/css/VFbootstrap.css')}"/>
+
+    <apex:stylesheet value="{!URLFOR($Resource.dealer__SDLResources, '/css/tooltip/tooltipster.css')}" />
+    <apex:stylesheet value="//fonts.googleapis.com/css?family=Open+Sans:400,600,700,300" />
+    <apex:stylesheet value="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" />
+    <!-- <apex:stylesheet value="{!URLFOR($Resource.ImageUploaderResources, 'css/normalize.min.css')}" /> -->
+    <apex:stylesheet value="{!URLFOR($Resource.dealer__ImageUploaderResources, 'css/smoothness/jquery-ui-1.10.4.custom.min.css')}" />
+
+    <apex:stylesheet value="{!URLFOR($Resource.dealer__ImageUploaderResources, 'css/main.css')}" />
+
+    <!-- Image Cropper DIST -->
+    <apex:stylesheet value="{!URLFOR($Resource.dealer__ImageCropperJS, '/cropper2.1.min.css')}" />
+
+    <!-- Scripts -->
+
+    <apex:includeScript value="{!URLFOR($Resource.dealer__SDLResources,'/js/bootstrap.min.js')}"/>
+    <!--apex:includeScript value="{!URLFOR($Resource.ImageUploaderResources, 'js/vendor/fine-uploader/custom.fineuploader-4.4.0.min.js')}" loadOnReady="false" /-->
+    <apex:includeScript value="{!URLFOR($Resource.dealer__ImageUploaderResources, 'js/vendor/fine-uploader/jquery.fine-uploader-5.1.3.min.js')}" loadOnReady="false" />
+    <apex:includeScript value="{!URLFOR($Resource.dealer__SDLResources, '/js/bootstrap-checkbox.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.dealer__ImageUploaderResources, 'js/plugins.js')}" loadOnReady="false" />
+    <apex:includeScript value="{!URLFOR($Resource.dealer__ImageUploaderResources, 'js/vendor/jquery-ui-1.10.4.custom.min.js')}" loadOnReady="false" />
+
+    <apex:includeScript value="{!URLFOR($Resource.dealer__ImageCropperJS, '/cropper2.1.min.js')}" />
+
+    <style>
+        .qq-upload-list li {
+            min-width: 165px;
+        }
+
+        body .bPageTitle .ptBody .pageDescription {
+          margin-left: 37px;
+          margin-top: -2px;
+        }
+
+        h1.pageType {
+            margin: 1px 0;
+        }
+    
+        #da_croppa {
+            max-width: 768px;
+            max-height: 468px;
+            display: block;
+            margin: 15px 0;
+        }   
+
+        #da_croppa > img{
+            max-width: 768px;
+        }
+
+        #da_croppa_modal .modal-dialog {
+            width: 830px;
+        }   
+
+        .save_btn i.fa-spinner {
+            margin-left: 5px; 
+        }
+
+        .show_on_complete {
+            display: none;
+        }
+
+        .modal-backdrop {
+            opacity: 0.7;
+            background-color: #000;
+        }
+
+        #force a.btn {
+            margin: 0
+        }
+    </style>
+
+    <!--[if lt IE 9]>
+        <apex:includeScript value="{!URLFOR($Resource.SDLResources, 'js/vendor/html5shiv.js')}" />
+    <![endif]-->
+
+    <apex:sectionHeader title="Inventory Media" subtitle="Manage Inventory Images" description="" />
+    <!-- <apex:pageBlock>
+        <apex:pageBlockSection>
+            <apex:outputField value="{!vehicle.Name}"/>
+        </apex:pageBlockSection>
+    </apex:pageBlock> -->
+    <div id="force">
+
+        <div class="canvas_alert alert alert-danger" role="alert" style="display: none;">
+            <strong>Your Browser is not supported</strong>
+            <p>Please be aware that you are using an older browser that does not support modern technologies that this page uses.</p>
+        </div>
+        
+        <div class="row"> 
+            <div class="col-md-4">
+                <h3>
+                    <a href="/{!vehicle.Id}"><apex:outputField value="{!vehicle.Name}"/></a>
+                </h3>
+                <br />
+                <div class="text-muted">
+                    <strong> Ext. Color:</strong> <apex:outputText value="{!IF(ISBLANK(vehicle.dealer__Exterior_Color__c),'N/A',vehicle.dealer__Exterior_Color__c)}" /> 
+                    <strong> Int. Color:</strong> <apex:outputText value="{!IF(ISBLANK(vehicle.dealer__Interior_Color__c),'N/A',vehicle.dealer__Interior_Color__c)}" />  
+                    <strong> Engine:</strong> <apex:outputText value="{!IF(ISBLANK(vehicle.dealer__Engine_Description__c),'N/A',vehicle.dealer__Engine_Description__c)}" /> 
+                    <strong> Trans:</strong> <apex:outputText value="{!IF(ISBLANK(vehicle.dealer__Transmission_Type__c),'N/A',vehicle.dealer__Transmission_Type__c)}" /> 
+                </div>
+            </div>
+            <div class="col-md-2">
+                <apex:outputPanel layout="none" rendered="{!userHasAccess}">
+                <a href="#" class="btn btn-default btn-small show-upload">
+                    <span class="caret"></span> Show Upload
+                </a>
+                </apex:outputPanel>
+            </div>
+            <div class="col-md-2">
+                <apex:outputPanel layout="none" rendered="{!AND(userHasAccess,userCanPublish)}">
+                    <button id="pubAll" class="btn btn-default btn-small">Publish All</button>
+                </apex:outputPanel>
+            </div>
+            <div class="col-md-4">
+                <strong>Note:</strong> Images are restricted to a width and height of <apex:outputText value="{0, number, 000}"><apex:param value="{!crm.dealer__Inventory_Media_Max_Size__c}" /></apex:outputText>px.
+                <apex:outputPanel layout="none" rendered="{!crm.dealer__Inventory_Media_Force_Crop__c}"><br /> <strong>Note:</strong> Images will be cropped to an aspect ratio of&nbsp;<apex:outputText value="{! IF(ISBLANK(crm.Inventory_Media_Crop_Ratio__c),'4:3',crm.Inventory_Media_Crop_Ratio__c)}" />&nbsp; upon upload.</apex:outputPanel>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+
+            </div>
+            
+        </div>
+        
+        <div id="thumbnail-fine-uploader" class="clearfix" data-vehicle="{!JSINHTMLENCODE(vehicle.Id)}"></div>
+
+        <!-- edit modal -->
+        <div class="modal fade" id="da_croppa_modal">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel"> Edit Image </h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="btn-group">
+                                    <button class="btn btn-lg btn-primary" data-method="setDragMode" data-option="move" type="button" title="Move">
+                                        <span class="docs-tooltip" data-toggle="tooltip" title="" data-original-title="$().cropper(&quot;setDragMode&quot;, &quot;move&quot;)"><i class="fa fa-arrows"></i></span>
+                                    </button> 
+                                    <button class="btn btn-lg btn-primary" data-method="setDragMode" data-option="crop" type="button" title="Crop">
+                                        <span class="docs-tooltip" data-toggle="tooltip" title="" data-original-title="$().cropper(&quot;setDragMode&quot;, &quot;crop&quot;)"><i class="fa fa-crop"></i></span>
+                                    </button> 
+                                    <button class="btn btn-lg btn-primary" data-method="zoom" data-option="0.1" type="button" title="Zoom In">
+                                        <span class="docs-tooltip" data-toggle="tooltip" title="" data-original-title="$().cropper(&quot;zoom&quot;, 0.1)"><i class="fa fa-search-plus"></i></span>
+                                    </button> 
+                                    <button class="btn btn-lg btn-primary" data-method="zoom" data-option="-0.1" type="button" title="Zoom Out">
+                                        <span class="docs-tooltip" data-toggle="tooltip" title="" data-original-title="$().cropper(&quot;zoom&quot;, -0.1)"><i class="fa fa-search-minus"></i></span>
+                                    </button> 
+                                    <button class="btn btn-lg btn-primary" data-method="rotate" data-option="-45" type="button" title="Rotate Left">
+                                        <span class="docs-tooltip" data-toggle="tooltip" title="" data-original-title="$().cropper(&quot;rotate&quot;, -45)"><span class="fa fa-undo"></span></span>
+                                    </button> 
+                                    <button class="btn btn-lg btn-primary" data-method="rotate" data-option="45" type="button" title="Rotate Right">
+                                        <span class="docs-tooltip" data-toggle="tooltip" title="" data-original-title="$().cropper(&quot;rotate&quot;, 45)"><span class="fa fa-repeat"></span></span>
+                                    </button>
+                                </div>
+
+                                <!-- Apect Ratio Stuff -->
+                                <div class="btn-group">
+                                    <button class="btn btn-lg btn-primary four_by_three" data-method="setAspectRatio" data-option="1.3333333333333333" type="button" title="Set Aspect Ratio">
+                                        <span class="docs-tooltip" data-toggle="tooltip" title="$().cropper(&quot;setAspectRatio&quot;, 4 / 3)">
+                                          4:3
+                                        </span>
+                                    </button>
+                                    <button class="btn btn-lg btn-primary sixteen_by_nine" data-method="setAspectRatio" data-option="1.7777777777777777" type="button" title="Set Aspect Ratio">
+                                        <span class="docs-tooltip" data-toggle="tooltip" title="$().cropper(&quot;setAspectRatio&quot;, 16 / 9)">
+                                          16:9
+                                        </span>
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div id="da_croppa">
+                            <img id="crop_img" src="#" alt="Image to crop" />
+                        </div>
+                        <button class="btn btn-success save_og">Save Original<i class="fa fa-pulse"></i></button>
+                        <button class="btn btn-success save_btn">Save as New<i class="fa fa-pulse"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div> 
+
+    </div>
+
+    <script type="text/javascript">
+        $j = jQuery.noConflict();
+        var uploader        =   $j('#thumbnail-fine-uploader'),
+            vehicle_ID      =   uploader.data('vehicle'),
+            userHasAccess   =   {!userHasAccess},
+            userCanPublish   =   {!userCanPublish},
+            defaultMaxSize  =   {!crm.dealer__Inventory_Media_Max_Size__c};
+            defaultPubStat  =   {!crm.dealer__Inventory_Media_Publish_Default__c};
+            defaultForceCrop =  {!crm.dealer__Inventory_Media_Force_Crop__c},
+            defaultCropRatio = 4/3;
+
+        // Make sure there is a crop ratio and it is the correct format
+        if( '{!crm.Inventory_Media_Crop_Ratio__c}' != '' && /(\d+)\/(\d+)/g.test('{!crm.Inventory_Media_Crop_Ratio__c}') ) {
+            var tmp = '{!crm.Inventory_Media_Crop_Ratio__c}'.split('/');
+            defaultCropRatio = tmp[0] / tmp[1]; 
+        }
+
+        /* Edit GLOBALS */
+        var $image = $j('#crop_img'),
+            $editing,
+            canvasData,
+            cropBoxData;
+
+        $j(document).ready(function() {
+
+            // Show/Hide Upload Box
+            $j('.show-upload').click(function(){
+                var txt = $j(".qq-upload-drop-area").is(':visible') ? '<span class="caret"></span> Show Upload' : '<span class="caret caret-reversed "></span> Hide Upload';
+                $j(".show-upload").html(txt);
+
+                $j('.qq-upload-drop-area').slideToggle();
+            });
+
+            // Publish ALL images
+            $j('#pubAll').click(function(e){
+                e.preventDefault();
+                if(confirm('Publish ALL Inventory Images?')) {
+                    dealer.ImageEditor.publishAll( vehicle_ID , function(result, event) {
+                        if(event.status) {
+                            // $j('input.upload-publish.publish_on').checkbox('refresh');
+                            var checkbox = $j('input.upload-publish.publish_on');
+                                checkbox.prop("checked", true);
+                                checkbox.prop("indeterminate", false);
+                                checkbox.checkbox('checkChecked');
+                        }
+                    });
+                }
+            });
+
+            if (userHasAccess) {
+                // Initialize Uploader
+                uploader.fineUploader({
+                    debug: false,
+                    session : {
+                        endpoint : '/apex/dealer__InventoryMediaJSON',// '{!JSENCODE( URLFOR($Resource.ImageUploaderResources, "js/vendor/fine-uploader/json/preload_images.json") )}',
+                        params : {
+                            'id': $j('#thumbnail-fine-uploader').data('vehicle')
+                        }  
+                    },                
+                    template: "qq-simple-thumbnails-template",
+                    thumbnails: {
+                        timeBetweenThumbs: 150,
+                        placeholders: {
+                            waitingPath: '{!JSENCODE( URLFOR($Resource.ImageUploaderResources, "js/vendor/fine-uploader/placeholders/waiting-generic.png") )}',
+                            notAvailablePath: '{!JSENCODE( URLFOR($Resource.ImageUploaderResources, "js/vendor/fine-uploader/placeholders/not_available-generic.png") )}'
+                        }
+                    },
+                    request: {
+                        endpoint: 'https://apsv1.dealerteam.com/api/vfuploader/endpoint-cors3.php',
+                        cors: {
+                            expected: true
+                        },
+                        params: {
+                            'forcecrop': defaultForceCrop,
+                            'cropratio': defaultCropRatio
+                        }
+                    },
+                    deleteFile: {
+                        enabled: true,
+                        endpoint: 'https://apsv1.dealerteam.com/api/vfuploader/endpoint-cors.php',
+                        method: "POST"
+                    },
+                    validation: {
+                        itemLimit: 100,
+                        allowedExtensions: ['jpeg', 'jpg', 'gif', 'png'] // Match to get_mime()
+                    },
+                    scaling: {
+                        sendOriginal: false,
+
+                        sizes: [
+                            {name: "scaled", maxSize: defaultMaxSize}
+                        ]
+                    }
+
+                // When previous loaded images have completed loading.
+                }).on('sessionRequestComplete', function(event, data, success, request){
+
+                    // Existing Thumbs loaded and their templates built out.
+                    setup_template(data);
+
+                    // Display upload drag and drop box if no images are pre-loaded
+                    if(data) {
+                        if(data.length <= 0) { $j('.qq-upload-drop-area').show(); }
+                    }
+
+                }).on("complete", function(event, id, name, response) {
+                    // Style Completed Image Checkbox
+                    $fileItemInDom = $j(this).fineUploader("getItemByFileId", id);
+                    var checkbox = $fileItemInDom.find('input.upload-publish.publish_on');
+                    // $fileItemInDom.find('input.upload-publish.publish_off').hide();
+
+                    if(userCanPublish) {
+                        checkbox.show().checkbox({
+                            defaultState: defaultPubStat,
+                            buttonStyle: 'btn-link',
+                            checkedClass: 'glyphicon glyphicon-check',
+                            uncheckedClass: 'glyphicon glyphicon-unchecked'
+                        });
+
+                        if(defaultPubStat == true){
+                            checkbox.prop("checked", true);
+                            checkbox.prop("indeterminate", false);
+                            checkbox.checkbox('checkChecked');
+                        }
+                    } else {
+                        var checkbox = $fileItemInDom.find('input.upload-publish.publish_on').hide();
+                    }
+                    // Add to SF only if successful upload.
+                    if(response.success) {
+                        dealer.ImageEditor.addInventoryMedia( $j.toJSON( get_image_props(id) ) , function(result, event) {
+                                console.log(event.status);
+                                console.log(result);
+                        });
+                    }
+
+                    if( $j('.save_btn i').hasClass('fa-spinner') ){
+                        $j('.save_btn i').removeClass('fa-spinner');
+                        $j('#da_croppa_modal').modal('hide');
+                    }
+
+                    // We are saving over the edited file
+                    if( $j('.save_og i').hasClass('fa-spinner') ) {
+                        $j('.save_og i').removeClass('fa-spinner');
+
+                        var ogImg = $editing,
+                            $editingfileItemInDom = uploader.fineUploader("getItemByFileId", ogImg.fineId);
+
+                        // $Replace the original File in the DOM
+                        $editingfileItemInDom.replaceWith($fileItemInDom);
+
+                        // Fire upload of canvas element
+                        uploader.fineUploader('deleteFile', ogImg.fineId);
+
+                        // Re-run the ordering
+                        var order = $j.toJSON( get_order_array() );
+                        // Remote Action
+                        dealer.ImageEditor.setOrder( order, function(result, event) {
+                                //console.log(event.status);
+                        });
+
+                        $j('#da_croppa_modal').modal('hide');
+                    }
+
+                    $fileItemInDom.find('.show_on_complete').show();
+                   
+                }).on('submitDelete', function(event, id) {
+                    var filename = $j(this).fineUploader('getName', id);
+                    var ext = filename.split('.').pop();
+                    $j(this).fineUploader('setDeleteFileParams', {ext: ext }, id);
+                    $fileItemInDom = $j(this).fineUploader("getItemByFileId", id);
+                    uuid = uploader.fineUploader("getUuid", id),
+                    // Remote Action
+                    dealer.ImageEditor.deleteInventoryMedia( uuid, function(result, event) {
+                            //console.log(event.status);
+                    });
+                });
+            } else {
+                // Add the alert message
+                $j('<div class="alert alert-danger"><strong>Permission Error.</strong> You dont have permission to manage vehicle images. Contact your administrator if this is in error.</div>').appendTo('#force');
+            }
+
+            $j('.qq-upload-list').sortable({
+                //placeholder: 'upload_placeholder'
+                stop: function() {
+                    var order = $j.toJSON( get_order_array() );
+                    // Remote Action
+                    dealer.ImageEditor.setOrder( order, function(result, event) {
+                            //console.log(event.status);
+                    });
+                }
+            });
+
+            $j('#thumbnail-fine-uploader').on('change', 'input.upload-publish', function() {
+                var btn = $j(this),
+                    id = btn.parents('li').attr('qq-file-id'),
+                    $fileItemInDom = uploader.fineUploader("getItemByFileId", id),
+                    uuid = uploader.fineUploader("getUuid", id);
+                
+                // Remote Action
+                dealer.ImageEditor.setPublished( uuid, function(result, event) {
+                    //console.log(event.status);
+                    // console.log(result);
+                });
+            });
+
+            $j('#force').on('click', '.edit_btn' ,function(){
+                var btn = $j(this),
+                    id = btn.parents('li').attr('qq-file-id'),
+                    $fileItemInDom = uploader.fineUploader("getItemByFileId", id),
+                    uuid = uploader.fineUploader("getUuid", id),
+                    img = get_image_props(id),
+                    imgUrl = 'https://s3.amazonaws.com/vehicle-images/'+img.name;
+
+                $image.prop('src',imgUrl);
+                $editing = img;
+            });
+
+            $j('#force').on('click', '.save_btn' ,function(){
+
+                // loader
+                $j(this).find('i').addClass('fa-spinner');
+
+                // Setup variables to process
+                var img = $editing,
+                    imgUrl = 'https://s3.amazonaws.com/vehicle-images/'+img.name,
+                    _canvas = $image.cropper("getCroppedCanvas");
+
+                    console.log(_canvas);
+                    // _canvas.toBlob(function(blerb){
+                    //     uploader.fineUploader('addFiles', {blob:blerb,name:img.name,type: img.mime});
+
+                    // });
+
+                    console.log(img);
+                    // Fire upload of canvas element
+                    uploader.fineUploader('addFiles', {canvas:_canvas,name:img.name,type: img.mimetype});
+            }); 
+
+            $j('#force').on('click', '.save_og' ,function(){
+
+                // loader
+                $j(this).find('i').addClass('fa-spinner');
+
+                // Setup variables to process
+                var img = $editing,
+                    $fileItemInDom = uploader.fineUploader("getItemByFileId", img.fineId),
+                    imgUrl = 'https://s3.amazonaws.com/vehicle-images/'+img.name,
+                    _canvas = $image.cropper("getCroppedCanvas");
+
+                    // Fire upload of canvas element
+                    uploader.fineUploader('addFiles', { 
+                        canvas:_canvas,
+                        name:img.name,
+                        type: img.mimetype
+                    });
+            }); 
+
+            // Launch edit window
+            $j('#da_croppa_modal').on('shown.bs.modal', function () {
+                $image.cropper({
+                    aspectRatio: (defaultForceCrop && defaultCropRatio) ? defaultCropRatio : NaN,
+                    autoCropArea: 0.5,
+                    strict: false,
+                    built: function () {
+                        $image.cropper('setCanvasData', canvasData);
+                        $image.cropper('setCropBoxData', cropBoxData);
+                    }
+                });
+
+                if (defaultCropRatio == 4/3) {
+                    $j('.four_by_three').addClass('active');
+                } else if(defaultCropRatio == 16/9) {
+                    $j('.sixteen_by_nine').addClass('active');
+                }
+
+                if (defaultForceCrop == true) {
+                    // $j('.four_by_three,.sixteen_by_nine').addClass('disabled'); // Disables Apect Ratio for editing?
+                } 
+
+            }).on('hidden.bs.modal', function () {
+                canvasData = $image.cropper('getCanvasData');
+                cropBoxData = $image.cropper('getCropBoxData');
+                $image.cropper('destroy');
+            });
+
+            // Image editor events for method buttons
+            $j(document.body).on('click', '[data-method]', function () {
+                var data = $j(this).data(),
+                $target,
+                result;
+
+                if (data.method) {
+                    data = $j.extend({}, data); // Clone a new one
+
+                    if (typeof data.target !== 'undefined') {
+                        $target = $(data.target);
+
+                        if (typeof data.option === 'undefined') {
+                            try {
+                                data.option = JSON.parse($target.val());
+                            } catch (e) {
+                                console.log(e.message);
+                            }
+                        }
+                    }
+
+                    result = $image.cropper(data.method, data.option);
+
+                }
+            });
+
+            // Canvas suport alert hanlding
+            console.log('canvas support: ' + isCanvasSupported() );
+            if( !isCanvasSupported() ) {
+                $j('.canvas_alert').show();
+            }
+
+        });
+
+
+        // Returns Image Object
+        function get_image_props(id){
+
+            var $fileItemInDom = uploader.fineUploader("getItemByFileId", id);
+                uuid = uploader.fineUploader("getUuid", id),
+                nameOG = uploader.fineUploader("getName", id),
+                ext = nameOG.split('.').pop(),
+                name = uuid + '.'+ ext,
+                thumb = uuid + '_thumb.' + ext,
+                order = $fileItemInDom.index(),
+                img = $fileItemInDom.find('img'),
+                imgHeight = img.height(),
+                imgWidth = img.width(),
+                mime = get_mime(ext),
+                pstat = defaultPubStat; // true/false // Default ORG setting
+
+            var img = {
+                'id': vehicle_ID,
+                'uuid': uuid,
+                'name': name,
+                'height': imgHeight,
+                'width': imgWidth,
+                'mimetype': mime,
+                'order': order,
+                'thumbnailUrl': thumb,
+                'fineId': id,
+                'pubstat' : pstat // Published Status
+            }
+            return img;
+        }
+
+        // Returns JSON object of all photos and their order
+        function get_order_array(){
+            var photo_order = [];
+            $j('.qq-upload-list li').each( function(i){
+                var id = $j(this).attr('qq-file-id'); // true/false
+                photo_order.push( get_image_props(id) );
+            });
+            //photo_order = $j.extend({}, photo_order);
+            return photo_order;
+        }
+
+        // receives data or false, false indicates to only style the checkboxes
+        function setup_template(data) {
+            console.log(data);
+
+            $j('.qq-upload-list li').each(function(index,lItem){
+                var id = $j(lItem).attr('qq-file-id');
+                    $fileItemInDom = uploader.fineUploader("getItemByFileId", id);
+                    uuid = uploader.fineUploader("getUuid", id);
+
+                if ( !(typeof data == undefined) ) {
+                    $j.each(data, function(i, el){
+                        if (uuid == el.uuid) {
+
+                            if(userCanPublish) {
+                                var checkbox = $fileItemInDom.find('input.upload-publish.publish_on');
+                                checkbox.checkbox({
+                                    defaultState: el.pubstat,
+                                    buttonStyle: 'btn-link',
+                                    checkedClass: 'glyphicon glyphicon-check',
+                                    uncheckedClass: 'glyphicon glyphicon-unchecked'
+                                });
+
+                                if(el.pubstat == true){
+                                    checkbox.prop("checked", true);
+                                    checkbox.prop("indeterminate", false);
+                                    checkbox.checkbox('checkChecked');
+                                }
+                            } else {
+                                var checkbox = $fileItemInDom.find('input.upload-publish.publish_on').hide();
+                            }
+
+                            // /apex/dealer__InventoryImageEditor/?id=        
+                            // $fileItemInDom.find('.edit_btn').prop('href', '/apex/InventoryImageEditor?id='+el.imgId);    
+
+                            $fileItemInDom.find('.show_on_complete').show();     
+
+                            if ( ! el.url.includes('vehicle-images') ){
+                                $j('.qq-file-id-'+id+' .edit_btn').hide();
+                            }
+
+                        }
+                    });
+                } else {
+                    // This case doesn't exist.
+                }
+            });             
+        }
+
+        /* Utility Functions */
+        function get_mime(extension) {
+            var mime = '';
+            // match to allowedExtensions
+            switch ( extension.toLowerCase() ) {
+                case "jpeg":
+                case "jpg":
+                    mime =  'image/jpeg';
+                    break;
+                case "png":
+                    mime = 'image/png';
+                    break;
+                case "gif":
+                    mime = 'image/gif';
+                    break;
+                //default:
+                //  no default
+            }
+            return mime;
+        }
+
+        function isCanvasSupported(){
+            var elem = document.createElement('canvas');
+            return !!(elem.getContext && elem.getContext('2d'));
+        }
+    </script>
+
+    <!-- UPLOADER TEMPLATE -->
+    <script type="text/template" id="qq-simple-thumbnails-template">
+      <div class="qq-uploader-selector qq-uploader">
+        <div class="qq-upload-drop-area-selector qq-upload-drop-area">
+          <span>Drop files here to upload
+            <br />or<br />
+            <div class="qq-upload-button-selector qq-upload-button">
+              <div>Click Here to select files </div>
+            </div>
+        </span>
+        </div>
+        <span class="qq-drop-processing-selector qq-drop-processing">
+          <span>Processing dropped files...</span>
+          <span class="qq-drop-processing-spinner-selector qq-drop-processing-spinner"></span>
+        </span>
+        <ul class="qq-upload-list-selector qq-upload-list clearfix">
+          <li>
+            <img class="qq-thumbnail-selector" qq-max-size="200">
+            <span class="qq-upload-spinner-selector qq-upload-spinner"></span>
+            <div class="meta hidden">
+                <span class="qq-upload-file-selector qq-upload-file "></span>
+            </div>
+            <div class="controls">
+                <a class="qq-upload-delete-selector qq-upload-delete" href="#">Delete</a>
+
+                <button class="show_on_complete btn btn-link edit_btn btn-sm" data-toggle="modal" data-target="#da_croppa_modal" type="button">Edit</button>
+
+                <input type="checkbox" data-label-prepend="Publish" class=" pull-right upload-publish publish_on" name="publish_on"  />
+
+                <span class="qq-upload-status-text-selector qq-upload-status-text"></span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </script>
+
+    <!-- <input type="checkbox" data-label-prepend="Publish" class=" pull-right upload-publish publish_off" name="publish_off"  /> -->
+</apex:page>

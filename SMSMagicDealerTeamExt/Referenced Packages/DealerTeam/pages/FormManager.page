@@ -1,0 +1,80 @@
+<apex:page title="Form Manager" id="formManager" showHeader="true" sidebar="true" standardController="dealer__Form__c" extensions="dealer.Form_EXT">
+  <apex:sectionHeader title="Form Manager" subtitle="{!dealer__Form__c.Name}"/>
+ 
+  <apex:form enctype="multipart/form-data">
+    <apex:pageMessages />
+
+    <apex:pageBlock mode="maindetail">
+    	<apex:pageBlockButtons >
+        <apex:commandButton action="{!Save}" value="Save" />
+        <apex:commandButton action="{!Cancel}" value="Cancel" />
+    	</apex:pageBlockButtons>
+
+      <!-- Form Head Data -->
+      <apex:pageBlockSection title="Form" collapsible="false">
+
+          <apex:outputField value="{!dealer__Form__c.Name}" />
+          <apex:outputField value="{!dealer__Form__c.dealer__Print_Type__c}" />
+
+          <apex:outputField value="{!dealer__Form__c.dealer__Form_ID__c}" />
+          <apex:outputField value="{!dealer__Form__c.dealer__Active__c}" />
+
+          <apex:outputField value="{!dealer__Form__c.dealer__Proofed_by__c}" />
+          <apex:outputField value="{!dealer__Form__c.dealer__Revision_Date__c}" />
+
+          <apex:outputField value="{!dealer__Form__c.dealer__Sequence__c}" />
+
+      </apex:pageBlockSection>
+
+      <!-- Traditional Laser (Visualforce Page) -->
+      <apex:pageBlockSection title="Laser (Visual Force PDF)" collapsible="false" 
+          rendered="{!IF(dealer__Form__c.dealer__Print_Type__c=='Laser', true, false)}">
+
+          <apex:outputField value="{!dealer__Form__c.dealer__Page_Name__c}" />
+
+      </apex:pageBlockSection>
+
+      <!-- FDF / External PDF Support -->
+      <apex:pageBlockSection title="PDF/FDF External Document" collapsible="false"
+          rendered="{!IF(dealer__Form__c.dealer__Print_Type__c=='FDF', true, false)}">
+
+          <apex:outputField value="{!dealer__Form__c.dealer__DocumentContentId__c}" />
+          <apex:outputField value="{!dealer__Form__c.dealer__Flatten__c}" />
+
+          <!--
+          <apex:pageBlockSectionItem>
+              <apex:outputLabel value="Upload PDF" for="file" />
+              <apex:inputFile value="{!document.body}" fileName="{!document.name}" id="file"/>
+          </apex:pageBlockSectionItem>
+          <apex:pageBlockSectionItem>
+              <apex:outputLabel value=" " for="updf" />
+              <apex:commandButton action="{!uploadPDF}" value="Upload PDF" id="updf" />
+          </apex:pageBlockSectionItem>
+          -->
+
+
+          <apex:inputField value="{!dealer__Form__c.dealer__FDF_Code__c}" />
+          <apex:outputText />
+
+
+      </apex:pageBlockSection>
+
+      <apex:pageBlockSection title="PDF Preview" rendered="{!NOT(ISBLANK(dealer__Form__c.dealer__DocumentContentId__c))}">
+
+          <apex:iframe height="600" id="rawPDF" 
+              src="https://apsv1.dealerteam.com/docgen/read/{!dealer__Form__c.dealer__DocumentContentId__c}" />
+      </apex:pageBlockSection>
+
+      <!-- Impact Document - Support for Direct Printer Support -->
+      <apex:pageBlockSection title="Impact NCR Form" collapsible="false"
+           rendered="{!IF(dealer__Form__c.dealer__Print_Type__c=='Impact', true, false)}">
+
+           <apex:inputField value="{!dealer__Form__c.dealer__Impact_Code__c}" />
+
+      </apex:pageBlockSection>
+
+      <apex:inlineEditSupport event="ondblClick" showOnEdit="saveButton,cancelButton" hideOnEdit="editButton" />
+
+    </apex:pageBlock>
+  </apex:form>	
+</apex:page>

@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <fullName>Allow_SMS__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>If this customer has indicated they would like to receive text messages, ensure this check box is marked.</inlineHelpText>
+        <label>Allow Text Messages</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>B2CRecord__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>B2C Contact records support a one-to-one model with the Account standard object</description>
+        <externalId>false</externalId>
+        <label>B2CRecord</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>BirthDay__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>DAY(Birthdate)</formula>
+        <label>BirthDay</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>BirthMonth__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>MONTH(Birthdate)</formula>
+        <label>BirthMonth</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Drivers_License_Expiration_Date__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Driver&apos;s Lic Exp Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Drivers_License_Number__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Driver&apos;s Lic No.</label>
+        <length>15</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Drivers_License_State__c</fullName>
+        <deprecated>false</deprecated>
+        <description>2 letter abbreviation of the state in which the customer&apos;s drivers license was issued.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>2 letter abbreviation of the state in which the customer&apos;s drivers license was issued.</inlineHelpText>
+        <label>Driver&apos;s Lic State</label>
+        <length>2</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>External_ID__c</fullName>
+        <caseSensitive>false</caseSensitive>
+        <deprecated>false</deprecated>
+        <description>External systems account ID.</description>
+        <externalId>true</externalId>
+        <label>External ID</label>
+        <length>18</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Text</type>
+        <unique>true</unique>
+    </fields>
+    <fields>
+        <fullName>Issue_Date__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>DL Issue Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Languages__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Languages</label>
+        <length>100</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>MiddleName__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Middle</label>
+        <length>40</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Related_Name__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Related Name</label>
+        <length>64</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Rewards_Number__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>Linked rewards member number</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Rewards number this customer is enrolled under.  To add a new Rewards account choose the publisher action from the Chatter Feed.</inlineHelpText>
+        <label>Rewards Number</label>
+        <referenceTo>Rewards__c</referenceTo>
+        <relationshipLabel>Customers</relationshipLabel>
+        <relationshipName>Contacts</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Rewards_Search_Text__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Search string associated with Rewards membership number.</inlineHelpText>
+        <label>Rewards Search Text</label>
+        <length>64</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Transfer_From__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Transfer From</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Contacts</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Lookup</type>
+    </fields>
+    <listViews>
+        <fullName>BirthdaysThisMonth</fullName>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CONTACT.BIRTHDATE</field>
+            <operation>equals</operation>
+            <value>THIS_MONTH</value>
+        </filters>
+        <label>Birthdays This Month</label>
+    </listViews>
+    <recordTypes>
+        <fullName>Business_Contact</fullName>
+        <active>true</active>
+        <description>For business to business transaction based customers</description>
+        <label>Business Contact</label>
+        <picklistValues>
+            <picklist>LeadSource</picklist>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner Referral</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Phone Inquiry</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Purchased List</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Web</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Name</picklist>
+            <values>
+                <fullName>Dr%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mr%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mrs%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ms%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Prof%2E</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Customer</fullName>
+        <active>true</active>
+        <description>For individuals doing business with your dealership</description>
+        <label>Customer</label>
+        <picklistValues>
+            <picklist>LeadSource</picklist>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner Referral</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Phone Inquiry</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Purchased List</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Web</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Name</picklist>
+            <values>
+                <fullName>Dr%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mr%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mrs%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ms%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Prof%2E</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <webLinks>
+        <fullName>Find_Duplicates</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <height>600</height>
+        <linkType>page</linkType>
+        <masterLabel>Find Duplicates</masterLabel>
+        <openType>sidebar</openType>
+        <page>ContactsDuplicateSearch</page>
+        <protected>false</protected>
+    </webLinks>
+    <webLinks>
+        <fullName>Re_assign_Owner</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <linkType>page</linkType>
+        <masterLabel>Re-assign Owner</masterLabel>
+        <openType>replace</openType>
+        <page>Re_assign_owners</page>
+        <protected>false</protected>
+        <requireRowSelection>true</requireRowSelection>
+    </webLinks>
+    <webLinks>
+        <fullName>Refresh_Customer_from_ADP</fullName>
+        <availability>online</availability>
+        <description>Refreshes the customer record from ADP.</description>
+        <displayType>button</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Refresh from ADP</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>var interval; 
+	var cid = &quot;{!Contact.External_ID__c}&quot;;
+	var did	 = &quot;540&quot;;
+	
+	// PLEASE CHANGE THIS FOR PRODUCTION
+	var baseUrl = &apos;https://development.dealerteam.com/&apos;; 
+
+	function appendScript() { 
+	
+		//We want to use jQuery as well as the UI elements, so first lets load the stylesheet by injecting it into the dom. 
+		var head= document.getElementsByTagName(&apos;head&apos;)[0]; 
+		var v_css = document.createElement(&apos;link&apos;); 
+		v_css.rel = &apos;stylesheet&apos; 
+		v_css.type = &apos;text/css&apos;; 
+		v_css.href = &apos;https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/themes/base/minified/jquery-ui.min.css&apos;; 
+		head.appendChild(v_css); 
+
+		//Okay, now we need the core jQuery library, lets fetch that and inject it into the dom as well 
+		var script= document.createElement(&apos;script&apos;); 
+		script.type= &apos;text/javascript&apos;; 
+		script.src= &apos;https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js&apos;; 
+		head.appendChild(script); 
+
+		//And of course we need the jQuery UI elements 
+		var scriptUI = document.createElement(&apos;script&apos;); 
+		scriptUI.type = &apos;text/javascript&apos;; 
+		scriptUI.src = &apos;https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js&apos;; 
+		head.appendChild(scriptUI); 
+
+		interval=self.setInterval(function() { 
+
+			if(jQuery) { 
+				window.clearInterval(interval); 
+
+				//create a div in the body which we will use for our dialog. 
+				$(document.getElementsByTagName(&apos;body&apos;)[0]).append(&apos;&lt;div id=dealdialog&gt;&lt;div id=&quot;iframeLoader&quot; style=&quot;position: absolute;text-align: center;width: 470px;padding-top: 90px;&quot;&gt;&lt;center&gt;&lt;img src=&quot;https://development.dealerteam.com/api/adp/sales/loading.gif&quot; /&gt;&lt;/center&gt;&lt;/div&gt;&lt;br /&gt;&lt;iframe style=&quot;position:absolute;margin-top:-20px;&quot; id=&quot;dIframe&quot; src=&quot;&quot; width=&quot;470&quot; height=&quot;230&quot; frameborder=&quot;0&quot; scrolling=&quot;auto&quot;&gt;&lt;/iframe&gt;&lt;/div&gt;&apos;); 
+
+				var cdURL = baseUrl+&apos;api/adp/updateCustomer.php?did=&apos;+did+&apos;&amp;cid=&apos;+cid;
+
+				$(&quot;#dIframe&quot;).attr(&apos;src&apos;,&apos;&apos;); 
+				$(&quot;#dIframe&quot;).html(&apos;Please Wait&apos;); 
+
+				$(&quot;#dealdialog&quot;).dialog({ 
+					autoOpen: true, 
+					modal: true, 
+					height: 350, 
+					width: 500, 
+					title: &apos;Refreshing Customer from ADP.&apos;, 
+					buttons: [{ 
+						text: &quot;View Updated Customer&quot;, 
+						click: function() { 
+							window.top.location.reload(); 
+						} 
+					}], 
+					open: function(ev, ui){ 
+						$(&apos;#dIframe&apos;).attr(&apos;src&apos;, cdURL); 
+					} 
+				}); 
+			} 
+		}, 300); 
+	}
+	 
+	appendScript();</url>
+    </webLinks>
+</CustomObject>

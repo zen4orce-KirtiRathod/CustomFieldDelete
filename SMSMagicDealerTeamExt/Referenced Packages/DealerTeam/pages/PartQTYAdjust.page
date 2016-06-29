@@ -1,0 +1,67 @@
+<apex:page showHeader="true" sidebar="true" tabStyle="dealer__Parts_Inventory__c" standardController="dealer__Parts_Inventory__c" extensions="dealer.PartsInventory_EXT" title="Part Management">
+	<apex:sectionHeader title="Part Management" subtitle="Adjust Part Inventory Record" />
+	<apex:form id="qA">
+		<apex:pageMessages id="msgc" />
+		<apex:pageBlock id="pAdjust" mode="maindetail">
+			<apex:pageBlockButtons id="btnC">
+				<apex:commandButton value="Adjust Cost" action="{!adjustCost}" />
+				<apex:commandButton value="Adjust On Hand" action="{!adjustOnHand}" />
+			</apex:pageBlockButtons>
+			<apex:pageBlockSection collapsible="false">
+			
+				<apex:outputField value="{!dealer__Parts_Inventory__c.Name}" />
+				<apex:outputField value="{!dealer__Parts_Inventory__c.dealer__MFG__c}" />
+
+				<apex:outputField value="{!dealer__Parts_Inventory__c.dealer__Description__c}" />
+				<apex:outputField value="{!dealer__Parts_Inventory__c.dealer__Location__c}" />
+
+				<apex:inputField value="{!dealer__Parts_Inventory__c.dealer__On_Hand__c}" />
+				<apex:inputField value="{!dealer__Parts_Inventory__c.dealer__On_Order__c}" />
+
+				<apex:inputField value="{!dealer__Parts_Inventory__c.dealer__Status__c}" />
+				<apex:inputField value="{!dealer__Parts_Inventory__c.dealer__Price_Update__c}" />
+
+				<apex:inputField value="{!dealer__Parts_Inventory__c.dealer__List__c}" />
+				<apex:inputField value="{!dealer__Parts_Inventory__c.dealer__Static_Price__c}" />
+
+				<apex:inputField value="{!dealer__Parts_Inventory__c.dealer__Cost__c}" />
+				<apex:inputField value="{!dealer__Parts_Inventory__c.dealer__Core__c}" />
+
+			</apex:pageBlockSection>
+
+			<apex:pageBlockSection collapsible="false" columns="1">
+				<apex:inputText value="{!reasonforchange}" style="width:650px;" required="true" label="Reason for Change" />
+			</apex:pageBlockSection>	
+			
+			<apex:inputHidden value="{!dealer__Parts_Inventory__c.dealer__Parts_Master__c}" />
+
+		</apex:pageBlock>
+
+		<apex:pageBlock id="plTable" title="Part Ledger">
+			<apex:pageBlockTable var="pl" value="{!PartLedger}">
+				<apex:column value="{!pl.dealer__Entry_Date__c}" />
+				<apex:column value="{!pl.dealer__Purchase_Order__c}" />
+				<apex:column value="{!pl.dealer__Purchased_By__c}" />
+				<apex:column value="{!pl.dealer__Quantity__c}" />
+				<apex:column value="{!pl.dealer__Item_Value__c}" />
+				<apex:column value="{!pl.dealer__Current_Value__c}" />
+				<apex:column value="{!pl.dealer__Sold_By__c}" />
+				<apex:column value="{!pl.dealer__Parts_Sale_Line__c}" />
+				<apex:column value="{!pl.dealer__Transaction_Note__c}" />
+			</apex:pageBlockTable>
+		</apex:pageBlock>
+
+		<apex:pageBlock id="pbt" title="Part Histiory">
+			<apex:pageBlockTable var="p" value="{!PartHistory}">
+				<apex:column value="{!p.CreatedById}" />
+				<apex:column value="{!p.CreatedDate}" />
+				<apex:column value="{!p.dealer__Transaction_Time__c}" />
+				<apex:column value="{!p.dealer__Transaction_Event__c}" />
+				<apex:column value="{!p.dealer__Purchase_Order__c}" />
+				<apex:column value="{!p.dealer__Quantity_Adjustment__c}" />
+				<apex:column value="{!p.dealer__Cost__c}" />
+				<apex:column value="{!p.dealer__Sale__c}" />
+			</apex:pageBlockTable>
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>

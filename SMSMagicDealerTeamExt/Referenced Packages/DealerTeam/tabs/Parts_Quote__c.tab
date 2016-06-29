@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomTab xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customObject>true</customObject>
+    <description>Parts Quotes and related data.  Can be converted to an invoice.</description>
+    <icon>DealerTeam_Icons/Parts_Quote_Tab.png</icon>
+    <mobileReady>false</mobileReady>
+    <motif>Custom354: TV Widescreen</motif>
+</CustomTab>

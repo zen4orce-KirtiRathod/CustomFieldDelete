@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <customHelpPage>SuccessDocumentation_Tab</customHelpPage>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <deprecated>false</deprecated>
+    <description>Transactional data to give detail about parts sales on and off invoices</description>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableEnhancedLookup>true</enableEnhancedLookup>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <fields>
+        <fullName>Cost_Relieved__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Boolean field tracking the relief of inventory valuation.  If LIFO oldest part in history cost figure is selected.  If FIFO most recent cost figure is selected.  Any costs relieved are not taken into concideration.</description>
+        <externalId>false</externalId>
+        <label>Cost Relieved</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Cost__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Cost of part on Purchase Event</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Cost of part on Purchase Event</inlineHelpText>
+        <label>Cost</label>
+        <precision>14</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>EventId__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Id of the transaction event the corresponding transaction was recorded against.</description>
+        <externalId>false</externalId>
+        <label>Event Id</label>
+        <length>18</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Event_Notes__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Notes related to the event.  Often used when manual cost or quantity adjustments are made.</description>
+        <externalId>false</externalId>
+        <label>Event Notes</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Inventory_Register__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>IF( CONTAINS(Transaction_Event__c, &quot;Sold&quot; ), (Quantity_Adjustment__c*-1),  Quantity_Adjustment__c  )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Inventory Register</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Item_Value__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>IF(AND(NOT(ISBLANK(Cost__c)), Quantity_Adjustment__c&gt;0), (Cost__c /  Quantity_Adjustment__c), 0)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Item Value</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Part__c</fullName>
+        <deleteConstraint>Restrict</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Part</label>
+        <referenceTo>Parts_Inventory__c</referenceTo>
+        <relationshipLabel>Parts Inventory History</relationshipLabel>
+        <relationshipName>Parts_Inventory_History</relationshipName>
+        <required>true</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Parts_Invoice__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Parts Invoice</label>
+        <referenceTo>Parts_Invoice__c</referenceTo>
+        <relationshipLabel>Parts Inventory History</relationshipLabel>
+        <relationshipName>Parts_Inventory_History</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Post_Transaction_QOH__c</fullName>
+        <deprecated>false</deprecated>
+        <description>After the transaction is committed what is the resulting balance of inventory.</description>
+        <externalId>false</externalId>
+        <label>Post Transaction QOH</label>
+        <precision>7</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Purchase_Order__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>Purchase order this part transaction was purchased on</description>
+        <externalId>false</externalId>
+        <label>Purchase Order</label>
+        <referenceTo>Purchase_Order__c</referenceTo>
+        <relationshipLabel>Parts Inventory History</relationshipLabel>
+        <relationshipName>Parts_Inventory_History</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Quantity_Adjustment__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Quantity Adjustment</label>
+        <precision>12</precision>
+        <required>true</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Related_Document__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Related transaction document.</description>
+        <externalId>false</externalId>
+        <label>Related Document</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>Sale__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Parts sale amount on Sales Event</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Parts sale amount on Sales Event</inlineHelpText>
+        <label>Sale</label>
+        <precision>14</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Transaction_Event__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>What caused the inventory to adjust.</inlineHelpText>
+        <label>Transaction Event</label>
+        <length>48</length>
+        <required>true</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Transaction_Time__c</fullName>
+        <defaultValue>NOW()</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Transaction Time</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Units_Relieved__c</fullName>
+        <defaultValue>0</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Units Relieved</label>
+        <precision>12</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Value_Relieved__c</fullName>
+        <defaultValue>0</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Value Relieved</label>
+        <precision>14</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <label>Part Inventory History</label>
+    <nameField>
+        <displayFormat>{MMDD}{0}</displayFormat>
+        <label>PIH#</label>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Parts Inventory History</pluralLabel>
+    <searchLayouts>
+        <excludedStandardButtons>New</excludedStandardButtons>
+        <excludedStandardButtons>Accept</excludedStandardButtons>
+        <excludedStandardButtons>ChangeOwner</excludedStandardButtons>
+        <lookupDialogsAdditionalFields>Part__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Quantity_Adjustment__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Transaction_Time__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Purchase_Order__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Parts_Invoice__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Sale__c</lookupDialogsAdditionalFields>
+        <lookupFilterFields>Transaction_Event__c</lookupFilterFields>
+        <lookupFilterFields>Quantity_Adjustment__c</lookupFilterFields>
+        <searchFilterFields>Transaction_Event__c</searchFilterFields>
+        <searchFilterFields>Quantity_Adjustment__c</searchFilterFields>
+    </searchLayouts>
+    <sharingModel>ReadWrite</sharingModel>
+</CustomObject>

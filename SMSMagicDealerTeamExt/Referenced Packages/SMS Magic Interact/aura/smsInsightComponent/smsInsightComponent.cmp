@@ -1,0 +1,149 @@
+<aura:component Controller="smsInsightServerController" implements="force:appHostable,flexipage:availableForAllPageTypes">
+    <aura:handler name="init" action="{!c.init}" value="{!this}" />
+    
+    <aura:attribute name="permissionErrorMessage" type="String" access="GLOBAL"/>
+    <aura:attribute name="auraMessage" type="String" access="GLOBAL"/>
+    <aura:attribute name="messages" type="smagicinteract.Message"/>
+    <aura:attribute name="templateTextPermission" type="String" access="GLOBAL"/>
+    <aura:attribute name="phoneList" type="smagicinteract.MetaWrapper"/>
+    <aura:attribute name="templateNameList" type="smagicinteract.MetaWrapper"/>
+    <aura:attribute name="senderList" type="smagicinteract.MetaWrapper"/>
+    <aura:attribute name="templateTextList" type="smagicinteract.MetaWrapper"/>
+    <aura:attribute name="inboundCount" type="Integer"/>
+    <aura:attribute name="outboundCount" type="Integer"/>
+    <aura:attribute name="objectId" type="String"/>  
+    <aura:attribute name="allowToChangeTemplateSelection" type="String"/>  
+    
+    <aura:renderIf isTrue="{!v.auraMessage != null}">      
+        <ui:message title="Error" severity="error" closable="false"><br/>
+            {!v.auraMessage}
+        </ui:message>
+    </aura:renderIf>
+    
+    <aura:renderIf isTrue="{!v.permissionErrorMessage != null}">      
+        <ui:message title="Error" severity="error" closable="false"><br/>
+            {!v.permissionErrorMessage}
+        </ui:message>
+    </aura:renderIf>
+    
+    <aura:renderIf isTrue="{!v.auraMessage == null}">
+        <aura:renderIf isTrue="{!v.templateTextPermission != null}">      
+            <ui:message title="Error" severity="error" closable="false"><br/>
+                {!v.templateTextPermission}
+            </ui:message>
+        </aura:renderIf>
+        
+        <table class="tableClass">
+            <thead>
+                <tr>
+                    <th class="columnClass">
+                        <label>
+                            <ui:outputText aura:id="inbound" class="MessageTitle" value="Inbound Texts"/>
+                            <br/>
+                            <ui:outputText aura:id="inboundCount" class="Count" value=""/> 
+                        </label>
+                    </th>
+                    
+                    <th class="columnClass">
+                        <label>
+                            <ui:outputText aura:id="outbound" class="MessageTitle" value="Outbound Texts"/>
+                            <br/>
+                            <ui:outputText aura:id="outboundCount" class="Count" value=""/> 
+                        </label>
+                    </th>   
+                </tr>    
+            </thead>
+        </table>         
+        
+        <div class="latestmessagesheader">
+            Latest messages sent
+        </div>
+        
+        <div class="container clearfix">
+            <div class="chat">
+                <div data-aura-rendered-placeholder="There are no texts to display. Please send your first text." class="chat-history" id="chat-history0">    
+                    <aura:iteration items="{!v.messages}" var="msg">
+                        <aura:if isTrue="{!msg.msgType == 'I'}">
+                            <div class="message my-message">
+                                {!msg.message}
+                                <div class="DateTime">
+                                    {!msg.CreatedDateForMessage}
+                                </div>
+                            </div>
+                        </aura:if>
+                        <aura:if isTrue="{!msg.msgType == 'O'}">
+                            <div class="message other-message float-right">
+                                {!msg.message}
+                                <div class="DateTime">
+                                    {!msg.CreatedDateForMessage}
+                                </div>
+                            </div>
+                        </aura:if>
+                    </aura:iteration>
+                </div>
+            </div>
+        </div>       
+        <aura:renderIf isTrue="{!v.permissionErrorMessage == null}">   
+            <div class="latestmessagesheader">
+                Send SMS
+            </div>
+            
+            <table class="smsTableClass">
+                <thead>
+                    <tr>
+                        <th>
+                            <label>
+                                <ui:inputSelect aura:id="senderId" class="dropDownClass">
+                                    <aura:iteration items="{!v.senderList}" var="senderId">
+                                        <ui:inputSelectOption text="{!senderId.name}" label="{!senderId.label}"/>
+                                    </aura:iteration>
+                                </ui:inputSelect>
+                            </label>
+                        </th>
+                    </tr>
+                    
+                    <tr>
+                        <th>
+                            <label>
+                                <ui:inputSelect aura:id="phoneFieldId" class="dropDownClass">
+                                    <aura:iteration items="{!v.phoneList}" var="field">
+                                        <ui:inputSelectOption text="{!field.name}" label="{!field.label}"/>
+                                    </aura:iteration>
+                                </ui:inputSelect>
+                            </label>
+                        </th>
+                    </tr>
+                   
+                    <tr>
+                        <th >
+                            <label>
+                                <ui:inputSelect aura:id="templateId" change="{!c.selectTemplate}" class="dropDownClass">			 
+                                    <aura:iteration items="{!v.templateNameList}" var="template">
+                                        <ui:inputSelectOption text="{!template.name}" label="{!template.label}"/>
+                                    </aura:iteration>
+                                </ui:inputSelect>
+                            </label>
+                        </th>
+                    </tr> 
+                    <tr>
+                        <th>
+                            <label>
+                                <ui:inputTextArea aura:id="smsTextId" rows="4" placeholder="Type your message" class="smsTxtBoxClass" disabled="{!v.allowToChangeTemplateSelection}"/>
+                            </label>
+                        </th>
+                    </tr>                
+                    
+                    <tr>
+                        <th>
+                            <label>
+                                <ui:button aura:id="button" class="sendButton" label="Send SMS" press="{!c.sendSMS}"/>
+                            </label>
+                        </th>
+                    </tr> 
+                    
+                </thead>
+            </table>
+        </aura:renderIf>
+    </aura:renderIf>
+    
+</aura:component>

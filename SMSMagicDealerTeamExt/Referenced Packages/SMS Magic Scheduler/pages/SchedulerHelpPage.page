@@ -1,0 +1,36 @@
+<apex:page >
+
+<apex:pageBlock title="Help for Scheduling SMS" >
+		How to Schedule SMS? Below steps need to be followed for Scheduling SMS:<br/><br/> 
+	    &nbsp;&nbsp;&nbsp;&nbsp; 1.	Click "Schedule/Send SMS" button on Object page layout(default for Contact and Lead).<br /><br />
+	    &nbsp;&nbsp;&nbsp;&nbsp; 2.	Enter SMS text / select the template.<br /><br />
+	    &nbsp;&nbsp;&nbsp;&nbsp; 3.	You can click on Send button if you want to send SMS now.<br /><br />
+	    &nbsp;&nbsp;&nbsp;&nbsp; 4.	Enter Scheduler Name by defaults it is "My Schedule" (under Schedule Date and Time section)<br /><br />
+	    &nbsp;&nbsp;&nbsp;&nbsp; 5.	Select the Schedule Start Date.<br /><br />
+	    &nbsp;&nbsp;&nbsp;&nbsp; 6.	Select the Schedule time hour and minute from the drop-down.<br /><br />
+	    &nbsp;&nbsp;&nbsp;&nbsp; 7.	Click Schedule button to schedule SMS.<br /><br />
+	    If you face any issue, please contact us at &nbsp; <apex:outputLink value="mailto:care@screen-magic.com">care@screen-magic.com</apex:outputLink>.<br /><br />
+</apex:pageBlock>
+
+<apex:pageBlock title="Help for Re-Scheduling SMS" >
+		Below steps need to be followed for Re - scheduling SMS:<br/><br/> 
+	    &nbsp;&nbsp;&nbsp;&nbsp; 1.	Click edit button/link of Schedule record which you want to re-schedule.(view all records under "SMS Scheduled" tab)<br /><br />
+	    &nbsp;&nbsp;&nbsp;&nbsp; 2.	Enter the Scheduler name if you want to change previous one .<br /><br />
+	    &nbsp;&nbsp;&nbsp;&nbsp; 3.	Select the Schedule Start Date.<br /><br />
+	    &nbsp;&nbsp;&nbsp;&nbsp; 4.	Select the Schedule time hour and minute from the drop-down.<br /><br />
+	    &nbsp;&nbsp;&nbsp;&nbsp; 5.	Click Schedule button to re-schedule SMS.<br /><br />
+</apex:pageBlock>
+
+<apex:pageBlock title="Help for Scheduling SMS from Campaign" >
+		Below steps need to be followed for Scheduling SMS from Campaign:<br/><br/> 
+	    &nbsp;&nbsp;&nbsp;&nbsp; 1.	Click "Schedule SMS Campaign" button on campaign page layout.<br /><br />
+	    &nbsp;&nbsp;&nbsp;&nbsp; 2.	Enter SMS text / select the template for Contact and Lead.<br /><br />
+	    &nbsp;&nbsp;&nbsp;&nbsp; 3.	Select the Status for filtering member.<br /><br />
+	    &nbsp;&nbsp;&nbsp;&nbsp; 4.	You can view the campaign stats by clicking link "Click here" above the Run Campaign Button.<br /><br />
+	    &nbsp;&nbsp;&nbsp;&nbsp; 5.	You can click on "Run Campaign" button if you want to send SMS now.<br /><br />
+	    &nbsp;&nbsp;&nbsp;&nbsp; 6.	Enter Scheduler Name by defaults it is "My Schedule" (under Schedule Date and Time section)<br /><br />
+	    &nbsp;&nbsp;&nbsp;&nbsp; 7.	Select the Schedule Start Date.<br /><br />
+	    &nbsp;&nbsp;&nbsp;&nbsp; 8.	Select the Schedule time hour and minute from the drop-down.<br /><br />
+	    &nbsp;&nbsp;&nbsp;&nbsp; 9.	Click Schedule button to schedule SMS.<br /><br />
+</apex:pageBlock>
+</apex:page>

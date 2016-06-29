@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomTab xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Scheduler helps your service centers to coordinate resources and customer arrivals to ensure a positive customer experience.</description>
+    <icon>DealerTeam_Icons/Scheduler_Tab.png</icon>
+    <label>Scheduler</label>
+    <mobileReady>false</mobileReady>
+    <motif>Custom354: TV Widescreen</motif>
+    <page>Service_Appointment_Scheduler</page>
+</CustomTab>

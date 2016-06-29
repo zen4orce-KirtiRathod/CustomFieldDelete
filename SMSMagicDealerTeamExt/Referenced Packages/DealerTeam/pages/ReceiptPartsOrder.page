@@ -1,0 +1,38 @@
+<apex:page tabStyle="dealer__Stock_Order__c" title="Receive Order" controller="dealer.PartsOrderReceiving">
+	<apex:form >
+		<apex:sectionHeader title="Parts Order" subtitle="Receipt Order" />
+		<apex:pageBlock >
+		<apex:pageBlockButtons >
+			<apex:commandButton action="{!saveOrderReceipt}" value="Post Order Lines to Inventory" />
+		</apex:pageBlockButtons>
+			<apex:pageblockSection collapsible="false">
+				<apex:outputField value="{!so.Name}" />
+				<apex:inputField value="{!so.dealer__Packing_Slip__c}" required="true" />
+				<apex:outputField value="{!so.dealer__Date_Ordered__c}" />
+				<apex:inputField value="{!so.dealer__Date_of_Arrival__c}" required="true" />
+				<apex:outputText />
+				<apex:inputField value="{!so.dealer__Status__c}" />
+			</apex:pageblockSection>
+			<apex:pageBlockSection columns="1">
+				<apex:pageBlockTable value="{!orderLines}" var="o">
+					<apex:column headerValue="Part Number"><apex:outputField value="{!o.dealer__Parts_Inventory__c}" /></apex:column>
+					<apex:column headerValue="Description"><apex:outputField value="{!o.Parts_Inventory__r.dealer__Description__c}" /></apex:column>
+					<apex:column headerValue="Ordered on Invoice"><apex:outputField value="{!o.dealer__Parts_Invoice__c}" /></apex:column>
+					<apex:column headerValue="Quantity Ordered"><apex:outputField value="{!o.dealer__Quantity_Ordered__c}" /></apex:column>
+					<apex:column headerValue="Quantity Received">
+						<apex:outputText rendered="{!OR(ISBLANK(o.dealer__Received__c), o.dealer__Received__c==0)}">
+							<apex:inputField value="{!o.dealer__Received__c}" style="width:50px;" />
+						</apex:outputText>
+						<apex:outputText rendered="{!NOT(AND(ISBLANK(o.dealer__Received__c), o.dealer__Received__c==0))}">
+							<apex:outputField value="{!o.dealer__Received__c}" style="width:50px;" />
+						</apex:outputText>
+					</apex:column>
+					<apex:column headerValue="Quantity on Backorder">
+						<apex:outputText rendered="{!ISBLANK(o.dealer__Back_Ordered__c)}"><apex:inputField value="{!o.dealer__Back_Ordered__c}" style="width:50px;" /></apex:outputText>
+						<apex:outputText rendered="{!NOT(ISBLANK(o.dealer__Back_Ordered__c))}"><apex:outputField value="{!o.dealer__Back_Ordered__c}" style="width:50px;" /></apex:outputText>
+					</apex:column>
+				</apex:pageBlockTable>
+			</apex:pageBlockSection>
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>

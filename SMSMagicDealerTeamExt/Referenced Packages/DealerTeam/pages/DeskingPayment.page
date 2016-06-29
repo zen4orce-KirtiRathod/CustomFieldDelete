@@ -1,0 +1,20 @@
+<apex:page showHeader="true" sidebar="true" standardController="dealer__Deal_Payment__c" id="dealpayment" extensions="dealer.DeskingPayment_EXT">
+	<apex:sectionHeader description="Add Payment" title="Deal Payment" />
+	<apex:form id="frm">
+	<apex:pageBlock title="Add Deal Payment" mode="edit" id="blk">
+		<apex:pageBlockButtons location="top">
+			<apex:commandButton action="{!Save}" value="Save" />
+		</apex:pageBlockButtons>
+		<apex:pageBlockSection id="sec">
+			<apex:outputField value="{!dealer__Deal_Payment__c.dealer__Car_Deal__c}" id="deal" />
+			<apex:inputField value="{!dealer__Deal_Payment__c.dealer__Amount__c}" />
+			<apex:inputField value="{!dealer__Deal_Payment__c.dealer__Due_Date__c}" />
+			<apex:inputField value="{!dealer__Deal_Payment__c.dealer__Reference__c}" />
+			<apex:inputField value="{!dealer__Deal_Payment__c.dealer__Received__c}" />
+		</apex:pageBlockSection>
+		<apex:pageBlockSection columns="1">
+			<apex:inputField value="{!dealer__Deal_Payment__c.dealer__Notes__c}" />
+		</apex:pageBlockSection>
+	</apex:pageBlock>
+	</apex:form>
+</apex:page>

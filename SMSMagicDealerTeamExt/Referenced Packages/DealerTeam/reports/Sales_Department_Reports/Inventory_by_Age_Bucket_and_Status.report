@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <buckets>
+        <bucketType>number</bucketType>
+        <developerName>BucketField_77078771</developerName>
+        <masterLabel>Days in Stock Bucket</masterLabel>
+        <nullTreatment>z</nullTreatment>
+        <sourceColumnName>Vehicle_Inventory__c.Days_in_Stock__c</sourceColumnName>
+        <useOther>false</useOther>
+        <values>
+            <sourceValues>
+                <to>14</to>
+            </sourceValues>
+            <value>Less than 14 days</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>14</from>
+                <to>30</to>
+            </sourceValues>
+            <value>14 - 30 days</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>30</from>
+                <to>45</to>
+            </sourceValues>
+            <value>30 - 45 days</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>45</from>
+                <to>60</to>
+            </sourceValues>
+            <value>45 - 60 days</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>60</from>
+                <to>75</to>
+            </sourceValues>
+            <value>60 - 75 days</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>75</from>
+                <to>90</to>
+            </sourceValues>
+            <value>75 - 90 days</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>90</from>
+                <to>120</to>
+            </sourceValues>
+            <value>90 - 120 days</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>120</from>
+                <to>150</to>
+            </sourceValues>
+            <value>120 - 150 days</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>150</from>
+                <to>180</to>
+            </sourceValues>
+            <value>150 - 180 days</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>180</from>
+            </sourceValues>
+            <value>More than 180 days</value>
+        </values>
+    </buckets>
+    <chart>
+        <backgroundColor1>#FFFFFF</backgroundColor1>
+        <backgroundColor2>#FFFFFF</backgroundColor2>
+        <backgroundFadeDir>Diagonal</backgroundFadeDir>
+        <chartSummaries>
+            <axisBinding>y</axisBinding>
+            <column>RowCount</column>
+        </chartSummaries>
+        <chartType>VerticalColumn</chartType>
+        <enableHoverLabels>false</enableHoverLabels>
+        <expandOthers>true</expandOthers>
+        <groupingColumn>BucketField_77078771</groupingColumn>
+        <location>CHART_TOP</location>
+        <showAxisLabels>true</showAxisLabels>
+        <showPercentage>false</showPercentage>
+        <showTotal>false</showTotal>
+        <showValues>false</showValues>
+        <size>Medium</size>
+        <summaryAxisRange>Auto</summaryAxisRange>
+        <textColor>#000000</textColor>
+        <textSize>12</textSize>
+        <titleColor>#000000</titleColor>
+        <titleSize>18</titleSize>
+    </chart>
+    <columns>
+        <field>CUST_NAME</field>
+    </columns>
+    <columns>
+        <field>Vehicle_Inventory__c.Days_in_Stock__c</field>
+    </columns>
+    <filter>
+        <criteriaItems>
+            <column>Vehicle_Inventory__c.In_Stock__c</column>
+            <operator>equals</operator>
+            <value>1</value>
+        </criteriaItems>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>BucketField_77078771</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>Vehicle_Inventory__c.Status_Code__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Inventory by Age Bucket and Status</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>CustomEntity$Vehicle_Inventory__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <timeFrameFilter>
+        <dateColumn>Vehicle_Inventory__c.Inventory_Date__c</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

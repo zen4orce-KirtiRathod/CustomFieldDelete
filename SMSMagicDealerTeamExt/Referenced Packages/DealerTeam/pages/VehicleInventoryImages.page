@@ -1,0 +1,99 @@
+<apex:page showHeader="false" sidebar="false" standardController="dealer__Vehicle_Inventory__c" id="view_vehicle_images" docType="html-5.0">
+    <!--  jQuery CDN -->
+    <apex:includeScript value="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js" />
+
+    <!-- INclude Namespaced Bootstrap 3.0 -->
+    <apex:includeScript value="{!URLFOR($Resource.dealer__BootstrapNS,'/bootstrap/js/bootstrap.min.js')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.dealer__BootstrapNS,'/bootstrap/css/bootstrap.min.css')}"/>
+
+    <apex:stylesheet value="{!URLFOR($Resource.dealer__BootstrapNS,'/bootstrap/css/dealerteam_bs.css')}"/>
+    <!-- KENDO 2015.1.429 -->
+    <!--
+    <apex:includeScript value="{!URLFOR($Resource.dealer__KendoUiFULL2015,'/js/kendo.all.min.js')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.dealer__KendoUiFULL2015,'/styles/kendo.bootstrap.min.css')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.dealer__KendoUiFULL2015,'/styles/kendo.common-bootstrap.core.min.css')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.dealer__KendoUiFULL2015,'/styles/kendo.common-bootstrap.min.css')}"/>
+    -->
+    <apex:includeScript value="{!URLFOR($Resource.dealer__KendoUI,'/js/kendo.all.min.js')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.dealer__KendoUI,'/styles/kendo.bootstrap.min.css')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.dealer__KendoUI,'/styles/kendo.common-bootstrap.core.min.css')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.dealer__KendoUI,'/styles/kendo.common-bootstrap.min.css')}"/>  
+    <!-- <apex:stylesheet value="{!URLFOR($Resource.KendoUiFULL2015,'/styles/kendo.common.min.css')}"/> -->
+
+    <!-- FLEX Slider -->
+    <apex:includeScript value="{!URLFOR($Resource.dealer__FlexSlider,'/jquery.flexslider-min.js')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.dealer__FlexSlider,'/flexslider.css')}"/>  
+
+    <script type="text/x-kendo-template" id="imgLItemplate">
+        <li>
+        	<img src="#= url #" width="210" />
+        </li>
+    </script>
+
+    <div id="force">
+
+    	<div class="flexslider">
+    		<ul class="slides" data-template="imgLItemplate" data-bind="source: imageData"></ul>
+    	</div>
+
+    </div>
+
+    <script type="text/javascript">
+        $dt = jQuery.noConflict();
+
+		var viewModel = kendo.observable({
+		    // imgTemplate: kendo.template($dt("#myTemplate").html()),
+		    // vehicleId: '{!Vehicle_Inventory__c.Id}',
+		    imageData: new kendo.data.DataSource({
+		    	// schema: {
+
+		    	// }
+	    		transport: {
+                    read: {
+                        url: '/apex/dealer__InventoryMediaJSON',
+                        data: {
+                            id: '{!Vehicle_Inventory__c.Id}',
+                        }
+                    }
+	    		}
+		    })
+		});
+
+        kendo.bind($dt(".flexslider"), viewModel);
+
+		viewModel.imageData.bind("change", function() {
+			$dt('.flexslider').flexslider({
+			    animation: "slide",
+			    animationLoop: false,
+			    itemWidth: 210,
+			    slideshow: false,
+			    controlNav: false,
+			    itemMargin: 5
+			  });
+		});
+
+        $dt(document).ready(function() {
+			
+    	});
+        
+        function getParameterByName(name) {
+            name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+            var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+                results = regex.exec(location.search);
+            return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+        }
+
+    </script>
+
+    <style>
+	    #force {
+	    	position: relative;
+	    }
+
+	    #force .flex-direction-nav a:before {
+	    	color: #fff;
+			  text-shadow: 1px 1px 0 rgba(50, 50, 50, 0.3);
+
+	    }
+    </style>
+</apex:page>

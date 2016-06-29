@@ -1,0 +1,51 @@
+<apex:page standardController="smagicinteract__forward_config__c" extensions="smagicinteract.IncomingAlertConfigurationController" tabStyle="SMS_Magic_Settings__tab">
+ 
+<apex:pageMessages id="pageMessage"/> 
+
+<br/>
+<apex:form id="confForm">
+<apex:pageBlock id="incomingSettings" title="{!$Label.KBA_TITLE}" rendered="{!hasPermission }">
+    <div style="margin:10px;">
+<apex:outputText >{!$Label.KBA_LINE1}</apex:outputText>
+
+</div>
+         <apex:pageBlockSection title="{!$Label.CHS_KEYWD}" >
+         <apex:facet name="header">
+			<h3>{!$Label.CHS_KEYWD}</h3>			
+         </apex:facet>        
+
+         <apex:inputField label="{!$Label.ENTR_KYWD}"  value="{!smagicinteract__forward_config__c.smagicinteract__Keyword__c}" />
+         </apex:pageBlockSection> 
+        
+         <apex:pageBlockSection title="{!$Label.USR_TO_NTFY}" >                
+         <apex:facet name="header">
+			<h3>{!$Label.USR_TO_NTFY}</h3>			
+         </apex:facet>        
+
+                <apex:selectList label="{!$Label.CHS_USER}" size="1" id="userList" value="{!smagicinteract__forward_config__c.smagicinteract__forwardToUser__c}" >
+                    <apex:selectOptions value="{!userListDropdown}"/>
+                </apex:selectList>
+        </apex:pageBlockSection>
+        
+        <apex:pageBlockSection title="{!$Label.NTFY_MTHD}" >      
+         <apex:facet name="header">
+			<h3>{!$Label.NTFY_MTHD}</h3>			
+         </apex:facet>        
+                   
+            <apex:inputField label="{!$Label.NTFY_INS_EMAIL}"  value="{!smagicinteract__forward_config__c.smagicinteract__forwardToEmail__c}" />
+            <br/>
+            <apex:inputField label="{!$Label.NTFY_INS_SMS}"  value="{!smagicinteract__forward_config__c.smagicinteract__forwardToMobilePhone__c}" />
+                    
+        </apex:pageBlockSection>
+            
+    <apex:pageBlockButtons location="Bottom" >
+        <apex:commandButton action="{!save}" value="{!$Label.SAVE}" />
+        <apex:commandButton action="{!cancel}" value="{!$Label.CANCEL}" />
+        
+    </apex:pageBlockButtons>
+    
+</apex:pageBlock>
+
+</apex:form>
+   
+</apex:page>

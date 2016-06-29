@@ -1,0 +1,202 @@
+<apex:page showHeader="true" sidebar="true" Controller="dealer.TimeClockManager" docType="html-5.0">
+        <!--  jQuery CDN -->
+    <apex:includeScript value="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" />
+    <!-- <apex:includeScript value="{!URLFOR($Resource.dealer__serializeJSON)}" /> -->
+
+    <!-- Namespaced Bootstrap 3.0 -->
+    <apex:includeScript value="{!URLFOR($Resource.dealer__BootstrapNS,'/bootstrap/js/bootstrap.min.js')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.dealer__BootstrapNS,'/bootstrap/css/bootstrap.min.css')}"/>
+
+    <apex:stylesheet value="{!URLFOR($Resource.dealer__BootstrapNS,'/bootstrap/css/dealerteam_bs.css')}"/>
+
+    <!-- KENDO 2015.1.429 -->
+    <apex:includeScript value="{!URLFOR($Resource.dealer__KendoUiFULL2015,'/js/jszip.min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.dealer__KendoUiFULL2015,'/js/kendo.all.min.js')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.dealer__KendoUiFULL2015,'/styles/kendo.bootstrap.min.css')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.dealer__KendoUiFULL2015,'/styles/kendo.common-bootstrap.core.min.css')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.dealer__KendoUiFULL2015,'/styles/kendo.common-bootstrap.min.css')}"/>
+
+    <apex:includeScript value="{!URLFOR($Resource.dealer__MomentJS)}" />
+
+    <!-- FONT-AWESOME -->
+    <apex:stylesheet value="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"/>
+
+    <script id="userTemplate" type="text/x-kendo-template">
+        <span>
+            #: name # 
+            <small>
+                #: role ##if(role!=''){#,#}# 
+                #: profile #
+            </small>
+        </span>
+    </script>
+
+    <div id="force">
+        <apex:pageMessages id="messages" />
+
+        <apex:form id="filter" >    
+            <div class="row" id="kendoWrap">
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="user_search">User:</label>
+                        <apex:input value="{!u}" styleClass="user_search form-field" id="user_search"
+                            html-data-role="dropdownlist"
+                            html-data-filter="contains"
+                            html-data-auto-bind="false"
+                            html-data-text-field="name"
+                            html-data-value-field="value"
+                            html-data-template="userTemplate" 
+                            html-data-bind="value: selectedUser, source: userList"
+                            />
+
+                    </div>
+                </div>
+                
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="date">Date:</label>
+                        <apex:input value="{!day}" type="text" id="date" styleClass="form-field"
+                            html-data-role="datepicker"
+                            html-data-bind="value: currentDate"
+
+                         />
+                    </div>            
+                </div>
+
+                <div class="col-md-1">
+                    <div class="form-group">
+                        <!-- Search Button -->
+                        <label for="doSearch">&nbsp;</label>
+                        <apex:commandButton id="doSearch" value="Search" action="{!lookupTime}" reRender="details,messages" status="ajaxStatus" >
+                            <apex:actionStatus id="ajaxStatus" onstart="startSearch();" onstop="completeSearch();" />
+                        </apex:commandButton>
+                    </div>
+                </div>
+            </div>
+
+        </apex:form>
+    </div>
+
+    <apex:pageBlock id="details">
+
+        <!-- No Entries Message -->
+        <apex:pageBlockSection id="headerOutput" columns="1" collapsible="false" rendered="{!AND( ISBLANK(tc), NOT(ISBLANK(u)) )}">
+            <apex:outputText value="Time Clock Entries not found." />
+        </apex:pageBlockSection>
+
+        <!-- Lines Display -->
+        <apex:form id="lineSelections" >
+            <apex:pageblockTable title="Time Entries" id="line_table" value="{!timeEntries}" var="tl" rendered="{!NOT(ISBLANK(tc))}">
+                <apex:column id="select_col" width="50" >
+                    <apex:commandButton action="{!selectLine}" value="Edit" reRender="lineEdit,messages" immediate="true" rendered="{!NOT(tl.dealer__Void__c)}">
+                        <apex:param value="{!tl.Id}" name="tclId" assignTo="{!tclId}"/>
+                    </apex:commandButton>
+                </apex:column>
+                <apex:column headerValue="Type" id="type_col">
+                    <apex:outputtext rendered="{!IF( tl.dealer__Type__c == 'On', true, false)}" Value="On the Clock" />
+                    <apex:outputtext rendered="{!IF( tl.dealer__Type__c == 'Off', true, false)}" Value="On Break/Meal" />
+                </apex:column>
+                <apex:column headerValue="In" value="{!tl.dealer__In__c}" />
+                <apex:column headerValue="Out" value="{!tl.dealer__Out__c}" />
+                <apex:column headerValue="Total Time (hrs)" value="{!tl.dealer__Time_Worked__c}" />
+                <!-- Audit Fields -->
+                <apex:column headerValue="Edit Note" value="{!tl.dealer__Note__c}" />
+                <apex:column headerValue="Last Modified" value="{!tl.LastModifiedDate}" />
+                <apex:column headerValue="Modified By" value="{!tl.LastModifiedBy.Name}" />
+            </apex:pageblockTable>
+        </apex:form>
+    </apex:pageBlock>
+
+    <apex:form id="editLine" >
+    <apex:outputPanel id="lineEdit">
+    <apex:pageBlock title="Edit time entry" rendered="{!NOT(ISBLANK(tcl))}">
+        <apex:pageBlockButtons >
+            <apex:commandButton action="{!updateLine}" value="Save" reRender="details,messages,editLine">
+                <apex:param value="{!tcl.Id}" name="tclUpdateId" assignTo="{!tclUpdateId}"/>
+            </apex:commandButton>
+        </apex:pageBlockButtons>
+        <apex:pageBlockSection columns="2" collapsible="false">
+
+            <apex:inputField value="{!tcl.dealer__In__c}" />
+            <apex:inputField value="{!tcl.dealer__Out__c}" />
+            <apex:inputField value="{!tcl.dealer__Note__c}" />
+
+            <apex:inputHidden value="{!tcl.dealer__Type__c}" />
+            <apex:inputHidden value="{!tcl.Id}" />
+            <apex:inputHidden value="{!tcl.dealer__Time_Clock__c}" />
+
+        </apex:pageBlockSection>
+
+    </apex:pageBlock>
+    </apex:outputPanel>
+    </apex:form> 
+
+
+    <script type="text/javascript">
+        $dt = jQuery.noConflict();
+
+        $dt(document).ready(function(){
+            var dropdownlist = $dt('[id$="user_search"]').data("kendoDropDownList");
+            dropdownlist.focus();
+        });
+        
+        var userDataSource = new kendo.data.DataSource({
+            transport: {
+                read: {
+                    url: "/apex/dealer__servicetrs",
+                    data: {
+                        action: 'read_users'
+                    }
+                }
+            },
+            serverFiltering: true
+        });
+
+        /*** MVVM Model ***/
+        var clockModel = kendo.observable({
+            selectedUser: null,
+            gerSelectedUser: function() {
+                return this.get("gerSelectedUser")
+            },
+            userList: userDataSource,
+            currentDate: moment().format('M/D/YYYY')
+        });
+
+        kendo.bind($dt("#kendoWrap"), clockModel);
+
+        // Animate the Search Button
+        var count = 0;
+        function startSearch() {
+            timer = setInterval(function(){
+                count++;
+                var dots = new Array(count % 4).join('.');
+                $dt('[id$="doSearch"]').val('Searching.' + dots);
+              }, 500);
+        }
+
+        function completeSearch() {
+            clearInterval(timer);
+            $dt('[id$="doSearch"]').val('Search');
+
+            render_table();
+        }
+
+    </script>
+
+    <style type="text/css">
+    .form-field {
+        display: block;
+        width: 100%;
+    }
+
+    ul li {
+        margin-left: 0;
+    }
+
+    #force [id$="doSearch"] {
+        margin-top: 15px;
+    }
+    </style>
+
+</apex:page>

@@ -1,0 +1,199 @@
+<apex:page standardController="dealer__Sales_Up__c"
+		   extensions="dealer.SalesLead_EXT"
+           showHeader="false" 
+           standardStylesheets="false" 
+           sidebar="false" 
+           applyHtmlTag="false" 
+           applyBodyTag="false" 
+           docType="html-5.0"
+           title="New Sales Up"
+           id="supnl">
+<html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+<head>
+	<apex:stylesheet value="{!URLFOR($Resource.dealer__SLDS_102, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+	<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script src='//code.jquery.com/ui/1.11.4/jquery-ui.min.js'></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/moment.js"></script>
+	<script src="{!URLFOR($Resource.ALJS, '/jquery/jquery.aljs-init.min.js')}"></script>	
+	<script src="{!URLFOR($Resource.ALJS, '/jquery/jquery.aljs-datepicker.min.js')}"></script>
+</head>    
+<body>
+<!-- Lighting Wrapper -->
+<div class="slds"> 
+<!-- Form -->
+<apex:form id="salesupNew">
+<!-- Header Data -->
+<div class="slds-page-header" role="banner">
+  <div class="slds-grid">
+	  <div class="slds-col">
+	  <div class="slds-media">
+	    <div class="slds-media__figure">
+	      <svg aria-hidden="true" class="slds-icon slds-icon--large slds-icon-custom-83">
+	        <use xlink:href="{!URLFOR($Resource.SLDS_102, '/assets/icons/standard-sprite/svg/symbols.svg#custom83')}"></use>
+	      </svg>
+	    </div>
+	    <div class="slds-media__body">
+	    	<p class="slds-text-heading--label">Sales Up</p>
+	      <p class="slds-page-header__title slds-truncate slds-align-middle" title="New Sales Up">New Sales Up</p>
+	      <p class="slds-text-body--small slds-page-header__info"></p>
+	    </div>
+	  </div>
+	  </div>
+	  <div class="slds-col">
+		<div class="slds-col slds-float--right">
+	      <div class="slds-button-group" role="group">
+	      		<apex:commandButton action="{!CreateSU}" value="Save" styleClass="slds-button slds-button--neutral" onclick="validateInputs();" />
+	      </div>
+	    </div>
+	  </div>
+  </div> 
+</div>
+<!-- /Header Data -->
+
+<!-- Data Entry Columns -->
+	<div class="slds-grid slds-grid--pull-padded slds-m-around--medium" >
+    	<!-- Column 1 -->
+    	<div class="slds-col--padded">
+
+		  <div class="slds-form-element">
+		    <label class="slds-form-element__label" for="firstName">
+		    <abbr class="slds-required" title="required">*</abbr>First Name</label>
+		    <div class="slds-form-element__control">
+		      	<apex:inputField value="{!dealer__Sales_Up__c.dealer__FirstName__c}" styleClass="slds-input" id="firstName" taborderhint="1" required="true"/>
+		    </div>
+		  </div> 
+		  <div class="slds-form-element">
+		    <label class="slds-form-element__label" for="lastName">
+		    <abbr class="slds-required" title="required">*</abbr>Last Name</label>
+		    <div class="slds-form-element__control">
+		    	<apex:inputField value="{!dealer__Sales_Up__c.dealer__LastName__c}" styleClass="slds-input" id="lastName" taborderhint="1" required="true"/>
+		    </div>
+		  </div> 
+		  <div class="slds-form-element">
+		    <label class="slds-form-element__label" for="phone">Phone</label>
+		    <div class="slds-form-element__control">
+		    	<apex:inputField value="{!dealer__Sales_Up__c.dealer__Phone__c}" styleClass="slds-input" id="Phone" taborderhint="3"/>
+		    </div>
+		  </div>
+		  <div class="slds-form-element">
+		    <label class="slds-form-element__label" for="phone">Mobile</label>
+		    <div class="slds-form-element__control">
+		    	<apex:inputField value="{!dealer__Sales_Up__c.dealer__Mobile__c}" styleClass="slds-input" id="Mobile" taborderhint="4"/>
+		    </div>
+		  </div>
+		  <div class="slds-form-element">
+		    <label class="slds-form-element__label" for="Email">Email</label>
+		    <div class="slds-form-element__control">
+		    	<apex:inputField value="{!dealer__Sales_Up__c.dealer__Email__c}" styleClass="slds-input" id="Email" taborderhint="5"/>
+		    </div>
+		  </div>		  
+
+
+
+    	</div>
+    	<!-- /Column 1 -->
+
+    	<!-- Column 2 -->
+    	<div class="slds-col--padded">
+    		<div class="slds-form-element"> 
+			  <div class="slds-form-element__control">
+			   <div class="slds-input-has-icon slds-input-has-icon--right">
+			     <label class="slds-form-element__label" for="leadDate">
+			     <abbr class="slds-required" title="required">*</abbr>Lead Date</label>
+		    		<svg aria-hidden="true" class="slds-input__icon slds-icon-text-default" style="margin:5px;">
+			     		<use xlink:href="{!URLFOR($Resource.SLDS_102, '/assets/icons/utility-sprite/svg/symbols.svg#event')}"></use>
+			    	</svg> 			     
+			     	<apex:inputField value="{!dealer__Sales_Up__c.dealer__Lead_Date__c}" id="LeadDate" styleClass="slds-input" showDatePicker="false" html-disabled="" /> 
+			   </div>
+			  </div>
+			</div>
+    	
+
+			<div class="slds-form-element">
+			    <label class="slds-form-element__label" for="LeadType">
+			    <abbr class="slds-required" title="required">*</abbr>Lead Type</label>
+			    <div class="slds-form-element__control">
+			    	<apex:inputField value="{!dealer__Sales_Up__c.dealer__Lead_Type__c}" style="height: 35px;" styleClass="slds-input" required="true" id="LeadType" taborderhint="6"/>
+			    </div>
+		 	</div>
+
+			<div class="slds-form-element">
+			    <label class="slds-form-element__label" for="LeadStatus">
+			    <abbr class="slds-required" title="required">*</abbr>Lead Status</label>
+			    <div class="slds-form-element__control">
+			    	<apex:inputField value="{!dealer__Sales_Up__c.dealer__Lead_Status__c}" style="height: 35px;" styleClass="slds-input" required="true" id="LeadStatus" taborderhint="7"/>
+			    </div>
+		 	</div>
+
+			<div class="slds-form-element">
+			    <label class="slds-form-element__label" for="Source">Source</label>
+			    <div class="slds-form-element__control">
+			    	<apex:inputField value="{!dealer__Sales_Up__c.dealer__Source__c}" style="height: 35px;" styleClass="slds-input"  	id="Source" taborderhint="8"/>
+			    </div>
+		 	</div>   		 	   
+
+		 	<!-- Field Set to Include -->
+			<apex:repeat value="{!NewPageFields}" var="f">
+
+			<div class="slds-form-element">
+			    <label class="slds-form-element__label" for="{!f.Label}">{!f.Label}</label>
+			    <div class="slds-form-element__control">
+			    	<apex:inputField value="{!up[f.fieldPath]}" styleClass="slds-input" />
+			    </div>
+		 	</div>  	
+
+		 	</apex:repeat>	 	
+		 	<!-- /Field Set -->
+
+		 </div> 	
+    	<!-- /Column 2 -->
+  </div>
+<!-- /Data Entry Columns -->
+	<!-- Row 2 -->
+	<div class="slds-grid slds-grid--pull-padded slds-m-around--medium" >
+	<div class="slds-col--padded slds-size--1-of-1">
+	  <div class="slds-form-element">
+	    <label class="slds-form-element__label" for="comments">Comments</label>
+	    <div class="slds-form-element__control">
+	      <apex:inputField value="{!dealer__Sales_Up__c.dealer__Comments__c}" id="Comments" styleClass="slds-textarea"/>
+	    </div>
+	  </div>    	
+	</div>
+	</div>
+	<!-- /Row 2 -->
+</apex:form>
+</div>
+</body>
+
+<script>
+var j$ = jQuery.noConflict();
+var assetsLoc = '{!URLFOR($Resource.SLDS_102)}';
+  
+//ALJS Initialization   
+       
+j$.aljsInit({
+  assetsLocation: assetsLoc,
+  scoped: true
+});
+   
+j$(document).ready(function() {
+ 
+
+ j$('#supnl\\:salesupNew\\:firstName').focus();
+
+//Initializing Datepicker with options To The SLDS Input on document ready.
+ j$('#supnl\\:salesupNew\\:LeadDate').datepicker({
+    onChange: function(datepicker) {
+    	console.log(datepicker.selectedFullDate._i);
+   }
+  });
+
+  j$('#supnl\\:salesupNew\\:LeadDate').on('focus', function(){
+  		j$('#supnl\\:salesupNew\\:LeadDate').openDatePicker();
+  });
+
+});
+</script>
+</html>
+</apex:page>

@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <buckets>
+        <bucketType>number</bucketType>
+        <developerName>BucketField_61063672</developerName>
+        <masterLabel>Sold Price</masterLabel>
+        <nullTreatment>z</nullTreatment>
+        <sourceColumnName>Deal__c.Sale_Price__c</sourceColumnName>
+        <useOther>false</useOther>
+        <values>
+            <sourceValues>
+                <to>8,000</to>
+            </sourceValues>
+            <value>&lt; 8K</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>8,000</from>
+                <to>10,000</to>
+            </sourceValues>
+            <value>8K - 10K</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>10,000</from>
+                <to>12,000</to>
+            </sourceValues>
+            <value>10K - 12K</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>12,000</from>
+                <to>14,000</to>
+            </sourceValues>
+            <value>12K - 14K</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>14,000</from>
+                <to>16,000</to>
+            </sourceValues>
+            <value>14K - 16K</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>16,000</from>
+                <to>18,000</to>
+            </sourceValues>
+            <value>16K - 18K</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>18,000</from>
+                <to>20,000</to>
+            </sourceValues>
+            <value>18K - 20K</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>20,000</from>
+                <to>22,000</to>
+            </sourceValues>
+            <value>20K - 22K</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>22,000</from>
+                <to>24,000</to>
+            </sourceValues>
+            <value>22K - 24K</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>24,000</from>
+                <to>26,000</to>
+            </sourceValues>
+            <value>24K - 26K</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>26,000</from>
+                <to>28,000</to>
+            </sourceValues>
+            <value>26K - 28K</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>28,000</from>
+                <to>30,000</to>
+            </sourceValues>
+            <value>28K - 30K</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>30,000</from>
+            </sourceValues>
+            <value>&gt; 30K</value>
+        </values>
+    </buckets>
+    <buckets>
+        <bucketType>number</bucketType>
+        <developerName>BucketField_12619510</developerName>
+        <masterLabel>Sold Price - wide dist</masterLabel>
+        <nullTreatment>z</nullTreatment>
+        <sourceColumnName>Deal__c.Sale_Price__c</sourceColumnName>
+        <useOther>false</useOther>
+        <values>
+            <sourceValues>
+                <to>8,000</to>
+            </sourceValues>
+            <value>&lt; $8K</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>8,000</from>
+                <to>9,000</to>
+            </sourceValues>
+            <value>$8K - $9K</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>9,000</from>
+                <to>10,000</to>
+            </sourceValues>
+            <value>$9K - $10K</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>10,000</from>
+                <to>11,000</to>
+            </sourceValues>
+            <value>$10K - $11K</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>11,000</from>
+                <to>12,000</to>
+            </sourceValues>
+            <value>$11K - $12K</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>12,000</from>
+                <to>13,000</to>
+            </sourceValues>
+            <value>$12K - $13K</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>13,000</from>
+                <to>14,000</to>
+            </sourceValues>
+            <value>$13K - $14K</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>14,000</from>
+                <to>15,000</to>
+            </sourceValues>
+            <value>$14K - $15K</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>15,000</from>
+                <to>16,000</to>
+            </sourceValues>
+            <value>$15K - $16K</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>16,000</from>
+                <to>17,000</to>
+            </sourceValues>
+            <value>$16K - $17K</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>17,000</from>
+                <to>18,000</to>
+            </sourceValues>
+            <value>$17K - $18K</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>18,000</from>
+                <to>19,000</to>
+            </sourceValues>
+            <value>$18K - $19K</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>19,000</from>
+                <to>20,000</to>
+            </sourceValues>
+            <value>$19K - $20K</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>20,000</from>
+                <to>21,000</to>
+            </sourceValues>
+            <value>$20K - $21K</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>21,000</from>
+                <to>22,000</to>
+            </sourceValues>
+            <value>$21K - $22K</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>22,000</from>
+                <to>23,000</to>
+            </sourceValues>
+            <value>$22K - $23K</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>23,000</from>
+                <to>24,000</to>
+            </sourceValues>
+            <value>$23K - $24K</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>24,000</from>
+                <to>25,000</to>
+            </sourceValues>
+            <value>$24K - $25K</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>25,000</from>
+                <to>26,000</to>
+            </sourceValues>
+            <value>$25K - $26K</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>26,000</from>
+            </sourceValues>
+            <value>More than $26K</value>
+        </values>
+    </buckets>
+    <chart>
+        <backgroundColor1>#FFFFFF</backgroundColor1>
+        <backgroundColor2>#FFFFFF</backgroundColor2>
+        <backgroundFadeDir>Diagonal</backgroundFadeDir>
+        <chartSummaries>
+            <aggregate>Average</aggregate>
+            <axisBinding>y</axisBinding>
+            <column>Deal__c.Days_in_Stock_f__c</column>
+        </chartSummaries>
+        <chartSummaries>
+            <aggregate>Average</aggregate>
+            <axisBinding>y2</axisBinding>
+            <column>Deal__c.Front_End_Gross__c</column>
+        </chartSummaries>
+        <chartType>VerticalColumnLine</chartType>
+        <enableHoverLabels>true</enableHoverLabels>
+        <expandOthers>true</expandOthers>
+        <groupingColumn>BucketField_12619510</groupingColumn>
+        <legendPosition>Bottom</legendPosition>
+        <location>CHART_TOP</location>
+        <showAxisLabels>true</showAxisLabels>
+        <showPercentage>false</showPercentage>
+        <showTotal>false</showTotal>
+        <showValues>false</showValues>
+        <size>Large</size>
+        <summaryAxisRange>Auto</summaryAxisRange>
+        <textColor>#000000</textColor>
+        <textSize>12</textSize>
+        <titleColor>#000000</titleColor>
+        <titleSize>18</titleSize>
+    </chart>
+    <columns>
+        <aggregateTypes>Average</aggregateTypes>
+        <field>Deal__c.Days_in_Stock_f__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Average</aggregateTypes>
+        <field>Deal__c.Front_End_Gross__c</field>
+    </columns>
+    <columns>
+        <field>CUST_NAME</field>
+    </columns>
+    <columns>
+        <field>Deal__c.Sale_Price__c</field>
+    </columns>
+    <columns>
+        <field>Deal__c.Year__c</field>
+    </columns>
+    <columns>
+        <field>Deal__c.Make__c</field>
+    </columns>
+    <columns>
+        <field>Deal__c.Model__c</field>
+    </columns>
+    <filter>
+        <criteriaItems>
+            <column>Deal__c.Deal_Type__c</column>
+            <operator>equals</operator>
+            <value>R</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Deal__c.Sale_Cost__c</column>
+            <operator>greaterThan</operator>
+            <value>0</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Deal__c.Days_in_Stock_f__c</column>
+            <operator>lessThan</operator>
+            <value>1825</value>
+        </criteriaItems>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>BucketField_12619510</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Sales and Days by Price Rage</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>CustomEntity$Deal__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <timeFrameFilter>
+        <dateColumn>Deal__c.Deal_Date__c</dateColumn>
+        <interval>INTERVAL_PREVY</interval>
+    </timeFrameFilter>
+</Report>

@@ -1,0 +1,10 @@
+<apex:page controller="dealer.ServiceAppointmentEvents" id="SAE" showHeader="false" contentType="application/json" action="{!saveAppointment}">
+	<apex:outputText value="{!AppointmentJSON}" rendered="{!IF(action=='read_apt', true, false)}" />
+	<apex:outputText value="{!StandardOperationCodes}" rendered="{!IF(action=='read_service_codes',true,false)}" />
+	<apex:outputText value="{!PmtTypeOptions}" rendered="{!IF(action=='read_pmt_types',true,false)}" />
+	<apex:outputText value="{!CustomerReadDecision}" rendered="{!IF(action=='read_customers', true, false)}" />
+	<apex:outputText value="{!VehicleRead}" rendered="{!IF(action=='read_vehicles', true, false)}" />
+	<apex:outputText value="{!crud}" rendered="{!IF(action=='update_apt', true, false)}" />
+	<apex:outputText value="{!crud}" rendered="{!IF(action=='create_apt', true, false)}" />
+	<apex:outputText value="{!crud}" rendered="{!IF(action=='destroy_apt', true, false)}" />
+</apex:page>

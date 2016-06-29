@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <aggregateTypes>Average</aggregateTypes>
+        <field>Deal__c.Days_in_Stock_f__c</field>
+    </columns>
+    <columns>
+        <field>CUST_NAME</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Average</aggregateTypes>
+        <field>Deal__c.Front_End_Gross__c</field>
+    </columns>
+    <description>Sales history of Front-end gross and days by make and model broken down by month</description>
+    <filter>
+        <criteriaItems>
+            <column>Deal__c.Deal_Type__c</column>
+            <operator>equals</operator>
+            <value></value>
+        </criteriaItems>
+    </filter>
+    <format>Matrix</format>
+    <groupingsAcross>
+        <dateGranularity>Month</dateGranularity>
+        <field>Deal__c.Deal_Date__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsAcross>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>Deal__c.Make__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>Deal__c.Model__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Historical FE Gross and Days by Model</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>CustomEntity$Deal__c</reportType>
+    <scope>organization</scope>
+    <showDetails>false</showDetails>
+    <timeFrameFilter>
+        <dateColumn>Deal__c.Deal_Close_Date__c</dateColumn>
+        <interval>INTERVAL_PREV2Y</interval>
+    </timeFrameFilter>
+</Report>

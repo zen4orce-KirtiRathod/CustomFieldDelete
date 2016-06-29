@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <webLinks>
+        <fullName>Log_Contact_SalesUp</fullName>
+        <availability>online</availability>
+        <description>Log a contact for Sales Ups</description>
+        <displayType>massActionButton</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <linkType>url</linkType>
+        <masterLabel>Log Contact</masterLabel>
+        <openType>replace</openType>
+        <protected>false</protected>
+        <requireRowSelection>false</requireRowSelection>
+        <url>/00T/e?title=Call&amp;what_id={!Sales_Up__c.Id}&amp;followup=1&amp;tsk5=Call&amp;retURL=%2F{!Sales_Up__c.Id}&amp;who_id={!Sales_Up__c.Buyer_ContactId__c}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Log_FollowUp_CarDeal</fullName>
+        <availability>online</availability>
+        <description>Log FollowUp on a Car Deal</description>
+        <displayType>massActionButton</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <linkType>url</linkType>
+        <masterLabel>Log Follow Up</masterLabel>
+        <openType>replace</openType>
+        <protected>false</protected>
+        <requireRowSelection>true</requireRowSelection>
+        <url>/00T/e?title=Call&amp;what_id={!Deal__c.Id}&amp;followup=1&amp;retURL=%2F{!Deal__c.Id}&amp;who_id={!Deal__c.Buyer_ContactId__c}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>New_Car_Deal_Task</fullName>
+        <availability>online</availability>
+        <description>New Task related to Contact and Car Deal</description>
+        <displayType>massActionButton</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <linkType>url</linkType>
+        <masterLabel>New Car Deal Task</masterLabel>
+        <openType>replace</openType>
+        <protected>false</protected>
+        <requireRowSelection>true</requireRowSelection>
+        <url>/00T/e?title=Call&amp;what_id={!Deal__c.Id}&amp;retURL=%2F{!Deal__c.Id}&amp;who_id={!Deal__c.Buyer_ContactId__c}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>New_Task</fullName>
+        <availability>online</availability>
+        <description>New Sales Up related Task</description>
+        <displayType>massActionButton</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <linkType>url</linkType>
+        <masterLabel>New Task</masterLabel>
+        <openType>replace</openType>
+        <protected>false</protected>
+        <requireRowSelection>true</requireRowSelection>
+        <url>/00T/e?title=Call&amp;what_id={!Sales_Up__c.Id}&amp;retURL=%2F{!Sales_Up__c.Id}&amp;who_id={!Sales_Up__c.Buyer_ContactId__c}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Send_Email_to_BuyerCarDeal</fullName>
+        <availability>online</availability>
+        <description>Email buyer on Car Deal</description>
+        <displayType>massActionButton</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <linkType>url</linkType>
+        <masterLabel>Send Email to Buyer</masterLabel>
+        <openType>replace</openType>
+        <protected>false</protected>
+        <requireRowSelection>true</requireRowSelection>
+        <url>/_ui/core/email/author/EmailAuthor?p2_lkid={!Deal__c.Buyer_ContactId__c}&amp;p3_lkid={!Deal__c.Id}&amp;retURL=%2F{!Deal__c.Id}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Send_Email_to_Co_Buyer</fullName>
+        <availability>online</availability>
+        <description>Send an Email to the CoBuyer</description>
+        <displayType>massActionButton</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <linkType>url</linkType>
+        <masterLabel>Send Email to Co-Buyer</masterLabel>
+        <openType>replace</openType>
+        <protected>false</protected>
+        <requireRowSelection>true</requireRowSelection>
+        <url>/_ui/core/email/author/EmailAuthor?p2_lkid={!Deal__c.Co_Buyer_ContactId__c}&amp;p3_lkid={!Deal__c.Id}&amp;retURL=%2F{!Deal__c.Id}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Send_an_Email_SalesUp</fullName>
+        <availability>online</availability>
+        <description>Send an email to a Sales Up</description>
+        <displayType>massActionButton</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <linkType>url</linkType>
+        <masterLabel>Send an Email</masterLabel>
+        <openType>replace</openType>
+        <protected>false</protected>
+        <requireRowSelection>true</requireRowSelection>
+        <url>/_ui/core/email/author/EmailAuthor?p2_lkid={!Sales_Up__c.Buyer_ContactId__c}&amp;p3_lkid={!Sales_Up__c.Id}&amp;retURL=%2F{!Sales_Up__c.Id}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Text_Message</fullName>
+        <availability>online</availability>
+        <description>Send a Text Message on the Sales Up to the Buyer</description>
+        <displayType>massActionButton</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <linkType>url</linkType>
+        <masterLabel>Text Message</masterLabel>
+        <openType>replace</openType>
+        <protected>false</protected>
+        <requireRowSelection>false</requireRowSelection>
+        <url>/apex/dealer__SendSMS?cid={!Sales_Up__c.Buyer_ContactId__c}{!Contact.Id}&amp;wid={!Sales_Up__c.Id}</url>
+    </webLinks>
+</CustomObject>

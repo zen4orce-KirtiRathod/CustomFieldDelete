@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <comment>Creation of the parts physical workfile</comment>
+        <content>PartsPhysicalInventory</content>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Visualforce</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <customHelpPage>SuccessDocumentation_Tab</customHelpPage>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <deprecated>false</deprecated>
+    <description>Parts Physical Inventory - Header level object recording a physical inventory audit.</description>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>false</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>false</enableSharing>
+    <enableStreamingApi>false</enableStreamingApi>
+    <fields>
+        <fullName>Inventory_Value__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Pre-variance value of the inventory.</description>
+        <externalId>false</externalId>
+        <label>Inventory Value</label>
+        <summarizedField>PartsPhysicalDetail__c.Cost__c</summarizedField>
+        <summaryForeignKey>PartsPhysicalDetail__c.Parts_Physical_Inventory__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Location__c</fullName>
+        <deleteConstraint>Restrict</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>Dealership location this physical is being processed within.</description>
+        <externalId>false</externalId>
+        <label>Location</label>
+        <referenceTo>Dealer_Location__c</referenceTo>
+        <relationshipLabel>Parts Physical Inventory</relationshipLabel>
+        <relationshipName>Parts_Physical_Inventory</relationshipName>
+        <required>true</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Part_Count__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Number of parts associated with this physical.</description>
+        <externalId>false</externalId>
+        <label>Part Count</label>
+        <summaryForeignKey>PartsPhysicalDetail__c.Parts_Physical_Inventory__c</summaryForeignKey>
+        <summaryOperation>count</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Status__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Status of this physical inventory process.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Current status of this inventory process.</inlineHelpText>
+        <label>Status</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Not Started</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Location File Generated</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Count Sheets Printed</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Missing Parts Reviewed</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Write-In</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Variance Report</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Posted</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Variance_Part_Count__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Number of parts that have a variance.</description>
+        <externalId>false</externalId>
+        <label>Variance Part Count</label>
+        <summarizedField>PartsPhysicalDetail__c.Variance_Count_1__c</summarizedField>
+        <summaryForeignKey>PartsPhysicalDetail__c.Parts_Physical_Inventory__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Variance_Value__c</fullName>
+        <deprecated>false</deprecated>
+        <description>sum of the variance value of the parts</description>
+        <externalId>false</externalId>
+        <label>Variance Value</label>
+        <summarizedField>PartsPhysicalDetail__c.Variance_Value__c</summarizedField>
+        <summaryForeignKey>PartsPhysicalDetail__c.Parts_Physical_Inventory__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <label>Parts Physical Inventory</label>
+    <listViews>
+        <fullName>All</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <nameField>
+        <label>Physical Name</label>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Parts Physical Inventory</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ReadWrite</sharingModel>
+    <webLinks>
+        <fullName>Complete</fullName>
+        <availability>online</availability>
+        <description>Complete the physical and post the reconciliation.</description>
+        <displayType>button</displayType>
+        <linkType>page</linkType>
+        <masterLabel>Complete</masterLabel>
+        <openType>replace</openType>
+        <page>PartsPhysicalPost</page>
+        <protected>false</protected>
+    </webLinks>
+    <webLinks>
+        <fullName>Enter_Counts</fullName>
+        <availability>online</availability>
+        <description>Enter count sheets into physical workfile</description>
+        <displayType>button</displayType>
+        <linkType>page</linkType>
+        <masterLabel>Enter Counts</masterLabel>
+        <openType>replace</openType>
+        <page>PartsPhysicalEnterCounts</page>
+        <protected>false</protected>
+    </webLinks>
+    <webLinks>
+        <fullName>Print_Count_Sheets</fullName>
+        <availability>online</availability>
+        <description>Print new set of count sheets</description>
+        <displayType>button</displayType>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>page</linkType>
+        <masterLabel>Print Count Sheets</masterLabel>
+        <openType>newWindow</openType>
+        <page>PartsPhysicalCountSheets</page>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+    </webLinks>
+    <webLinks>
+        <fullName>Variance_Report</fullName>
+        <availability>online</availability>
+        <description>Detailed report of the parts with variance from the current inventory.</description>
+        <displayType>button</displayType>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>page</linkType>
+        <masterLabel>Variance Report</masterLabel>
+        <openType>newWindow</openType>
+        <page>PartsPhysicalVarianceReport</page>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+    </webLinks>
+</CustomObject>

@@ -1,0 +1,146 @@
+<body bgcolor="#CCCCCC">
+
+
+<table id="Email_Template" width="580" border="0" cellpadding="0" cellspacing="0" align="center" bgcolor="#FFFFFF">
+	<tr>
+		<td colspan="3">
+        <!--######## Header ########-->
+			<img src="http://static2.3birdsmarketing.com/Clients/TEMPLATES3BIRDSMARKETINGCOM/ford_ecomm_header1.png" width="580" alt=""></td>
+	</tr>
+	<tr>
+		<td colspan="3">
+        <!--######## Top cap ########-->
+        <a href="#"><img src="http://static2.3birdsmarketing.com/images/ecom_temp/model_specific/ford/topcap-ford-F-150.jpg" width="580" height="260" alt="" border="0"></a>
+        </td>
+	</tr>
+	<tr>
+		<td height=39  colspan="3">
+        <table id="Email_Nav" width="580" border="0" cellspacing="0" cellpadding="0">
+		  <tr>
+    <td><a href="[Dealership!ValueTrade]"><img src="http://static2.3birdsmarketing.com/images/ecom_temp/btn_1_valuetrade.jpg" alt="" border="0"></a></td>
+    <td><a href="[Dealership!Finance]"><img src="http://static2.3birdsmarketing.com/images/ecom_temp/btn_2_financeapp.jpg" alt="" border="0"></a></td>
+    <td><a href="https://maps.google.com"><img src="http://static2.3birdsmarketing.com/images/ecom_temp/btn_3_hoursdirections.jpg"  alt="" border="0"></a></td>
+  </tr>
+</table></td>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="3"><table width="580" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="74" height="50">&nbsp;</td>
+    <td>&nbsp;</td>
+    <td width="70">&nbsp;</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>
+    <!--######## Content ########-->
+   <div style="font-family:Arial, Helvetica, sans-serif;font-size:12px;color:#484848;line-height:17px;">
+   
+    <p>dealer__FirstName__c,<br /><br />
+I'm currently working on finding the vehicle you requested.    Please answer the following two questions so we can provide you with the information you need to make an informed decision.   </p>
+
+
+<div style="border-top:2px #b2b2b2 solid;border-bottom:2px #b2b2b2 solid;border-right:0px;border-left:0px;margin:25px 0px;padding:10px 0px;">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+
+<!-- -->
+  <tr>
+    <td height="8" width="30"></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td><img src="http://static2.3birdsmarketing.com/Clients/TEMPLATES3BIRDSMARKETINGCOM/li_red_arrow.jpg" width="8" height="8" alt="arrow" /></td>
+    <td><span style="font-family:Arial, Helvetica, sans-serif;font-size:12px;color:#484848;">Are there any colors that you would not accept?</span></td>
+  </tr>
+<!-- -->
+
+<!-- -->
+  <tr>
+    <td height="8"></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td><img src="http://static2.3birdsmarketing.com/Clients/TEMPLATES3BIRDSMARKETINGCOM/li_red_arrow.jpg" width="8" height="8" alt="arrow" /></td>
+    <td><span style="font-family:Arial, Helvetica, sans-serif;font-size:12px;color:#484848;">What options and accessories are most important to you?</span></td>
+  </tr>
+<!-- -->
+
+<!-- -->
+  <tr>
+    <td height="8"></td>
+    <td></td>
+    <td></td>
+  </tr>
+  
+</table>
+</div>
+
+
+<p>We hope to hear from you shortly so we can thoroughly respond to your request with all of your preferences.  If not, we will still attempt to call you.  We want to honor our commitment to get as much relevant information to you as soon as possible.   
+<br /><br />
+dealer__Salesperson_1__r.Name<br>
+Organization.Name<br>
+Organization.Phone 
+</p>
+    
+    </div>
+    
+    </td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td height="50">&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>
+    <!--######## Social Links ########-->
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="7%" align="right">
+    <img src="http://static2.3birdsmarketing.com/images/ecom_temp/icon_facebook.jpg" width="30" height="30" alt="Facebook" />
+    </td>
+    <td width="30%" align="left">
+    <a href="https://www.facebook.com" style="color:#4D4D4D;font-family:Arial, Helvetica, sans-serif;font-size:11px;text-decoration:underline;margin-left:5px;">Follow us on Facebook</a>
+    </td>
+    <td width="7%" align="right">
+    <img src="http://static2.3birdsmarketing.com/images/ecom_temp/icon_twitter.jpg" width="30" height="30" alt="Twitter" />
+    </td>
+    <td width="25%" align="left">
+    <a href="https://www.twitter.com" style="color:#4D4D4D;font-family:Arial, Helvetica, sans-serif;font-size:11px;text-decoration:underline;margin-left:5px;">Follow us on Twitter</a>
+    </td>
+    <td width="7%" align="right">
+    <img src="http://static2.3birdsmarketing.com/images/ecom_temp/icon_directions.jpg" width="30" height="30" alt="Directions" />
+    </td>
+    <td width="24%" align="left">
+    <a href="https://maps.google.com" style="color:#4D4D4D;font-family:Arial, Helvetica, sans-serif;font-size:11px;text-decoration:underline;margin-left:5px;">Click for Directions</a>
+    </td>
+  </tr>
+</table>
+    </td>
+    <td>&nbsp;</td>
+  </tr>
+    <tr>
+    <td height="50">&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+    <tr>
+    <td height="30" colspan="3" bgcolor="#ebebeb">
+    <!--######## Footer ########-->
+   <div style="font-family:Arial, Helvetica, sans-serif;color:#636363;font-size:10px;text-align:center;">
+   Franklin Ford | 1235 Street Name Your City, State 11111| (555) 555-5555
+   </div>
+    </td>
+    </tr>
+        </table>
+</td>
+	</tr>
+</table>

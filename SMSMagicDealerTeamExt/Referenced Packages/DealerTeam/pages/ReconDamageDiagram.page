@@ -1,0 +1,13 @@
+<apex:page sidebar="false" showHeader="false" id="recon" standardStylesheets="false" standardController="dealer__Service_Estimate__c" >
+   <div id="setRef" style="width:1px; height:1px;">   			
+     <apex:repeat value="{!dealer__Service_Estimate__c.Service_Estimate_Lines__r}" var="cl">
+      	<apex:outputText rendered="{!IF(!ISBLANK(cl.dealer__Diagram_Reference_Number__c), true, false)}">
+      	
+			<span style="left: {!HTMLENCODE(TEXT(cl.dealer__damageCoordinateX__c))}px; top: {!HTMLENCODE(TEXT(cl.dealer__damageCoordinateY__c))}px; position: absolute;">{!HTMLENCODE(TEXT(cl.dealer__Diagram_Reference_Number__c))}<apex:image value="{!$Resource.dealer__SmallX}" /></span>  
+		</apex:outputText>
+      </apex:repeat>
+   </div>
+	<div id="reconDamageDiagramImage">
+		<apex:image value="{!$Resource.dealer__VehicleDiagramTurtle}" />		
+	</div>
+</apex:page>

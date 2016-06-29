@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fieldUpdates>
+        <fullName>ServiceROCustomerCharges</fullName>
+        <description>Update customer charges based on the sum of parts and sales that are customer pay</description>
+        <field>Customer_Charges__c</field>
+        <formula>Customer_Pay_Labor__c +  Customer_Pay_Parts__c  + BLANKVALUE(Customer_Sublet_Charges__c, 0) + BLANKVALUE( Hazardous_Materials__c , 0)</formula>
+        <name>ServiceROCustomerCharges</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Formula</operation>
+        <protected>true</protected>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>ServiceROLaborCharges</fullName>
+        <description>Sum of service repair order service labor charges</description>
+        <field>Customer_Labor_Charges__c</field>
+        <formula>Customer_Pay_Labor__c</formula>
+        <name>ServiceROLaborCharges</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Formula</operation>
+        <protected>true</protected>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>ServiceROPartsCharges</fullName>
+        <description>Update parts charges to the customer on this repair order.</description>
+        <field>Customer_Parts_Charges__c</field>
+        <formula>Customer_Pay_Parts__c</formula>
+        <name>ServiceROPartsCharges</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Formula</operation>
+        <protected>true</protected>
+    </fieldUpdates>
+    <outboundMessages>
+        <fullName>X3BM_Anniversary_1_Year</fullName>
+        <apiVersion>29.0</apiVersion>
+        <endpointUrl>http://servicelifecycle.dealerteam.com/WIREID/MEDIAID</endpointUrl>
+        <fields>Comments__c</fields>
+        <fields>Company_Number__c</fields>
+        <fields>Create_Date_Time__c</fields>
+        <fields>CreatedById</fields>
+        <fields>CreatedDate</fields>
+        <fields>Customer_Charges__c</fields>
+        <fields>Customer_Contact__c</fields>
+        <fields>Customer_Invoice_Total__c</fields>
+        <fields>Customer_Labor_Charges__c</fields>
+        <fields>Customer_Number__c</fields>
+        <fields>Customer_Parts_Charges__c</fields>
+        <fields>Customer_Pay_Labor__c</fields>
+        <fields>Customer_Pay_Parts__c</fields>
+        <fields>Customer_Sublet_Charges__c</fields>
+        <fields>Customer_Tax__c</fields>
+        <fields>Customer__c</fields>
+        <fields>Days_Down__c</fields>
+        <fields>Deposit__c</fields>
+        <fields>Discount_Code__c</fields>
+        <fields>Discount_Total__c</fields>
+        <fields>Discount_Type__c</fields>
+        <fields>Dispatched__c</fields>
+        <fields>Estimate__c</fields>
+        <fields>Franchise_Code__c</fields>
+        <fields>Hazardous_Materials__c</fields>
+        <fields>Id</fields>
+        <fields>Internal_Charges__c</fields>
+        <fields>Internal_Labor_Charges__c</fields>
+        <fields>Internal_Parts_Charges__c</fields>
+        <fields>Inventory_Vehicle_Status__c</fields>
+        <fields>Invoiced_Date_Time__c</fields>
+        <fields>IsDeleted</fields>
+        <fields>LastActivityDate</fields>
+        <fields>LastModifiedById</fields>
+        <fields>LastModifiedDate</fields>
+        <fields>LastReferencedDate</fields>
+        <fields>LastViewedDate</fields>
+        <fields>Location__c</fields>
+        <fields>Mileage_In__c</fields>
+        <fields>Mileage_Out__c</fields>
+        <fields>Name</fields>
+        <fields>Number_of_Repair_Lines__c</fields>
+        <fields>Open_Flat_Rate_Hours__c</fields>
+        <fields>Open_Job_Lines__c</fields>
+        <fields>OwnerId</fields>
+        <fields>Parts_Invoice__c</fields>
+        <fields>Posted_Date_Time__c</fields>
+        <fields>Promise_Date__c</fields>
+        <fields>Promise_Time__c</fields>
+        <fields>RO_Number__c</fields>
+        <fields>Recommendations__c</fields>
+        <fields>Rewards_ID__c</fields>
+        <fields>Rewards_Number__c</fields>
+        <fields>Service_Advisor_ID__c</fields>
+        <fields>Service_Advisor_Name__c</fields>
+        <fields>Service_Advisor__c</fields>
+        <fields>Shop_Supplies__c</fields>
+        <fields>Status__c</fields>
+        <fields>SystemModstamp</fields>
+        <fields>Tag__c</fields>
+        <fields>Tax__c</fields>
+        <fields>Taxable__c</fields>
+        <fields>Total_Flat_Rate_Hours__c</fields>
+        <fields>VIN__c</fields>
+        <fields>Vehicle__c</fields>
+        <fields>Waiting__c</fields>
+        <fields>Warranty_Charges__c</fields>
+        <fields>Warranty_Labor_Charges__c</fields>
+        <fields>Warranty_Parts_Charges__c</fields>
+        <includeSessionId>false</includeSessionId>
+        <integrationUser>dev1@sms.dt</integrationUser>
+        <name>3BM-Anniversary 1 Year</name>
+        <protected>false</protected>
+        <useDeadLetterQueue>false</useDeadLetterQueue>
+    </outboundMessages>
+    <rules>
+        <fullName>SLC-Anniversary Emails</fullName>
+        <active>false</active>
+        <criteriaItems>
+            <field>Service_Repair_Order__c.Status__c</field>
+            <operation>equals</operation>
+            <value>Posted</value>
+        </criteriaItems>
+        <description>Vehicle&apos;s service annivesary 1 year
+Vehicle&apos;s service annivesary 2 year
+Vehicle&apos;s service annivesary 3 year</description>
+        <triggerType>onCreateOrTriggeringUpdate</triggerType>
+    </rules>
+    <rules>
+        <fullName>ServiceROFieldUpdates</fullName>
+        <actions>
+            <name>ServiceROCustomerCharges</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <actions>
+            <name>ServiceROLaborCharges</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <actions>
+            <name>ServiceROPartsCharges</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>false</active>
+        <description>Fields requiring update on service repair orders</description>
+        <formula>Id &lt;&gt; TEXT(0)</formula>
+        <triggerType>onAllChanges</triggerType>
+    </rules>
+</Workflow>

@@ -1,0 +1,243 @@
+<apex:page id="svcAppt" standardController="dealer__Service_Appointment__c" extensions="dealer.ServiceAppointment_EXT" tabStyle="dealer__Service_Appointment__c" SideBar="false" showChat="true">
+<apex:stylesheet value="{!URLFOR($Resource.dealer__fullCalendar, 'fullcalendar/fullcalendar.css')}" />
+<apex:stylesheet value="{!URLFOR($Resource.dealer__fullCalendar, 'fullcalendar/fullcalendar.print.css')}" />
+
+<apex:includeScript value="{!URLFOR($Resource.dealer__jQuery_UI_1820, 'js/jquery-1.7.2.min.js')}" />
+<apex:includeScript value="{!URLFOR($Resource.dealer__jQuery_UI_1820, 'js/jquery-ui-1.8.20.custom.min.js')}" />
+<apex:includeScript value="{!$Resource.dealer__jsHashTable}" />
+<apex:includeScript value="{!$Resource.dealer__jQueryNumberFormatting}" />
+<apex:includeScript value="{!$Resource.dealer__jQueryTools}" /> 
+<apex:includeScript value="{!$Resource.dealer__jQuery_TimePicker}" />
+<apex:stylesheet value="{!URLFOR($Resource.dealer__jQuery_UI_1820,'css/Aristo/Aristo.css')}"/>
+<apex:stylesheet value="{!$Resource.dealer__ServiceCSS}"/>
+
+<apex:stylesheet value="{!URLFOR($Resource.dealer__jqGrid, 'ui.jqgrid.css')}" />
+<apex:includeScript value="{!URLFOR($Resource.dealer__jqGrid, 'grid.locale-en.js')}" />
+<apex:includeScript value="{!URLFOR($Resource.dealer__jqGrid, 'jquery.jqGrid.min.js')}" />
+
+<apex:includeScript value="{!URLFOR($Resource.dealer__fullCalendar, 'fullcalendar/fullcalendar.min.js')}" />
+<script type="text/javascript">
+ var j$ = jQuery.noConflict();
+ j$(document).ready(function() {
+     
+    // Load Service History
+    j$("#serviceHistory").jqGrid({
+        data: svcHistory,
+        datatype: "local",
+        height: 'auto',
+        rowNum: 30,
+        rowList: [10,20,30],
+        colNames:['RO No', 'Date', 'Advisor', 'Job#', 'Labor', 'Parts', 'Operation','Labor Type','Concern','Cause','Correction'],
+        colModel:[
+            {name:'ronumber',index:'ronumber', width:60, sorttype:"int", formatter: 'showLink', formatOptions: { baseLinkUrl: '/', target:'_blank'}},
+            {name:'opendate',index:'opendate', width:70, sortable:false, formatter:"date"},
+            {name:'advisor',index:'advisor', width:100, sortable:false},
+            {name:'joblinenumber', index:'joblinenumber', width:30, sortable:false}, 
+            {name:'laborcharges',index:'laborcharges', width:80, align:"right",sortable:false, formatter:"number"},
+            {name:'partscharges',index:'partscharges', width:80, align:"right",sortable:false, formatter:"number"},
+            {name:'operation',index:'opeartion', width:100, sortable:false},
+            {name:'paytype',index:'paytype', width:30, sortable:false}, 
+            {name:'concern',index:'concern', width:175, sortable:false},
+            {name:'cause',index:'cause', width:175, sortable:false},
+            {name:'correction',index:'correction', width:175, sortable:false}       
+        ],
+        pager: "#pageHistory",
+        viewrecords: true,
+        sortname: 'ronumber',
+        grouping:true,
+        groupingView : {
+            groupField : ['ronumber'],
+            groupColumnShow : [true],
+            groupText : ['<b>{0} - {1} Item(s)</b>'],
+            groupCollapse : false,
+            groupOrder: ['desc']        
+        },
+        caption: "Service History"
+    });    
+    
+        var date = new Date();
+        var d = date.getDate();
+        var m = date.getMonth();
+        var y = date.getFullYear();
+        
+        j$('#calendar').fullCalendar({
+            theme: true,
+            height: 650,
+            allDayText: 'Early Bird',
+            axisFormat: 'h(:mm)tt', 
+            timeFormat: {
+                agenda: 'h:mm{ - h:mm}'
+            },
+            defaultEventMinutes: 45,
+            snapMinutes: 45,
+            aspectRatio: 1,
+            slotMinutes: 45,
+            maxTime: 18,
+            minTime: 8,
+            defaultView: 'agendaDay',
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'month,agendaWeek,agendaDay'
+            },
+            editable: true,
+            eventSources: ['/apex/dealer__ServiceAppointmentJSON?id={!JSENCODE(dealer__Service_Appointment__c.Id)}', { url: '/apex/dealer__ServiceAppointmentBlockJSON', color: "red", backgroundColor: "red" }]
+
+        });
+        
+        j$('#calendar').fullCalendar('gotoDate', {!JSENCODE(apptYear)}, {!JSENCODE(apptMonth)}, {!JSENCODE(apptDay)});
+            
+ });
+var svcHistory = ''; 
+<apex:outputText rendered="{!NOT(ISBLANK(ServiceHistoryJSON))}">    
+var svcHistory = {!ServiceHistoryJSON};
+</apex:outputText>
+
+function noenter(ev) {
+     if (window.event && window.event.keyCode == 13 || ev.which == 13)
+     {  
+        jobLine();
+         return false;
+     }
+     else
+     {
+         return true;
+     }
+}
+
+function jobLine() {
+
+    j$(esc('svcAppt:saf:opId')).val(recordResults.dealer__RecordId__c);
+    
+    j$(esc('svcAppt:saf:svcOpCodeName')).text(recordResults.dealer__Op_Code_Description__c);
+    
+    j$(esc('svcAppt:saf:bookTime')).val(recordResults.dealer__Book_Time__c);
+    j$(esc('svcAppt:saf:estimate')).val(recordResults.dealer__Estimate__c);
+    j$(esc('svcAppt:saf:concern')).val(recordResults.dealer__Concern__c);
+    
+    
+    
+     buttonText = "Add Appointment Line";     
+     action = "update";      
+
+    var date = new Date();
+        var d = date.getDate();
+        var m = date.getMonth();
+        var y = date.getFullYear();
+        
+    j$("#jlDialog").dialog({ 
+                        modal: true,
+                        width: 650,
+                        height: 350,
+                        resizable: false,
+                        draggable: false,
+                        buttons: [
+                            {
+                                text: buttonText,
+                                click: function() { 
+                                    addJobLineJS(recordResults.dealer__RecordId__c, j$(esc('svcAppt:saf:estimate')).val(), j$(esc('svcAppt:saf:concern')).val(), j$("#jlPaymentMethod").val(), j$(esc('svcAppt:saf:apptLines:j_id46:lop')).val());
+                                    j$(esc('svcAppt:saf:apptLines:j_id45:lop')).val('');
+                                    j$(this).dialog("close");
+                                }   
+                            }
+                        ]
+                    });
+                    
+                    
+
+}
+</script>    
+<apex:pageMessages id="messages" />
+<table>
+<tr>
+    
+<td valign="top" width="100%" colspan="2">
+
+<apex:form id="saf">
+    <apex:detail subject="{!dealer__Service_Appointment__c.Id}" relatedList="false" inlineEdit="true" showChatter="true" id="apptDetail"/> 
+    
+    <apex:pageBlock title="Service Appointment Lines" id="apptLines">
+        <apex:pageBlockButtons location="top">
+                <apex:inputText id="lop" onkeypress="return noenter(event);">
+                        <c:AutoComplete objectname="dealer__StandardOpCode__c" 
+                                        additionalfield="" 
+                                        resultfields="dealer__Op_Code_Description__c,dealer__Concern__c,dealer__Estimate__c,dealer__Pay_Type__c,dealer__RecordId__c" 
+                                        autocomplete_textbox="{!$Component.lop}" />
+                </apex:inputText>
+        </apex:pageBlockButtons>
+        <apex:pageBlockTable value="{!sl}" var="line" id="apptLineDetail">
+            <apex:column headerValue="Action">
+                   <apex:outputLink value="/{!line.id}">Edit</apex:outputLink>
+            </apex:column>
+            <apex:column value="{!line.dealer__Standard_Op_Code__r.Name}" />
+            <apex:column value="{!line.dealer__Standard_Op_Code__r.dealer__Op_Code_Description__c}" />
+            <apex:column value="{!line.dealer__CustomerConcern__c}" />
+            <apex:column value="{!line.dealer__Pay_Type__c}" />
+            <apex:column value="{!line.dealer__Qoute__c}" />
+        </apex:pageBlockTable>
+    </apex:pageBlock>
+
+ <div id="jlDialog" title="Job Line Detail" style="display:none;">
+        <table cellspacing="0" cellpadding="6" border="0">
+            <tr>
+                <td align="right" style="border:bottom 1px solid;"><b>Op Code</b></td>
+                <td style="border:bottom 1px solid;">
+                    <apex:inputHidden value="{!opCodeId}" id="opId"/>
+                    
+                    <apex:outputText value="" id="svcOpCodeName"/>
+                </td>
+            </tr>
+            <tr>
+                <td align="right" style="border:bottom 1px solid;"><b>Concern</b></td>
+                <td style="border:bottom 1px solid;">
+                    <apex:inputTextArea value="{!lineConcern}" cols="60" id="concern"/>
+                </td>
+            </tr>
+            <tr>
+                <td align="right" style="border:bottom 1px solid;"><b>Payment Method</b></td>
+                <td style="border:bottom 1px solid;">
+                    <select id="jlPaymentMethod">
+                        <option value="C" selected="selected">C</option>
+                        <option value="W">W</option>
+                        <option value="I">I</option>
+                        <option value="S">S</option>
+                    </select>
+                </td>
+            </tr>  
+            <tr>
+                <td align="right" style="border:bottom 1px solid;"><b>Estimated Cost</b></td>
+                <td style="border:bottom 1px solid;"><apex:inputText value="{!estimate}" size="5" id="estimate"/></td>
+            </tr>                                       
+        </table>
+    </div>
+    
+    <apex:actionFunction action="{!addJobLine}" name="addJobLineJS" rerender="messages,apptDetail,apptLineDetail">
+        <apex:param name="firstParam" assignTo="{!opCodeId}" value="" /> 
+        <apex:param name="secondParam" assignTo="{!estimate}" value=""/> 
+        <apex:param name="thirdParam" assignTo="{!lineConcern}" value=""/> 
+        <apex:param name="fourthParam" assignTo="{!payType}" value="" /> 
+        <apex:param name="fifthParam" assignTo="{!opCodeName}" value="" /> 
+    </apex:actionFunction>
+    
+  </apex:form>  
+  
+</td>
+<!--<td valign="top"><div id='calendar'></div></td>-->
+</tr>
+<tr>
+    <td colspan="2" width="100%">
+        <apex:pageBlock title="Service History">
+        <apex:pageBlockSection columns="1">
+            <table id="serviceHistory" ></table>
+            <div id="pageHistory"></div>
+        </apex:pageBlockSection>
+       </apex:pageBlock>
+        
+        <apex:relatedList list="OpenActivities" />
+        <apex:relatedList list="ActivityHistories" />
+        <apex:relatedList list="NotesAndAttachments" />
+        
+    </td>
+</tr>
+</table>
+</apex:page>

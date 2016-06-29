@@ -1,0 +1,800 @@
+<apex:page docType="html-5.0" title="Impact Form Generator" showChat="true" controller="dealer.FormControl" id="formsEditor">
+<head>
+
+    <!-- Impact Printing -->
+    <!-- <apex:includeScript value="{!URLFOR($Resource.qzPrint, 'js/deployJava.js')}" /> -->
+    <!-- <apex:includeScript value="{!URLFOR($Resource.qzPrint, 'js/qzPrintFunctions.js')}" />   -->
+
+    <!-- QZ TRAY IMPLEMENTATION -->
+    <apex:includeScript value="{!URLFOR($Resource.dealer__QZtrayResources,'js/deployJava.js')}"/> <!-- for applet fallback -->
+    <apex:includeScript value="{!URLFOR($Resource.dealer__QZtrayResources,'js/qz-websocket.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.dealer__QZtrayResources,'js/QZmethods.js')}"/>
+
+    <script type="text/javascript">
+        $dt = jQuery.noConflict();
+
+        var JavaInstalled=false;
+        var printerName     = '{!JSENCODE(config.dealer__Impact_Printer_Name__c)}';
+        // var printerName     = 'EPSON_Impact';
+        // var printerName     = 'EPSON_2090';
+
+        // var printerEnabled  = '{!config.dealer__Enable_Impact_Forms__c}';
+        // if(printerEnabled=='true' && printerName != '') {
+            deployQZ();
+            // findPrinter(printerName);
+        // }
+
+        /**
+         * Automatically gets called when applet has loaded.
+         */
+        function qzReady() {
+            if (console) console.log('qzReady running');
+            // If the qz object hasn't been created, fallback on the <applet> tags
+            if (!qz) {
+                window["qz"] = document.getElementById('qz');
+            }
+            var title = document.getElementById("title");
+            var status = document.getElementById("qz-status");
+            if (qz) {
+                try {
+                    var qzVer = qz.getVersion();
+                    if (title) title.innerHTML = title.innerHTML + " " + qzVer;
+                    if (status) status.style.background = "#A0FAA0";
+                    qzInstalled = true;
+                    if (console) console.log('Finding printer ' + printerName);
+                    qz.findPrinter(printerName);
+                } catch(err) { // LiveConnect error, display a detailed message
+                    if (status) status.style.background = "#F5A0A0";
+                    alert("ERROR:  \nThe applet did not load correctly.  Communication to the " +
+                            "applet has failed, likely caused by Javaor Security Settings.  \n\n" +
+                            "CAUSE:  \nJava 7 update 25 and higher block LiveConnect calls " +
+                            "once Oracle has marked that version as outdated, which " +
+                            "is likely the cause.  \n\nSOLUTION:  \n  1. Update Java to the latest " +
+                            "Java version \n          (or)\n  2. Lower the security " +
+                            "settings from the Java Control Panel.");
+                }
+            } else {
+                    alert("ERROR:  \nThe applet did not load correctly.  Communication to the " +
+                            "applet has failed, likely caused by Java Security Settings.  \n\n" +
+                            "CAUSE:  \nJava 7 update 25 and higher block LiveConnect calls " +
+                            "once Oracle has marked that version as outdated, which " +
+                            "is likely the cause.  \n\nSOLUTION:  \n  1. Update Java to the latest " +
+                            "Java version \n          (or)\n  2. Lower the security " +
+                            "settings from the Java Control Panel. No QZ.");
+            }
+        }
+
+        /* // New Version included in QZmethods.js
+        function deployQZ() {
+            var attributes = {id: "qz", code:'qz.PrintApplet.class', 
+                archive:'{!URLFOR($Resource.qzPrint, "qz-print.jar")}', width:0, height:0};
+            var parameters = {jnlp_href: '{!URLFOR($Resource.qzPrint, "qz-print_jnlp.jnlp")}', 
+                cache_option:'plugin', disable_logging:'false', 
+                initial_focus:'false'};
+            if (deployJava.versionCheck("1.7+") == true) {
+                deployJava.runApplet(attributes, parameters, '1.5');
+                JavaInstalled=true;
+            }
+            else if (deployJava.versionCheck("1.6+") == true) {
+                attributes['archive'] = '{!URLFOR($Resource.qzPrint, "qz-print.jar")}';
+                parameters['jnlp_href'] = '{!URLFOR($Resource.qzPrint, "jre6/qz-print_jnlp.jnlp")}';
+                deployJava.runApplet(attributes, parameters, '1.5');
+                JavaInstalled=true;
+            }         
+        }
+        */
+
+        function printForm(lineCode) {
+            var data = '';
+            
+            /********** QZ Activated? **********/
+            if(!isLoaded()) {
+                return;
+            }
+            
+            //setPrinterDefaults();
+            data += getPrinterDefaults();
+
+            /********** CONFIGURATION **********/
+            var spaceValue      = '\x20'; // Should be dash or space for debugging, and \x20 for production.
+            var lineBreakValue  = '\r\n'; // Should be <br /> for debugging and \r\n for production.
+
+            // Funciton to grab a printer command at the beginning of the form and appening it before processing code. - Thes command must be wrapped in double percent signs i.e. %%\x1B\x32%%
+            function _replacer(match) {
+                // %%6lpi%% = %%\x1B\x32%%
+                var _code = match.replace(/%%/gi,'');
+                console.log(_code);
+                if(_code == "6lpi") {
+                    qz.append("\x1B\x32");
+                    return '';
+                    //return "\x1B\x32";  option embedding the 6lpi code where it appears instead
+                } else if(_code == "10lpi") {
+                    qz.append("\x1B\x33\x18");
+                    return '';
+                } else if(_code == "12lpi") {
+                    qz.append("\x1B\x33\x15");
+                    return '';
+                } else if(_code == "14lpi") {
+                    qz.append("\x1B\x33\x13");
+                    return '';
+                } else if(_code == "16lpi") {
+                    qz.append("\x1B\x33\x11");
+                    return '';
+                } else if(_code == "17lpi") {
+                    qz.append("\x1B\x33\x10");
+                    return '';
+                } else if(_code == "18lpi") {
+                    qz.append("\x1B\x33\x09");
+                    return '';
+                } else if(_code == "20lpi") {
+                    qz.append("\x1B\x33\x07");
+                    return '';
+                } else if(_code == 'payment_exluding') {
+                    return prompt('Installment Payment EXCLUDING Items');
+                } else if (_code == 'payment_including') {
+                    return prompt('Installment Payment INCLUDING Items');
+                } else {
+                    return '';
+                }
+
+                // Prompt For Values
+            }
+            
+            var sourceString = lineCode.replace(/%%.*?%%/gi, _replacer);
+            //sourceString = jQuery.base64.decode(sourceString);
+            var lines = sourceString.split("|");
+            
+            console.log(lines);
+            
+            var lineCount = 0;
+            var buffer = '';
+            
+            lines.forEach(function(line) {
+
+                var columnCount = 0;
+
+                var columns = line.split("~");
+                
+                columns.forEach(function(column) {
+                
+                    if(column) { // <-- This is required to prevent javascript errors.
+                        
+                        var pieces = column.split("^");
+                        if(pieces.length>=3) {
+                            
+                            var contentLength = pieces[2].length;
+                            var spacesToInject = pieces[1] - columnCount;
+                            
+                            var newColumnLength = contentLength + spacesToInject + columnCount;
+                            columnCount = newColumnLength;
+                            
+                            var toAppend = '';
+                            
+                            for(var i = 0; i < spacesToInject;  i++) {
+                                toAppend+=spaceValue;
+                            }
+                            
+                            toAppend+=pieces[2];
+                            
+                            buffer+=toAppend;
+                            //qz.append(toAppend);
+                            data += toAppend;
+                        }
+                    
+                    }
+                }); 
+                
+                buffer+=lineBreakValue;
+                //qz.append(lineBreakValue);
+                data += lineBreakValue;
+                lineCount+1;  
+                   
+            });
+
+            console.log(buffer);
+            //qz.append('\f');
+            data += '\f';
+            qz.append(data);
+            qz.print();             
+        } 
+
+        //function setPrinterDefaults() {
+        function getPrinterDefaults() {
+            var dft = '';
+            //qz.append('\x1B\x40'); // Initialize
+            dft += '\x1B\x40';
+            
+            // qz.append('\x1B\x47');  // Double Impact
+
+            //qz.append("\x1B\x78\x31");  // NLQ
+            dft += "\x1B\x78\x31";
+
+            //qz.append("\x1B\x6B\x30"); // Set Font  HEX
+            dft += "\x1B\x6B\x30";
+            
+            // // qz.append("\x1B\x28\x00"); // High Speed Draft Select 
+
+            // // qz.append("\x1B\x50");  // 10 CPI                
+            //qz.append("\x1B\x4D");  // 12 CPI
+            dft += "\x1B\x4D";
+            
+            // qz.append("\x1B\x67");  // 15 CPI
+            //qz.append("\x1B\x30"); // 8 lines per inch
+            dft += "\x1B\x30";
+            
+            // // qz.append("\x1B\x0F"); // Compressed Mode
+            return dft;
+        }           
+
+        function printGridLong(lpi6bool) {
+            var data = '';
+
+            data += getPrinterDefaults();
+            // getPrinterDefaults();
+
+            if(lpi6bool != false) {
+                // qz.append("\x1B\x32");  // 6 lines per inch
+
+                switch (lpi6bool) {
+                  case '6':
+                        data += "\x1B\x32";  // 6 lines per inch
+                        break;
+                  case '8':
+                        data += "";  // 8 lines per inch is default
+                        break;
+                  case '10':
+                        data += "\x1B\x33\x18";  // 10 lines per inch
+                        break;
+                  case '12':
+                        data += "\x1B\x33\x15";  // 10 lines per inch
+                        break;
+                  case '14':
+                        data += "\x1B\x33\x13";  // 10 lines per inch
+                        break;
+                  case '16':
+                        data += "\x1B\x33\x11";  // 10 lines per inch
+                        break;
+                  case '17':
+                        data += "\x1B\x33\x10";  // 10 lines per inch
+                        break;
+                  case '18':
+                        data += "\x1B\x33\x09";  // 10 lines per inch
+                        break;
+                  case '20':
+                        data += "\x1B\x33\x07";  // 10 lines per inch
+                        break;
+                }
+
+            }
+            
+            for(i=0; i<=110; i++) {
+                var myString = i.toString();
+                var lastChar = myString.substr(myString.length - 1); 
+
+                data += lastChar;
+                // qz.append(lastChar);
+            }
+
+             data += "\r\n";
+            // qz.append("\r\n");
+
+            var lines = prompt('How Many Lines?');
+
+            if(!isNaN(lines) ) {
+
+                for(i=1; i<=lines; i++) {
+                    var lastChar = i.toString();
+                    if(lastChar.charAt(lastChar.length - 1) == 0) {
+                        for(n=0; n<=117; n++) {
+                            var myString = n.toString();
+                            var lastChar = myString.substr(myString.length - 1); 
+                            
+                            // qz.append(lastChar);
+                            data += lastChar;
+
+                        }
+                        
+                        // qz.append("\r\n");
+                        data += "\r\n";
+
+                    } else {
+                        // qz.append(i);
+                        // qz.append("\r\n");
+                        data += i;
+                        data += "\r\n";
+                    }
+                }
+
+                // qz.append("\f");
+                data += "\f";
+
+                qz.append(data);
+                qz.print();
+
+            } else {
+                alert('Retry and Enter a number.');
+            }
+        }
+
+
+        </script>   
+
+    <link rel="stylesheet" href="{!URLFOR($Resource.BootstrapNS, 'bootstrap/css/bootstrap.css')}" media="all" />
+    <apex:includeScript value="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" /> 
+    <!-- <apex:includeScript value="{!URLFOR($Resource.BootstrapNS, 'jquery-1.9.1.min.js')}" /> --> 
+    <apex:includeScript value="{!URLFOR($Resource.dealer__BootstrapNS, 'bootstrap/js/bootstrap.min.js')}" />
+    <apex:includeScript value="{!$Resource.dealer__jQueryBase64}" />
+
+    <!-- KENDO 2015.1.429 -->
+    <apex:includeScript value="{!URLFOR($Resource.dealer__KendoUiFULL2015,'/js/jszip.min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.dealer__KendoUiFULL2015,'/js/kendo.all.min.js')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.dealer__KendoUiFULL2015,'/styles/kendo.bootstrap.min.css')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.dealer__KendoUiFULL2015,'/styles/kendo.common-bootstrap.core.min.css')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.dealer__KendoUiFULL2015,'/styles/kendo.common-bootstrap.min.css')}"/>
+         
+    <style>
+        .bs .form-group {
+          margin-bottom: 15px;
+          display: inline-block;
+        }
+
+        .bs a.k-button {
+            color: #000;
+        }
+
+        .bs a.k-button:hover {
+            text-decoration: none;
+        }
+
+        #qz-status {
+            display:inline-block;
+            vertical-align:middle;
+            background-color:#FAFAA0;
+            border-radius:8px; 
+            height:16px;
+            width:16px;
+            margin-right:.3em;
+        }
+
+        ul li {
+            margin-left: .3em;
+        }
+
+        #formSourceFrame {
+            border: 0;
+        }
+
+        .bs .well {
+            padding: 0;
+        }
+    </style>
+
+</head>
+<body>
+    <apex:sectionHeader subtitle="Impact Forms Editor" title="Impact Forms" />
+    <apex:form id="lineForm" >
+    <apex:pageBlock mode="maindetail" id="detailBlock">
+      
+            <apex:pageBlockButtons location="top">
+                <apex:commandButton value="Save as New" action="{!saveNewForm}" />
+                <apex:commandButton value="Save" action="{!updateForm}" />
+                <apex:commandButton value="Forms List" action="{!formsList}" />
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection >
+                <apex:inputField value="{!form.Name}" />
+                <apex:inputField value="{!form.dealer__Form_ID__c}" />
+                <apex:inputField value="{!form.dealer__Active__c}" />
+                <apex:inputField value="{!form.dealer__Library__c}" />
+                <apex:inputField value="{!form.dealer__Sequence__c}" />
+                <apex:outputField value="{!form.dealer__Proofed_by__c}" />
+                <apex:outputField value="{!form.dealer__Revision_Date__c}" />
+            </apex:pageBlockSection>
+    </apex:pageBlock>
+
+    <!-- This is where the magic happens -->
+    <apex:inputHidden value="{!form.dealer__Impact_Code__c}" id="impactCode" />
+    
+	<div class="bs" id="formBuilder">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="alert alert-warning alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <strong>Important!</strong>
+                    <ul>
+                        <li>Custom Managed Field Names should include the "dealer__" namespace </li>
+                        <li>Prepend "%%6lpi%%" at the beginning of the first field to print the form in Six Lines Per Inch.</li>
+                        <li>Non managed fields will prevent the form from printing here. You will need to print in the context of a Deal. </li>
+                        <li>To preview a form using managed fields append "&amp;did=DEAL_ID" to the URL where DEAL_ID is the Deal Id.</li>
+                    </ul>
+                </div>
+            </div>  
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="pull-right">
+                    <div id="qz-status" ></div> - {!config.Impact_Printer_Name__c}  Version: <span id="title"></span>
+                </div>
+            </div>
+        </div>
+        <div id="information">
+            <div class="table table-striped" id="fieldsTable" 
+                data-role="grid"
+                data-editable="inline"
+                data-sortable="true"
+                data-toolbar="[{name:'create',text: 'Add New Field'},{name:'print',text: 'Print Form'},{name:'printGrid',text: 'Print Grid'},{name:'print6lpi',text: 'Print LPI'}]"
+                data-columns="[
+                    { field: 'lineNo', title: 'Line', width: 100  },
+                    { field: 'columnNo', title: 'Column', width: 100 },
+                    { field: 'content', title: 'Content', sortable: false, editor: fieldAutoComplete  },
+                    { command: ['edit',{name:'Delete',click: formModel.deleteAction}], title: '&nbsp;', width: '200px' }
+                ]"
+                data-bind="source: fields"></div>
+        </div>
+
+        <!-- Form Preview -->
+        <div class="row">
+            <div class="col-md-12">
+                <h3>Form Preview</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                <div class="input-group">
+
+                    <apex:inputField value="{!sup.dealer__Car_Deal__c}" id="dealIDLook" />
+
+                    <!-- <apex:input html-data-bind="value: dealNameSeachVal, events: { change: dealNameSeachValChange,keyup: dealNameSeachValChange }" html-data-value-update="keyup" styleClass="form-control" value="{!deal_name}" /> -->
+
+                </div>
+            </div>
+            <div class="col-md-1">
+                    <apex:commandButton value="Load Deal" action="{!setDealId}" reRender="compiledSourceWrap">
+                    </apex:commandButton>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <!-- Re-render the compiled output on change -->
+                <apex:actionFunction action="{!compileFormSource}" name="reloadCompiledOutput" reRender="compiled_source" />
+
+                <apex:outputPanel id="compiledSourceWrap" layout="none">
+                    <apex:outputPanel id="compiled_source" rendered="{!NOT(ISBLANK(deal_id))}" styleClass="well" style="display: block;">
+                        <iframe src="/apex/dealer__ImpactFormPreview?fid={!form_id}&did={!deal_id}" style="width:100%" id="formSourceFrame"></iframe>
+                        <input type="hidden" value="{!deal_id}" id="deal_id_hold" />
+                    </apex:outputPanel>
+                </apex:outputPanel>
+
+                <br />
+                <apex:outputText value="{!form.dealer__Impact_Code__c}" id="impactCodeDisplay" style="display:none;" />
+            </div>
+        </div>
+
+
+    </div>
+    <script type="text/x-kendo-template" id="toolbarTemplate">
+        <div class="toolbar">
+            <a class="k-button k-button-icontext k-grid-add new_po" href="\\#">
+                <span class="k-icon k-add"></span>Add Field
+            </a>
+
+            <a class="k-button k-button-icontext k-grid-add parts_po" href="\\#">
+                Print Form
+            </a>
+
+        </div>
+    </script>
+
+    </apex:form>
+
+
+
+    <script>
+
+        var fields_table = null;
+        var dealFields = {!ObjectFieldNamesSimple};
+
+        var formModel = kendo.observable({
+            formId: '{!form.Id}',
+            fields: new kendo.data.DataSource({
+                transport: {
+                    create: function(options) {  options.success( true )  },
+                    read: function(options) {  options.success( parseImpactCode() )  },
+                    update: function(options) { 
+
+                        options.success( true )
+                    },
+                    destroy: function(options) {  options.success( true )  }
+                },
+                schema: {
+                    model: {
+                        id: 'id',
+                        fields: {
+                            id: { type: 'string',  },
+                            lineNo: {from: 'lineNo',type: 'string'},
+                            columnNo: {from: 'columnNo',type: 'string'},
+                            content: {from: 'content',type: 'string'}
+                        }
+                    },
+                }
+            }),
+            toolbarTemplate: kendo.template($dt("#toolbarTemplate").html()),
+            deleteAction: function(e) {
+                var tr = $dt(e.target).closest("tr"); //get the row for deletion
+                var data = this.dataItem(tr); //get the row data so it can be referred later
+                formModel.fields.remove(data);
+
+                saveImpactField();
+            },
+            selectedDeal: null,
+            dealNameSeachVal: null,
+            dealNameSeachValChange: function() {
+                console.log(this.dealNameSeachVal);
+            }
+        });
+        kendo.bind($dt("#formBuilder"), formModel);
+
+        $dt(document).ready(function() {
+
+            var formGrid = $dt('#fieldsTable').data("kendoGrid");
+
+            // Update the impact code when updates
+            // formGrid.bind("edit", saveImpactField);
+            formGrid.bind("save", saveImpactField);
+            formGrid.bind("change", saveImpactField);
+
+            formGrid.bind("saveChanges", function(e){
+                e.preventDefault();
+            });
+            formGrid.bind("remove", function(e){
+                saveImpactField();
+
+                e.preventDefault();
+            });
+
+            // Print form
+            $dt('.k-grid-print').click(function(e){
+                e.preventDefault();
+                saveImpactField();
+
+                printCompliedForm( formModel.formId, $dt('[id$="deal_id_hold"]').val() );
+            });
+
+            $dt('.k-grid-printGrid').click(function(e){
+                e.preventDefault();
+                printGridLong(false);
+            });
+
+            $dt('.k-grid-print6lpi').click(function(e){
+                e.preventDefault();
+                var _lpi = prompt('What LPI? (6,8,10,12,14,16,17,18)');
+                printGridLong(_lpi);
+            });
+
+
+
+        });
+
+        function saveImpactField(){
+            console.log('change fired');
+
+            $dt('[id$="impactCode"]').val($dt.base64.encode( buildFormOutput() ));
+            $dt('[id$="impactCodeDisplay"]').text(  buildFormOutput() );
+            // $dt('[id$="impactCode"]').val( buildFormOutput() );
+
+            reloadCompiledOutput();
+        }
+
+        function getCompliedForm(formId, dealId){
+            var retString = null;
+            // then retreive  
+            $dt.ajax({
+                dataType: 'text',
+                url: "/apex/dealer__ImpactFormPreview?fid="+formId+"&did="+dealId,
+                success: function (result) {
+                    console.log(result);
+                    retString = result;
+                    return retString;
+                },
+                error: function(result){
+                    console.log(result);
+
+                }
+            });
+
+        }
+
+        function printCompliedForm(formId, dealId){
+            var retString = null;
+            // then retreive  
+            $dt.ajax({
+                dataType: 'text',
+                url: "/apex/dealer__ImpactFormPreview?fid="+formId+"&did="+dealId,
+                success: function (result) {
+                    // Woo Hoo Print!
+                    printForm(result);
+                },
+                error: function(result){
+                    console.log(result);
+
+                }
+            });
+
+        }
+
+
+
+        function parseImpactCode() {
+            // var formCode = '{!formCode}';
+            var formCode = jQuery.base64.decode( $dt('[id$="impactCode"]').val() );
+            var fieldsObject = [];
+            
+            // Read Form code and populate form content table
+            if(formCode !== '') {
+                var sourceString = formCode;
+
+                // Break apart each line
+                var lines = sourceString.split("|");
+                
+                // Loop through each line.
+                lines.forEach(function(line) {
+
+                    // Split the lines into columns
+                    var columns = line.split("~");
+                    
+                    // Loop through each columns.
+                    var i = 0;
+                    columns.forEach(function(column) {
+                        
+                        // Make sure tere is a line, otherwise skip to the next one.
+                        if(column) { // <-- This is required to prevent javascript errors.
+                            
+                            var pieces = column.split("^");
+                            
+                            var lineNo = pieces[0];
+                            var columnNo = pieces[1];
+                            var content = pieces[2];
+                            
+                            // Append each each row to content table
+                            // $dt('#tbody').append('<tr><td>'+lineNo+'</td><td>'+columnNo+'</td><td>'+content+'</td></tr>');
+                            fieldsObject.push({lineNo:lineNo,columnNo:columnNo,content:content,id:'line'+lineNo+':col'+columnNo+':key'+i });
+                        }
+                        i++;
+                    }); 
+
+                });
+            }
+
+            return fieldsObject;
+        }
+
+        // Render Field TypeAhead in editable row
+        function fieldAutoComplete(container, options) {
+            $dt('<input data-value-primitive="true" data-text-field="name" data-value-field="value" data-bind="value:' + options.field + '"/>')
+                .appendTo(container)
+                .kendoAutoComplete({
+                    suggest: true,
+                    filter: 'contains',
+                    autoBind: true,
+                    dataSource: dealFields
+                });
+        }
+
+        function buildFormOutput() {
+            var _lineNo = 0;
+            var _fields = formModel.fields.data();
+            var _fieldsCombined = {};
+            var _outputString = '';
+
+            // Forst sort fields by line
+            _fields.sort(function(a, b) {
+                return parseFloat(a.lineNo) - parseFloat(b.lineNo);
+            });
+
+            // Loop through fields and add them to an array
+            $dt.each( _fields, function(i,el){
+
+                // Check if array alreay exists
+                if ( !_fieldsCombined.hasOwnProperty( el.lineNo ) ) {
+                    _fieldsCombined[el.lineNo] = [];
+                }
+
+                // Add item to array
+                _fieldsCombined[el.lineNo].push(el);
+
+            } );
+
+            console.log(_fieldsCombined);
+
+            $dt.each( _fieldsCombined, function(i,el){
+
+                //sort fields in subarray
+                el.sort(function(a, b) {
+                    return parseFloat(a.columnNo) - parseFloat(b.columnNo);
+                });
+            } );
+
+            console.log(_fieldsCombined);
+
+            // Determine final line number
+            var keys = Object.keys( _fieldsCombined ); // What are the line numbers?
+            var _lineCount = keys.length; // how many lines
+
+            // Create a loop of each line in the form 
+            for (_lineNo; _lineNo <= keys[_lineCount-1]; _lineNo++) {
+
+                // check if the line exists
+                if ( _fieldsCombined.hasOwnProperty( _lineNo ) ) {
+                    $dt.each( _fieldsCombined[_lineNo],function(i,el){
+                        _outputString += el.lineNo+'^'+el.columnNo+'^'+el.content+'~';
+                    } );
+                    _outputString+='|';
+
+                // if not just add a new line break.
+                } else {
+                    _outputString+='|';
+                }
+
+            };
+
+            console.log(_outputString);
+            return _outputString;
+        }
+
+        function encodeFormField(_field) {
+            var _lineNo = 0;
+            var _exportString = '';
+
+            if(_field.lineNo === _lineNo) {
+                
+                var _stringToAppend = _field.lineNo+','+_field.columnNo+','+_field.content+'+';
+                _exportString+=_stringToAppend;
+                
+            } else {
+                
+                var lineUp = _lineNo+1;
+                
+                if(_field.lineNo === lineUp) {
+                    
+                    _exportString+='|';
+                    var _stringToAppend = _field.lineNo+','+_field.columnNo+','+_field.content+'+';
+                    _exportString+=_stringToAppend;
+                    
+                    _lineNo = _lineNo + 1;
+                    
+                } else {
+                    
+                    var linesToDrop = _field.lineNo - _lineNo;
+                    
+                    while(linesToDrop > 0) {
+                        linesToDrop = linesToDrop - 1;
+                        _exportString+='|';
+                    }
+                    
+                    var _stringToAppend = _field.lineNo+','+_field.columnNo+','+_field.content+'+';
+                    _exportString+=_stringToAppend;
+                    
+                    _lineNo = _field.lineNo;
+                }
+                
+            }
+
+            return _exportString;
+        }
+
+        function encodeCompleteForm(){
+            var _formDataString = '';
+
+            $dt.each(formModel.fields.data(),function(i, el){
+                console.log(i);
+                _formDataString += encodeFormField( el );
+
+            });
+
+            return _formDataString;
+        }
+    </script>
+
+</body>
+
+</apex:page>

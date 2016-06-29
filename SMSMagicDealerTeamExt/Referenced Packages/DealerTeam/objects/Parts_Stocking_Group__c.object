@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <customHelpPage>SuccessDocumentation_Tab</customHelpPage>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <deprecated>false</deprecated>
+    <description>Stocking group for parts in inventory.  Stocking group determines accounting distribution.</description>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableEnhancedLookup>true</enableEnhancedLookup>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <fields>
+        <fullName>Active__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Is this stocking group active?</description>
+        <externalId>false</externalId>
+        <label>Active</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Default__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>This stocking group is set to the default and auto-populated when adding new parts.</inlineHelpText>
+        <label>Default</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Description__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Description of stocking group</description>
+        <externalId>false</externalId>
+        <label>Description</label>
+        <length>48</length>
+        <required>true</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Internal_Sales__c</fullName>
+        <deleteConstraint>Restrict</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>Account number use for internal sales</description>
+        <externalId>false</externalId>
+        <label>Internal Sales</label>
+        <lookupFilter>
+            <active>true</active>
+            <errorMessage>Must be a Sale Account</errorMessage>
+            <filterItems>
+                <field>Chart_of_Accounts__c.RecordTypeId</field>
+                <operation>equals</operation>
+                <value>Sale</value>
+            </filterItems>
+            <isOptional>false</isOptional>
+        </lookupFilter>
+        <referenceTo>Chart_of_Accounts__c</referenceTo>
+        <relationshipLabel>Parts Stocking Group</relationshipLabel>
+        <relationshipName>InternetSalesAccount</relationshipName>
+        <required>true</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Manufacturer__c</fullName>
+        <deprecated>false</deprecated>
+        <description>New Vehicle Manufacturer</description>
+        <externalId>false</externalId>
+        <inlineHelpText>When used in new vehicle dealerships, this should be set to the Manufacturer of the part.</inlineHelpText>
+        <label>Manufacturer</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Other</fullName>
+                <default>true</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Retail_Non_Taxable__c</fullName>
+        <deleteConstraint>Restrict</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>Non taxable retail sales</description>
+        <externalId>false</externalId>
+        <label>Retail Non-Taxable</label>
+        <lookupFilter>
+            <active>true</active>
+            <errorMessage>Must be a Sale Account</errorMessage>
+            <filterItems>
+                <field>Chart_of_Accounts__c.RecordTypeId</field>
+                <operation>equals</operation>
+                <value>Sale</value>
+            </filterItems>
+            <isOptional>false</isOptional>
+        </lookupFilter>
+        <referenceTo>Chart_of_Accounts__c</referenceTo>
+        <relationshipLabel>Parts Stocking Group (Retail Non-Taxable)</relationshipLabel>
+        <relationshipName>RetailAccountNonTaxable</relationshipName>
+        <required>true</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Retail_Taxable__c</fullName>
+        <deleteConstraint>Restrict</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>Retail Sales account taxable.</description>
+        <externalId>false</externalId>
+        <label>Retail Taxable</label>
+        <lookupFilter>
+            <active>true</active>
+            <errorMessage>Must be a Sale Account</errorMessage>
+            <filterItems>
+                <field>Chart_of_Accounts__c.RecordTypeId</field>
+                <operation>equals</operation>
+                <value>Sale</value>
+            </filterItems>
+            <isOptional>false</isOptional>
+        </lookupFilter>
+        <referenceTo>Chart_of_Accounts__c</referenceTo>
+        <relationshipLabel>Parts Stocking Group (Retail Taxable)</relationshipLabel>
+        <relationshipName>RetailAccountTaxable</relationshipName>
+        <required>true</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Wholesale_Non_Taxable__c</fullName>
+        <deleteConstraint>Restrict</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>Non taxable wholesale sales of Parts</description>
+        <externalId>false</externalId>
+        <label>Wholesale Non-Taxable</label>
+        <lookupFilter>
+            <active>true</active>
+            <errorMessage>Must be a Sale Account</errorMessage>
+            <filterItems>
+                <field>Chart_of_Accounts__c.RecordTypeId</field>
+                <operation>equals</operation>
+                <value>Sale</value>
+            </filterItems>
+            <isOptional>false</isOptional>
+        </lookupFilter>
+        <referenceTo>Chart_of_Accounts__c</referenceTo>
+        <relationshipLabel>Parts Stocking Group (Wholesale Non-Taxable)</relationshipLabel>
+        <relationshipName>WholesaleAccountNonTaxable</relationshipName>
+        <required>true</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Wholesale_Taxable__c</fullName>
+        <deleteConstraint>Restrict</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>Wholesale taxable sales parts accounts</description>
+        <externalId>false</externalId>
+        <label>Wholesale Taxable</label>
+        <lookupFilter>
+            <active>true</active>
+            <errorMessage>Must be a Sale Account</errorMessage>
+            <filterItems>
+                <field>Chart_of_Accounts__c.RecordTypeId</field>
+                <operation>equals</operation>
+                <value>Sale</value>
+            </filterItems>
+            <isOptional>false</isOptional>
+        </lookupFilter>
+        <referenceTo>Chart_of_Accounts__c</referenceTo>
+        <relationshipLabel>Parts Stocking Group (Wholesale Taxable)</relationshipLabel>
+        <relationshipName>WholesaleAccountTaxable</relationshipName>
+        <required>true</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <label>Parts Stocking Group</label>
+    <nameField>
+        <label>Stocking Group</label>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Parts Stocking Group</pluralLabel>
+    <searchLayouts>
+        <lookupDialogsAdditionalFields>Description__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Manufacturer__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Active__c</lookupDialogsAdditionalFields>
+        <lookupFilterFields>NAME</lookupFilterFields>
+        <lookupFilterFields>Manufacturer__c</lookupFilterFields>
+        <lookupFilterFields>Active__c</lookupFilterFields>
+        <searchFilterFields>NAME</searchFilterFields>
+        <searchFilterFields>Manufacturer__c</searchFilterFields>
+        <searchFilterFields>Active__c</searchFilterFields>
+    </searchLayouts>
+    <sharingModel>ReadWrite</sharingModel>
+</CustomObject>

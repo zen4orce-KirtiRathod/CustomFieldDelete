@@ -1,0 +1,137 @@
+<apex:page standardController="dealer__Appraisal__c" extensions="dealer.StockInInspection" renderAs="PDF" >
+
+
+<div>
+    <table border="0" cellspacing="5" cellpadding="3">
+        <tr>
+            <td align="left" width="30%"><apex:image id="businessLogo" url="/{!InvoiceLogo}" width="170"/></td>
+	        <td align="left" >
+			    <table cellpadding="0" cellspacing="0" class="tble0" border="0" valign="top">
+			        <tr style="font-size: 26px;">
+			            <td colspan="2" class="tr0 td1">Customer Appraisal Summary </td>
+			        </tr>
+			         <tr style="font-size: 12px;">
+			            <td colspan="2">{!serviceVeh.Year__c} {!serviceVeh.Make__c} {!serviceVeh.Carline__c} {!serviceVeh.Trim_Level__c} - {!serviceVeh.dealer__VIN__c}</td>
+			        </tr>
+			    </table>
+			</td>
+	    </tr>
+    </table>
+
+</div>
+<br/>
+
+<div>
+    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+       <tr>
+           <td width="50%" valign="top"> 
+                <table cellpadding="2" cellspacing="3"  border="0">
+                   <tr><td colspan="2" align="center" style="font-size:16px;font-weight:bold;">Customer Information</td></tr>
+                   <tr><td align="right" width="40%">Name:</td><td style="border-bottom: 1px solid">{!serviceVeh.dealer__Veh_Owner_Contact__r.Name}</td></tr>
+                   <tr><td align="right">Address:</td><td style="border-bottom: 1px solid">{!serviceVeh.dealer__Veh_Owner_Contact__r.MailingStreet} </td></tr>
+                   <tr><td align="right">City:</td><td style="border-bottom: 1px solid">{!serviceVeh.dealer__Veh_Owner_Contact__r.MailingCity}</td></tr>
+                   <tr><td align="right">State/Region:</td><td style="border-bottom: 1px solid">{!serviceVeh.dealer__Veh_Owner_Contact__r.MailingState}</td></tr>
+                   <tr><td align="right">Postal Code:</td><td style="border-bottom: 1px solid">{!serviceVeh.dealer__Veh_Owner_Contact__r.MailingPostalCode}</td></tr>
+                   <tr><td align="right">Email:</td><td style="border-bottom: 1px solid">{!serviceVeh.dealer__Veh_Owner_Contact__r.Email}</td></tr>
+                   <tr><td align="right">Phone (Home):</td><td style="border-bottom: 1px solid">{!serviceVeh.dealer__Veh_Owner_Contact__r.HomePhone}</td></tr>
+                   <tr><td align="right">Phone (Work):</td><td style="border-bottom: 1px solid">{!serviceVeh.dealer__Veh_Owner_Contact__r.Phone}</td></tr>
+                   <tr><td align="right">Phone (Mobile):</td><td style="border-bottom: 1px solid">{!serviceVeh.dealer__Veh_Owner_Contact__r.MobilePhone}</td></tr> 
+                </table>
+           </td>
+           <td >   
+                <table cellpadding="2" cellspacing="3"  border="0">
+                   <tr><td colspan="2" align="center" style="font-size:16px;font-weight:bold;">Vehicle Information</td></tr>
+                   <tr><td align="right" width="40%">VIN:</td><td style="border-bottom: 1px solid">{!serviceVeh.dealer__VIN__c}</td></tr>
+                   <tr><td align="right">Year:</td><td style="border-bottom: 1px solid">{!serviceVeh.Year__c}</td></tr>
+                   <tr><td align="right">Make:</td><td style="border-bottom: 1px solid">{!serviceVeh.Make__c}</td></tr>
+                   <tr><td align="right">Model:</td><td style="border-bottom: 1px solid">{!serviceVeh.Carline__c}</td></tr>                   
+                   <tr><td align="right">Series:</td><td style="border-bottom: 1px solid">{!serviceVeh.Trim_Level__c}</td></tr>
+                   <tr><td align="right">Odometer:</td><td style="border-bottom: 1px solid">{!serviceVeh.Last_Odometer__c}</td></tr>
+                   <tr><td align="right">Interior Color:</td><td style="border-bottom: 1px solid">{!serviceVeh.dealer__Int_Color__c}</td></tr>
+                   <tr><td align="right">Exterior Color:</td><td style="border-bottom: 1px solid">{!serviceVeh.Dealer__Ext_Color__c}</td></tr>
+                   <tr><td align="right">Transmission:</td><td style="border-bottom: 1px solid">{!serviceVeh.Transmission_Type__c}</td></tr>
+                   <tr><td align="right">Condition:</td><td style="border-bottom: 1px solid"></td></tr> 
+                </table>
+           </td>
+       </tr>    
+    </table>
+</div>
+
+<!-- ----------------------------------------- -->
+    <br/>
+        <hr/>
+    <br/>
+<!-- ----------------------------------------- --> 
+<div>
+    <table cellpadding="0" cellspacing="2">   
+        <tr><td colspan="2" style="font-size:16px;font-weight:bold;">Additional Information</td></tr>
+        <tr><td valign="top" style="font-weight:bold;">Comments:</td>
+            <td>{!inspection.Internal_Comments__c}</td>
+        </tr>
+    </table> 
+</div>
+
+<!-- -------------------- -->
+    <br/>
+    <hr/>
+<!-- -------------------- -->
+
+ <div>
+      <table border="1" cellpadding="0" cellspacing="0" width="100%" >
+          
+          <apex:variable value="{!0}" var="rowNum" />
+               <tr >
+                      <th align="center" width="5%">S.No</th>
+                      <th align="center" width="20%">Repair Type</th>
+                      <th align="center" width="20%">Repair_Description</th>
+                      <th align="center" width="25%">Notes</th>
+                      <th align="center" width="18%">Repair Estimate</th>
+              </tr>  
+          <apex:repeat value="{!InspectionReportLines}" var="line">
+              <apex:variable var="rowNum" value="{!rowNum + 1}"/>
+              <tr>
+                  <td align="center" width="5%"><apex:outputText value="{!rowNum}" /></td>
+                  <td align="center" width="20%"><apex:outputField value="{!line.dealer__Repair_Type__c}" /></td>
+                  <td align="center" width="20%"><apex:outputField value="{!line.dealer__Repair_Description__c}" /></td>
+                  <td align="center" width="25%"><apex:outputField value="{!line.dealer__Notes__c}" /></td>
+                  <td align="center" width="18%"><apex:outputField value="{!line.dealer__Repair_Estimate__c}" /></td>
+              </tr>   
+          </apex:repeat>
+      </table>
+ </div>
+ <!-- -------------------- -->
+    <br/>
+ <!-- -------------------- -->  
+ <div>
+   <table cellpadding="0" cellspacing="3" border="0" width="100%">
+      <tr>
+        <td align="right">Salesperson: </td><td style="border-bottom: 1px solid"><apex:outputField value="{!sup.dealer__Salesperson_1__c}" style="text-decoration:none;"/></td> 
+        <td align="right">Appraisal Date: </td>
+        <td style="border-bottom: 1px solid">
+        	<apex:outputText value="{0,date,MM'/'dd'/'yyyy}">
+			    <apex:param value="{!appraisal.dealer__Appraisal_Date__c}" /> 
+			</apex:outputText>
+        </td>
+        <td align="right">Reconditioning Total Amount: </td><td style="border-bottom: 1px solid">{!ReconditioningTotalCost}</td>
+      </tr>
+   </table>
+ </div>
+ 
+ <!-- -------------------- -->
+    <br/>
+    <br/>
+    <br/>
+ <!-- -------------------- -->
+
+ 
+ <div>
+   <table boder="1" cellpadding="0" cellspacing="0" style="font-size:19px;" width="100%" >
+      <tr>
+        <td align="right" width="25%">Appraiser:</td><td width="25%"><apex:outputField value="{!appraisal.OwnerId}" style="text-decoration:none;" /></td>
+        <td align="right" width="25%">Appraisal Amount:</td ><td width="25%">{!appraisal.Appraised_Value__c}</td>
+      </tr>
+   </table>
+ </div>
+ 
+ 
+</apex:page>

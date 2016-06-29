@@ -1,0 +1,45 @@
+<apex:page standardController="dealer__Service_Repair_Order__c" extensions="dealer.ServiceRepairOrder_EXT" id="SelectJobsforPrint">
+    <script type="text/javascript">
+    function noenter(ev) { 
+     	if (window.event && window.event.keyCode == 13 || ev.which == 13) {  return false; } else { return true; }
+    }
+    </script>
+    <apex:sectionHeader title="{!dealer__Service_Repair_Order__c.Name}" subtitle="Technician Job Card" description="Select job lines you would like assign to a specific technician, and print them a hard card."/>
+    <apex:form id="frm">
+        <apex:inputHidden id="techUser_lkid" value="{!techId}" />
+        <apex:pageBlock title="Technician Job Card Assignemnt">
+        	<apex:pageBlockButtons location="top">
+            	<apex:commandButton action="{!assignTech}" value="Assign Technician"/>
+                <apex:commandLink action="{!openTechCard}" value="Print Tech Job Card" target="_blank" styleClass="btn" style="height: 22px;text-decoration:none;" />
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection >
+            	<apex:outputField value="{!dealer__Service_Repair_Order__c.Name}"/>
+                <apex:inputText id="techUser" onkeypress="return noenter(event);" label="Technician" />
+                <apex:outputField value="{!dealer__Service_Repair_Order__c.dealer__Vehicle__c}"/>
+                <apex:outputField value="{!dealer__Service_Repair_Order__c.dealer__Tag__c}"/>
+                <apex:outputField value="{!dealer__Service_Repair_Order__c.Vehicle__r.dealer__VIN__c}" />
+                		<c:AutoComplete objectname="User" 
+                        additionalfield="" 
+                        resultfields="" 
+                        autocomplete_textbox="{!$Component.techUser}"/>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+        <apex:pageBlock >
+        	<apex:pageBlockSection title="Service Job Lines" columns="1" collapsible="false">
+            	<apex:pageBlockTable value="{!JobList}" var="j" id="jobsTable">
+					<apex:column >
+                    	<apex:inputCheckbox value="{!j.selected}"/>
+                	</apex:column>
+                    <apex:column value="{!j.jL.dealer__Line_Number__c}" />
+                    <apex:column value="{!j.jL.dealer__Labor_Type__c}" />
+                    <apex:column value="{!j.jL.dealer__Stat__c}" /> 
+                    <apex:column value="{!j.jL.dealer__Operation_Code_Description__c}" />
+                    <apex:column value="{!j.jL.dealer__Concern__c}" />
+                    <apex:column value="{!j.jL.dealer__Cause__c}" />
+                    <apex:column value="{!j.jL.dealer__Correction__c}" />
+                    <apex:column value="{!j.jL.dealer__Technician__c}" />
+                </apex:pageBlockTable>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

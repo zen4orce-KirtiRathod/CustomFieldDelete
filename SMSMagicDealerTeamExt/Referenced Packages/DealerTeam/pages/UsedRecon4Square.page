@@ -1,0 +1,112 @@
+<apex:page standardController="dealer__Service_Estimate__c" extensions="dealer.ServiceEstimate_EXT" id="x4Sqare" title="Reconditioning Worksheet" showChat="true">
+    <head>
+      <apex:includeScript value="{!URLFOR($Resource.dealer__Fancybox206, 'lib/jquery-1.7.2.min.js')}" />
+	  <apex:includeScript value="{!URLFOR($Resource.dealer__Fancybox206, 'lib/jquery.mousewheel-3.0.6.pack.js')}" />
+	  <apex:includeScript value="{!URLFOR($Resource.dealer__Fancybox206, 'source/jquery.fancybox.js?v=2.0.6')}" />
+	  
+	  <apex:stylesheet value="{!URLFOR($Resource.dealer__Fancybox206,'source/jquery.fancybox.css?v=2.0.6')}"/>
+	  
+	  <apex:stylesheet value="{!URLFOR($Resource.dealer__Fancybox206,'source/helpers/jquery.fancybox-buttons.css?v=1.0.2')}"/>
+	  <apex:includeScript value="{!URLFOR($Resource.dealer__Fancybox206, 'source/helpers/jquery.fancybox-buttons.js?v=1.0.2')}" />
+	  
+	  <apex:stylesheet value="{!URLFOR($Resource.dealer__Fancybox206,'source/helpers/jquery.fancybox-thumbs.css?v=1.0.2')}"/>
+	  <apex:includeScript value="{!URLFOR($Resource.dealer__Fancybox206, 'source/helpers/jquery.fancybox-thumbs.js?v=1.0.2')}" />
+	  
+	  <apex:includeScript value="{!URLFOR($Resource.dealer__Fancybox206, 'source/helpers/jquery.fancybox-media.js?v=1.0.0')}" />
+	  
+	  <script type="text/javascript">
+	  	var $j = jQuery.noConflict();
+	  	$j(document).ready(function() {
+			$j(".fancybox").fancybox({
+				 'type' : 'image',
+				openEffect	: 'none',
+				closeEffect	: 'none'
+			});
+		});
+	  </script>
+	  
+    </head>
+    <apex:sectionHeader title="Recon" subtitle="Used Vehicle Reconditioning Worksheet" />
+    <chatter:feedWithFollowers entityId="{!dealer__Service_Estimate__c.Id}" />
+    <apex:form id="x4S"> 
+            <apex:pageBlock id="commandItems" mode="maindetail">
+                <apex:pageBlockButtons location="top">
+                    <apex:commandButton action="{!finalize}" value="Finalize Reconditioning Work"  disabled="{!NOT(ISBLANK(dealer__Service_Estimate__c.dealer__Finish_Date__c))}"/>  
+                </apex:pageBlockButtons>
+            </apex:pageBlock>
+
+            
+        	<apex:detail subject="{!se}" title="false" relatedList="false"/>
+          
+             
+             <apex:pageBlock id="x4Scontent" title="Line Items">
+             
+             <apex:pageBlockButtons location="top">
+                <apex:commandButton action="{!addService}" value="Add Service Work" />
+                <apex:commandButton action="{!addPart}" value="Add Part(s)" />
+                <apex:commandButton action="{!addSublet}" value="Add Sublet" />
+                <apex:commandButton action="{!addCosmetic}" value="Add Cosmetic" />
+             </apex:pageBlockButtons>
+    	
+    		<!-- Estiamte Lines Labor -->
+    		<apex:variable var="t" value="{!0}" />
+    		<apex:outputText styleClass="mainTitle"><b>Estimate Lines</b></apex:outputText>
+    		<apex:pageBlockTable value="{!EstimateLines}" var="e">
+  					<apex:column rendered="{!NOT(ISBLANK(e.dealer__Labor_Operation__c))}"><apex:outputLink value="/apex/dealer__serviceestimateserviceline?sId={!dealer__Service_Estimate__c.Id}&id={!e.Id}">Edit</apex:outputLink></apex:column>
+	    			<apex:column value="{!e.dealer__Labor_Operation__c}" rendered="{!NOT(ISBLANK(e.dealer__Labor_Operation__c))}" width="200px;"/>
+	    			<apex:column value="{!e.dealer__Description__c}" rendered="{!NOT(ISBLANK(e.dealer__Labor_Operation__c))}" width="300px;"/>
+	    			<apex:column value="{!e.dealer__Part_Description__c}" rendered="{!NOT(ISBLANK(e.dealer__Labor_Operation__c))}" width="300px;"/>
+					<apex:column value="{!e.dealer__Labor__c}" rendered="{!NOT(ISBLANK(e.dealer__Labor_Operation__c))}" width="150px;"/>
+					<apex:variable var="t" value="{!t + e.dealer__Labor__c}" rendered="{!NOT(ISBLANK(e.dealer__Labor_Operation__c))}" /> 
+    		</apex:pageBlockTable>
+    		
+    		<apex:pageBlockTable value="{!EstimateLines}" var="e">
+    				<apex:column rendered="{!NOT(ISBLANK(e.dealer__Part_Description__c))}"><apex:outputLink value="/apex/dealer__serviceestimatepartline?sId={!dealer__Service_Estimate__c.Id}&id={!e.Id}">Edit</apex:outputLink></apex:column>
+    		    	<apex:column value="{!e.dealer__Part_Item__c}" rendered="{!NOT(ISBLANK(e.dealer__Part_Description__c))}" width="200px;"/>
+    				<apex:column value="{!e.dealer__Part_Description__c}" rendered="{!NOT(ISBLANK(e.dealer__Part_Description__c))}" width="300px;"/>
+    				<apex:column value="{!e.dealer__Description__c}" rendered="{!NOT(ISBLANK(e.dealer__Part_Description__c))}" width="300px;" />
+    				<apex:column value="{!e.dealer__Parts__c}" rendered="{!NOT(ISBLANK(e.dealer__Part_Description__c))}" width="150px;"/>
+					<apex:variable var="t" value="{!t + e.dealer__Parts__c}" rendered="{!NOT(ISBLANK(e.dealer__Part_Description__c))}" />
+    		</apex:pageBlockTable>
+    		
+    		<apex:pageBlockTable value="{!EstimateLines}" var="e">
+    				<apex:column rendered="{!NOT(ISBLANK(e.dealer__Sublet_Work__c))}"><apex:outputLink value="/apex/dealer__serviceestimatesubletline?sId={!dealer__Service_Estimate__c.Id}&id={!e.Id}">Edit</apex:outputLink></apex:column>
+    		    	<apex:column value="{!e.dealer__Sublet_Work__c}" rendered="{!NOT(ISBLANK(e.dealer__Sublet_Work__c))}" width="200px;"/>
+    		    	<apex:column value="{!e.dealer__Repair_Type__c}" rendered="{!NOT(ISBLANK(e.dealer__Sublet_Work__c))}" width="300px;"/>
+    		    	<apex:column value="{!e.dealer__Vendor__c}" rendered="{!NOT(ISBLANK(e.dealer__Sublet_Work__c))}" width="300px;"/>
+    				<apex:column value="{!e.dealer__Sublet_Charges__c}" rendered="{!NOT(ISBLANK(e.dealer__Sublet_Work__c))}" width="150px;"/>
+					<apex:variable var="t" value="{!t + e.dealer__Sublet_Charges__c}" rendered="{!NOT(ISBLANK(e.dealer__Sublet_Work__c))}" />
+    		</apex:pageBlockTable>
+    		
+    		<apex:pageBlockTable value="{!EstimateLines}" var="e">
+    				<apex:column rendered="{!NOT(ISBLANK(e.dealer__Cosmetic_Estimate__c))}"><apex:outputLink value="/apex/dealer__serviceestimatecosmeticlines?sId={!dealer__Service_Estimate__c.Id}&id={!e.Id}">Edit</apex:outputLink></apex:column>
+    		    	<apex:column value="{!e.dealer__Description__c}" rendered="{!NOT(ISBLANK(e.dealer__Cosmetic_Estimate__c))}" width="200px;"/>
+    				<apex:column value="{!e.dealer__Repair_Type__c}"  rendered="{!NOT(ISBLANK(e.dealer__Cosmetic_Estimate__c))}" width="300px;"/>
+    				<apex:column value="{!e.dealer__Vendor__c}"  rendered="{!NOT(ISBLANK(e.dealer__Cosmetic_Estimate__c))}" width="300px;"/>
+    				<apex:column value="{!e.dealer__Cosmetic_Estimate__c}" rendered="{!NOT(ISBLANK(e.dealer__Cosmetic_Estimate__c))}" width="150px;"/>
+					<apex:variable var="t" value="{!t + e.dealer__Cosmetic_Estimate__c}" rendered="{!NOT(ISBLANK(e.dealer__Cosmetic_Estimate__c))}" />
+    		</apex:pageBlockTable>
+    		
+    		
+    		<!-- Get Repair Order Lines for this Service Vehicle --> 
+    		<apex:outputText styleClass="mainTitle"><b>Repair Lines</b></apex:outputText>       
+			<apex:pageBlockTable value="{!ROJobLines}" var="r">
+				<apex:column value="{!r.dealer__Stat__c}" />
+				<apex:column ><apex:outputLink value="/{!r.dealer__Repair_Order_Id__c}"><apex:outputField value="{!r.dealer__Repair_Order__c}" /></apex:outputLink> </apex:column>
+				<apex:column value="{!r.dealer__Line_Number__c}" />
+				<apex:column value="{!r.dealer__Standard_Operation_Code__r.dealer__Op_Code__c}" />
+				<apex:column value="{!r.dealer__Standard_Operation_Code__r.dealer__Op_Code_Description__c}" />
+				<apex:column value="{!r.dealer__CustomerConcern__c}" />
+				<apex:column value="{!r.dealer__Cause__c}" />
+				<apex:column value="{!r.dealer__Correction__c}" />
+				<apex:column value="{!r.dealer__Line_Total__c}" />
+			</apex:pageBlockTable>
+			
+            </apex:pageBlock>
+        
+    <apex:outputPanel id="blankPanel"></apex:outputPanel>
+    </apex:form>
+    <apex:relatedList list="OpenActivities" />
+    <apex:relatedList list="ActivityHistories" id="activityList" />
+    <apex:relatedList list="NotesAndAttachments" />
+</apex:page>

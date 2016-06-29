@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>List</customSettingsType>
+    <description>Table to route leads to the correct company number</description>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>Company_Number__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Assigned company number to the Name field on this routing table.</description>
+        <externalId>false</externalId>
+        <label>Company Number</label>
+        <length>25</length>
+        <required>true</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Lead_Type__c</fullName>
+        <defaultValue>&quot;Internet&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Lead Type to be set on the Sales Up records created by the Internet Lead Parsing Engine</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Lead Type to be set on the Sales Up records created by the Internet Lead Parsing Engine</inlineHelpText>
+        <label>Lead Type</label>
+        <length>48</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LocalName__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Local part of the email.  For example support@dealerteam has a local name of &quot;support&quot;</inlineHelpText>
+        <label>Local Name</label>
+        <length>48</length>
+        <required>true</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>RoutedEmail__c</fullName>
+        <deprecated>false</deprecated>
+        <description>This is the email address that is routing the inbound lead detail</description>
+        <externalId>false</externalId>
+        <label>RoutedEmail</label>
+        <required>true</required>
+        <trackTrending>false</trackTrending>
+        <type>Email</type>
+        <unique>true</unique>
+    </fields>
+    <label>IntercompanyLeadRouting</label>
+    <visibility>Public</visibility>
+</CustomObject>

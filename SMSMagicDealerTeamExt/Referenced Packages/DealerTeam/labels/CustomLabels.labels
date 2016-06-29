@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>DeskingTab1</fullName>
+        <categories>Desking</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>deal screen tab 1</shortDescription>
+        <value>Purchase</value>
+    </labels>
+    <labels>
+        <fullName>DeskingTab10</fullName>
+        <categories>Desking</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>deal screen tab 10</shortDescription>
+        <value>Forms</value>
+    </labels>
+    <labels>
+        <fullName>DeskingTab11</fullName>
+        <categories>Desking</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>deal screen tab 11</shortDescription>
+        <value>Delivery</value>
+    </labels>
+    <labels>
+        <fullName>DeskingTab2</fullName>
+        <categories>Desking</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>deal screen tab 2</shortDescription>
+        <value>Vehicle</value>
+    </labels>
+    <labels>
+        <fullName>DeskingTab3</fullName>
+        <categories>Desking</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>deal screen tab 3</shortDescription>
+        <value>Customer</value>
+    </labels>
+    <labels>
+        <fullName>DeskingTab4</fullName>
+        <categories>Desking</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>deal screen tab 4</shortDescription>
+        <value>Trade(s)</value>
+    </labels>
+    <labels>
+        <fullName>DeskingTab5</fullName>
+        <categories>Desking</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>deal screen tab 5</shortDescription>
+        <value>Lender</value>
+    </labels>
+    <labels>
+        <fullName>DeskingTab6</fullName>
+        <categories>Desking</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>deal screen tab 6</shortDescription>
+        <value>Warranty</value>
+    </labels>
+    <labels>
+        <fullName>DeskingTab7</fullName>
+        <categories>Desking</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>deal screen tab 7</shortDescription>
+        <value>Aftermarket</value>
+    </labels>
+    <labels>
+        <fullName>DeskingTab8</fullName>
+        <categories>Desking</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>deal screen tab 8</shortDescription>
+        <value>Insurance</value>
+    </labels>
+    <labels>
+        <fullName>DeskingTab9</fullName>
+        <categories>Desking</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>deal screen tab 9</shortDescription>
+        <value>Fees</value>
+    </labels>
+    <labels>
+        <fullName>Total_Deferred</fullName>
+        <categories>Desking</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Total Deferred</shortDescription>
+        <value>Deferred</value>
+    </labels>
+</CustomLabels>

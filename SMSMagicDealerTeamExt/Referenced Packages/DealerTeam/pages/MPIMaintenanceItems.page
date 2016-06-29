@@ -1,0 +1,365 @@
+<apex:page docType="html" showChat="true" showHeader="false" applyHtmlTag="false" sidebar="false" standardController="dealer__Inspection_Report__c" extensions="dealer.MPI2_EXT">
+<apex:stylesheet value="{!URLFOR($Resource.dealer__Customer_Check,'/css/foundation.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.dealer__Customer_Check,'/css/foundation.min.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.dealer__Customer_Check,'/css/mpi2.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.dealer__Customer_Check,'/css/normalize.css')}" /> 
+    
+    <apex:includescript value="{!URLFOR($Resource.dealer__Customer_Check, '/js/vendor/jquery.js')}"/>
+    <apex:includescript value="{!URLFOR($Resource.dealer__Customer_Check, '/js/vendor/custom.modernizr.js')}"/>
+    <apex:includescript value="{!URLFOR($Resource.dealer__Customer_Check, '/js/foundation/foundation.js')}"/>
+    <apex:includescript value="{!URLFOR($Resource.dealer__Customer_Check, '/js/foundation/foundation.forms.js')}"/>
+    <apex:includescript value="{!URLFOR($Resource.dealer__Customer_Check, '/js/foundation/foundation.abide.js')}"/>
+    <apex:includescript value="{!URLFOR($Resource.dealer__Customer_Check, '/js/foundation/foundation.dropdown.js')}"/>
+    <apex:includescript value="{!URLFOR($Resource.dealer__Customer_Check, '/js/foundation/foundation.reveal.js')}"/>
+
+    <apex:includeScript value="{!$Resource.dealer__consoleFix}" />
+    
+<html class="no-js" lang="en" >
+<!--<![endif]-->
+
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, user-scalable=no"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+<title>Digital MPI Customer Check In</title>
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400' rel='stylesheet' type='text/css'/>
+<script type="text/javascript">
+    $j = jQuery.noConflict();
+    var apptId = '{!serviceAppointment.Id}';
+    
+    
+        function triggerCustomProblem() {
+    
+   		var problem = $j('#customProblem').val();
+    	var sendPass = apptId+':'+problem;
+
+    	dealer.MPI2_EXT.addCustomProblem(sendPass, function(result, event){
+    
+    		if(result===false) {
+    			alert('Uh-oh! Something went wrong. Try again.');
+    		} else {
+            	$j('#addLineContainer').append('<a class="apptItems lineItem"  data-sfid="'+result.Id+'" href="#">'+problem+'</a>');
+            	$j('#customProblem').val('');
+            	$j('#customProblem').attr('placeholder','Thanks! We have added that problem to the appointment.');
+    		}
+    	});
+    };
+    
+    
+    
+    
+       var svcHistory = {!ServiceHistoryJSON};
+    
+    $j(document).ready(function() {
+        
+        			if(svcHistory[0] !== undefined) {
+        
+                        var toAppend = '';
+                        $j.each(svcHistory, function(index) {
+                             var row = svcHistory[index];
+                            
+                            // console.log(row);
+                            var d = new Date(row.opendate);
+                            var n = d.toDateString();
+                            toAppend += '<tr><td>'+row.ronumber+'</td><td>'+n+'</td><td>'+row.advisor+'</td><td>'+row.joblinenumber+'</td><td>'+row.laborcharges+'</td><td>'+row.partscharges+'</td><td>'+row.operation+'</td></tr>';
+                            toAppend += '<tr><td colspan="7">'+row.concern+'</td></tr>';
+                            toAppend += '<tr><td colspan="7">'+row.cause+'</td></tr>';
+                            toAppend += '<tr><td colspan="7">'+row.correction+'</td></tr>';
+                        
+                            //console.log(toAppend);
+                            //alert(toAppend);
+                            //$j('#svcHistoryLines')
+                    
+                        });
+                    
+                        $j('#svcHistoryLines').append(toAppend); 
+                    } else {
+                        $j('#modalStuff').html('<h3>No service history for this vehicle.</h3>');
+                    }
+        });
+    
+    
+    
+    
+    $j(document).ready(function() {
+       
+        
+        
+        
+        
+        
+        
+        
+        
+$j(document).on('click', '.lineItem', function() {
+                      console.log('Test');
+                      $j('.footer').slideUp();
+                      var sfid = $j(this).attr("data-sfid");
+                    	var removeLinePass = apptId+':'+$j(this).attr("data-sfid");
+                        
+                      dealer.MPI2_EXT.apptLineRemove(removeLinePass, function(result, event){
+                          $j('.footer').slideDown();
+                           if(result===false) {
+                               alert('An error occured when deleting this line item!');
+                           } else {
+                               $j('a[data-sfid='+sfid+']').remove();
+                           }
+                       });
+    });
+      
+        
+
+    });
+    
+	function placeJobLine(op, d) {
+        $j('.footer').slideUp();
+		var addLinePass = apptId+':'+op+':'+d;
+        
+        //alert(addLinePass);
+       	dealer.MPI2_EXT.apptLineAdd(addLinePass, function(result, event){
+            $j('.footer').slideDown();
+             if(result===false) {
+                 // Error 
+                 console.log('Error, remoting returned false');
+                 alert('An unknown error occured!');
+             } else {
+                $j('a#'+op).remove();
+                $j('#existingItemsCont').append('<a class="apptItems lineItem" data-sfid="'+result.Id+'" href="#">('+result.dealer__Op_Code__c+') '+result.dealer__Complaint__c+'</a>');
+
+             }
+         });
+	}
+        
+</script>
+</head>
+<body>
+
+
+
+<!-- DISABLE PORTRAIT MODE
+************************************************************************* -->
+<!--div id="portrait">
+<img src="{!URLFOR($Resource.Customer_Check,'/img/rotate-ipad.png')}" width="100" style="margin-top: 200px;"/>
+<h2>Rotate Device to Landscape</h2>
+</div-->
+
+<!-- Wraps All Content -->
+<div id="contentWrap">
+
+
+
+<!-- TOP BAR
+************************************************************************* -->
+
+<div class="topBar">
+    <div class="row">
+    <div class="logo small-6 columns"><a href="/apex/dealer__MPICheckIn"><img src="/{!MPILogo}"   alt="" width="126" height="73"/></a></div>
+    <div class="small-6 columns text-right">
+    <table width="" border="0" align="right" cellpadding="0" cellspacing="0" class="advisor">
+      <tr>
+        <th width="60" align="center" valign="middle" scope="col">
+            <div class="UserPhoto" style="background: url({!me.SmallPhotoUrl}) no-repeat center center; background-size: 100%;">&nbsp;</div>
+            </th>
+        <th align="left" valign="middle" scope="col">
+            <span class="userTitle">Service Advisor</span>
+            <span class="userName"><apex:outputText value="{!me.Name}" /></span>
+        </th>
+        <th valign="middle" scope="col"><div class="Date"><apex:outputText value="{0,date,yyyy.MM.dd}"> <apex:param value="{!NOW()}" /> </apex:outputText></div></th>
+      </tr>
+    </table>
+    </div>
+    </div>
+</div>
+
+
+
+<!-- BODY CONTENT
+************************************************************************* -->
+
+
+<div class="bodyWrap">
+    <div class="row">
+    
+         <!-- Left-hand Column -->
+         <div class="small-8 columns fixedHeight bodyCol">
+           
+         <h2 style="margin-top: 0px; margin-bottom: 0px;">Add Maintenance Items</h2>  <br/>
+         
+         
+			<apex:repeat value="{!maintenanceOps}" var="mi">
+				<a href="#" class="maintBtn" id="{!mi.Id}" onClick="placeJobLine('{!JSENCODE(mi.Id)}', '{!JSENCODE(mi.Op_Code_Description__c)}')"><apex:outputText value="{!mi.dealer__Op_Code_Description__c}" /></a>
+			</apex:repeat> 
+         </div>
+        
+
+        
+        <!-- Right-hand Column -->
+        <div class="small-4 columns fixedHeight bodyCol" id="existingItemsCont" style="border-left: 1px solid #fff; border-bottom: none; border-top: none; background-color: #dfdfdf;">
+        
+                                    <a href="#" class="apptItems customerDetails">
+                            <strong>Customer:&nbsp;</strong><apex:outputText value="{!serviceVehicle.dealer__Veh_Owner_Contact__r.FirstName}" />&nbsp;<apex:outputText value="{!serviceVehicle.dealer__Veh_Owner_Contact__r.LastName}" />
+                        </a>
+            
+                        
+                        <a href="#" class="apptItems customerDetails" data-reveal-id="serviceVehicleModal">
+                            <strong>Vehicle:&nbsp;</strong><apex:outputText value="{!serviceVehicle.dealer__Year__c}" />&nbsp;<apex:outputText value="{!serviceVehicle.dealer__Make__c}" />&nbsp;<apex:outputText value="{!serviceVehicle.dealer__Carline__c}" />
+                        </a>
+           <div id="addLineContainer"> <h3>Visit Summary</h3>
+                        <apex:repeat var="a" value="{!serviceAppointment.dealer__Service_Appointment_Lines__r}">
+                            <a href="#" class="apptItems lineItem" data-sfid="{!a.Id}">(<apex:outputText value="{!a.dealer__Op_Code__c}" />)&nbsp;<apex:outputText value="{!a.dealer__Complaint__c}" /></a>
+                        </apex:repeat>
+            </div>
+        </div>
+        
+    </div><!-- Closes Body Row -->
+</div>
+
+
+
+<!-- FOOTER
+************************************************************************* -->
+
+<apex:form id="mpiNavActions">
+<div class="footer">
+    <div class="row">
+        <div class="small-6 columns">
+        	<apex:commandLink value="< Back" action="{!doItems}" style="text-align: left; padding-left: 15px; background-color: #ccc;" styleClass="btn" />
+        </div>
+        
+        <div class="small-6 columns">
+        	<apex:commandLink action="{!doSummary}" value="Next >" styleClass="btn" style="text-align: right; padding-right: 15px;" />
+        </div>
+    </div>
+</div>
+</apex:form>
+
+
+
+<!-- MODALS
+************************************************************************* -->
+
+
+<!-- Service Intervals 
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+
+<div id="intervals" class="reveal-modal">
+  <h2>Service Intervals</h2>
+  <div class="serviceItems">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+         <thead>
+            <tr style="border-bottom: 1px solid #666;">
+              <th width="110" style="color: #999;">OP CODE</th>
+              <th style="color: #999;">NAME</th>
+              <th width="130" style="color: #999;">ADD SERVICE</th>
+            </tr>
+          </thead>
+          <tr>
+            <td width="110">12345</td>
+            <td>Service Name</td>
+            <td width="130"><a href="#" class="addBtn">+ Add Item</a></td>
+          </tr>
+          <tr>
+            <td width="110">12345</td>
+            <td>Service Name</td>
+            <td width="130"><a href="#" class="addBtn">+ Add Item</a></td>
+          </tr>
+          <tr>
+            <td width="110">12345</td>
+            <td>Service Name</td>
+            <td width="130"><a href="#" class="addBtn">+ Add Item</a></td>
+          </tr>
+          <tr>
+            <td width="110">12345</td>
+            <td>Service Name</td>
+            <td width="130"><a href="#" class="addBtn">+ Add Item</a></td>
+          </tr>
+  </table>
+  </div>
+  
+  
+  
+  <a href="#" class="close-reveal-modal">&#215;</a>
+  <div class="small-6 columns">
+  <a href="#" class="btn close-reveal-modal" 
+  style="background-color: #ccc;font-size: 1.4em;line-height: 1em;top: 0em;right: 0em;color: #fff;font-weight: 400;cursor: pointer;">Cancel</a>
+  </div>
+  <div class="small-6 columns">
+  <a href="#" class="btn">Add Selected Items</a>
+ </div>
+</div>
+
+
+
+<!-- Customer Details
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+
+<div id="serviceVehicleModal" class="reveal-modal" data-reveal=''>
+		
+    <div id="container" class="row"> 
+        <div class="small-12 columns" style="margin-top: 15px;">
+        	<h1>
+                Service History
+            </h1>
+            <div id="modalStuff">
+            
+        
+            <table>
+              <thead>
+                <tr>
+                  <th>RO Number</th>
+                  <th>Date</th>
+                  <th>Advisor</th>
+                  <th>Job #</th>
+                  <th>Labor</th>
+                  <th>Parts</th>
+                  <th>Operation</th>
+                </tr>
+              </thead>
+              <tbody id="svcHistoryLines">
+
+
+              </tbody>
+            </table>
+            
+            </div>        </div>
+
+    </div>
+   
+  	<a href="#" class="close-reveal-modal">&#215;</a>
+    </div>
+
+
+
+<!-- Remove Service Item
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+
+</div> <!-- ENDS class contentWrap -->
+
+
+<!-- FOOTER SCRIPTS
+//////////////////////////////////////////////////////////////////////// -->
+<script>
+    $j(document).foundation();
+</script>
+<style>
+/* Portrait */
+    /*
+@media screen and (orientation:landscape) {
+#portrait { display: none;}
+#contentWrap {visibility:visible;}
+}
+    */
+/* Landscape */
+    /*
+@media screen and (orientation:portrait) {
+#portrait { display: block;}
+#contentWrap {visibility:hidden;}
+}
+#portrait {width: 100%; text-align: center;}
+    */
+</style>
+</body>
+</html>
+
+</apex:page>

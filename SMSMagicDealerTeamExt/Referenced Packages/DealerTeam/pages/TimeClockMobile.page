@@ -1,0 +1,171 @@
+<apex:page showHeader="false" sidebar="false" Controller="dealer.TimeClock_AC" >
+   
+    <apex:stylesheet value="{!URLFOR($Resource.dealer__BootstrapNS,'/bootstrap/css/bootstrap.min.css')}"/>
+
+    <apex:stylesheet value="{!URLFOR($Resource.dealer__BootstrapNS,'/bootstrap/css/dealerteam_bs.css')}"/>
+
+    <!-- FONT-AWESOME -->
+    <apex:stylesheet value="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"/>
+
+    <!-- NS Boostrap Wrapper -->
+    <div id="force" class="wrapper">
+        <apex:form >
+            <div class="row button_wrap">
+
+                <div class="col-sm-2 col-sm-offset-3 hidden-xs">
+                    <h1 class="text-center "><i class="fa fa-clock-o"></i> <span class="time"></span></h1>
+                </div>
+                <div class="col-sm-4">
+
+                	<apex:repeat value="{!timeEntries}" var="te">
+                		<span class="time_block">
+                            <apex:OutputPanel styleClass="time_label" rendered="{!IF( te.type == 'On', true, false)}"><i class="fa fa-fw fa-briefcase">&nbsp;</i></apex:OutputPanel>
+                            <apex:OutputPanel styleClass="time_label" rendered="{!IF(te.type == 'Off', true, false)}"><i class="fa fa-fw fa-cutlery">&nbsp;</i></apex:OutputPanel>
+	                		
+                            <apex:outputtext styleClass="time_label" Value="IN:" />
+	                		<apex:outputtext styleClass="time_value" Value="{!te.inTime}" />
+                            &nbsp;&nbsp;
+                            <apex:outputtext styleClass="time_label" Value="OUT:" />
+                            <apex:outputtext styleClass="time_value" Value="{!te.outTime}" />
+                		</span>
+                		<!-- <apex:OutputPanel rendered="{!NOT(ISBLANK( te.outTime ))}" styleClass="time_block"> -->
+
+                		<!-- </apex:outputPanel> -->
+                	</apex:repeat>
+
+                </div>
+
+            </div>
+            
+            <div class="row button_wrap">
+                <div class="col-sm-6 col-sm-offset-3">
+
+                    <apex:OutputPanel rendered="{!clockin1}" layout="none"  >
+                        <a href="#" class="btn btn-primary btn-lg btn-block clockin"><i class="fa fa-sign-in fa-lg"></i>&nbsp; Clock-In</a>
+                        <apex:actionFunction action="{!clockin}" name="clockin" />
+                    </apex:OutputPanel>
+
+                    <apex:OutputPanel rendered="{!LunchStart1}" layout="none"  >
+                        <a href="#" class="btn btn-primary btn-lg btn-block lunchStart"><i class="fa fa-cutlery fa-lg"></i>&nbsp; Start Lunch</a>
+                        <apex:actionFunction action="{!lunchStart}" name="lunchStart" />
+                    </apex:OutputPanel>
+
+                    <apex:OutputPanel rendered="{!LunchEnd1}" layout="none"  >
+                        <a href="#" class="btn btn-primary btn-lg btn-block lunchEnd"><i class="fa fa-cutlery fa-lg"></i>&nbsp; End Lunch</a>
+                        <apex:actionFunction action="{!lunchEnd}" name="lunchEnd" />
+                    </apex:OutputPanel>
+
+                    <apex:OutputPanel rendered="{!clockout1}" layout="none"  >
+                        <a href="#" class="btn btn-primary btn-lg btn-block clockout"><i class="fa fa-sign-out fa-lg"></i>&nbsp; Clock-Out</a>
+                        <apex:actionFunction action="{!clockout}" name="clockout" />
+                    </apex:OutputPanel>
+
+                </div>
+            </div>
+
+        </apex:form>
+
+    </div>
+
+    <script type="text/javascript">
+
+        if (typeof(moment) == 'undefined') {
+            document.write('<sc' + 'ript type="text/javascript" src="{!URLFOR($Resource.dealer__MomentJS)}"></scr' + 'ipt>');
+        }
+
+
+        var jQueryScriptOutputted = false;
+        function initJQuery() {
+            
+            //if the jQuery object isn't available
+            if (typeof(jQuery) == 'undefined') {
+            
+                if (! jQueryScriptOutputted) {
+                    //only output the script once..
+                    jQueryScriptOutputted = true;
+                    
+                    //output the script (load it from google api)
+                    document.write('<sc' + 'ript type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></scr' + 'ipt>');
+                }
+                setTimeout("initJQuery()", 50);
+            } else {
+                $jq = jQuery.noConflict();
+                  
+                $jq(function() {  
+                    startTime();
+
+                    // Click Handlers for clock in buttons.
+                    $jq('.clockin').click( function(e){ e.preventDefault; clockin(); });
+                    $jq('.lunchStart').click( function(e){ e.preventDefault; lunchStart(); });
+                    $jq('.lunchEnd').click( function(e){ e.preventDefault; lunchEnd(); });
+                    $jq('.clockout').click( function(e){ e.preventDefault; clockout(); });
+
+
+                    function startTime() {
+                        $jq('.time').text( moment().format('hh:mm:ss') );
+
+                        // Start the timer loop
+                        var t = setTimeout(startTime, 1000);
+                    }
+
+                });
+            }
+                    
+        }
+        initJQuery();
+
+
+    </script>
+    <style type="text/css">
+        .wrapper {
+            width: 100%;
+        }
+
+        .button_wrap{
+            margin-top: 20px;
+        }
+
+        #force .button_wrap .btn {
+        	margin-bottom: 1em;
+        }
+
+        .time_block {
+            display: block;
+        }
+
+        .time_label {
+            color: green;
+            font-size:1em;
+        }
+
+        .time_value {
+            font-size: 1em;
+        }
+
+        #force .btn {
+            font-size: 1.25em;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+		/** Responsive CSS **/
+		@media (min-width: 768px) { 
+
+	        #force .btn {
+	            font-size: 2.25em;
+	        }	
+			
+	        .time_label {
+	            font-size: 1.55em;
+	        }
+
+	        .time_value {
+	            font-size: 1.55em;
+	        }
+
+		}
+
+    </style>
+</apex:page>

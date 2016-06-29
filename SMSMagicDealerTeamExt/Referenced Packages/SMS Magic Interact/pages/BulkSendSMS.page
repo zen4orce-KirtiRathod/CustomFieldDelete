@@ -1,0 +1,341 @@
+<apex:page controller="smagicinteract.BulkSMSController" tabStyle="SM_Home__tab"  >
+<apex:includeScript value="/soap/ajax/15.0/connection.js"/>
+<apex:includeScript value="/soap/ajax/15.0/apex.js"/>
+<apex:includeScript value="{!$Resource.smagicinteract__BulkSMSJS}"/>
+<apex:includeScript value="{!URLFOR($Resource.smagicinteract__smJQuery, '/js/jquery-1.10.2.js')}"/>
+
+<style type="text/css">
+        .custPopup{
+            background-color: white;
+            border-width: 1px;
+            border-style: solid;
+            border-color: #000000;
+            z-index: 9999;
+            padding:10px;
+            position: absolute;
+            width: 350px;
+            left:40%;
+            top:250px;
+        }
+        .popupBackground{
+            background-color:black;
+            opacity: 0.20;
+            filter: alpha(opacity = 20);
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 9998;
+        }  .apexp .bPageBlock .detailList {
+        width: inherit;
+        }
+        
+                body .bPageBlock .pbBody .labelCol, body .bPageBlock .pbBody .dataCol, body .bPageBlock .pbBody .data2Col, body .print .topics-label, body .print .topics-list {
+		    padding-top: 5px;
+		    padding-bottom: 5px;
+		    padding-left: 0px;
+   			padding-right: 0px;
+		    word-wrap: break-word;
+		    white-space: pre-line;
+		    
+		}
+        
+        .apexp .detailList .list .headerRow th {
+		    border-bottom: 2px solid #ccc;
+		    white-space: pre-wrap;
+		    word-wrap: break-word;
+		    word-break: break-word;
+		}
+				
+		.apexp .bPageBlock .detailList table.unrelatedTableStyleClass {
+			table-layout: fixed; 
+			width: 40%;
+		}
+        
+        .inputSearch {
+            max-width: 99%;
+        }
+        
+        body .pbBody table.list tr.headerRow td, body .pbBody table.list tr.headerRow th {
+		    padding: 2px 2px 2px 2px;
+		}
+		
+		.apexp .detailList .list .headerRow .rowNoHeaderClass {
+			width:6%;
+		}
+		.apexp .detailList .list .headerRow .unrelObjectHeaderClass {
+			width: 20%;
+		}
+		.apexp .detailList .list .headerRow .inputSearchHeaderClass {
+			width: 20%;
+		}
+		.apexp .detailList .list .headerRow .SearchImgHeaderClass {
+			width: 13%;
+		}
+		.apexp .detailList .list .headerRow .recordNameHeaderClass {
+		    width: 27%;
+		}
+		.apexp .detailList .list .headerRow .removeHeaderClass {
+			width: 15%;
+		}
+		body .pbBody table.list tr.dataRow td.SearchImgClass {
+			vertical-align:middle;
+			text-align:center;
+		} 
+		body .pbBody table.list tr.dataRow td.removeClass{
+			vertical-align:middle;
+			text-align:center;
+		}
+        
+
+        
+    </style>
+<script>
+
+function toggle(btn) {
+
+    var isProcessable = {!disableMe} ;
+    
+    if(isProcessable) return;
+    
+    btn.disabled = !btn.disabled;
+    
+}
+
+ $( document ).ready(function() {
+     var selectedDefaultSenderId = '{!JSINHTMLENCODE(defaultSenderId)}';
+     document.getElementById("j_id0:formId:main:sectionSenderId:selectedSenderId").value = selectedDefaultSenderId;
+ });
+ 
+ 
+$(document).on("keypress", ":input:not(textarea)", function(event) {
+    if (event.keyCode == 13) {
+        event.preventDefault();
+    }
+});
+
+</script>
+<c:Expired_Message_Component isPanelVisible="{! NOT(isVisible) }"/>
+
+<apex:outputPanel rendered="{!!$Permission.smagicinteract__AllowToSendBulkMessage}"> 
+ <div style="width:700px;margin:20px auto; text-align:center;line-height:40px;" >
+  <h1 style="font-size:30px;">{!$Label.CAMP_MNG_CANNOT_SND_MSG} </h1> <br/> 
+ <h5 style="font-size:15px;">{!$Label.CAMP_MNG_PLZ_CNTCT_ADMN}</h5> <br/>             
+  </div>
+</apex:outputPanel>
+
+<apex:outputPanel id="veryOutermostPanel" rendered="{!$Permission.smagicinteract__AllowToSendBulkMessage}" > 
+
+
+ 
+<apex:outputPanel rendered="{!If(isVisible && NOT(isSendSMSAllowable) ,true,false)}"> 
+ <div style="width:700px;margin:20px auto; text-align:center;line-height:40px;" > 
+        <h1 style="font-size:30px;">{!$Label.PACKAGE_MSG1} </h1> <br/> 
+        <h5 style="font-size:15px;">{!$Label.PACKAGE_MSG2}     </h5> <br/>            
+  </div>
+</apex:outputPanel>
+
+<apex:outputPanel id="outermostPanel" rendered="{!isSendSMSAllowable}" > 
+<apex:form id="formId">
+<apex:pageMessages id="pageMessagesSection"/>
+ 
+<apex:pageBlock id="main" title="{!$Label.BULK_SMS_TITLE}" helpTitle="{!$Label.HELP_MSG}" helpUrl="/apex/SMSMagicHelp?from=BulkSendSMS">
+
+<apex:outputPanel styleClass="popupBackground" rendered="{!isConfigurationDone}" />
+<apex:outputPanel styleClass="custPopup" layout="block" rendered="{!isConfigurationDone}"  >
+<div id="popupMessageHeader" style="width:100%; height:10%; background-color:#8BBEC1;">
+       <div title="" style="color:white; text-align:left; font-family:sans-serif; font-weight:bold; vertical-align: middle; padding-top: 5px; padding-bottom: 5px; padding-left: 5px;"> {!$Label.CONFG_SMS_MAGIC}  </div> 
+</div> 
+       <br /><br />
+       <apex:outputPanel style="font-size:15px;">
+{!$Label.SETUP_WIZARD_MSG} <br/><br/><br/><br/>
+
+       </apex:outputPanel>
+       <apex:outputPanel style="margin-left:40%">
+                <apex:commandButton title="{!$Label.OK}" value="  {!$Label.OK}  " action="{!openSetUpWizard}"/>
+       </apex:outputPanel>
+</apex:outputPanel>
+
+<apex:pageBlockSection id="sectionSenderId" title="{!$Label.SENDER_ID}" rendered="{!isRegistered}">
+<apex:facet name="header">
+<h3>{!$Label.SENDER_ID}</h3>
+</apex:facet>
+	
+
+      <apex:selectList size="1"  value="{!senderId}" id="selectedSenderId">
+    <apex:selectOptions value="{!senderIds}"/>
+    </apex:selectList>
+</apex:pageBlockSection>
+
+
+<apex:pageBlockSection id="sectionSenderName" title="{!$Label.USERS}" rendered="{!showUserDropDown}">
+<apex:facet name="header">
+    <h3>{!$Label.USERS}</h3>
+</apex:facet>
+
+    <apex:selectList size="1"  value="{!userId}" title="{!$Label.CHOOSE_SENDER}" style="max-width:150px; width:150px;">
+    <apex:selectOptions value="{!senderList}" />
+    </apex:selectList>
+</apex:pageBlockSection>
+
+<apex:pageBlockSection id="RecipientsList" columns="2" title="Selected Numbers" rendered="{!isRegistered}">    
+<apex:facet name="header">
+    <h3>{!$Label.SELECTED_NUMBERS}</h3>
+</apex:facet>
+
+    <apex:pageBlockTable value="{!smsObjects}" var="item" id="smslist">
+        <apex:column value="{!item.name}"> 
+            <apex:facet name="header" ><apex:outputText value="{!$Label.LABEL_NAME}" /></apex:facet>
+        </apex:column>
+        
+        <apex:column value="{!item.mobilenumber}"> 
+            <apex:facet name="header"><apex:outputText value="{!$Label.LABEL_MOBILE_PHONE}" /></apex:facet>
+        </apex:column>
+        
+        <apex:column value="{!item.phoneFieldType}"> 
+       
+            <apex:facet name="header"><apex:outputText value="{!$Label.LABEL_PHONE_FIELD_TYPE}" /></apex:facet>
+        </apex:column>
+
+        <apex:column value="{!item.objectType}"> 
+        
+            <apex:facet name="header"><apex:outputText value="{!$Label.LABEL_OBJECT_TYPE}" /></apex:facet>
+        </apex:column>
+        
+        <apex:column id="removeButtonCol">
+            <apex:facet name="header"><apex:outputText value="{!$Label.LABEL_REMOVE}" /></apex:facet>
+            <apex:image value="{!imageUrl}" title="{!$Label.REMOVE}">
+ 
+             <apex:actionSupport rerender="formId" action="{!removeRecord}" event="onclick" immediate="true" oncomplete="charaterCounter('{!$Component.formId.main.textSection.SMSText}', '{!$Component.formId.main.textSection.charaterCountMsg.numberOfChars}','{!$Label.CHARATER_COUNT_MSG}');">
+               <apex:param name="smsexternaluniqueid" value="{!item.externalId}" assignTo="{!itemIdForRemoval}"/>
+            </apex:actionSupport>
+            </apex:image>
+        </apex:column>
+
+    </apex:pageBlockTable>
+</apex:pageBlockSection>  
+
+                                        <!-- section for unrelated functionality.-->
+                    <apex:outputPanel id="unrelated" rendered="{!showUnrelatedPanel}" styleClass="unrelatedPanelStyleClass"> 
+                        <apex:pageBlockSection id="blockSectionId1" columns="1" title="{!$Label.CUSTOM_LOOKUP}">
+                            <apex:variable var="rowNumber" value="{!0}"/>
+                            <apex:pageBlockTable title="{!$Label.UNRELATED_PANEL}" var="wrap" value="{!unrelatedObjectStoreList}" styleClass="unrelatedTableStyleClass">
+                                
+                                <apex:column headerValue="{!$Label.NO_LABEL}" headerClass="rowNoHeaderClass" styleClass="rowNoClass">
+                                    <apex:outputText value="{!rowNumber+1}" style="text-align:center;"> 
+                                        <apex:variable var="rowNumber" value="{!rowNumber+1}"/>
+                                    </apex:outputText> 
+                                </apex:column>
+                                <apex:column headerValue="{!$Label.Unrelated_Object_Name}" headerClass="unrelObjectHeaderClass" styleClass="unrelObjectClass">
+                                    <apex:outputText title="{!$Label.Unrelated_Object_Name}" value="{!wrap.objectLabel}"/>
+                                </apex:column>
+                                <apex:column title="{!$Label.UNRELATED_SEARCH_HELPER_TEXT}" headerValue="{!$Label.Search_String}" headerClass="inputSearchHeaderClass" styleClass="inputSearch">
+                                    <apex:inputText id="searchStringText" value="{!wrap.searchString}" styleclass="inputSearch" />
+                                </apex:column>
+                                <apex:column id="searchButtonCol" headerClass="SearchImgHeaderClass" styleClass="SearchImgClass">
+                                    <apex:facet name="header"><apex:outputText value="{!$Label.SEARCH}" /></apex:facet>
+                                    <apex:image value="{!searchImageUrl}" title="{!$Label.SEARCH_ALL_FIELDS}">
+                                        <apex:actionSupport rerender="pageMessagesSection,unrelated" action="{!populateRecordList}" event="onclick">
+                                            <apex:param name="rowIndexRemove" value="{!rowNumber}" assignTo="{!rowCount}" />
+                                        </apex:actionSupport>
+                                    </apex:image>
+                                </apex:column>
+                                <apex:column headerValue="{!$Label.SELECTED_RECORD}" id="selRecId" headerClass="recordNameHeaderClass" styleClass="recordNameClass">  
+                                    <apex:outputLink title="{!$Label.UNRELATED_SELECTED_RECORD_HELPER}" value="{!'/'+ wrap.recordId}" target="_blank">{!wrap.recordName}</apex:outputLink>
+                                </apex:column>
+                                <apex:column id="removeUnrelatedId" headerClass="removeHeaderClass" styleClass="removeClass">
+                                    <apex:facet name="header"><apex:outputText value="{!$Label.LABEL_REMOVE}" /></apex:facet>
+                                    <apex:image value="{!imageUrl}" title="{!$Label.REMOVE}">
+	                                    <apex:actionSupport rerender="pageMessagesSection,unrelated" action="{!removeSelectedRecord}" event="onclick" immediate="true">
+    	                                    <apex:param name="rowIndexRemove" value="{!rowNumber}" assignTo="{!rowCount}" />
+        	                            </apex:actionSupport>
+                                	</apex:image>
+                                </apex:column>
+                                
+                            </apex:pageBlockTable>
+                        </apex:pageBlockSection>
+                        <apex:outputPanel id="radioPanel"  layout="block" style="overflow:auto;width:400px;height:100px" rendered="{!onSearch}">
+                            <span id="thePanel"><b>{!$Label.SEARCH_RESULT}</b></span>
+                            
+                            <apex:selectRadio value="{!selectedRecordId}" layout="pageDirection">
+                                <apex:selectOptions value="{!UnrelatedRecordList}"/>
+                                <apex:actionSupport event="onclick" action="{!recordSelection}" rerender="unrelated"/>
+                            </apex:selectRadio>
+                        </apex:outputPanel>
+                    </apex:outputPanel>
+
+
+<apex:pageBlockSection title="{!$Label.USE_TEMPLATES}" rendered="{!isRegistered}">
+<apex:facet name="header">
+    <h3>{!$Label.USE_TEMPLATES}</h3>
+</apex:facet>
+
+
+    <apex:selectList value="{!template}" size="1" title="{!$Label.CHOOSE_TEMPLATE}" onchange="changeTemplate();"> 
+        <apex:selectOptions value="{!items}" />
+    </apex:selectList>
+
+    
+</apex:pageBlockSection>
+
+<apex:actionFunction name="changeTemplate" action="{!changeTemplateText}" rerender="textSection,pageMessagesSection" oncomplete="charaterCounter('{!$Component.formId.main.textSection.SMSText}', '{!$Component.formId.main.textSection.charaterCountMsg.numberOfChars}','{!$Label.CHARATER_COUNT_MSG}');"/>
+
+<apex:pageBlockSection id="textSection" columns="2" title="{!$Label.SMS_TEXT}" rendered="{!isRegistered}">  
+<apex:facet name="header">
+    <h3>{!$Label.SMS_TEXT}</h3>
+</apex:facet>
+<apex:pageBlockSectionItem id="charaterCountMsg" >
+        <apex:outputText style="color:green;font-size:14px;" id="numberOfChars" value="{!$Label.INITIAL_CHARATER_COUNT_MSG}">
+			</apex:outputText> 
+   		 </apex:pageBlockSectionItem>
+    <br/>
+    <apex:inputTextArea id="SMSText"  style="width:400px;height:80px;" value="{!smsText}" onkeyup="characterCounter('controllerDiv','{!$Component.formId.main.textSection.SMSText}', '{!$Component.formId.main.textSection.charaterCountMsg.numberOfChars}','{!$Label.CHARATER_COUNT_MSG}');" readonly="{!hasPermissionForTemplateSelection}"/>
+</apex:pageBlockSection>
+
+<apex:pageBlockSection id="optOut" columns="2" title="{!$Label.SEND_TO_OPTOUT_MEMBERS}" rendered="{!showOptoutSection}">
+<apex:facet name="header">
+    <h3>{!$Label.SEND_TO_OPTOUT_MEMBERS}</h3>
+</apex:facet>
+    <apex:selectList id="optOutList" value="{!optOutFieldValue}" size="1" rendered="{!showOptoutSection}" title="{!$Label.SEND_TO_OPTOUT_MEMBERS}" disabled="{!hasPermissionToChangeOptOut}">
+        <apex:selectOptions value="{!optOutList}"/>
+    </apex:selectList>
+</apex:pageBlockSection>
+
+
+<apex:outputPanel id="confirmpopup" style="display:block;">    
+        
+        <apex:outputPanel styleClass="popupBackground" layout="block" rendered="{!displayConfirmationPopUp}"/>
+        <apex:outputPanel styleClass="custPopup" layout="block" rendered="{!displayConfirmationPopUp}"  >
+             <div id="popupMessageHeader" style="width:100%; height:10%; background-color:#8BBEC1;">
+                 <div title="" style="color:white; text-align:left; font-family:sans-serif; font-weight:bold; vertical-align: middle; padding-top: 5px; padding-bottom: 5px; padding-left: 5px;">{!$Label.MSG_LABEL}</div> 
+             </div> 
+             <br />
+             <apex:outputPanel style="font-size:15px;">
+               {!confirmationPopupTextLine1}<br/><br />
+                {!confirmationPopupTextLine2} <br/><br/><br/>
+             </apex:outputPanel>
+             <div align= "center">
+	             <apex:outputPanel style="font-size:15px;">
+	               <apex:commandButton id="SendBulk" action="{!Send}" value="{!$Label.OK}" title="{!$Label.OK}" rendered="{!showConfirmSend}" disabled="{!IF (disableMe,true, false)}" rerender="pageMessagesSection" onclick="toggle(this);" oncomplete="toggle(this);" />&nbsp;&nbsp;
+	                <apex:commandButton id="Cancel" action="{!cancel}" rendered="{!isRegistered}" value="{!$Label.CANCEL}" title="{!$Label.CANCEL}" />
+	             </apex:outputPanel>
+             </div>
+        </apex:outputPanel>
+    </apex:outputPanel>
+
+
+
+<apex:pageBlockButtons id="buttonsBlock">
+    <apex:commandButton id="Send" action="{!validate}" value="{!$Label.SEND}" title="{!$Label.SEND}" rendered="{!isRegistered}" disabled="{!IF (disableMe,true, false)}" rerender="confirmpopup,pageMessagesSection" oncomplete="scroll(0,0);" />
+    <apex:commandButton id="Cancel" action="{!cancel}" rendered="{!isRegistered}" value="{!$Label.CANCEL}" title="{!$Label.CANCEL}" />
+    
+    <apex:actionStatus id="smsStatusText" starttext="  Sending SMS..." stoptext=" "  />
+</apex:pageBlockButtons>
+
+</apex:pageBlock>
+</apex:form>
+</apex:outputPanel>
+</apex:outputPanel>
+
+</apex:page>

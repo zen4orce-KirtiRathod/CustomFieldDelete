@@ -1,0 +1,1808 @@
+<apex:page controller="dealer.SalesDeskLogV2" label="Desk Log" title="Desk Log" showChat="true" id="sdl1" tabStyle="dealer__Traffic_Log__c" docType="html-5.0"> 
+    <!-- head -->
+    <!--
+    // Tel - mailto on contact info
+    -->
+        
+       <!-- apex:includeScript value="{!URLFOR($Resource.jQuery_UI_1820, 'js/jquery-1.7.2.min.js')}" /-->
+       <apex:includeScript value="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" />
+
+       <!-- apex:includeScript value="{!URLFOR($Resource.jQuery_UI_1820, 'js/jquery-ui-1.8.20.custom.min.js')}" /-->
+      
+        <!-- Bootsrap Includes -->
+       <apex:includeScript value="{!URLFOR($Resource.dealer__SDLResources,'/js/bootstrap.min.js')}"/>
+       <apex:includeScript value="{!URLFOR($Resource.dealer__SDLResources,'/js/typeahead-bundle.min.js')}"/>
+       <apex:stylesheet value="{!URLFOR($Resource.dealer__SDLResources,'/css/VFbootstrap.css')}"/>
+
+       <!-- Include JS Notify and Moment -->
+       <apex:includeScript value="{!URLFOR($Resource.dealer__SDLResources, '/js/notify.min.js')}" />
+       <apex:includeScript value="{!URLFOR($Resource.dealer__SDLResources, '/js/moment.min.js')}" />
+
+       <!-- Include datepicker -->
+       <apex:includeScript value="{!URLFOR($Resource.dealer__SDLResources, '/js/bootstrap-datepicker.js')}" />
+       <apex:stylesheet value="{!URLFOR($Resource.dealer__SDLResources, '/css/datepicker.css')}" />
+
+       <!-- Include Checkbox -->
+       <apex:includeScript value="{!URLFOR($Resource.dealer__SDLResources, '/js/bootstrap-checkbox.js')}" />
+       <apex:stylesheet value="{!URLFOR($Resource.dealer__SDLResources, '/css/bootstrap-checkbox.css')}" />
+
+       <!-- Include Select Box -->
+       <apex:includeScript value="{!URLFOR($Resource.dealer__SDLResources, '/js/bootstrap-select.min.js')}" />
+       <apex:stylesheet value="{!URLFOR($Resource.dealer__SDLResources, '/css/bootstrap-select.css')}" />
+
+       <!-- Include Tipr-->
+       <apex:includeScript value="{!URLFOR($Resource.dealer__SDLResources, '/js/jquery.tooltipster.min.js')}" />
+       <apex:stylesheet value="{!URLFOR($Resource.dealer__SDLResources, '/css/tooltip/tooltipster.css')}" />
+
+  
+    <script type="text/javascript"> 
+            // Disables Date Field FocusOnLoad
+            function setFocusOnLoad() {}  
+
+            $j = jQuery.noConflict();
+
+            var first_load = true,
+                JSONurl = '/apex/dealer__SalesDeskLogJSON',
+                salesDeskLogJSON = null,
+                action_cell = '',
+                record_type = null,
+                r_id = '',
+                up_filters = {}
+                today = moment( moment().format() ),
+                user_settings = JSON.parse('{!JSENCODE(UserSettingsJSON)}'),
+                runDate = moment(today).format('YYYY[-]MM[-]DD');
+
+                if ( user_settings != null ) {
+                    runDate = ( !(typeof user_settings.dealer__RunDate__c === "undefined")) ? moment(user_settings.dealer__RunDate__c).format('YYYY[-]MM[-]DD') : moment(today).format('YYYY[-]MM[-]DD') ;
+                } else {
+                    runDate = moment(today).format('YYYY[-]MM[-]DD');
+                }
+
+            var date_picker = moment(runDate).format('MM[/]DD[/]YYYY');
+                
+
+        /*** AJAX JSON GETTING and DOing ***/
+
+            function do_dated_SalesDeskLog() {
+                // runDate = $j('.date.date_picker').
+            }
+
+            function do_SalesDeskLog(action) {
+
+                $j.getJSON(JSONurl+'?d='+runDate, function(data) {
+
+                    // salesDeskLogJSON = data;
+                }).done(function(data){
+                    // Store salesDeskLogJSON for later use
+                    salesDeskLogJSON = data;
+                        
+                    if(action === 'refresh_single') {
+                        refresh_record(salesDeskLogJSON);
+                    } else {
+
+                       // Check for Filter Selection
+                        var toggle = $j('input[name=inStore]:checked', '#sdl1\\:f');
+                        if(toggle.val()=='inStore_only') {
+
+                            var filteredRecords = $j.grep(salesDeskLogJSON, function(e){
+                                if(e.entryType == 'SALESUP') {
+                                    return e.salesUp.dealer__In_Store__c === true;
+                                }
+                            });
+
+                            the_SalesDeskLog(filteredRecords);
+                        
+                        } else if(toggle.val()=='inStore_today') {
+
+                            var filteredRecords = $j.grep(salesDeskLogJSON , function(e) {
+                                if ( !(typeof e.salesUp.dealer__Last_Store_Visit_Date__c === "undefined") ) {
+                                    //visited_today = today.isSame( record.salesUp.dealer__Last_Store_Visit_Date__c, 'day');
+                                    return ( today.isSame( e.salesUp.dealer__Last_Store_Visit_Date__c, 'day') ) ? record : null ;
+                                }
+                                return null;
+                            });
+
+                            the_SalesDeskLog(filteredRecords);
+                            
+                        } else {
+                            the_SalesDeskLog(salesDeskLogJSON); 
+                        }
+
+                       init_typeahead(salesDeskLogJSON);
+                    }
+
+                    up_type_filter_list();
+                    style_checkboxes();
+                });
+            }
+
+            function the_SalesDeskLog(records) {
+                                
+                if (records.length > 0) {
+                    $j.each(records, function(i, record) {            
+                        // Roll out template
+                        record_type = get_record_type(record);
+
+                        $j('<tr>', {
+                            'id' : record_type.Id,
+                            'class' : record.cssClass+' dataRow ',
+                            html : record_entry_template(record)
+                        }).prependTo('#log_body');
+                    });
+
+                } else {
+                    $j('<tr>', {
+                        html : '<td colspan="8" class="no_records"><h2>No records found for '+ moment(runDate).format('MM[/]DD[/]YYYY')+'</h2></td>'
+                    }).prependTo('#log_body');
+                    // alert('No records found for '+ moment(runDate).format('MM[/]DD[/]YYYY'));
+                }
+            }
+
+            function init_typeahead(JSON) {
+                $j('.typeahead').typeahead('destroy').val('');
+                var recs = new Bloodhound({
+                datumTokenizer: function(d) {  
+                        return Bloodhound.tokenizers.whitespace(d.search); 
+                    },
+                    limit: 12,
+                    queryTokenizer: Bloodhound.tokenizers.whitespace,
+                    local: function(d) {
+                        var records = $j.map( JSON, function( value, key ) {
+
+                            var r = get_record_type(value),
+                                stock_num = '';
+
+                            if (typeof r.dealer__Stock_Number__c === "undefined" ) {
+                                if( !(typeof r.dealer__Desired_Stock_Num__c === "undefined" ) ) {
+                                    stock_num = r.dealer__Desired_Stock_Num__r.dealer__Stock_Number__c;
+                                }
+                            } else {
+                                stock_num = r.dealer__Stock_Number__c;
+                            }
+                            var buyer_name = (!(typeof record_type.dealer__Buyer_Contact__r === "undefined" ) ) ? record_type.dealer__Buyer_Contact__r.Name : '',
+                                s1_name = (!(typeof record_type.dealer__Salesperson_1__r === "undefined" ) ) ? record_type.dealer__Salesperson_1__r.Name : '',                                
+                                s2_name = (!(typeof record_type.dealer__Salesperson_2__r === "undefined" ) ) ? record_type.dealer__Salesperson_2__r.Name : '',
+                                dm_name = (!(typeof record_type.dealer__Desk_Manager_User__r === "undefined" ) ) ? record_type.dealer__Desk_Manager_User__r.Name : '',                          
+                                fi_name = (!(typeof record_type.dealer__F_I_Manager__c === "undefined" ) ) ? record_type.dealer__F_I_Manager__r.Name : '';
+
+                            var pretty_stock_num = (stock_num != '')? ' ('+stock_num+')' : '' ;
+                            value.newName = buyer_name + pretty_stock_num;
+                            value.search =  stock_num + ' - ' + buyer_name + ' - ' + s1_name + ' - ' + s2_name + ' - ' + dm_name + ' - ' + fi_name;
+                            return value;
+                        });
+                        return records;
+                    }
+                });
+
+                recs.initialize();
+
+                $j('.typeahead').typeahead(null, {
+                    name: 'log_record',
+                    limit: 18,
+                    displayKey: 'newName',
+                    source: recs.ttAdapter()
+                }).on('typeahead:selected', function(obj, datum) {
+                    var rId = get_record_type(datum).Id;
+                    $j('#logTable tbody > tr').show();
+                    $j('#logTable > tbody > tr').not('#'+rId).hide();
+                });
+            }
+
+        /***** JQuery Record Templating ******/
+
+            function dealer_tmpl(template, data) {
+              return template.replace(/\{([\w\.]*)\}/g, function(str, key) {
+                var keys = key.split("."), v = data[keys.shift()];
+                for (var i = 0, l = keys.length; i < l; i++) v = v[keys[i]];
+                return (typeof v !== "undefined" && v !== null) ? v : "";
+              });
+            } 
+
+            function record_entry_template(record) {
+                var DeskLogEntry_template = record_actions(record) + record_cust_info(record) + record_contact_info(record) + record_status_visit(record) + record_sale_info(record) + record_sales_team(record) + record_created_modified(record);
+                return DeskLogEntry_template;
+            }
+
+            function record_actions(record) {
+                var action_head = '<td>';
+                if (record.entryType == 'SALESUP' || record.entryType == 'COMBINED') {
+                    actions = '\
+                        <!--button type="button" class="btn btn-default btn-sm btn-block record_refresh"><span class="glyphicon glyphicon-refresh"></span> Refresh Sales Up</button-->';
+
+                    if(!(typeof record.salesUp.dealer__Buyer_Contact__r === "undefined" ) ) {
+                        actions +='\
+                        <button type="button" class="btn btn-default btn-sm btn-block add_apt" data-sid="'+record.salesUp.Id+'" data-cid="'+record.salesUp.dealer__Buyer_Contact__r.Id+'"> New Appointment</button>';
+                    }
+
+                    if(record.entryType == 'SALESUP') {
+                    
+                    actions +='\
+                        <button type="button" class="btn btn-default btn-sm btn-block create-deal" data-sid="'+record.salesUp.Id+'" data-did="'+record.salesUp.dealer__Company_Number__c+'" data-toggle="modal" data-target="#dealdialog"> Create New Deal</button>\
+                        ';
+                    /*
+                    actions +='\
+                        <button type="button" class="btn btn-default btn-sm btn-block create-deal" data-sid="'+record.salesUp.Id+'" data-did="'+record.salesUp.dealer__Company_Number__c+'" onClick="window.location=\'/apex/dealer__Desking?salesup='+record.salesUp.Id+'\'">Create New Deal</button>\
+                        ';  
+                    */                      
+                    }
+                } else if ( record.entryType == 'DEAL' || record.entryType == 'COMBINED' ) {
+                    actions = '\
+                        <button type="button" class="btn btn-default btn-sm btn-block record_refresh"><span class="glyphicon glyphicon-refresh"></span> Refresh Deal</button>\
+                        ';
+                } 
+                if ( record.entryType == 'DEAL') {
+                    actions += '\
+                        <a class="btn btn-sm btn-block btn-danger" href="/'+record.deal.Id+'"><span class=""><i class="glyphicon glyphicon-plus"></i>Link Sales Up</span></a>';
+                }
+                var action_foot = '</td>';
+
+                return action_head + actions + action_foot;
+            }
+
+            function record_cust_info(record) {
+
+                var record_cust_info_head = '\
+                          <td><!-- Customer Name and Appointment Info -->\
+                            <!-- h2>Customer Name</h2 -->',
+                    r = get_record_type(record),
+                    buyer_name = ( !(typeof r.dealer__Buyer_Contact__r === "undefined" ) )? r.dealer__Buyer_Contact__r.Name : '',
+
+                    co_buyer_name = ( !(typeof r.Co_Buyer_Contact__r === "undefined" ) )? r.Co_Buyer_Contact__r.Name : '',
+
+                    buyer_name_tmpl = '<span class="buyer_name">'+buyer_name+'</span>',
+                    cobuyer_name_tmpl = (co_buyer_name !== '') ? '<span class="buyer_name">'+co_buyer_name+'</span>' : '';
+
+                // Record Links
+                type_link_tmpl ="";
+
+                if (record.entryType === 'COMBINED') {
+                    type_link('DEAL');
+                    type_link_tmpl += '<br />';
+                    type_link('SALESUP');
+                } else if (record.entryType === 'SALESUP') {
+                    type_link('SALESUP');
+                } else if (record.entryType === 'DEAL') {
+                    type_link('DEAL');
+                    //type_link_tmpl += '<br /><a class="error" href="/'+record.deal.Id+'"><span class="type"><i class="glyphicon glyphicon-plus"></i>Add SalesUp</span></a>'; 
+                }
+
+                // Type Link
+                function type_link(type) {
+                    var type_icon_class = (type == 'SALESUP') ? 'glyphicon-briefcase' : 'glyphicon-usd',
+                        type_ID = ( type == 'SALESUP') ? record.salesUp.Id : record.deal.Id,
+                        type_desc = ( type == 'SALESUP') ? record.salesUp.Id : record.deal.Id,
+                        deal_num = ( type == 'DEAL') ? '('+record.deal.Name+')' : '';
+                    //
+                    type_link_tmpl += '\
+                            <span class="type">\
+                                <i class="glyphicon '+type_icon_class+'"></i>\
+                                <a href="/'+type_ID+'">'+type+' <small>'+deal_num+'</small></a>\
+                            </span>'; 
+                }
+
+                // Appointments
+                var appoitments_tmpl ='';
+                if ( record.entryType == 'SALESUP' && !(typeof record.salesUp.dealer__Sales_Appointments__r === "undefined")) {
+
+                    var appointments = record.salesUp.dealer__Sales_Appointments__r.records;
+                    appoitments_tmpl ='<h4><i class="glyphicon glyphicon-calendar"></i> Appointment</h4>',
+                    show_class = '',
+                    no_show_class = '';
+
+                    // Loop through Appointments
+                    $j.each(appointments, function(i, a){
+                       // var  date = moment(a.dealer__DateTime__c).format("ddd MMM Do, YYYY - hh:mm a");
+
+                       if ( !(typeof a.dealer__Appointment_Result__c === "undefined") ) {
+                            if(a.dealer__Appointment_Result__c === 'Show') {
+                                show_class = 'active_status';
+                            } else if ( a.dealer__Appointment_Result__c === 'No-Show') {
+                                no_show_class = 'active_status';
+                            } 
+                       }
+                       status = ( !(typeof a.dealer__Appointment_Result__c === "undefined") ) ? a.dealer__Appointment_Result__c : '';
+
+                        // Build Appointment Template
+                        appoitments_tmpl += '<div class="appointment">\
+                            '+pretty_date(a.dealer__DateTime__c)+'\
+                            <button type="button" class="btn btn-link btn-sm Show '+show_class+'" data-apt-id="'+a.Id+'"" '+( show_class ==='' && no_show_class !='' ? 'disabled' : '' )+'> Show</button>\
+                            <button type="button" class="btn btn-link btn-sm No-Show '+no_show_class+'" data-apt-id="'+a.Id+'" '+( no_show_class ===''  && show_class !='' ? 'disabled' : '' )+'> No Show</button></div>';
+                    });     
+                }
+
+                //Cell Foot
+                var record_cust_info_foot = '</td>';
+
+                return record_cust_info_head + buyer_name_tmpl + cobuyer_name_tmpl + type_link_tmpl + appoitments_tmpl + record_cust_info_foot;
+            }
+
+            function record_contact_info(record) {
+
+                var record_contact_info_head = '<td>',
+                    record_contact_info_foot = '</td>';
+
+                record_type = get_record_type(record);
+
+                if ( !(typeof record_type.dealer__Buyer_Contact__r === "undefined") ) {
+                    // Buyer Contact Info
+                    var email = !(typeof record_type.dealer__Buyer_Contact__r.Email === "undefined") ? '<h4>Email:</h4><a href="mailto:'+record_type.dealer__Buyer_Contact__r.Email+'">'+record_type.dealer__Buyer_Contact__r.Email+'</a>' : '';
+                    var mobile_phone = !(typeof record_type.dealer__Buyer_Contact__r.MobilePhone === "undefined") ? '<h4>Mobile:</h4><a href="tel:'+record_type.dealer__Buyer_Contact__r.MobilePhone+'">'+record_type.dealer__Buyer_Contact__r.MobilePhone+'</a>' : '';
+                    var home_phone = !(typeof record_type.dealer__Buyer_Contact__r.HomePhone === "undefined") ? '<h4>Home:</h4><a href="tel:'+record_type.dealer__Buyer_Contact__r.HomePhone+'">'+record_type.dealer__Buyer_Contact__r.HomePhone+'</a>' : '';
+                    var other_phone = !(typeof record_type.dealer__Buyer_Contact__r.OtherPhone === "undefined") ? '<h4>Other:</h4><a href="tel:'+record_type.dealer__Buyer_Contact__r.OtherPhone+'">'+record_type.dealer__Buyer_Contact__r.OtherPhone+'</a>' : '';
+
+                    return record_contact_info_head + email + mobile_phone + home_phone + other_phone + record_contact_info_foot;
+                } else {
+                    return record_contact_info_head + record_contact_info_foot;
+                }
+            }
+
+            function record_status_visit(record) {
+                var record_status_visit_head = '<td>',
+                    record_status_visit_foot = '</td>',
+                    visit_tmpl = '';
+
+                //Visits
+                if (record.entryType == 'SALESUP' || record.entryType == 'COMBINED') {
+                    // IN Store
+                    var in_store_checked = record.salesUp.dealer__In_Store__c ? 'checked' : '' ;
+                    visit_tmpl += '\
+                        <label class="checkbox in_store_label">\
+                            <input type="checkbox" class="in_store" value="'+record.salesUp.dealer__In_Store__c+'" '+ in_store_checked +' />\
+                            In Store\
+                        </label>';
+
+                    // Visited Today
+                    //var visited_today = (record.salesUp.dealer__Last_Store_Visit_Date__c == today) ? true : false;
+                    var visited_today = false;
+                    if (!(typeof record.salesUp.dealer__Last_Store_Visit_Date__c === "undefined") ) {
+                        visited_today = today.isSame( record.salesUp.dealer__Last_Store_Visit_Date__c, 'day');
+                    } 
+                    var visited_today_state = (visited_today === true) ? 'checked' : '';
+                    visit_tmpl += '\
+                        <label class="checkbox in_store_label">\
+                            <input disabled type="checkbox" class="in_store" value="' + visited_today + '" '+ visited_today_state +' />\
+                            Visited Today\
+                        </label>';
+
+                    //Created Today
+                    //var created_today = (record.salesUp.CreatedDate == today) ? true : false;
+                    var created_today = today.isSame( record.salesUp.CreatedDate, 'day');
+                    var created_today_state = created_today === true ? 'checked' : '';
+                    visit_tmpl += '\
+                        <label class="checkbox in_store_label">\
+                            <input disabled type="checkbox" class="in_store" value="' + created_today + '" '+ created_today_state +' />\
+                            Created Today\
+                        </label>';
+                }
+
+                //Status
+                var status = (record.entryType == 'SALESUP') ? record.salesUp.dealer__Lead_Status__c : record.deal.dealer__Status__c,
+                    status_tmpl = '<span style="font-size: 12px;">Status: <strong>'+status+'</strong>';
+
+                    if ( ( record.salesUp != null) && (!(typeof record.salesUp.dealer__Source__c === "undefined") ) ) {
+                        status_tmpl += '<br />Source: '+record.salesUp.dealer__Source__c+'</span>';
+                    }
+                
+                    return record_status_visit_head + visit_tmpl + status_tmpl + record_status_visit_foot;
+            }
+
+            function record_sale_info(record) {
+                var record_sale_info_head = '<td>',
+                    record_sale_info_foot = '</td>',
+                    trade_body = '',
+                    steps_tmpl = '',
+                    trade_tmpl = '';
+
+
+                if (record.entryType == 'SALESUP' || record.entryType == 'COMBINED') {
+                    // Sales Steps
+                    steps_tmpl = '<table class="sale_numbers">\
+                                  <tr id="'+record.salesUp.Id+'">\
+                                    <td><label class="checkbox">G:&nbsp;<input class="sale_steps" name="greet" id="greet" type="checkbox" data-box="dealer__Greet_Meet__c" '+((record.salesUp.dealer__Greet_Meet__c===true)?'checked':'')+' /></label></td>\
+                                    <td><label class="checkbox">P:&nbsp;<input class="sale_steps" name="present" id="present" type="checkbox" data-box="dealer__Present_Vehicle__c" '+((record.salesUp.dealer__Present_Vehicle__c===true)?'checked':'')+' /></label></td>\
+                                    <td><label class="checkbox">D:&nbsp;<input class="sale_steps" name="demo id="demo" type="checkbox" data-box="dealer__Demo__c" '+((record.salesUp.dealer__Demo__c===true)?'checked':'')+' /></label></td>\
+                                    <td><label class="checkbox">W:&nbsp;<input class="sale_steps" name="writeup" id="writeup" type="checkbox" data-box="dealer__Write_Up__c" '+((record.salesUp.dealer__Write_Up__c===true)?'checked':'')+' /></label></td>\
+                                  </tr>\
+                                </table>';
+                }
+
+                if (record.entryType == 'SALESUP') {
+
+                    if ( !(typeof record.salesUp.dealer__Desired_Stock_Num__c === "undefined")) {
+                        trade_tmpl += '<h3><a href="/'+record.salesUp.dealer__Desired_Stock_Num__c+'" class="hover_detail" id="'+record.salesUp.dealer__Desired_Stock_Num__c+'" data-lookupid="'+record.salesUp.dealer__Desired_Stock_Num__c+'" >(' + record.salesUp.dealer__Desired_Stock_Num__r.dealer__Stock_Number__c +') ' +record.salesUp.dealer__Year_High__c + ' ' + record.salesUp.dealer__Make__c +' '+ record.salesUp.dealer__Model__c +'</a></h3>';
+                    }
+
+                    if ( !(typeof record.salesUp.dealer__Trade_Year__c === "undefined" ) ) {
+                        trade_tmpl += '<h3>Trade: <span> ' + record.salesUp.dealer__Trade_Year__c + ' ' + record.salesUp.dealer__Trade_Make__c + ' ' + record.salesUp.dealer__Trade_Model__c+'</span></h3>';
+                    }
+
+                } 
+                if ( (record.entryType == 'DEAL' || record.entryType == 'COMBINED') && !(typeof record.deal.dealer__Vehicle__c === "undefined") ) {
+                    // Trade In Info
+                    //trade_body += '<!--h4>LOOKUP ID: '+ record.deal.dealer__Vehicle__c+'</h4--> ';
+                    trade_body += '<h3><a href="/'+record.deal.dealer__Vehicle__c+'" class="hover_detail" id="'+record.deal.dealer__Vehicle__c+'" data-lookupid="'+record.deal.dealer__Vehicle__c+'" >(' + record.deal.dealer__Stock_Number__c +') ' +record.deal.dealer__Year__c + ' ' + record.deal.dealer__Make__c +' '+ record.deal.dealer__Model__c +'</a></h3>';
+
+
+                    if (!(typeof record.deal.dealer__Trade_Ins__r === "undefined" )) {
+                        var trade_ins = record.deal.dealer__Trade_Ins__r.records;
+                        $j.each(trade_ins, function(i, trade){
+                            trade_body += '<h3>Trade: <span>'+trade.dealer__Stock_Number__c+' ' +trade.dealer__ACV__c+'</span></h3>';
+                        });
+                    }
+
+                    var gross_table = '<table>\
+                            <tr>\
+                                <td width="50px" style="font-size:10px;">FE:&nbsp;'+record.deal.dealer__Front_End_Gross__c+'</td>\
+                                <td width="50px" style="font-size:10px;">BE:&nbsp;'+record.deal.dealer__Back_End_Gross__c+'</td>\
+                                <td width="50px" style="font-size:10px;">TG:&nbsp;'+record.deal.dealer__Total_Gross__c+'</td>\
+                            </tr>\
+                        </table>';
+
+                    trade_tmpl += trade_body + gross_table;
+
+                } 
+
+                return record_sale_info_head + steps_tmpl + trade_tmpl + record_sale_info_foot;
+            }
+
+            function record_sales_team(record) {
+                var record_team_head = '<td>\
+                    <a href="#" class="btn btn-link btn-sm team_edit done" href="#" style="display: none"><i class="glyphicon glyphicon-check"></i> Done</a>\
+                    <a href="#" class="btn btn-link btn-sm team_edit edit" href="#"><i class="glyphicon glyphicon-edit"></i> Edit Team</a>\
+                    <div class="team_edit_form form-horizontal" >\
+                    <div class="form-group">\
+                        <label for="" class="col-sm-1 control-label">S1</label>\
+                        <div class="col-sm-10">\
+                        <select class="form-control team_select" data-key="s1" data-live-search="true">\
+                            <option value="null">Sales Person 1</option>
+                            <apex:repeat value="{!s1List}" var="s1">\
+                                <option id="{!s1}" value="{!JSENCODE(s1)}"><apex:outputText value="{!JSENCODE(s1List[s1])}" /></option>
+                            </apex:repeat>\
+                        </select>\
+                        </div>\
+                    </div>\
+                    <div class="form-group">\
+                       <label for="" class="col-sm-1 control-label">S2</label>\
+                        <div class="col-sm-10">\
+                        <select class="form-control team_select" data-key="s2" data-live-search="true">\
+                            <option value="null">Sales Person 2</option>
+                            <apex:repeat value="{!s2List}" var="s2">\
+                                <option id="{!s2}" value="{!JSENCODE(s2)}"><apex:outputText value="{!JSENCODE(s2List[s2])}" /></option>
+                            </apex:repeat>\
+                        </select>\
+                        </div>\
+                    </div>\
+                    <div class="form-group">\
+                       <label for="" class="col-sm-1 control-label">DM</label>\
+                        <div class="col-sm-10">\
+                        <select class="form-control team_select" data-key="dm" data-live-search="true">\
+                            <option value="null">Desk Manager</option>
+                            <apex:repeat value="{!manager}" var="mgr">\
+                                <option id="{!mgr}" value="{!JSENCODE(mgr)}"><apex:outputText value="{!JSENCODE(manager[mgr])}" /></option>
+                            </apex:repeat>\
+                        </select>\
+                        </div>\
+                    </div>\
+                    <div class="form-group">\
+                       <label for="" class="col-sm-1 control-label">FI</label>\
+                        <div class="col-sm-10">\
+                        <select class="form-control team_select" data-key="fi" data-live-search="true">\
+                            <option value="null">Finance</option>
+                            <apex:repeat value="{!finance}" var="fi">\
+                                <option id="{!fi}" value="{!JSENCODE(fi)}"><apex:outputText value="{!JSENCODE(finance[fi])}" /></option>
+                            </apex:repeat>\
+                        </select>\
+                        </div>\
+                    </div>\
+                    </div></div>\
+                    <ul class="team_list">',
+                    record_team_foot = '</ul></td>',
+                    the_team = '';
+
+                    record_type = get_record_type(record);
+
+                if ( !(typeof record_type.dealer__Salesperson_1__c === "undefined" ) ) {
+                    the_team += '<li><strong>S1: </strong><img src="'+record_type.dealer__Salesperson_1__r.SmallPhotoUrl+'" />'+record_type.dealer__Salesperson_1__r.Name+'</li>';
+                }
+
+                if (!(typeof record_type.dealer__Salesperson_2__c === "undefined" ) ) {
+                    the_team += '<li><strong>S2: </strong><img src="'+record_type.dealer__Salesperson_2__r.SmallPhotoUrl+'" />'+record_type.dealer__Salesperson_2__r.Name+'</li>';
+                }
+
+                if (!(typeof record_type.dealer__Desk_Manager_User__c === "undefined" ) ) {
+                    the_team += '<li><strong>DM: </strong><img src="'+record_type.dealer__Desk_Manager_User__r.SmallPhotoUrl+'" />'+record_type.dealer__Desk_Manager_User__r.Name+'</li>';
+                }
+                if (!(typeof record_type.dealer__Desk_Manager__r === "undefined" ) ) {
+                    the_team += '<li><strong>DM: </strong><img src="'+record_type.dealer__Desk_Manager__r.SmallPhotoUrl+'" />'+record_type.dealer__Desk_Manager__r.Name+'</li>';
+                }
+
+                if ( !(typeof record_type.dealer__F_I_Manager__c === "undefined" ) ) {
+                    the_team += '<li><strong>FI: </strong><img src="'+record_type.dealer__F_I_Manager__r.SmallPhotoUrl+'" />'+record_type.dealer__F_I_Manager__r.Name+'</li>';
+                }
+
+                return record_team_head + the_team + record_team_foot;
+            }
+
+            function record_created_modified(record) {
+                var record_created_modified_head = '<td>',
+                    record_created_modified_foot = '</td>',
+                    created_modified_tmpl = '';
+
+                record_type = get_record_type(record);
+
+                var unique_userId = record_type.CreatedBy.Id + get_randomn(8),
+                    unique_userId2 = record_type.LastModifiedBy.Id + get_randomn(8);
+
+                created_modified_tmpl = '\
+                    <h5 class="mod_name"><a href="/'+record_type.CreatedBy.Id+'" class="hover_detail" id="'+unique_userId+'" data-lookupid="'+record_type.CreatedBy.Id+'" >'+record_type.CreatedBy.Name+'</a></h5>\
+                    <small class="mod_date">'+simple_date(record_type.CreatedDate)+'</small>\
+                    <h5 class="mod_name"><a href="/'+record_type.LastModifiedBy.Id+'" class="hover_detail" id="'+unique_userId2+'" data-lookupid="'+record_type.LastModifiedBy.Id+'" >'+record_type.LastModifiedBy.Name+'</a></h5>\
+                    <small class="mod_date">'+simple_date(record_type.LastModifiedDate)+'</small>';
+
+                return record_created_modified_head + created_modified_tmpl + record_created_modified_foot;
+            }  
+
+            function get_record_type(record) {
+                if (record.entryType == 'SALESUP') {
+                    record_type = record.salesUp;
+                } else if (record.entryType == 'DEAL' || record.entryType == 'COMBINED' ) {
+                    record_type = record.deal;
+                } else if (record.entryType == 'COMBINED' ) {
+                    record_type = record.deal;
+                } 
+
+                return record_type;
+            }
+
+            function up_type_filters() {
+                up_filters = {};
+                $j.each(salesDeskLogJSON, function(i, record){
+                    record_type = get_record_type(record);
+                    var lead_type = record_type.dealer__Lead_Type__c;
+                    if ( !(typeof lead_type === "undefined" ) ) {
+                        if ((typeof up_filters[lead_type] === "undefined" )) {
+                            up_filters[lead_type] = 1;
+                        } else {
+                            up_filters[lead_type] += 1;
+                        }
+                    }
+                });
+            }
+
+            function up_type_filter_list() {
+                $j('.uptype_menu > li').remove();
+                up_type_filters();
+                var rows = '',
+                    total_ups = 0;
+                $j.each(up_filters, function(i, v){
+                    rows += '<li role="presentation">\
+                                    <label class="checkbox">\
+                                        <input type="checkbox" data-uptype="'+i+'"  />\
+                                        '+i+' <small>(<apex:outputText value="'+v+'" />)</small>\
+                                    </label>\
+                                </li>';
+                    total_ups += v;
+                });
+                $j(rows).prependTo('.uptype_menu');
+
+                $j('.up_total span').remove();
+                $j('<span>', {
+                    html : total_ups
+                }).appendTo('.up_total');
+            }
+
+        /*** SalesDeskLog Funcitons ***/
+
+            // Create Appointment
+            function navigatePage(sid, cid) {
+                window.location="/apex/dealer__SalesAppointment?cid="+cid+"&uid="+sid;
+            } 
+
+             // Update Appointment Status
+            function updateAS(apptIdStat) {
+                dealer.SalesDeskLogV2.setAppointmentStatus(apptIdStat, function(result, event) {
+                    if(event.status) {
+                        // check status
+                        $.notify("Appointment Status Updated", "success");
+                    }
+                });
+            } 
+
+            // Change in-store now feature
+            function updateIS(salesUpId) {
+                var message = '';
+                // Update Stored JSON
+                salesDeskLogJSON;
+                for (var i=0; i<salesDeskLogJSON.length; i++) {
+                    var record = salesDeskLogJSON[i];
+                    if ( !(typeof record.salesUp === "undefined" ) ) {
+                        if (record.salesUp.Id === salesUpId) {
+                            if ( record.salesUp.dealer__In_Store__c === true ) {
+                                record.salesUp.dealer__In_Store__c = false;
+                                message = 'Customer marked as NOT in Store';
+                            } else {
+                                record.salesUp.dealer__In_Store__c = true;
+                                message = 'Customer marked as "In Store"';
+                            }
+                            break;
+                        }
+
+                    }
+                }
+
+                // Then Update the Database
+                var options = {
+                        duration: Math.floor(Math.random() * 4001) + 1000,
+                        sticky: !!Math.round(Math.random() * 1),
+                        type: 'success'
+                };
+                dealer.SalesDeskLogV2.updateInStore(salesUpId, function(result, event) {
+                    if(event.status) {
+                        $j.notify(message, "success");
+                    }
+                });
+            }
+
+            // Change Sales Steps from Front Screen
+            function updateStep(uString) {
+                dealer.SalesDeskLogV2.updateSalesStep(uString, function(result, event){
+
+                    if(event.status) {
+                        // Action Results
+                        $j.notify("Sales Step Updated", "success");
+                    }
+                });
+            }
+
+            // Set RunDate
+            function updateRunDate() {
+                var dlr = '{ "SetupOwnerId": "'+user_settings.SetupOwnerId+'", "dealer__TrafficType__c": "ALL", "dealer__CompanyNumbers__c": "'+user_settings.dealer__CompanyNumbers__c+'", "dealer__RunDate__c": "'+runDate+'" }';
+                dealer.SalesDeskLogV2.updateUserSettingsRemote(dlr, function(result, event) {
+                    if(event.status) {
+                        // Action Results
+                    }
+                });
+            }
+
+            // Generate Randomn String
+            function get_randomn(length) {
+                var text = "";
+                var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+                for( var i=0; i < length; i++ )
+                    text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+                return text;
+            }
+
+            function pretty_date(dateStr) {
+                return moment(dateStr).format("ddd MMM Do, YYYY - hh:mm a");
+            }
+
+            function simple_date(dateStr) {
+                return moment(dateStr).format("M-D-YYYY hh:mma");
+            }
+            
+            function contains(arr, v) {
+              return arr.indexOf(v) > -1;
+            }
+
+            function clear_log() {
+                $j('#logTable tbody > tr').remove();
+            }
+
+            function setTrafficLog() {
+                $j("#sdl1\\:TrafficList_wrapper").css('width', '100%');
+                ListViewport.instances['sdl1:TrafficList'].refreshList();
+            }
+
+            function showDealCreate(sid, did) {
+                <apex:outputText rendered="{!IF(dms.dealer__DMSName__c=='DealerTrack',true,false)}">
+                    var cdURL = 'https://apsv1.dealerteam.com/api/dealertrack/dealCreate.php?dealer='+did+'&lead='+sid;
+                </apex:outputText>
+                <apex:outputText rendered="{!IF(dms.dealer__DMSName__c=='AutoMate',true,false)}">
+                    var cdURL = 'https://apsv1.dealerteam.com/api/automate/dealCreate.php?dealerId=519&leadId='+sid;
+                </apex:outputText>
+                <apex:outputText rendered="{!IF(dms.dealer__DMSName__c=='ADP',true,false)}">
+                    var cdURL = 'https://apsv1.dealerteam.com/api/adp/sales/createDealFromSalesUp?did={!JSENCODE(config.dealer__DealerTeam_Client_ID__c)}&sfid='+sid;
+                </apex:outputText>
+
+                $j("#dIframe").attr('src','');
+                $j("#dIframe").html('Please Wait');
+
+                $j('#dealdialog').on('show.bs.modal', function (e) {
+                    $j('#dIframe').attr('src', cdURL);
+                })
+            }
+
+            function style_checkboxes() {
+
+                $j('input[type="checkbox"]').checkbox({
+                    // buttonStyle: 'btn-link btn-large',
+                     checkedClass: 'glyphicon glyphicon-check',
+                     uncheckedClass: 'glyphicon glyphicon-unchecked'
+                });
+
+            }
+
+            // Menu Controls
+            $j(function() {
+
+                $j('.dropdown-menu').on('click', function(e) {
+                    if($j(this).hasClass('dropdown-menu-form')) {
+                        //e.preventDefault();
+                        e.stopPropagation();
+                    }
+                });
+
+                $j('#show_filters').on('click', function(event){
+                    var btn =  $j(this), deg = 0;
+                    
+                    if ( !btn.hasClass('collapsed') ) {
+                        btn.find('.text').text('Show Filters ');
+
+                    } else {
+                        btn.find('.text').text('Hide Filters ');
+                        deg = 180;
+                    }
+
+                    btn.find('.caret').css('transform', 'rotate('+deg+'deg)');
+
+                });
+
+            });
+
+        /*** Filter Function ***/
+
+            function filter_in_store(btn) {
+
+                if (btn.val() === 'inStore_only' ) {
+
+                    var result = $j.map(salesDeskLogJSON , function(record) {
+                        record_type = get_record_type(record);
+                        return (record_type.dealer__In_Store__c === true) ? record : null ;
+                    });
+                    
+                    // Set Config Option via Remote
+                     var dlr = '{ "SetupOwnerId": "'+user_settings.SetupOwnerId+'", "dealer__TrafficType__c": "INSTORE", "dealer__CompanyNumbers__c": "'+user_settings.dealer__CompanyNumbers__c+'", "dealer__RunDate__c": "'+runDate+'" }';
+                    dealer.SalesDeskLogV2.updateUserSettingsRemote(dlr, function(result, event) {
+                        if(event.status) {
+                            
+                        }
+                    });
+
+                    // Clear and Continue
+                    clear_log();
+                    the_SalesDeskLog(result); 
+
+                } else if(btn.val() === 'inStore_today') {
+                    var result = $j.map(salesDeskLogJSON , function(record) {
+                        record_type = get_record_type(record);
+                        // return ( record_type.dealer__In_Store__c === true ) ? record : null ;
+                        if ( !(typeof record_type.dealer__Last_Store_Visit_Date__c === "undefined") ) {
+                            //visited_today = today.isSame( record.salesUp.dealer__Last_Store_Visit_Date__c, 'day');
+                            return ( today.isSame( record_type.dealer__Last_Store_Visit_Date__c, 'day') ) ? record : null ;
+                        }
+                        return null;
+                    });
+                   clear_log();
+                   the_SalesDeskLog(result); 
+                } else {
+                   clear_log();
+                   the_SalesDeskLog(salesDeskLogJSON); 
+                }
+                style_checkboxes();
+            }
+
+            var refresh_btn = null;
+
+            function refresh_record(records) {
+
+                var btn = refresh_btn,
+                    row = btn.parents('tr'),
+                    row_ID = row.attr('id');
+
+                $j.each(records, function(i, record){
+                    record_type = get_record_type(record);
+                    var record_ID = record_type.Id;
+                    if (record_ID === row_ID) {
+                        result = record;
+                    }
+                    return record_ID === row_ID ? record : null ;
+                });
+                
+                $j('#'+row_ID).replaceWith('<tr id="'+row_ID+'" class="'+result.cssClass+'" dataRow">'+record_entry_template(result)+'</tr>');
+                style_checkboxes();
+            }
+
+        /****************** Document Ready **************/
+
+            $j(document).ready(function() {
+
+                $j.notify.defaults({ globalPosition: "top center" });
+
+                $j('.date_picker').val(date_picker);
+                $j('.team_filter').selectpicker();
+
+            // Edit Team Member Menu
+                $j('#logTable').on('click', '.team_edit', function(e) {
+                    e.preventDefault();
+                    var btn = $j(this);
+                    if(btn.hasClass('edit')) {
+                        btn.addClass('disabled').next('.team_edit_form').show().next('.team_list').hide();
+                        btn.next('.team_edit_form').find('.team_select').selectpicker();
+                        btn.prev('.done').show();
+                    } else if (btn.hasClass('done')) {
+                        btn.hide().next('.team_edit.edit').removeClass('disabled').next('.team_edit_form').hide().next('.team_list').show();
+                            refresh_btn = btn;
+                            do_SalesDeskLog('refresh_single');
+                    }
+                });
+
+                $j('#logTable').on('change', '.team_edit_form .team_select', function(e) {
+                    var select = $j(this),
+                        tId = select.val(),
+                        team_po = select.data('key'),
+                        rId = select.parents('tr').attr('id'),
+                        //pClass = select.parents('tr').attr('id'),
+                        rIDtIDtKey = rId+':'+tId+":"+team_po;
+
+                    // result = updateTeam(rId+':'+tId+":"+team_po);
+                    if(tId != null) {
+
+                        if (select.parents('tr').hasClass('leadRows')) {
+                            dealer.SalesDeskLogV2.setTeamMemberSalesUp(rIDtIDtKey, function(result, event) {
+                                if (result) {
+                                    select.notify("Team Member Updated", "success");
+                                } else {
+                                    select.notify("Error Updating", "error");
+                                }
+                            });
+
+                        } else {
+                            dealer.SalesDeskLogV2.setTeamMemberDeal(rIDtIDtKey, function(result, event) {
+                                if (result) {
+                                    select.notify("Team Member Updated", "success");
+                                } else {
+                                    select.notify("Error Updating", "error");
+                                }
+                            });
+                        }
+                    }
+
+                });
+
+            // Add appointment Button
+                $j('#logTable').on('click', '.add_apt', function(e) {
+                    var btn = $j(this)
+                    navigatePage(btn.data('sid'), btn.data('cid'));
+                    e.preventDefault();
+                });
+
+            // Update Appointment
+                $j('#logTable').on('click', '.Show, .No-Show', function(e) {
+                    var btn = $j(this),
+                        status = btn.hasClass('Show') ? 'Show' : 'No-Show' ;
+
+                    dealer.SalesDeskLogV2.setAppointmentStatus(btn.data('apt-id')+':'+status, function(result, event) {
+                        if(result) {
+                            // check status
+                            btn.notify("Appointment Status Updated to "+status, "success");
+                            btn.addClass('active_status').siblings('button').prop('disabled', 'disabled');
+                        } else {
+                            btn.notify("Error Updating Appointment Status", "success");
+                        }
+                    });
+
+                    // updateAS( btn.data('apt-id')+':'+status);   
+                    e.preventDefault();
+                });
+
+            // Update In Store
+                $j('#logTable').on('change', '.in_store', function(e) {
+                    var btn = $j(this),
+                        val = btn.val(),
+                        record_id = btn.parents('tr').attr('id');
+
+                    btn.next('.in_store').prop('checked', 'checked');
+
+                    updateIS(record_id); 
+                });
+
+            // Update Sales Step
+                $j('#logTable').on('change', '.sale_steps', function(e) {
+                    var btn = $j(this),
+                        box = btn.data('box'),
+                        record_id = btn.parents('tr').attr('id');
+
+                    dealer.SalesDeskLogV2.updateSalesStep(record_id + ':' + box, function(result, event){
+
+
+                        if(result) {
+                            // Action Results
+                            btn.next().find('button').notify("Sales Step Updated", "success");
+                        } else {
+                            // Action Results
+                            btn.next().find('button').notify("Error updating Sales Step", "error");
+                        }
+                    });
+                    // updateStep(record_id + ':' + box); 
+                });
+
+            // Lookup Hover Detail
+                $j('#logTable').on('mouseenter', '.hover_detail', function(e) {
+                    var lookupId = $j(this).data('lookupid'),
+                        lookup_link = $j(this).attr('id');
+                    LookupHoverDetail.getHover(lookup_link, '/'+lookupId+'/m?retURL=%2F'+lookup_link+'&isAjaxRequest=1').show();
+                });   
+                $j('#logTable').on('mouseleave', '.hover_detail', function(e) {
+                    var lookupId = $j(this).data('lookupid'),
+                    lookup_link = $j(this).attr('id');
+                    LookupHoverDetail.getHover(lookup_link).hide();
+                });
+
+            // DATE Filters
+                $j('#dtdob').datepicker({
+                    format: "mm/dd/yyyy"
+                }); 
+
+                $j('#dtdob').on('changeDate', function (e){
+                    $j('#dtdob').datepicker('hide');
+                    runDate = moment.utc(  $j(this).val() ).format('YYYY[-]MM[-]DD');
+                    if ( user_settings != null ) { updateRunDate(); }
+                    clear_log();
+                    do_SalesDeskLog();
+                });
+
+            // CREATE DEAL ACTION
+                $j('#logTable').on('click', '.create-deal', function(e) {
+                    var btn = $j(this),
+                        sid = btn.data('sid'),
+                        did = btn.data('did');
+                    showDealCreate(sid,did); 
+                });
+
+            /*** FILTER FUNCTIONS ***/
+
+            // IN Store FIlter
+                $j('.instore_filter').on('change',function(event) {
+                    //event.preventDefault();
+                    var btn = $j(this),
+                        filter = btn.data('filter');
+
+                    filter_in_store(btn);
+                    style_checkboxes();
+                });
+
+            // UP Type Filtering
+                $j('.uptype_menu').on('change', 'li input', function() {
+                    var result = salesDeskLogJSON;
+
+                    if ( $j('.uptype_menu li input:checked').length > 0 ) {
+                        var uptype_filters = $j('.uptype_menu li input:checked').map(function(){
+                                return $j(this).data('uptype');
+                            }).get();
+
+                        result = $j.map(salesDeskLogJSON , function(record) {
+                            if (record.entryType == 'SALESUP') {
+                                return ( contains(uptype_filters, record.salesUp.dealer__Lead_Type__c) ) ? record : null;
+                            }
+                        });
+
+                    }
+
+                    clear_log();
+                    the_SalesDeskLog(result); 
+                    style_checkboxes();
+
+                });
+
+            // Team Filter
+                var filters = {
+                    s1: 'dealer__Salesperson_1__c',
+                    s2: 'dealer__Salesperson_2__c',
+                    dm: 'dealer__Desk_Manager_User__c',
+                    cmp: 'dealer__Company_Number__c',
+                    fi: 'dealer__F_I_Manager__c'
+                };
+                $j('.team_filter').on('change', function() {
+
+                    var fil = $j(this),
+                        ftarget = fil.data('key');
+
+                    fil.parent().siblings().find('.team_filter').val('null').selectpicker('deselectAll');
+
+                    var result = $j.map(salesDeskLogJSON , function(record) {
+                        record_type = get_record_type(record);
+
+                        var record_member_ID = record_type[ filters[ ftarget ] ];
+
+                        if (fil.val() == 'null') {
+                            return record;
+                        } else {
+                            return record_member_ID == fil.val() ? record : null ;
+                        }
+                    });
+
+                    // Rerun Log
+                    clear_log();
+
+                    the_SalesDeskLog(result); 
+                    style_checkboxes();
+                });               
+
+            /*** Refresh Functions ***/
+
+            // Refresh Complete Table
+                $j('#logRefresh').click(function (e) {
+                    e.preventDefault();
+                    $j('#loading').show();
+                    $j('.team_filter').val('null').selectpicker('deselectAll');
+                    
+                    clear_log();
+                    do_SalesDeskLog();
+
+                });
+
+            // Refresh Record
+                $j('#logTable').on('click', '.record_refresh', function(event) {
+                    event.preventDefault();
+                    refresh_btn = $j(this);
+                    do_SalesDeskLog('refresh_single');
+                });
+
+            /** Page Functions ***/
+            
+            // Tabs 
+                $j('.nav-tabs a[href="#saleslog"]').click(function (e) {
+                  e.preventDefault();
+                  $j(this).tab('show');
+                });
+
+                $j('.nav-tabs a[href="#trafficlog"] ').click(function (e) {
+                  e.preventDefault();
+                  $j(this).tab('show');
+                  setTrafficLog(); 
+                });
+
+            // Tooltip
+                $j('#logTable').on('mouseenter', '.dealRows', function(e) {
+                    $j(this).tooltipster({
+                        theme: 'tooltipster-dt',
+                        position: 'bottom',
+                        offsetY: -15,
+                        content: 'This Deal does not have a Sales Up associated with it. For accurate repoting please link a Sales Up.'
+                    });
+                });
+
+            }); // END doc ready
+ 
+        /*** NON-DOC Ready ***/
+
+            // Set JSON object as soon as possible.
+            do_SalesDeskLog();
+
+            // Anytime an ajax request stops
+            $j(document).ajaxStop(function() {
+                $j('#loading').hide();
+            });
+
+    </script> 
+     
+   <style type="text/css">
+
+        #force .btn-danger {
+            background-color: #fff;
+            color: #d9534f;
+            border: 1px solid #d9534f;
+            font-weight: normal;
+            font-size: 12px;
+        }
+
+        #force .btn-danger i{
+            margin-right: 3px;
+        }
+
+        .error {
+            color: #d9534f;
+        }
+
+        .error a {
+            color: #d9534f;
+        }
+
+
+        .pageTitleIcon {
+            display: none;
+        }
+
+        .tab-content {
+            padding-top: 35px;
+        }
+
+        .top_buttons  {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        #force #filter_row {
+            padding-top: 15px;
+            border-top: 1px solid #dddddd;
+            margin: 0 0 0 0;
+        }
+
+        /* Basic Styles */
+        #force {
+            padding: 15px 10px 0;
+            position: relative;
+        }
+
+        #force h2 {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin: 5px 0;
+        }
+
+        #force h3 {
+            font-size: 1.35em;
+        }
+
+        #force h4 {
+            font-size: 1.25em;
+        }
+
+        #force .dataRow h4 {
+            margin-bottom: .125em;
+        }
+
+        #force h5 {
+            font-size: 1.125em;
+        }
+
+        #force ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+
+        #force form > header {
+            padding: 20px 10px;
+            margin: 20px;
+        }
+
+        #force .bootstrap-checkbox button.btn {
+            margin: 0;
+            padding: 0;
+            font-size: 15px;
+            width: 18px;
+        }
+
+        #force .radio, #force .checkbox {
+            margin: 5px 0 0 0;
+            padding: 0;
+        }
+
+        #force input[type="radio"], #force input[type="checkbox"] {    
+            margin: 0;
+        }     
+
+        #force table table.sale_numbers {
+            width: 95%;
+            min-width: 180px; 
+            border: 0;
+            background-color: transparent;
+        }
+
+        #force table table.sale_numbers .checkbox {
+            padding: 0;
+        }
+
+        #force .tab-content > .active {
+            display: block !important;
+        }
+
+        /*
+        #force .radio input[type="radio"], 
+        #force .radio-inline input[type="radio"], 
+        #force .checkbox input[type="checkbox"], 
+        #force .checkbox-inline input[type="checkbox"],
+        */
+        #force table table.sale_numbers .checkbox input {
+            float: none;
+            margin-left: 0;
+
+        }
+
+        #force .bootstrap-select.team_select {
+            margin-bottom: 2px !important;
+        }
+
+        #force .btn {
+            font-size: 12px;
+        }
+
+        #force .bootstrap-select.team_select .btn {
+            font-size: 1.125em;
+
+        }
+        #force .bootstrap-select.btn-group .dropdown-menu li {
+            margin-left: 0;
+        }
+        
+        .appointment {
+            width: 200px;
+            display: block;
+        }
+
+        #logTable {
+            width: 100%;
+        }
+
+        #logTable thead {
+            border-top: 2px solid #ddd;
+        }
+
+        #logTable th {
+            max-width: 210px;
+        }
+
+        .team_list li {
+            margin: 0 0 0 0;
+            padding: 4px 0;
+            min-width: 140px;
+            border-top: 1px solid #ececec;
+        }
+
+        .team_list li:first-child {
+            border-top: 0px;
+        }
+
+        .team_list li img {
+            height: 25px;
+            width: auto;
+        }
+
+        #force .team_select {
+            font-size: .9em;
+            padding: 2px;
+        }
+
+        .dropdown-menu li {
+            padding-left: 0px;
+            margin: 0;
+        }
+
+        #force .uptype_menu li small {
+            color: #bbb;
+            float: right;
+            margin-right: 5px;
+        }
+
+        #force .sales-table {
+            width: 80%;
+            border-top: 2px solid #ddd;
+            text-align: left;
+        }
+
+        .sales-table .value {
+            text-align: center;
+        }
+
+        .sales-table h4 {
+            width: 500px;
+            position: relative;
+            float: right;        
+        }
+
+        .sales-table td {
+            
+        }
+
+        thead {
+            font-weight: bold;
+        }
+
+        button.btn, a.btn {
+            padding: 2px;
+        }
+
+        label {
+            font-weight: normal;
+        }
+
+        #force .in_store_label {
+            font-weight: normal;
+            font-size: 11px;
+        }
+
+        #force .in_store_label span {
+            font-size: 15px;
+        }
+
+        #force .in_store_label .in_store {
+            width: 18px;
+        }
+
+        #force .team_edit_form {
+            display: none; 
+            font-size: .85em;   
+        }
+
+        #force .team_edit_form .form-group {
+            margin: 0 0 5px 0;   
+        }
+
+        #force  .team_edit_form .form-control {
+            height: 25px;   
+        }
+
+        #force  .team_edit.edit {
+            opacity: .15;
+        }
+
+        #force #logTable tr:hover .team_edit.edit {
+            opacity: 1;
+        }
+
+        #force .sale_steps .btn {
+            padding: 0;
+            width: 18px;
+        }
+
+        .type {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        .type i{
+            margin-right: 5px;
+        }
+
+        .buyer_name, .cobuyer_name {
+            display: block;
+            font-size: 1.5em;
+            font-weight: bold;
+            margin: 5px 0;
+        }
+
+        .buyer_name {
+            margin-top: 2px;
+        }
+
+        #force .mod_name {
+            margin-bottom: 0;
+            position: relative;
+        }
+
+        #force .mod_name a {
+            margin-bottom: 0;
+            position: relative;
+        }
+
+        #force .team_filters .col-sm-2 {
+            width: 20%;
+        }
+
+        #force .team_filter {
+            font-size: 1em;
+        }
+
+        .caret {
+            transition: all .5s ease-in-out;
+        }
+
+        #loading {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            text-align: center;
+            padding: 100px;
+            background: rgba(255,255,255,0.85);
+            z-index: 9999;
+        }
+
+        .typeahead,
+        .tt-query,
+        .tt-hint {
+          width: 396px;
+          height: 30px;
+          padding: 8px 12px;
+          font-size: 24px;
+          line-height: 30px;
+          border: 2px solid #ccc;
+          -webkit-border-radius: 8px;
+             -moz-border-radius: 8px;
+                  border-radius: 8px;
+          outline: none;
+        }
+
+        .typeahead {
+          background-color: #fff;
+        }
+
+        .twitter-typeahead {
+            width: 100%;
+        }
+
+        .typeahead:focus {
+          border: 2px solid #0097cf;
+        }
+
+        .tt-query {
+          -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+             -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+                  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        }
+
+        .tt-hint {
+          color: #999
+        }
+
+        .tt-dropdown-menu {
+          width: 150%;
+          margin-top: 8px;
+          padding: 8px 0;
+          background-color: #fff;
+          border: 1px solid #ccc;
+          border: 1px solid rgba(0, 0, 0, 0.2);
+          -webkit-border-radius: 8px;
+             -moz-border-radius: 8px;
+                  border-radius: 8px;
+          -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+             -moz-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+                  box-shadow: 0 5px 10px rgba(0,0,0,.2);
+        }
+
+        .tt-suggestion {
+          padding: 3px 10px;
+          font-size: 13px;
+          line-height: 24px;
+        }
+
+        .tt-suggestion.tt-cursor {
+          color: #fff;
+          background-color: #0097cf;
+
+        }
+
+        #force .tt-suggestion p {
+          margin: 0;
+        }
+
+        .dealRows {
+            border-left: 5px solid #d9534f;
+            border-right: 5px solid #d9534f;
+            background-color: #fdf7f7;
+        }
+
+
+        .combinedRows {
+            border-left: 5px solid #9cd39f;
+            border-right: 5px solid #9cd39f;
+            background-color: #f8fffc;
+        }
+
+        .leadRows {
+            border-left: 5px solid #f0b076;
+            border-right: 5px solid #f0b076;
+            background-color: #fffcf8;        
+        }
+
+        #force .typeahead   {
+            padding-left: 30px;
+        }
+
+        #search_wrap {
+            position: relative;
+        }
+
+        #force .search_wrap i {
+            position: absolute;
+            z-index: 1;
+            font-size: 1.35em;
+            line-height: 2.125;
+            left: 25px;
+            color: #ccc;
+        }
+
+        #force .active_status {
+            position: relative;
+            color: #9cd39f;
+            padding-left: 2px;
+        }
+
+        #force .active_status:hover {
+            text-decoration: none;
+        }
+
+        .active_status:before {
+            color: #9cd39f;
+            position: relative;
+            content: "\e013";
+            font-family: 'Glyphicons Halflings';
+        }
+
+        #force #dtdob {
+            position: relative;
+        }
+
+        .no_records {
+            text-align: center;
+        }
+
+        /*** Styles to Allow Bootstrap Use in visualforce ***/        
+        html {
+            font-size: 12px;
+        }
+        
+        body {
+            font-size: 12px;
+        }
+
+        strong {
+            font-weight: bold; 
+        }
+        
+        h1, h2, h3, h4, h5 {
+            display: block;
+        }
+
+        #force h1, #force h2, #force h3, #force h4, #force h5 {
+            display: block;
+        }
+
+        .tooltipster-dt {
+            border-radius: 5px; 
+            border: 1px solid #d9534f;
+            background: #fdf7f7;
+            color: #d9534f;
+        }
+
+        .tooltipster-dt .tooltipster-content {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            line-height: 16px;
+            padding: 8px 10px;
+        }
+    </style> 
+    <!-- /head  -->   
+    <apex:pageMessages id="errors" />
+
+    <div id="loading"><img src="{!URLFOR($Resource.SDLResources,'/img/loading.gif')}" /></div>
+    
+    <div id="force">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#desklog" data-toggle="tab" >Desk Log</a></li>
+            <li><a href="#trafficlog" data-toggle="tab" >Traffic Log</a></li>
+            <!-- <li><a href="#salesstats" data-toggle="tab" >Sales Stats</a></li> -->
+        </ul>
+
+        <div class="tab-content">
+          
+          <div class="tab-pane active" id="desklog">
+
+            <apex:form id="f">
+
+                <div class="row top_buttons"><!-- Top Buttons: Refresh - Show Filters - Search -->
+
+                    <div class="col-sm-2">
+                        <!-- Select Date -->
+                        <!--Date:<br / -->                    
+                        <div class="input-group">
+                            <!-- {!TODAY()} or {!NOW} Not working? -->
+                          <!--input type="text" class="form-control date" value="01-20-2014" value="{!NOW()}" /-->
+                          <!--apex:inputText styleClass="form-control date date_picker" id="dtdob" onfocus="DatePicker.pickDate(false, this , false);" /-->
+                          <input type="text" class="form-control date date_picker" id="dtdob"/>
+                          <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3 search_wrap">
+                            <i class="glyphicon glyphicon-search"></i>
+                          <input id="search" type="text" class="form-control typeahead" placeholder="enter search term..." />
+                          <!--span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span-->
+                        
+                    </div>
+                    <div class="col-sm-2">
+                        <button id="show_filters" class="btn btn-default dropdown-toggle collapsed "  data-toggle="collapse" href="#filter_row" >
+                            <span class="glyphicon glyphicon-filter"></span> <span class="text"> Show Filters </span> <span class="caret"></span>
+                        </button>
+                    </div>
+                    <div class="col-xs-2">
+                         <button type="button" id="logRefresh" class="btn btn-default">
+                            <span class="glyphicon glyphicon-refresh"></span> Refresh Log
+                        </button>
+                    </div>
+
+                </div>
+
+                <div id="filter_row" class="row collapse"><!-- Filers Row -->
+
+                    <div class="col-md-2"><!--Date and Traffic Type Filters -->
+
+                        <!-- Gross Table output
+                            <apex:selectCheckboxes value="{!TrafficType}">
+                                    <apex:selectOptions value="{!TrafficTypes}"/>
+                            </apex:selectCheckboxes> -->
+
+                        <!-- Traffic Type Filters -->
+                        <!-- possible apex:repeat to ouput List/Map from controller -->
+                        <label class="radio">
+                            <apex:outputText rendered="{!OR(config.dealer__TrafficType__c=='ALL', config.dealer__TrafficType__c == null)}">
+                                <input name="inStore" id="storeFilter_All" type="radio" class="traffic_type instore_filter" value="inStore_all" data-filter="all" checked="checked" />
+                                Show All
+                            </apex:outputText>
+                            <apex:outputText rendered="{!IF(AND(config.dealer__TrafficType__c!='ALL', config.dealer__TrafficType__c != null), true, false)}">
+                                <input name="inStore" id="storeFilter_All" type="radio" class="traffic_type instore_filter" value="inStore_all" data-filter="all" />
+                                Show All
+                            </apex:outputText>                            
+                        </label>
+                        <label class="radio">
+                            <apex:outputText rendered="{!IF(config.dealer__TrafficType__c=='INSTORE', true, false)}">
+                                <input name="inStore" id="storeFilter_InStore" type="radio" class="traffic_type instore_filter" value="inStore_only" data-filter="instore" checked="checked" />
+                                In Store Now
+                            </apex:outputText>
+                            <apex:outputText rendered="{!IF(config.dealer__TrafficType__c!='INSTORE', true, false)}">
+                                <input name="inStore" id="storeFilter_InStore" type="radio" class="traffic_type instore_filter" value="inStore_only" data-filter="instore" />
+                                In Store Now
+                            </apex:outputText>                            
+                        </label>
+                        <!--label class="checkbox">
+                            <input type="checkbox" value="" id="" data-toggle="checkbox" />
+                            Didn't Visit
+                        </label-->
+                        <label class="radio">
+                            <input name="inStore" id="storeFilter_VisitedToday" type="radio" class="traffic_type instore_filter" value="inStore_today" data-filter="visited_today" />
+                            Visited Today
+                        </label>
+                    </div>
+                    
+                    <div class="col-md-2"><!-- Traffic Lead Type Filters -->
+                        <div class="dropdown">
+                            <button id="filterResults" class="btn btn-default dropdown-toggle"  data-toggle="dropdown" >
+                                Filter results <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-form uptype_menu" role="menu">
+
+                            </ul>
+                        </div>
+                        <h5 class="up_total"><strong>Total = </strong></h5>
+                    </div>
+                    
+                    <div class="col-md-8"><!-- People Filters and Statistics Table -->
+                    
+                        <div class="row team_filters">
+                            <div class="col-sm-2">
+                                <select class="form-control team_filter" data-key="s1" data-live-search="true">
+                                    <option value="null">Sales Person 1</option>
+                                    <apex:repeat value="{!s1List}" var="s1">
+                                        <option id="{!s1}" value="{!JSENCODE(s1)}"><apex:outputText value="{!s1List[s1]}" /></option>
+                                        <li id="{!s1}"><a href="#"><apex:outputText value="{!s1List[s1]}" /></a></li>
+                                    </apex:repeat>
+                                </select>
+                            </div>
+                            <div class="col-sm-2">
+                                <select class="form-control team_filter" data-key="s2" data-live-search="true">
+                                    <option value="null">Sales Person 2</option>
+                                    <apex:repeat value="{!s2List}" var="s2">
+                                            <option id="{!s2}" value="{!JSENCODE(s2)}"><apex:outputText value="{!s2List[s2]}" /></option>
+                                            <li id="{!s2}"><a href="#"><apex:outputText value="{!s2List[s2]}" /></a></li>
+                                    </apex:repeat>
+                                </select>
+                            </div>
+                            <div class="col-sm-2">
+                                <select class="form-control team_filter" data-key="dm" data-live-search="true">
+                                    <option value="null">Desk Manager</option>
+                                    <apex:repeat value="{!manager}" var="mgr">
+                                        <option id="{!mgr}" value="{!JSENCODE(mgr)}"><apex:outputText value="{!manager[mgr]}" /></option>
+                                    </apex:repeat>
+                                </select>
+                            </div>
+                            <div class="col-sm-2">
+                                <select class="form-control team_filter" data-key="fi" data-live-search="true">
+                                    <option value="null">Finance</option>
+                                    <apex:repeat value="{!finance}" var="fi">
+                                        <option id="{!fi}" value="{!JSENCODE(fi)}"><apex:outputText value="{!finance[fi]}" /></option>
+                                    </apex:repeat>
+                                </select>
+                            </div>
+                            <div class="col-sm-2">
+                                <select class="form-control team_filter" data-key="cmp" data-live-search="true">
+                                    <option value="null">Company</option>
+                                    <apex:repeat value="{!companies}" var="cmp">
+                                        <option id="{!cmp}" value="{!JSENCODE(cmp)}"><apex:outputText value="{!companies[cmp]}" /></option>
+                                    </apex:repeat>
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+          
+                <!-- The Log -->
+                <table id="logTable" class="table">
+                    <thead>
+                        <tr class="table-striped">
+                            <th scope="col"  style="width: 125px">Actions</th>
+                            <th scope="col">Client Name</th>
+                            <th scope="col">Contact Info</th>
+                            <th scope="col">Store Visit</th>
+                            <th scope="col">Sale Info</th>
+                            <th scope="col" style="width: 198px">Sales Team</th>
+                            <th scope="col" style="width: 100px" width="100">Created/Modified  </th>
+                        </tr>
+                    </thead>
+                    <tbody id="log_body">
+
+                    </tbody>
+                </table>
+                <!-- Modal -->
+                <div class="modal fade" id="dealdialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">Create Car Deal</h4>
+                      </div>
+                      <div class="modal-body">
+                        <iframe id="dIframe" src="" width="490" height="320" frameborder="0" scrolling="auto"></iframe>
+                      </div>
+                      <!--div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                      </div-->
+                    </div>
+                  </div>
+                </div>
+
+            </apex:form> 
+          </div><!-- /#desklog -->
+
+          <div class="tab-pane" id="trafficlog">
+            <apex:enhancedList type="dealer__Traffic_Log__c" height="700" rowsPerPage="25" id="TrafficList" customizable="True" />
+          </div>
+
+          <div class="tab-pane" id="salesstats">
+
+            <div class="row">
+                <br />
+                <table class="col-sm-3 table table-striped table-condensed sales-table">
+                    <thead>
+                        <tr>
+                            <td colspan="8"><h4>Sales Statistics:</h4></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="table-striped">
+                        <td><strong>Sold Deals:</strong></td>
+                        <td class="value"><apex:outputText value="{!soldCount}" /></td>
+                        <td><strong>FE:</strong></td>
+                        <td class="value"><apexoutputText value="{!feGross}" /></td>
+                        <td><strong>BE:</strong></td>
+                        <td class="value"><apex:outputText value="{!beGross}" /></td>
+                        <td><strong>TG:</strong></td>
+                        <td class="value"><apex:outputText value="{!totalGross}" /></td>
+                    </tr>
+                    <tr class="table-striped">
+                        <td><strong>MTD Sales</strong></td>
+                        <td class="value"><apex:outputText value="{!soldMTD}" /></td>
+                        <td><strong>FE:</strong></td>
+                        <td class="value"><apex:outputText value="{!feMTD}" /></td>
+                        <td><strong>BE:</strong></td>
+                        <td class="value"><apex:outputText value="{!beMTD}" /></td>
+                        <td><strong>TG:</strong></td>
+                        <td class="value"><apex:outputText value="{!tgMTD}" /></td>
+                    </tr>   
+                    </tbody>
+                </table>
+            </div>
+          </div>
+
+        </div><!-- /.tab-content -->
+
+    </div><!-- /#force -->
+        
+</apex:page>

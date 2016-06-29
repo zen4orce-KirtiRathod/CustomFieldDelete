@@ -1,0 +1,154 @@
+<apex:page title="Counter Sales" id="PartsCreateInvoicePage" standardController="dealer__Parts_Invoice__c" extensions="dealer.PartsInvoice_EXT" showChat="true">
+<apex:includeScript value="{!URLFOR($Resource.dealer__jQuery_UI_1820, 'js/jquery-1.7.2.min.js')}" />
+<apex:includeScript value="{!URLFOR($Resource.dealer__jQuery_UI_1820, 'js/jquery-ui-1.8.20.custom.min.js')}" />
+<apex:includeScript value="{!$Resource.dealer__jsHashTable}" />
+<apex:includeScript value="{!$Resource.dealer__jQueryNumberFormatting}" />
+<apex:includeScript value="{!$Resource.dealer__jsEncoder}" />
+<script type="text/javascript">
+ 	var pageMode  	   = "create";
+	var countermanName = "{!CounterManName}";
+	var countermanId   = "{!CounterMan}";
+	var invoiceId			   = "{!JSENCODE(Parts_Invoice__c.Id)}";
+	var invoiceName			   = "{!JSENCODE(Parts_Invoice__c.Name)}";
+	var invoiceDateTime 	   = "{!JSENCODE(TEXT(Parts_Invoice__c.Invoice_Date_Time__c))}";
+		
+	// Elements Used in Page Logic
+	var partId_element		   = "PartsCreateInvoicePage:CreateInvoiceForm:partid";
+	var partName_element	   = "PartsCreateInvoicePage:CreateInvoiceForm:partid:plSearchBlockButtons:partnamejs";
+	var partQuantity_element   = "PartsCreateInvoicePage:CreateInvoiceForm:partid:plSearchBlockButtons:partQTY";
+	var customer_element	   = "PartsCreateInvoicePage:CreateInvoiceForm:counterSalesPB:detailSection:Customer";
+	var customerLKID_element   = "PartsCreateInvoicePage:CreateInvoiceForm:counterSalesPB:detailSection:Customer_lkid";
+	var countermanLKID_element = "PartsCreateInvoicePage:CreateInvoiceForm:counterSalesPB:detailSection:CountermanInput_lkid";
+	var comments_element	   = "PartsCreateInvoicePage:CreateInvoiceForm:counterSalesPB:detailSection:Comments";
+
+    var initPL_ID              = "{!defaultPriceLevel.Id}";
+    var initPL_Method          = "{!defaultPriceLevel.Method__c}";
+    var initPL_Percent         = parseInt("{!defaultPriceLevel.Parts_Variable_Amount__c}");	
+
+	var defaultTaxOff		   = '{!defaultTaxOn}';
+	$dt = jQuery.noConflict();
+	$dt(document).ready(function() {
+		if(defaultTaxOff == 'true') {
+			$dt('PartsCreateInvoicePage\\:CreateInvoiceForm\\:counterSalesPB\\:detailSection\\:TaxExempt').prop('checked',true);
+		}
+
+		$dt("[for$='customer_select_list']").css('display', 'none');
+		$dt("[id$='customer_select_list']").css('display', 'none');		
+	});
+
+</script>
+<apex:includeScript value="{!$Resource.dealer__PartsInvoiceJS}" />
+
+<apex:stylesheet value="{!URLFOR($Resource.dealer__jQuery_UI_1820,'css/Aristo/Aristo.css')}"/>
+<apex:stylesheet value="{!$Resource.dealer__PartsCSS}"/>
+
+    <apex:form id="CreateInvoiceForm">  
+    
+    	<apex:sectionHeader title="Parts Invoice" subtitle="Create New" />  
+    	<apex:pageMessages id="pm"/>
+        <apex:pageBlock title="New Counter Sale" id="counterSalesPB">
+            <apex:pageBlockButtons location="top">
+                <input type="button" value="Create Invoice" accesskey="I" onClick="createItem('invoice');" class="btn" /> 
+                <input type="button" value="Save Price Quote" accesskey="S" onClick="createItem('quote');" class="btn" /> 
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection id="detailSection">
+                <apex:inputField value="{!dealer__Parts_Invoice__c.dealer__Customer__c}" required="true" id="Customer" onchange="lookupBusinessContacts();" />
+                <apex:inputField value="{!dealer__Parts_Invoice__c.dealer__Counterman__c}" required="true" id="CountermanInput" />
+
+                <!-- Contact Block -->
+  				<apex:selectList id="customer_select_list" label="Contact">
+
+  				</apex:selectList>
+            	<apex:outputText />
+                <!-- / Contact Block -->
+                
+                <apex:inputField value="{!dealer__Parts_Invoice__c.dealer__Location__c}" required="true" id="invoiceLocation" />
+                <!-- Repeat PL -->
+                <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Price Level" for="selectPL"/>
+                <apex:outputText >
+                <select id="PLselect" onChange="setPL(invoiceId);">
+                    <apex:repeat value="{!PriceLevels}" var="pl" id="selectPL">
+                        <option value="{!pl.Id}">{!pl.Name}</option>
+                    </apex:repeat>
+                </select>
+                </apex:outputText>
+                </apex:pageBlockSectionItem>
+
+
+                <apex:inputField value="{!dealer__Parts_Invoice__c.dealer__Comments__c}" id="Comments"/>
+                <apex:inputField value="{!dealer__Parts_Invoice__c.dealer__Tax_Exempt__c}" id="TaxExempt" />
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    
+    <div id="totalsBar" style="width: 300px;float: right">
+        <span class="mainTitle" ><b>Total:</b>&nbsp;</span>$<span id="totalsum">0.00</span> 
+    </div>
+    <div id="log-js"> </div>
+    <div id="errors-js"> </div>
+    <apex:pageBlock id="partid" title="Part Lines">
+        <apex:pageBlockButtons location="top" id="plSearchBlockButtons">
+            <div id="functionBar" style="width: 400px; float: left;">
+                <b>Part Search</b>&nbsp;<apex:inputText id="partnamejs" onkeypress="return noenter(event);" />&nbsp;<b>QTY Override:</b>&nbsp;<apex:inputText id="partQTY" size="4" maxlength="4" disabled="true" />
+                <c:AutoComplete objectname="dealer__Parts_Inventory__c" 
+                		additionalfield="dealer__Description__c,dealer__UPC__c,dealer__Raw_Part_Number__c" 
+                		resultfields="dealer__Description__c,dealer__Part_No__c" 
+                		autocomplete_textbox="{!$Component.partnamejs}" />
+            </div>
+        </apex:pageBlockButtons>
+		 <table class="list" border="0" cellpadding="0" cellspacing="0" id="partList">
+		 	<tr class="headerRow">
+		 		<th class="actionColumn" scope="col">Action</th>
+		 		<th scope="col" class=" zen-deemphasize">Part</th>
+		 		<th scope="col" class=" zen-deemphasize">Bin/Source</th>
+		 		<th scope="col" class=" zen-deemphasize">DS</th>
+		 		<th scope="col" class=" zen-deemphasize">QTY/Avail</th>
+		 		<th scope="col" class=" zen-deemphasize">PL</th>
+		 		<th scope="col" class="CurrencyElement zen-deemphasize">List</th>
+		 		<th scope="col" class="CurrencyElement zen-deemphasize">Net</th>
+		 		<th scope="col" class="CurrencyElement zen-deemphasize">Ext</th>
+		 	</tr>
+		 </table>		
+    </apex:pageBlock>
+	<c:PartsInvoiceSubDialogs id="subDialog" />
+	<div id="menuActions">
+	    <div id="triangle"></div>
+	    <div id="tooltip_menu">
+	        <a href="#" class="menu_top" id="menuActionPricing">
+	            Update Pricing
+	        </a>
+	        <!-- 
+	        <a href="#" id="menuActionQuantity">
+	            Change Quantity
+	        </a>
+	        -->
+	        <a href="#" class="menu_bottom" id="menuActionRemove">
+	            Remove Part
+	        </a>
+	    </div>
+	</div>
+ </apex:form>
+
+ <script>
+	function lookupBusinessContacts() {
+
+		dealer.PartsInvoice_EXT.businessAccountContacts($dt("[id$='Customer_lkid']").val(), function(result, event) {
+
+			// Add the select options to the page
+			var hasResults = false;
+			$dt.each(result, function(i,v){
+				hasResults = true;
+				$dt("[id$='customer_select_list']").append($dt('<option>', { 
+			        value: v.Id,
+			        text : v.FirstName +' '+v.LastName 
+			    }));
+			});			
+
+			if(hasResults) {
+				$dt("[for$='customer_select_list']").css('display', '');
+				$dt("[id$='customer_select_list']").css('display', '');	
+			}
+		});
+	}
+ </script>
+</apex:page>

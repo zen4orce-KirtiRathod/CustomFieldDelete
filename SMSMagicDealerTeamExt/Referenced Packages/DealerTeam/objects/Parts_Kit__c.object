@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <customHelpPage>SuccessDocumentation_Tab</customHelpPage>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <deprecated>false</deprecated>
+    <description>Kits, Packages or Assemblies of Parts</description>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableEnhancedLookup>true</enableEnhancedLookup>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <fields>
+        <fullName>Category__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Kit_Category</label>
+        <referenceTo>Kit_Category__c</referenceTo>
+        <relationshipName>Parts_Kits</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Description__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Description</label>
+        <length>255</length>
+        <required>true</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Item_Count__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Number of parts in the kit</description>
+        <externalId>false</externalId>
+        <label>Item Count</label>
+        <summaryForeignKey>Parts_Kit_Item__c.Parts_Kit__c</summaryForeignKey>
+        <summaryOperation>count</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Kit_Cost__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Kit Cost</label>
+        <summarizedField>Parts_Kit_Item__c.Extended_Cost__c</summarizedField>
+        <summaryForeignKey>Parts_Kit_Item__c.Parts_Kit__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Kit_Gross_Margin__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>( Kit_List__c -  Kit_Cost__c ) /  Kit_List__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Kit Gross Margin</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Kit_Hours__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Kit_Hours</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Kit_List__c</fullName>
+        <deprecated>false</deprecated>
+        <description>List price of this Kit</description>
+        <externalId>false</externalId>
+        <inlineHelpText>List price of the Kit</inlineHelpText>
+        <label>Kit List</label>
+        <summarizedField>Parts_Kit_Item__c.Extended_List__c</summarizedField>
+        <summaryForeignKey>Parts_Kit_Item__c.Parts_Kit__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Kit_Notes__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Kit_Notes</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Kit_Price__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Price override for the items in this kit</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If dollar value populated in this field it will override the sum of the price of included parts on the  invoice / work order.</inlineHelpText>
+        <label>Kit Price</label>
+        <precision>12</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Labor_Cost__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Labor Cost</label>
+        <precision>12</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Labor_Gross__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Labor Sale less Labor Cost</description>
+        <externalId>false</externalId>
+        <formula>IF( ISBLANK( Labor_Cost__c ), NULL, Labor_Sale__c -  Labor_Cost__c)</formula>
+        <inlineHelpText>Labor Sale less Labor Cost</inlineHelpText>
+        <label>Labor Gross</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Labor_Sale__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Labor Sale</label>
+        <precision>12</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>MFG__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>The lookup to store the Manufacturer category</description>
+        <externalId>false</externalId>
+        <label>MFG</label>
+        <lookupFilter>
+            <active>true</active>
+            <filterItems>
+                <field>Kit_Category__c.Type__c</field>
+                <operation>equals</operation>
+                <value>Manufacturer</value>
+            </filterItems>
+            <isOptional>true</isOptional>
+        </lookupFilter>
+        <referenceTo>Kit_Category__c</referenceTo>
+        <relationshipLabel>Parts Kits (MFG)</relationshipLabel>
+        <relationshipName>Parts_Kits_Ma</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Manufacturer__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Manufacturer</label>
+        <length>80</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Parts_Gross__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Actual parts price charged less parts cost</description>
+        <externalId>false</externalId>
+        <formula>IF( ISBLANK( Kit_Cost__c ), NULL, if( NOT( ISBLANK( Kit_Price__c )), Kit_Price__c -  Kit_Cost__c,  Kit_List__c -  Kit_Cost__c))</formula>
+        <inlineHelpText>Actual parts price charged less parts cost</inlineHelpText>
+        <label>Parts Gross</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Sell_on_Deals__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Denotes if the parts kit can be sold on a deal</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Is this parts kit available for sale in the deal screen.</inlineHelpText>
+        <label>Sell on Deals</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Sub_Category__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Sub_Category</label>
+        <referenceTo>Kit_Category__c</referenceTo>
+        <relationshipName>Part_Kits</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Total_Cost__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Total Cost</label>
+        <precision>12</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Total_Kit_Gross__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Labor Gross plus Parts Gross</description>
+        <externalId>false</externalId>
+        <formula>Labor_Gross__c +  Parts_Gross__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Labor Gross plus Parts Gross</inlineHelpText>
+        <label>Total Kit Gross</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <label>Parts Kit</label>
+    <listViews>
+        <fullName>All</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <nameField>
+        <label>Kit Name</label>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Parts Kits</pluralLabel>
+    <searchLayouts>
+        <customTabListAdditionalFields>Description__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Manufacturer__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Item_Count__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Total_Kit_Gross__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Kit_List__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Kit_Price__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Labor_Cost__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Labor_Sale__c</customTabListAdditionalFields>
+        <lookupDialogsAdditionalFields>Description__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Manufacturer__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Item_Count__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Total_Kit_Gross__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Kit_Cost__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Kit_List__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Kit_Price__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Labor_Cost__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Labor_Sale__c</lookupDialogsAdditionalFields>
+        <lookupFilterFields>Manufacturer__c</lookupFilterFields>
+        <searchFilterFields>Manufacturer__c</searchFilterFields>
+        <searchResultsAdditionalFields>Description__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Manufacturer__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Item_Count__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Total_Kit_Gross__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Kit_Cost__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Kit_List__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Kit_Price__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Labor_Cost__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Labor_Sale__c</searchResultsAdditionalFields>
+    </searchLayouts>
+    <sharingModel>ReadWrite</sharingModel>
+</CustomObject>

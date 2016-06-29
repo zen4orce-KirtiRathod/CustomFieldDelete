@@ -1,0 +1,5 @@
+<apex:page standardController="dealer__Service_Estimate__c" extensions="dealer.ServiceEstimate_EXT" action="{!IF(ShowRecord = '4-Square', 
+	urlFor($Page.UsedRecon4Square+'?id='+RecordID, RecordID, null, true),
+	urlFor($Page.ServiceEstimate+'?id='+RecordID, RecordID, null, true)
+	)}">
+</apex:page>

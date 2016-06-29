@@ -1,0 +1,14 @@
+<apex:page standardController="smagicinteract__SMS_SenderId__c">
+
+<apex:form >
+ <apex:pageBlock title="{!$Label.SENDERID_CONFIGURATION_PAGE_BLOCK_TITLE}">
+     <apex:outputLabel value="{!$Label.SENDERID_SECTION_TITLE}:" />
+     <apex:inputField value="{!smagicinteract__SMS_SenderId__c.smagicinteract__senderId__c}" />
+     <apex:pageBlockButtons >
+         <apex:commandButton value="{!$Label.SAVE_BUTTON}" title="{!$Label.SAVE_BUTTON}" action="{!save}"/>
+         <apex:commandButton value="{!$Label.CANCEL_BUTTON_TITLE}" title="{!$Label.CANCEL_BUTTON_TITLE}" action="{!cancel}"/>
+     </apex:pageBlockButtons>
+ </apex:pageBlock>
+ </apex:form>
+
+</apex:page>

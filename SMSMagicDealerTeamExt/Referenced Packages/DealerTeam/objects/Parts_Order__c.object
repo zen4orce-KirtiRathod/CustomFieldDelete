@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <customHelpPage>SuccessDocumentation_Tab</customHelpPage>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <deprecated>false</deprecated>
+    <description>Transaction table of all open and completed parts orders.</description>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableEnhancedLookup>true</enableEnhancedLookup>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <fields>
+        <fullName>Back_Ordered__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Back Ordered</label>
+        <precision>6</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Depot__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Depot</label>
+        <length>48</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Line_Posted__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Time the line item was posted to inventory</inlineHelpText>
+        <label>Line Posted</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Order_Date__c</fullName>
+        <defaultValue>TODAY()</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Order Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Order_Status__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Status of order (lookup)</description>
+        <externalId>false</externalId>
+        <formula>TEXT(Order__r.Status__c)</formula>
+        <label>Order Status</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Order__c</fullName>
+        <deleteConstraint>Restrict</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Order</label>
+        <referenceTo>Stock_Order__c</referenceTo>
+        <relationshipLabel>Parts Orders</relationshipLabel>
+        <relationshipName>Parts_Orders</relationshipName>
+        <required>true</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Parts_Inventory__c</fullName>
+        <deleteConstraint>Restrict</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Parts Inventory</label>
+        <referenceTo>Parts_Inventory__c</referenceTo>
+        <relationshipLabel>Parts Orders</relationshipLabel>
+        <relationshipName>Parts_Orders</relationshipName>
+        <required>true</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Parts_Invoice__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Parts Invoice</label>
+        <referenceTo>Parts_Invoice__c</referenceTo>
+        <relationshipLabel>Parts Orders</relationshipLabel>
+        <relationshipName>Parts_Orders</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Parts_Line__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Parts Line</label>
+        <referenceTo>Parts_Invoice_Line__c</referenceTo>
+        <relationshipLabel>Parts Orders</relationshipLabel>
+        <relationshipName>Parts_Orders</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Parts_Master__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Parts Master</label>
+        <referenceTo>Parts_Master__c</referenceTo>
+        <relationshipLabel>Parts Orders</relationshipLabel>
+        <relationshipName>Parts_Orders</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Purchase_Order__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Purchase Order</label>
+        <referenceTo>Purchase_Order__c</referenceTo>
+        <relationshipLabel>Parts Orders</relationshipLabel>
+        <relationshipName>Parts_Orders</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Quantity_Ordered__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Quantity Ordered</label>
+        <precision>6</precision>
+        <required>true</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Received__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Quantity received, this can exceed the value ordered.</inlineHelpText>
+        <label>Received</label>
+        <precision>6</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Repair_Order_Company_ID__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Company of the Repair Order</description>
+        <externalId>false</externalId>
+        <formula>CASESAFEID( Parts_Line__r.Service_Repair_Order__r.Company__c )</formula>
+        <label>Repair Order Company ID</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Repair_Order_ID__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Service repair order ID (Caseafied)</description>
+        <externalId>false</externalId>
+        <formula>CASESAFEID( Parts_Line__r.Job_Line__r.Service_Repair_Order__c )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Repair Order ID</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Requested_By__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>User whom requested the parts to be ordered.</inlineHelpText>
+        <label>Requested By</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>PartOrderBy</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Scan_Time__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>The time this part was scanned at receiving.</inlineHelpText>
+        <label>Scan Time</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Service_Job_Line_Description__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>Parts_Line__r.Job_Line__r.Name &amp; &quot; &quot; &amp;  Parts_Line__r.Job_Line__r.Op_Description__c</formula>
+        <label>Service Job Line Description</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Service_Job_Line__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>CASESAFEID( Parts_Line__r.Job_Line__c )</formula>
+        <label>Service Job Line</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Value__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Value of this order line</description>
+        <externalId>false</externalId>
+        <label>Value</label>
+        <precision>14</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <label>Parts Order</label>
+    <nameField>
+        <displayFormat>{YYMMDD}{0}</displayFormat>
+        <label>Order Number</label>
+        <trackHistory>false</trackHistory>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Parts Orders</pluralLabel>
+    <searchLayouts>
+        <lookupDialogsAdditionalFields>Parts_Master__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Order_Status__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Quantity_Ordered__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Purchase_Order__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Parts_Invoice__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Service_Job_Line__c</lookupDialogsAdditionalFields>
+        <lookupFilterFields>Order_Status__c</lookupFilterFields>
+        <lookupFilterFields>Parts_Master__c</lookupFilterFields>
+        <lookupFilterFields>Purchase_Order__c</lookupFilterFields>
+        <lookupFilterFields>Parts_Invoice__c</lookupFilterFields>
+        <lookupFilterFields>Service_Job_Line__c</lookupFilterFields>
+        <searchFilterFields>Order_Status__c</searchFilterFields>
+        <searchFilterFields>Parts_Master__c</searchFilterFields>
+        <searchFilterFields>Purchase_Order__c</searchFilterFields>
+        <searchFilterFields>Parts_Invoice__c</searchFilterFields>
+        <searchFilterFields>Service_Job_Line__c</searchFilterFields>
+    </searchLayouts>
+    <sharingModel>ReadWrite</sharingModel>
+    <webLinks>
+        <fullName>Create_Purchase_OrderFromStocOrder</fullName>
+        <availability>online</availability>
+        <description>Create Purchase Order from Stock Order</description>
+        <displayType>massActionButton</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <height>600</height>
+        <linkType>url</linkType>
+        <masterLabel>Create Purchase Order</masterLabel>
+        <openType>sidebar</openType>
+        <protected>false</protected>
+        <requireRowSelection>false</requireRowSelection>
+        <url>/apex/dealer__newPOvSO?orderid={!Stock_Order__c.Id}</url>
+    </webLinks>
+</CustomObject>

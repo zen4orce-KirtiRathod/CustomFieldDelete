@@ -1,0 +1,383 @@
+<apex:page title="Technician Time Entry" standardController="dealer__Technician_Job_Time__c" extensions="dealer.TechTimeEntry_EXT" showChat="true" id="techTimeEntryPage" sidebar="false" tabStyle="dealer__Service_Repair_Order__c">
+<apex:includeScript value="{!URLFOR($Resource.dealer__jQuery_UI_1820, 'js/jquery-1.7.2.min.js')}" />
+<apex:includeScript value="{!URLFOR($Resource.dealer__jQuery_UI_1820, 'js/jquery-ui-1.8.20.custom.min.js')}" />
+<apex:includeScript value="{!$Resource.dealer__jsHashTable}" />
+<apex:includeScript value="{!$Resource.dealer__jQueryNumberFormatting}" />
+<apex:includeScript value="{!$Resource.dealer__jQueryTools}" />
+<apex:stylesheet value="{!URLFOR($Resource.dealer__jQuery_UI_1820,'css/Aristo/Aristo.css')}"/>
+
+<apex:stylesheet value="{!URLFOR($Resource.dealer__jqGrid, 'ui.jqgrid.css')}" />
+<apex:includeScript value="{!URLFOR($Resource.dealer__jqGrid, 'grid.locale-en.js')}" />
+<apex:includeScript value="{!URLFOR($Resource.dealer__jqGrid, 'jquery.jqGrid.min.js')}" />
+
+<script type="text/javascript">
+var j$ = jQuery.noConflict();
+var roId = '{!ro.Id}';
+var ro_number = '{!ro.dealer__RO_Number__c}';
+j$(document).ready(function() {
+	//j$('input#phSearchInput').focus();
+	
+	// Load Service History
+	j$("#serviceHistory").jqGrid({
+		data: svcHistory,
+		datatype: "local",
+		height: 'auto',
+        width: '100%',
+		rowNum: 30,
+		rowList: [10,20,30],
+		colNames:['RO No', 'Date', 'Advisor', 'Job#', 'Labor', 'Parts', 'Operation','Labor Type','Concern','Cause','Correction'],
+	   	colModel:[
+	   		{name:'ronumber',index:'ronumber', width:60, sorttype:"int", formatter: 'showLink', formatOptions: { baseLinkUrl: '/', target:'_blank'}},
+	   		{name:'opendate',index:'opendate', width:70, sortable:false, formatter:"date"},
+	   		{name:'advisor',index:'advisor', width:100, sortable:false},
+	   		{name:'joblinenumber', index:'joblinenumber', width:30, sortable:false}, 
+	   		{name:'laborcharges',index:'laborcharges', width:80, align:"right",sortable:false, formatter:"number"},
+	   		{name:'partscharges',index:'partscharges', width:80, align:"right",sortable:false, formatter:"number"},
+	   		{name:'operation',index:'opeartion', width:100, sortable:false},
+	   		{name:'paytype',index:'paytype', width:30, sortable:false},	
+	   		{name:'concern',index:'concern', width:175, sortable:false},
+	   		{name:'cause',index:'cause', width:175, sortable:false},
+	   		{name:'correction',index:'correction', width:175, sortable:false}		
+	   	],
+	   	pager: "#pageHistory",
+	   	viewrecords: true,
+	   	sortname: 'ronumber',
+	   	grouping:true,
+	   	groupingView : {
+	   		groupField : ['ronumber'],
+	   		groupColumnShow : [true],
+	   		groupText : ['<b>{0} - {1} Item(s)</b>'],
+	   		groupCollapse : false,
+			groupOrder: ['desc']   		
+	   	},
+	   	caption: "Service History"
+	});            	
+});
+
+function saveJobLineStatus(id, newStatus) {
+        dealer.TechTimeEntry_EXT.saveJobStatus( id+'-'+newStatus, function(result, event){
+            if (event.status) {  
+                if(result==true)  {
+                	location.reload(true);
+                } else {
+                	alert('Error, status not save to system.');
+                }
+            } else if (event.type === 'exception') {    
+                	logError(event.message);
+                } else {
+                   logError(event.message);
+                }
+            }, 
+        {escape:true}); 	
+}
+
+function saveFlatRate(id, hours, element) {
+		cLog(id+' '+hours);
+		element.value='';
+		if(id!='' && hours!='') {
+	        dealer.TechTimeEntry_EXT.saveFlatHours( id+'-'+hours, function(result, event){
+            if (event.status) {  
+                if(result==true)  {
+                	location.reload(true);
+                } else {
+                	alert('Error, Horus not saved to system.  Please check that you are not requesting more hours than allowed.');
+                }
+            } else if (event.type === 'exception') {    
+                	logError(event.message);
+                } else {
+                   logError(event.message);
+                }
+            }, 
+        {escape:true}); 
+      }
+}
+
+function saveCCC(id, c, type, elementId) {
+
+		if(c=='') { return false; }
+		
+		jsObject=new Object();
+		jsObject.Id = id;
+		jsObject.CCC= c;
+		jsObject.Type=type;
+		cLog('Updating CCC Line');
+		cLog(jsObject);
+		
+		dealer.TechTimeEntry_EXT.saveCCCLine( JSON.stringify(jsObject), function(result, event){
+            if (event.status) {  
+                if(result==true)  {
+                	// location.reload(true);
+                	elementId.style.backgroundColor='#99FF66';
+                } else {
+                	alert('Error, CCC not saved to system.');
+                }
+            } else if (event.type === 'exception') {    
+                	logError(event.message);
+                } else {
+                   logError(event.message);
+                }
+            }, 
+        {escape:true});
+}
+
+function addActualTime(id) {
+    line = new Object();
+    line.jobId  = j$('#'+id+'-jobId').val();
+    line.techId = j$('#'+id+'-techName_lkid').val();
+    line.actual = j$('#'+id+'-actual').val();
+    line.date   = j$('#'+id+'-date').val();
+    line.time   = j$('#'+id+'-time').val();
+    line.roNumber=ro_number;
+
+    dealer.TechTimeEntry_EXT.setTechTime(JSON.stringify(line), function(result, event){
+        if(event.status) {
+            // Append Lines Here
+            j$('#'+id+'-techName').val('');
+            j$('#'+id+'-techName_lkid').val('');
+            j$('#'+id+'-actual').val('');
+            j$('#'+id+'-date').val('');
+            j$('#'+id+'-time').val('');
+            
+            parent.window.location = '/apex/dealer__TechTimeEntry?ro='+roId;
+
+        } else {
+            alert(event.result);
+        }
+    });
+}
+
+function logError(msg) {
+
+    if(typeof window.console == 'object') {
+        console.log(msg);                  
+    }
+    
+}
+
+function cLog(msg) {
+    if(typeof window.console == 'object') {
+        console.log(msg);                  
+    }
+}
+var svcHistory = {!ServiceHistoryJSON};
+</script>
+<style type="text/css">
+  th {font-weight: bold; width: 105px;  }
+ .techtimetable.td { border-bottom:1px solid #000000; }
+ .center { align: center; }
+</style>
+       <apex:sectionHeader title="Technician View" subtitle="{!ro.Name}"/> 
+       <chatter:feedWithFollowers entityId="{!ro.Id}" showHeader="true"/>
+       <apex:form >
+            <apex:pageMessages />
+           <apex:pageBlock id="roBlock">
+                <apex:pageBlockSection showHeader="false"  columns="2">
+                	<apex:pageBlockSectionItem >
+                		<apex:outputText value="Repair Order" />
+                		<apex:outputLink value="/{!ro.Id}" id="roLink" ><apex:outputText value="{!ro.Name}" /></apex:outputLink>
+                	</apex:pageBlockSectionItem>
+                	<apex:outputText /> 
+                    <apex:outputField value="{!ro.dealer__Tag__c}"/>
+                    <apex:outputField value="{!ro.dealer__Status__c}"/>
+                    <apex:outputField value="{!ro.dealer__Create_Date_Time__c}"/>
+                    <apex:outputField value="{!ro.dealer__Vehicle__c}"/>
+                    <apex:outputField value="{!ro.dealer__Service_Advisor__c}"/>
+                    <apex:outputField value="{!ro.dealer__Mileage_In__c}"/>
+                    <apex:outputField value="{!ro.dealer__Waiting__c}"/>
+                    <apex:outputField value="{!ro.dealer__Mileage_Out__c}"/>
+                    <apex:outputField value="{!ro.dealer__Promise_Date__c}" />
+                    <apex:outputField value="{!ro.dealer__Promise_Time__c}" />
+                </apex:pageBlockSection>
+           </apex:pageBlock>
+           
+           <apex:pageBlock id="jobLineBlock" >
+              <table class="list"  cellpadding="0" cellspacing="0">
+              <thead>
+               <tr class="headerRow">
+                     <th class=" zen-deemphasize" style="width:25px;">Line</th>
+                     <th class=" zen-deemphasize" >Op Code</th>
+                     <th class=" zen-deemphasize" >Pay Type</th>
+                     <th class=" zen-deemphasize" >Status</th>
+                     <th class=" zen-deemphasize" style="width:35px;">Labor Est.</th>
+                     <th class=" zen-deemphasize"  style="width:370px;">Job Clock</th>
+                 </tr>
+               </thead>  
+               <apex:repeat value="{!JobLines}" var="l">
+               <apex:variable var="jobLineNumber" value="{!0}"/>
+
+                 <tr class="dataRow" valign="top"> 
+                     <td class="dataCell" style="background-color:#BAD9FC;"><b><apex:outputField value="{!l.dealer__Line_Number__c}"/></b></td>
+                     <td class="dataCell" style="background-color:#BAD9FC;">
+                     		<apex:outputLink value="/{!l.Id}" ><b><apex:outputField value="{!l.dealer__Op_Code__c}"/></b></apex:outputLink>
+                     </td>
+                     <td class="dataCell" style="background-color:#BAD9FC;"><b><apex:outputField value="{!l.dealer__Labor_Type__c}"/></b></td>
+                     <td class="dataCell" style="background-color:#BAD9FC;"><b>
+                        <apex:inputField value="{!l.dealer__Stat__c}" onchange="saveJobLineStatus('{!JSENCODE(l.Id)}', this.value)" />
+                        </b></td>
+                     <td class="dataCell" style="background-color:#BAD9FC;"><b>
+                        <apex:outputField value="{!l.dealer__Book_Time__c}" />
+                        </b>
+                     </td>
+
+                     <!-- Technician Clock Time (Self Entered) -->
+                     <apex:outputText rendered="{!if(fixedOpsSettings.dealer__Enable_Actual_Times__c==false, false, true)}">
+                     <td class="dataCell" rowspan="4" valign="top">
+                         <table cellpadding="0" cellspacing="0" width="100%">
+                         <tr class="headerRow" valign="top"> 
+                             <td class=" zen-deemphasize" style="width:60px">Type</td>
+                             <td class=" zen-deemphasize" style="width:135px;">Start</td>
+                             <td class=" zen-deemphasize" style="width:135px;">Stop</td>
+                             <td class=" zen-deemphasize">Actual</td>
+                             <td class=" zen-deemphasize">Flat Rate</td>
+                             <td class=" zen-deemphasize" style="width:150px;">Tech</td>                            
+                         </tr>
+                         
+                         <apex:variable value="{!0}" var="clockTime" />
+                         <apex:variable value="{!0}" var="bookTime" />
+                         
+                         <apex:repeat value="{!l.Technician_Job_Times__r}" var="t">
+                             
+                                 <tr class="dataRow">
+                                     <td class="dataCell"><apex:outputField value="{!t.dealer__Diag_Repair__c}"/></td>
+                                     <td class="dataCell"><apex:outputField value="{!t.dealer__Start_Time__c}"/></td>
+                                     <td class="dataCell"><apex:outputField value="{!t.dealer__End_Time__c}"/></td>
+                                     <td class="dataCell"><apex:outputField value="{!t.dealer__Actual_Time__c}"/></td>
+                                     <td class="dataCell">
+                                     	<apex:inputField value="{!t.dealer__Flat_Rate_Time__c}" id="flatRateInput" style="width:20px;" onFocus="this.value=''" onBlur="saveFlatRate('{!JSENCODE(t.Id)}', this.value, this)" 
+                                     			rendered="{!AND(IF(l.dealer__Stat__c =='Complete', false, true), IF(t.dealer__Technician__c == $User.Id, true, false))}" />
+                                     	<apex:outputField value="{!t.dealer__Flat_Rate_Time__c}" id="flatRateOutput" style="width:20px;" rendered="{!IF(l.dealer__Stat__c == 'Complete',true,false)}" />
+                                     	
+                                     </td>
+                                     <td class="dataCell"><apex:outputField value="{!t.dealer__Technician__c}"/></td>
+                                 </tr>
+                             	 <apex:variable var="clockTime" value="{!clockTime + t.dealer__Actual_Time__c}" />
+                             	 <apex:variable var="bookTime" value="{!bookTime + t.dealer__Flat_Rate_Time__c}" />
+                         </apex:repeat>
+                         		<tr class="dataRow">
+                         			<td class="dataCell">
+                         				<apex:commandButton title="Start Diag" value="Start Diag" action="{!startJobDiag}"
+				                              rendered="{!IF(OR(l.dealer__Currently_Active__c>0, l.dealer__Stat__c=='Complete'), false, true)}" reRender="hiddenBlock">
+				                             <apex:param name="jobId" value="{!l.Id}" assignTo="{!jobId}" />
+				                         </apex:commandButton>
+                         			</td>
+                         			<td class="dataCell">
+                         				 <apex:commandButton title="Start Repair" value="Start Repair" action="{!startJobRepair}"
+				                              rendered="{!IF(OR(l.dealer__Currently_Active__c>0, l.dealer__Stat__c=='Complete'), false, true)}" reRender="hiddenBlock">
+				                              <apex:param name="jobId" value="{!l.Id}" assignTo="{!jobId}" />   
+				                         </apex:commandButton> 
+				                          <apex:commandButton title="End Job" value="End Job" action="{!endJobClock}"
+				                              rendered="{!IF(l.dealer__Currently_Active__c>0, true, false)}" reRender="hiddenBlock">
+				                              <apex:param name="jobId" value="{!l.Id}" assignTo="{!jobId}" />   
+				                         </apex:commandButton>
+                         			</td>
+                         			<td class="dataCell">Total</td>
+                         			<td class="dataCell"><span class="text-align:right;"><apex:outputText value="{!clockTime}" /></span></td> 
+                         			<td class="dataCell"><span class="text-align:right;"><apex:outputText value="{!bookTime}" /></span></td>                          		
+                         			<td class="dataCell"></td>
+                         		</tr>
+                         </table>
+                     </td>
+                     </apex:outputText>
+                     <!-- End Technician Clocl Time (Self Entered) -->
+
+                     <!-- Technician Clock Time Hand Entered -->
+                     <apex:outputText rendered="{!if(fixedOpsSettings.dealer__Enable_Actual_Times__c==false, true, false)}">
+                     <td class="dataCell" rowspan="4" style="vertical-align: top !important;">
+                        <table width="100%" cellpadding="0" cellspacing="0">
+                          <tr>
+                            <th>Action</th>
+                            <th>Technician</th>
+                            <th>Date</th>
+                            <th>Actual Time</th>
+                            <th>&nbsp;</th>
+                          </tr>
+                          <apex:repeat value="{!l.Technician_Job_Times__r}" var="t">
+                            <tr>
+                              <td><apex:outputLink value="/{!t.Id}">Edit</apex:outputLink></td>
+                              <td><apex:outputField value="{!t.dealer__Technician__c}" /></td>
+                              <td><apex:outputField value="{!t.dealer__Date__c}" /></td>
+                              <td><apex:outputField value="{!t.dealer__Actual_Time_Entry__c}" /></td>
+                              <td>&nbsp;</td>
+                            </tr>                            
+                          </apex:repeat>
+
+                          <!-- If Not Closed enable manipulation of Tech Time -->
+                          <apex:outputText rendered="{!ISBLANK(ro.dealer__Invoiced_Date_Time__c)}">
+                            <tr>   
+                                <td>&nbsp;</td>
+                                <td>
+                                    <input type="hidden" value="{!l.Id}" id="{!l.Id}-jobId" />
+                                    <input type="text" id="{!l.Id}-techName" />
+                                    <input type="hidden" id="{!l.Id}-techName_lkid" />
+                                    <c:AutoComplete objectname="User" 
+                                        additionalfield="FirstName, LastName" 
+                                        resultfields="" 
+                                        autocomplete_textbox="{!l.Id}-techName" />
+                                </td>
+                                <td>
+                                    <input type="date" id="{!l.Id}-date" />
+                                </td>
+                                <td>
+                                    <input type="text" id="{!l.Id}-actual" />
+                                </td>
+                                <td>
+                                    <input type="button" value="Save" style="btn" onclick="addActualTime('{!l.Id}');" />
+                                </td>
+                            </tr>
+                            <apex:variable var="jobLineNumber" value="{!jobLineNumber + 1}"/>
+                          </apex:outputText>
+                        </table>
+                     </td>
+                     </apex:outputText>
+                     <!-- End Technican Clock Time Hand Entered -->
+                 </tr> 
+                 <tr  class="dataRow">
+                     <td></td>
+                     <td class="dataCell" style="font-style:italic;">Complaint</td>
+                     <td class="dataCell" colspan="3"><apex:outputField value="{!l.dealer__CustomerConcern__c}" /></td>
+                 </tr>
+                 <tr  class="dataRow">
+                     <td></td>
+                     <td class="dataCell" style="font-style:italic;">Cause</td>
+                     <td class="dataCell" colspan="3">
+                        <apex:inputField value="{!l.dealer__Cause__c}" onBlur="saveCCC('{!JSENCODE(l.Id)}', this.value,  'cause', this)"  rendered="{!IF(l.dealer__Stat__c == 'Complete',false,true)}" style="width:400px;"/>
+                        <apex:outputField value="{!l.dealer__Cause__c}"  rendered="{!IF(l.dealer__Stat__c == 'Complete',true,false)}" style="width:400px;"/>
+                     </td>
+                 </tr>
+                  <tr class="dataRow">
+                      <td></td>
+                     <td class="dataCell" style="font-style:italic;">Correction</td>
+                     <td class="dataCell" colspan="3">
+                        <apex:inputField value="{!l.dealer__Correction__c}" onBlur="saveCCC('{!JSENCODE(l.Id)}', this.value, 'correction', this)"  rendered="{!IF(l.dealer__Stat__c == 'Complete',false,true)}"  style="width:400px;"/>
+                        <apex:outputField value="{!l.dealer__Correction__c}"  rendered="{!IF(l.dealer__Stat__c == 'Complete',true,false)}"  style="width:400px;"/>
+                     </td>
+                 </tr>
+               </apex:repeat>
+               </table>
+           </apex:pageBlock>
+           <apex:pageBlock >
+               <apex:pageBlockTable value="{!PartsLines}" var="p">
+                   <apex:column >
+                       <apex:facet name="header">Part Number</apex:facet>
+                       <apex:outputField value="{!p.dealer__Part_Number__c}"/>
+                   </apex:column>
+                   <apex:column >
+                   		<apex:facet name="header">Description</apex:facet>
+                   		<apex:outputField value="{!p.dealer__Part_Description__c}" />
+                   </apex:column>
+                   <apex:column value="{!p.dealer__Service_Job_Line_Number__c}"/>
+                   <apex:column value="{!p.dealer__Quantity_Ordered__c}"/>
+                   <apex:column value="{!p.dealer__Quantity_Sold__c}"/>
+                   <apex:column value="{!p.dealer__Pay_Type__c}"/>
+               </apex:pageBlockTable>
+           </apex:pageBlock>
+          	<apex:pageBlock title="Service History">
+        		<apex:pageBlockSection columns="1">
+        			<table id="serviceHistory" ></table>
+        			<div id="pageHistory"></div>
+        		</apex:pageBlockSection>
+   			</apex:pageBlock>	
+           <apex:pageBlock id="hiddenBlock" rendered="false"></apex:pageBlock>
+       </apex:form>
+       <apex:relatedList subject="{!ro}" list="NotesAndAttachments"/>
+</apex:page>

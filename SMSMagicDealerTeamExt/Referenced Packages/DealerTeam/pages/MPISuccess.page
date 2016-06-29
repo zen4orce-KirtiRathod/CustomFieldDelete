@@ -1,0 +1,250 @@
+<apex:page docType="html" showChat="true" showHeader="false" applyHtmlTag="false" sidebar="false" standardController="dealer__Inspection_Report__c" extensions="dealer.MPI2_EXT">
+<apex:stylesheet value="{!URLFOR($Resource.dealer__Customer_Check,'/css/foundation.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.dealer__Customer_Check,'/css/foundation.min.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.dealer__Customer_Check,'/css/mpi2.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.dealer__Customer_Check,'/css/normalize.css')}" />
+    
+    <apex:includescript value="{!URLFOR($Resource.dealer__Customer_Check, '/js/vendor/jquery.js')}"/>
+    <apex:includescript value="{!URLFOR($Resource.dealer__Customer_Check, '/js/vendor/custom.modernizr.js')}"/>
+    <apex:includescript value="{!URLFOR($Resource.dealer__Customer_Check, '/js/foundation/foundation.js')}"/>
+    <apex:includescript value="{!URLFOR($Resource.dealer__Customer_Check, '/js/foundation/foundation.forms.js')}"/>
+    <apex:includescript value="{!URLFOR($Resource.dealer__Customer_Check, '/js/foundation/foundation.abide.js')}"/>
+    <apex:includescript value="{!URLFOR($Resource.dealer__Customer_Check, '/js/foundation/foundation.dropdown.js')}"/>
+    
+<html class="no-js" lang="en" >
+<!--<![endif]-->
+
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, user-scalable=no"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+<title>Digital MPI Customer Check In</title>
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400' rel='stylesheet' type='text/css'/>
+<script type="text/javascript">
+    $j = jQuery.noConflict();
+</script>
+</head>
+<body>
+
+
+
+
+<!-- DISABLE PORTRAIT MODE
+************************************************************************* -->
+<!--div id="portrait">
+<img src="{!URLFOR($Resource.Customer_Check,'/img/rotate-ipad.png')}" width="100" style="margin-top: 200px;"/>
+<h2>Rotate Device to Landscape</h2>
+</div-->
+
+<!-- Wraps All Content -->
+<div id="contentWrap">
+
+
+
+<!-- TOP BAR
+************************************************************************* -->
+
+<div class="topBar">
+    <div class="row">
+    <div class="logo small-6 columns"><a href="/apex/dealer__MPICheckIn"><img src="/{!mpiLogo}"  alt="" width="126" height="73"/></a></div>
+    <div class="small-6 columns text-right">
+    <table width="" border="0" align="right" cellpadding="0" cellspacing="0" class="advisor">
+      <tr>
+        <th width="60" align="center" valign="middle" scope="col">
+            <div class="UserPhoto" style="background: url({!me.SmallPhotoUrl}) no-repeat center center; background-size: 100%;">&nbsp;</div>
+            </th>
+        <th align="left" valign="middle" scope="col">
+            <span class="userTitle">Service Advisor</span>
+            <span class="userName"><apex:outputText value="{!me.Name}" /></span>
+        </th>
+        <th valign="middle" scope="col"><div class="Date"><apex:outputText value="{0,date,yyyy.MM.dd}"> <apex:param value="{!NOW()}" /> </apex:outputText></div></th>
+      </tr>
+    </table>
+    </div>
+    </div>
+</div>
+
+
+
+<!-- BODY CONTENT
+************************************************************************* -->
+
+
+
+<div class="bodyWrap">
+    <div class="row">
+    
+         <!-- Left-hand Column -->
+         <div class="small-12 columns fixedHeight bodyCol">
+         <h2 class="text-center" style="margin-top: 100px; margin-bottom: 10px; font-size: 3em;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Success!</h2>
+         <p class="text-center">The visit details have been saved and <br/>
+         submitted to the service tech.</p>
+             <p class="text-center">
+                 <a href="/{!mpi.Id}" class="btn" style="width: 100px;font-size: 18px;margin-left: auto;margin-right: auto;">View MPI</a>
+             </p>
+          <apex:outputText rendered="{!IF(dms.dealer__DMSName__c=='ADP', true ,false)}">   
+          <p class="text-center">Push Appointment Data to ADP?</p>
+             <p class="text-center">
+                 <a href="#" id="dms_save" onclick="callADPPushData();" class="btn" style="width: 100px;font-size: 18px;margin-left: auto;margin-right: auto;">Save to ADP</a>
+             </p>
+             <div id="dmsStatus"></div>
+             <script type="text/javascript">
+             $dt = jQuery.noConflict();
+             function callADPPushData() {
+             $dt('#dms_save').html('Saving to DMS');
+             $dt.ajax({
+                    url: "https://apsv1.dealerteam.com/api/adp/service/pushServiceAppointmentToADPJSON.php?did=543&sfid={!serviceAppointment.Id}",
+                    jsonp: "callback",
+                    dataType: "jsonp",
+                    // work with the response
+                    success: function( response ) {
+                        if(response.success === true) {
+                        	$dt('#dms_save').html('Saved');
+                        } else {
+                            alert('Uh-oh! '.response.message);
+                        	$dt('#dms_save').html('Tap to re-try.');    
+                        }
+                    }
+                });
+              }
+             </script>
+          </apex:outputText>
+         </div>
+        
+        
+        <!-- Right-hand Column
+        <div class="small-6 columns fixedHeight bodyCol" style="border-left: 1px solid #fff; border-bottom: none; border-top: none; background-color: #dfdfdf;">
+        <h2>Customer Signature</h2>
+        <p class="carDetails" style="line-height: 1.6em;">By signing below you are confirming Lorem ipsum doloar site amet, consectetur adipsisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+        <div class="signature">&nbsp;</div>
+        <div class="carDetails" style="line-height: 1.6em;">
+        <form>
+        <input name="" type="checkbox" value=""> I have read and understand the terms of service<br>
+        <input name="" type="checkbox" value=""> Text Message Opt-In
+        </form>
+        </div>
+        </div> -->
+        
+    </div><!-- Closes Body Row -->
+</div>
+
+
+
+<!-- FOOTER
+************************************************************************* -->
+
+<apex:form id="mpiSummary">
+<div class="footer">
+    <div class="row">
+        <div class="small-6 columns">
+        	<apex:commandLink action="{!doSummary}" value="< Back" styleClass="btn" style="text-align: left;  background-color: #ccc; padding-right: 15px;" />
+        </div>
+        
+        <div class="small-6 columns">
+        <a href="/apex/dealer__MPICheckIn" class="btn" style="text-align: right; padding-right: 15px;">Start New Order &gt;</a>
+        </div>
+    </div>
+</div>
+</apex:form>
+
+
+
+<!-- MODALS
+************************************************************************* -->
+
+
+<!-- Service Intervals 
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+
+<div id="intervals" class="reveal-modal">
+  <h2>Service Intervals</h2>
+  <div class="serviceItems">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+         <thead>
+            <tr style="border-bottom: 1px solid #666;">
+              <th width="110" style="color: #999;">ITEM NO.</th>
+              <th style="color: #999;">NAME</th>
+              <th width="130" style="color: #999;">ADD SERVICE</th>
+            </tr>
+          </thead>
+          <tr>
+            <td width="110">12345</td>
+            <td>Service Name</td>
+            <td width="130"><a href="#" class="addBtn">+ Add Item</a></td>
+          </tr>
+          <tr>
+            <td width="110">12345</td>
+            <td>Service Name</td>
+            <td width="130"><a href="#" class="addBtn">+ Add Item</a></td>
+          </tr>
+          <tr>
+            <td width="110">12345</td>
+            <td>Service Name</td>
+            <td width="130"><a href="#" class="addBtn">+ Add Item</a></td>
+          </tr>
+          <tr>
+            <td width="110">12345</td>
+            <td>Service Name</td>
+            <td width="130"><a href="#" class="addBtn">+ Add Item</a></td>
+          </tr>
+  </table>
+  </div>
+  
+  <a href="#" class="close-reveal-modal">&#215;</a>
+  <div class="small-6 columns">
+  <a href="#" class="btn close-reveal-modal" 
+  style="background-color: #ccc;font-size: 1.4em;line-height: 1em;top: 0em;right: 0em;color: #fff;font-weight: 400;cursor: pointer;">Cancel</a>
+  </div>
+  <div class="small-6 columns">
+  <a href="#" class="btn">Add Selected Items</a>
+ </div>
+</div>
+
+
+
+<!-- Remove Service Item
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+
+<div id="remove" class="reveal-modal">
+ <h2>Would you like to remove this service item?</h2>
+ <div class="small-6 columns">
+ <a href="#" class="btn close-reveal-modal" 
+ style="background-color: #ccc;font-size: 1.4em;line-height: 1em;top: 0em;right: 0em;color: #fff;font-weight: 400;cursor: pointer;">Cancel</a>
+ </div>
+ <div class="small-6 columns">
+ <a href="#" class="btn">Yes, Remove</a>
+ </div>
+</div>
+
+
+
+</div> <!-- ENDS class contentWrap -->
+
+
+<!-- FOOTER SCRIPTS
+//////////////////////////////////////////////////////////////////////// -->
+<script>
+    $j(document).foundation();
+</script>
+<style>
+/* Portrait */
+    /*
+@media screen and (orientation:landscape) {
+#portrait { display: none;}
+#contentWrap {visibility:visible;}
+}
+    */
+/* Landscape */
+    /*
+@media screen and (orientation:portrait) {
+#portrait { display: block;}
+#contentWrap {visibility:hidden;}
+}
+#portrait {width: 100%; text-align: center;}
+    */
+</style>
+</body>
+</html>
+
+</apex:page>

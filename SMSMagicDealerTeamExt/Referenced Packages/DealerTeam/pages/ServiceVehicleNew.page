@@ -1,0 +1,19 @@
+<apex:page id="ServiceVehicleNewRecord" standardController="dealer__Service_Vehicle__c" extensions="dealer.ServiceVehicle_EXT" title="New Service Vehicle">
+	<apex:sectionHeader title="New Service Vehicle" subtitle="Please enter the VIN" />
+	<apex:form id="CreateVehicleRecord">
+		<apex:pageBlock >
+		<apex:pageMessages />
+        	<apex:panelGrid columns="2" id="inputGrid">
+        		<apex:outputPanel >
+        			<apex:inputField value="{!dealer__Service_Vehicle__c.dealer__VIN__c}" label="VIN" style="width:165px;"/>
+        			<apex:commandButton action="{!doDecodePage}" value="Next" id="createButton"/>
+        		</apex:outputPanel>
+        		
+        		<apex:outputPanel >
+        			<apex:inputField value="{!dealer__Service_Vehicle__c.dealer__VIN_Not_Present__c}" />
+        			<apex:commandButton action="{!vinNotPresent}" value="No VIN Present" id="nvpBtn" />
+        		</apex:outputPanel>
+        	</apex:panelGrid>
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>

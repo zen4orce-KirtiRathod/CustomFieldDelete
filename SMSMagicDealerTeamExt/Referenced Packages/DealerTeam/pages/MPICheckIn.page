@@ -1,0 +1,135 @@
+<apex:page docType="html" showChat="false" showHeader="false" applyHtmlTag="false" sidebar="false" standardController="dealer__Inspection_Report__c" extensions="dealer.MPI2_EXT" id="MPI">
+    
+    <apex:stylesheet value="{!URLFOR($Resource.dealer__Customer_Check,'/css/foundation.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.dealer__Customer_Check,'/css/foundation.min.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.dealer__Customer_Check,'/css/mpi2.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.dealer__Customer_Check,'/css/normalize.css')}" />   
+    
+    <apex:includescript value="{!URLFOR($Resource.dealer__Customer_Check, '/js/vendor/jquery.js')}"/>
+    <apex:includescript value="{!URLFOR($Resource.dealer__Customer_Check, '/js/vendor/custom.modernizr.js')}"/>
+    <apex:includescript value="{!URLFOR($Resource.dealer__Customer_Check, '/js/foundation/foundation.js')}"/>
+    <apex:includescript value="{!URLFOR($Resource.dealer__Customer_Check, '/js/foundation/foundation.forms.js')}"/>
+    <apex:includescript value="{!URLFOR($Resource.dealer__Customer_Check, '/js/foundation/foundation.abide.js')}"/>
+    <apex:includescript value="{!URLFOR($Resource.dealer__Customer_Check, '/js/foundation/foundation.dropdown.js')}"/>
+    
+    <html class="no-js" lang="en">
+        
+        <head>
+            <meta charset="utf-8" />
+            <meta name="viewport" content="width=device-width, user-scalable=no" />
+            <meta name="apple-mobile-web-app-capable" content="yes" />
+            <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+
+            <title>Digital MPI Customer Check In</title>
+            <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400' rel='stylesheet' type='text/css' />
+            
+            <script type="text/javascript">
+                $j = jQuery.noConflict();
+                $j( document ).ready(function() {
+                    $j('.datePicker').remove();
+                    $j("#MPI\\:cStart\\:doCI").click(function() { $j("#MPI\\:cStart\\:doCI").hide(); });
+                });
+            </script>
+        </head>
+        
+        <body>
+
+        <!-- DISABLE PORTRAIT MODE
+            ************************************************************************* -->
+            <!--div id="portrait">
+                <img src="{!URLFOR($Resource.Customer_Check,'/img/rotate-ipad.png')}" width="100" style="margin-top: 200px;" />
+                <h2>Rotate Device to Landscape</h2>
+            </div-->
+            
+        <!-- Wraps All Content -->
+            
+            <div id="contentWrap">
+            
+        <!-- TOP BAR
+            ************************************************************************* -->
+                <div class="topBar">
+                
+                    <div class="row">
+                        
+                        <div class="logo small-6 columns">
+                            <img src="/{!MPIlogo}" alt="" height="65" />
+                        </div>
+             
+                        <div class="small-6 columns text-right">
+                            
+                            <table width="" border="0" align="right" cellpadding="0" cellspacing="0" class="advisor">
+                                
+                                <tr>
+                                    <th width="60" align="center" valign="middle" scope="col">
+                                        <div class="UserPhoto" style="background: url({!me.SmallPhotoUrl}) no-repeat center center; background-size: 100%;">&nbsp;</div>
+                                    </th>
+                                    <th align="left" valign="middle" scope="col">
+                                        <span class="userTitle">&nbsp;</span>
+                                        <span class="userName"><apex:outputText value="{!me.Name}" /></span>
+                                    </th>
+                                    <th valign="middle" scope="col"><div class="Date"><!--apex:outputText value="{0,date,yyyy.MM.dd}"> <apex:param value="{!NOW()}" /> </apex:outputText--></div></th>
+                                    <th><a href="/{!htmlencode(keyPrefix)}/o">Return to Technician Queue</a></th>
+                                </tr>
+                                
+                            </table>
+                        
+                        </div>
+                    </div>
+                </div>
+            <!-- BODY CONTENT
+                ************************************************************************* --> 
+                <div class="bodyWrap">
+                    <div class="row">
+                        <div class="small-7 small-centered columns text-center">
+                            <h1 style="margin-top: 60px;">Customer Check In</h1>
+                            <apex:form id="cStart">
+                                 <apex:inputText value="{!searchVin}" id="searchVINField" html-placeholder="Enter Last Six Numbers of VIN" style="height: 50px; text-align: center;" maxlength="6" />
+                                 <apex:commandLink value="Search" action="{!doCustomerInfo}" styleClass="btn" id="doCI" />
+                            
+                            <apex:outputPanel id="multiSelect">
+                                <apex:repeat value="{!searchResults}" var="sr"> 
+                                    <hr />
+                                    <apex:commandLink value="{!sr.Name} {!sr.dealer__VIN__c}" action="{!doCustomerInfo}" styleClass="btn">
+                                        <apex:param name="servicevehicle" value="{!sr.Id}" assignTo="{!serviceVehicleId}" />
+                                    </apex:commandLink>
+                                </apex:repeat>
+                            </apex:outputPanel>
+                                
+                            <!-- No Matching Results Move On -->
+                                <hr />
+                                <apex:commandLink action="{!doNoMatchForward}" value="Quick-Input New Vehicle" styleClass="btn" />
+                            </apex:form>    
+                        </div>
+                    </div>
+                </div>
+            <!-- FOOTER SCRIPTS
+                //////////////////////////////////////////////////////////////////////// -->
+                
+           
+            </div> 
+            <script src="{!URLFOR($Resource.Customer_Check, 'js/foundation.min.js')}"></script>
+            <!-- <script src="{!URLFOR($Resource.Customer_Check, 'js/foundation/foundation.section.js')}"></script>  -->
+            <script>
+                $j(document).foundation();
+            </script>
+    
+            <style>
+                /* Portrait */
+                /*
+                @media screen and (orientation:landscape) {
+                    #portrait { display: none;}
+                    #contentWrap {visibility:visible;}
+                }
+                */
+                /* Landscape */
+                /*
+                @media screen and (orientation:portrait) {
+                    #portrait { display: block;}
+                    #contentWrap {visibility:hidden;}
+                }
+                #portrait {width: 100%; text-align: center;}
+                */
+            </style>
+        </body>
+    </html>
+</apex:page>

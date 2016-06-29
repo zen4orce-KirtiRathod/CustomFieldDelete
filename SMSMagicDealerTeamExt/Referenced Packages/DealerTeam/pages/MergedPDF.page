@@ -1,0 +1,5 @@
+<apex:page standardController="dealer__Deal__c" extensions="dealer.MergedPDFController" >  
+  <apex:repeat value="{!listBlobString}" var="blobStr">  
+          <apex:iframe src="data:application/pdf;base64,{!blobStr}"/>      
+  </apex:repeat>
+</apex:page>

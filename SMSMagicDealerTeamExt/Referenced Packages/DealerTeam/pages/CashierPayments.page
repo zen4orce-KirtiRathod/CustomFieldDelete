@@ -1,0 +1,164 @@
+<apex:page id="cashierpayment" title="Cashier" controller="dealer.Cashier" showChat="true">
+<apex:includeScript value="{!URLFOR($Resource.dealer__jQuery_UI_1820, 'js/jquery-1.7.2.min.js')}" />
+<apex:includeScript value="{!URLFOR($Resource.dealer__jQuery_UI_1820, 'js/jquery-ui-1.8.20.custom.min.js')}" />
+<apex:includeScript value="{!$Resource.dealer__jsHashTable}" />
+<apex:includeScript value="{!$Resource.dealer__jQueryNumberFormatting}" />
+<apex:includeScript value="{!$Resource.dealer__jQueryTools}" />
+<apex:stylesheet value="{!URLFOR($Resource.dealer__jQuery_UI_1820,'css/Aristo/Aristo.css')}"/>
+<script type="text/javascript">
+var j$ = jQuery.noConflict();
+j$(document).ready(function() {
+	// j$(esc("cashierpayment:cashierForm:paymentLines:paymentCommandBar:amount")).val('{!totalDue}');
+	j$(esc("cashierpayment:cashierForm:paymentLines:paymentCommandBar:amount")).focus(function() {
+		if(this.value == this.defaultValue) {
+			this.select();
+		}
+	});
+});
+
+function esc(myid) {
+   return '#' + myid.replace(/(:|\.)/g,'\\\\$1');
+}
+
+function logError(msg) {
+
+    if(typeof window.console == 'object') {
+        console.log(msg);                  
+    }
+            
+	j$('#errors-js').text(msg);
+}
+
+function cLog(msg) {
+    if(typeof window.console == 'object') {
+        console.log(msg);                  
+    }
+}
+
+function json2xml(o, tab) {
+   var toXml = function(v, name, ind) {
+      var xml = "";
+      if (v instanceof Array) {
+         for (var i=0, n=v.length; i<n; i++)
+            xml += ind + toXml(v[i], name, ind+"\t") + "\n";
+      }
+      else if (typeof(v) == "object") {
+         var hasChild = false;
+         xml += ind + "<" + name;
+         for (var m in v) {
+            if (m.charAt(0) == "@")
+               xml += " " + m.substr(1) + "=\"" + v[m].toString() + "\"";
+            else
+               hasChild = true;
+         }
+         xml += hasChild ? ">" : "/>";
+         if (hasChild) {
+            for (var m in v) {
+               if (m == "#text")
+                  xml += v[m];
+               else if (m == "#cdata")
+                  xml += "<![CDATA[" + v[m] + "]]>";
+               else if (m.charAt(0) != "@")
+                  xml += toXml(v[m], m, ind+"\t");
+            }
+            xml += (xml.charAt(xml.length-1)=="\n"?ind:"") + "</" + name + ">";
+         }
+      }
+      else {
+         xml += ind + "<" + name + ">" + v.toString() +  "</" + name + ">";
+      }
+      return xml;
+   }, xml="";
+   for (var m in o)
+      xml += toXml(o[m], m, "");
+   return tab ? xml.replace(/\t/g, tab) : xml.replace(/\t|\n/g, "");
+}
+</script>
+	<apex:form id="cashierForm">
+    
+	<apex:pageBlock title="Cashier">
+		<apex:pageBlockButtons >
+			<apex:commandButton action="{!postInvoice}" value="Post Invoice" disabled="{!IF(applyAmount==0, false, true)}" />
+		</apex:pageBlockButtons>
+		<apex:pageBlockSection >
+			<apex:outputText value="{!invoiceNumber}" label="Invoice Number"/>
+			
+			
+			
+			
+			<apex:outputText value="{0, number, $###,###.00}" label="Invoice Total">
+				<apex:param value="{!invoiceAmount}" />
+			</apex:outputText>
+			
+			
+			
+			
+			<apex:outputText value="{!customer}" label="Customer" />
+			<apex:outputText value="{0, number, $###,###.00}" label="Total Due">
+				<apex:param value="{!totalDue}" />
+			</apex:outputText>
+			<apex:outputText />
+			<apex:inputText value="{!closeDate}" label="Close Date" />
+			<apex:outputText />
+			<apex:inputText value="{!authCode}" label="Auth Code" />
+		</apex:pageBlockSection>
+	</apex:pageBlock>
+	<apex:pageMessages />
+	<apex:pageBlock id="paymentLines" title="Payment(s)">
+		 <apex:pageBlockButtons location="top" id="paymentCommandBar">
+                <apex:outputPanel layout="block" id="functionBar">
+                
+                <b>Amount:</b>  
+                &nbsp;&nbsp;
+                <apex:inputText id="amount" value="{!applyAmount}" size="20" maxlength="12" />
+                
+                 <b>Payment Method:</b>
+                 &nbsp;&nbsp;
+                 <apex:selectList id="method" styleclass="std" size="1"  value="{!paymethods}">
+                    <apex:selectOptions value="{!PaymentMethods}"/>
+             	</apex:selectList>
+             	             	
+             	&nbsp;&nbsp;
+             	<b>Mark as Deposit</b>
+             	<apex:inputCheckBox id="Deposit" value="{!deposit}" title="Is this a Deposit?" label="Deposit"/>
+             	&nbsp;&nbsp;
+                <apex:commandButton value="Apply Payment" action="{!applyPayment}"/> 
+                </apex:outputPanel>
+         </apex:pageBlockButtons>
+	</apex:pageBlock>
+	
+	<apex:pageBlock title="Applied Payments">
+		<apex:pageBlockTable value="{!clines}" var="l">
+			<apex:column >
+				<apex:facet name="header">Date</apex:facet>
+				<apex:outputText value="{0,date,MM'/'dd'/'yyyy}">
+				    <apex:param value="{!l.dealer__Close_Date__c}" /> 
+				</apex:outputText>
+			</apex:column>
+			<apex:column >
+				<apex:facet name="header">Cashier Transaction</apex:facet>
+				<apex:outputLink value="/{!l.Id}"><apex:outputText value="{!l.Name}" /></apex:outputLink>
+			</apex:column>
+			
+			<apex:column >
+				<apex:facet name="header">Amount</apex:facet>
+				<apex:outputText value="{!l.dealer__Amount__c}" /> 
+			</apex:column>
+			
+			<apex:column >
+				<apex:facet name="header">Payment Method</apex:facet>
+				<apex:outputText value="{!l.dealer__Payment_Method__c}" /> 
+			</apex:column>
+			
+			<apex:column >
+				<apex:facet name="header">CC Auth. Code</apex:facet>
+				<apex:outputText value="{!l.dealer__Credit_Card_Authorization_Code__c}" />
+			</apex:column>			
+			<apex:column >
+				<apex:facet name="header">Deposit?</apex:facet>
+				<apex:outputField value="{!l.dealer__Deposit__c}"/>
+			</apex:column>
+		</apex:pageBlockTable>
+	</apex:pageBlock>	
+	</apex:form>
+</apex:page>

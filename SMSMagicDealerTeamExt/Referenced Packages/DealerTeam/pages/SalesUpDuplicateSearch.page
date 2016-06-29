@@ -1,0 +1,142 @@
+<apex:page tabStyle="dealer__Sales_Up__c" title="Sales Ups - Search Duplicates" id="searchdupeups"  standardController="dealer__Sales_Up__c" extensions="dealer.SalesLead_EXT">
+    <script>
+    function mergeValidation(){
+        alert ('You may only select two or three records for merge');    
+    }
+    </script>
+    <apex:sectionHeader title="Sales Up" subtitle="Search for Duplicates"/>
+    <apex:form id="sF">
+        <apex:pageMessage summary="Possible Matches found for this Sales Up" severity="warning" strength="3" rendered="{!IF(OR(searchCustomerSize>0, searchUpsSize>0), true, false)}"/>
+        <apex:pageMessages />
+          <apex:pageBlock title="Modify Search Results" mode="maindetail">
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Search Again" action="{!FindDupesFromFD}" rendered="{!IF(AND(searchAccountSize>0, fromCreatePage == false, fromFDPage == true), true, false)}"/>
+                <apex:commandButton value="Search Again" action="{!FindFromCreatePage}" rendered="{!IF(AND(searchAccountSize>0, fromCreatePage == true, fromFDPage == false), true, false)}"/>
+                <apex:commandButton value="Cancel" action="{!Cancel}" />
+            </apex:pageBlockButtons>
+            <apex:pageblocksection columns="1">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel for="firstName" value="First Name" />
+                    <apex:outputPanel >
+                        <apex:inputCheckbox value="{!searchOptions.inFirstName}" disabled="false" />
+                        <apex:inputText value="{!searchOptions.firstName}" id="firstName" />
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel for="lastName" value="Last Name" />
+                    <apex:outputPanel >
+                        <apex:inputCheckbox value="{!searchOptions.inLastName}" disabled="false" />
+                        <apex:inputText value="{!searchOptions.lastName}" id="lastName" />
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel for="phone" value="Phone" />
+                    <apex:outputPanel >
+                        <apex:inputCheckBox value="{!searchOptions.inPhone}" id="phone"/>
+                        <apex:inputText value="{!searchOptions.upPhone}" />
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel for="mobile" value="Mobile" />
+                    <apex:outputPanel >
+                        <apex:inputCheckBox value="{!searchOptions.inMobile}" id="mobile" />
+                        <apex:inputText value="{!searchOptions.upMobile}" />
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>                
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel for="email" value="Email" />
+                    <apex:outputPanel >
+                        <apex:inputCheckBox value="{!searchOptions.inEmail}" id="email" />
+                        <apex:inputText value="{!searchOptions.upEmail}" />
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>                
+                
+            </apex:pageblocksection>
+        </apex:pageBlock>
+
+        <apex:pageBlock mode="maindetail" rendered="{!IF(AND(fromCreatePage == true, fromFDPage == false), true, false)}">
+            <div style="font-size:14px;">You are attempting to create a new account record for:</div>
+
+                <apex:pageBlockTable value="{!upList}" var="upL">
+                    <apex:column value="{!upL.dealer__FirstName__c}"/>
+                    <apex:column value="{!upL.dealer__LastName__c}" />
+                    <apex:column value="{!upL.dealer__Phone__c}" />
+                    <apex:column value="{!upL.dealer__Mobile__c}" />
+                    <apex:column value="{!upL.dealer__Email__c}" />
+                </apex:pageBlockTable> 
+            <div style="height:15px;"></div>
+            <span style="font-size:14px;">It looks like there might be matching records.  If any of the listed account records are the right person, choose the Select Account button.</span>
+            <div align="center"><apex:commandButton value="{!nomatchstring}" action="{!noMatch}" onclick="if(!confirm('This will create new records, are you sure?')){return false};" /></div>
+        </apex:pageBlock>
+
+        <apex:pageBlock title="Matching Accounts" tabStyle="Account" rendered="{!IF(AND(searchAccountSize>0, fromCreatePage == true, fromFDPage == false), true, false)}">
+            <apex:pageBlockTable value="{!searchAccountResults}" var="sar">
+                <apex:column headerValue="Action">
+                    <apex:commandButton value="Select Account" action="{!attachLead}" rerender="hiddenBlock">
+                        <apex:param value="{!sar.Id}" assignTo="{!selectedAccountId}" name="selectedAccount" />
+                    </apex:commandButton>
+                </apex:column>
+                <apex:column ><apex:facet name="header">Account</apex:facet><apex:outputLink value="/{!sar.Id}"><apex:outputField value="{!sar.Name}" /></apex:outputLink></apex:column>
+                <apex:column headerValue="Phone" value="{!sar.Phone}" />
+                <apex:column headerValue="Mobile" value="{!sar.PersonMobilePhone}" /> 
+                <apex:column headerValue="Email" value="{!sar.PersonEmail}" />
+                <apex:column headerValue="Home Phone" value="{!sar.PersonHomePhone}" rendered="{!NOT(ISBLANK(sar.PersonHomePhone))}"/> 
+                <apex:column >
+                    <apex:facet name="header">Address</apex:facet>
+                    <apex:outputText rendered="{!NOT(ISBLANK(sar.PersonMailingStreet))}">
+                    <apex:outputField value="{!sar.PersonMailingStreet}" /><br />
+                    <apex:outputField value="{!sar.PersonMailingCity}" />,&nbsp;
+                    <apex:outputField value="{!sar.PersonMailingState}" />&nbsp;
+                    <apex:outputField value="{!sar.PersonMailingPostalCode}" />
+                    </apex:outputText>
+                </apex:column>
+            </apex:pageBlockTable>
+        </apex:pageBlock>
+         
+        <apex:pageBlock title="Matching Ups" rendered="{!IF(AND(searchUpsSize>0, fromCreatePage == false, fromFDPage == true), true, false)}">
+        <apex:pageBlockButtons >
+                <apex:commandButton value="Merge Duplicates" action="{!mergeRecords}"
+                 oncomplete="mergeValidation()">
+                </apex:commandButton>
+            </apex:pageBlockButtons>
+            <apex:pageBlockTable value="{!activeSalesup}" var="sur">
+            <apex:column >
+            <apex:inputCheckbox value="{!sur.isChecked}" styleClass="selectedId"/>
+            </apex:column>
+            
+                <apex:column >
+                    <apex:facet name="header">Sales Up</apex:facet>
+                    <apex:outputLink value="/{!sur.junctionRecord.Id}"><apex:outputField value="{!sur.junctionRecord.Name}" /></apex:outputLink>
+                </apex:column>
+                <apex:column headerValue="Lead Date" value="{!sur.junctionRecord.dealer__Lead_Date__c}" />
+                <apex:column headerValue="Make" value="{!sur.junctionRecord.dealer__Make__c}" />
+                <apex:column headerValue="Model" value="{!sur.junctionRecord.dealer__Model__c}" />
+                <apex:column headerValue="Salesperson 1" value="{!sur.junctionRecord.dealer__Salesperson_1__c}" />
+                <apex:column headerValue="Status" value="{!sur.junctionRecord.dealer__Lead_Status__c}" />
+                <apex:column headerValue="Type" value="{!sur.junctionRecord.dealer__Lead_Type__c}" />
+            </apex:pageBlockTable>
+        </apex:pageBlock>
+      
+      <apex:pageBlock title="Matching Ups" rendered="{!IF(AND(searchUpsSize>0, fromCreatePage == true, fromFDPage == false), true, false)}">
+            <apex:pageMessage summary="Possible Matches found for this Sales Up" severity="warning" strength="3" rendered="{!IF(AND(searchUpsSize>0, fromCreatePage == true, fromFDPage == false), true, false)}"/>
+            <apex:pageBlockTable value="{!searchUpsResults}" var="sur">
+                <apex:column >
+                    <apex:outputLink value="/{!sur.Id}" styleClass="btn" style="text-decoration:none;">Select Sales Up</apex:outputLink>
+                </apex:column>
+                <apex:column >
+                    <apex:facet name="header">Sales Up</apex:facet>
+                    <apex:outputField value="{!sur.Name}" />
+                </apex:column>
+                <apex:column headerValue="Lead Date" value="{!sur.dealer__Lead_Date__c}" />
+                <apex:column headerValue="Phone" value="{!sur.dealer__Phone__c}" />
+                <apex:column headerValue="Mobile" value="{!sur.dealer__Mobile__c}" />
+                <apex:column headerValue="Email" value="{!sur.dealer__Email__c}" />
+                <apex:column headerValue="Salesperson 1" value="{!sur.dealer__Salesperson_1__c}" />
+                <apex:column headerValue="Type" value="{!sur.dealer__Lead_Type__c}" />
+            </apex:pageBlockTable>
+        </apex:pageBlock>
+        
+
+        <apex:pageBlock id="hiddenBlock" rendered="false"></apex:pageBlock>
+    </apex:form>
+</apex:page>

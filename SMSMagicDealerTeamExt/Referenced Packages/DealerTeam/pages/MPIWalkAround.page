@@ -1,0 +1,533 @@
+<apex:page docType="html" showChat="false" showHeader="false" applyHtmlTag="false" sidebar="false" standardController="dealer__Inspection_Report__c" extensions="dealer.MPI2_EXT">
+    
+    <apex:stylesheet value="{!URLFOR($Resource.dealer__Customer_Check,'/css/foundation.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.dealer__Customer_Check,'/css/foundation.min.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.dealer__Customer_Check,'/css/mpi2.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.dealer__Customer_Check,'/css/normalize.css')}" /> 
+     
+    <apex:includescript value="{!URLFOR($Resource.dealer__Customer_Check, '/js/vendor/jquery.js')}"/>
+    <apex:includescript value="{!URLFOR($Resource.dealer__Customer_Check, '/js/vendor/custom.modernizr.js')}"/>
+    <apex:includescript value="{!URLFOR($Resource.dealer__Customer_Check, '/js/foundation/foundation.js')}"/>
+    <apex:includescript value="{!URLFOR($Resource.dealer__Customer_Check, '/js/foundation/foundation.forms.js')}"/>
+    <apex:includescript value="{!URLFOR($Resource.dealer__Customer_Check, '/js/foundation/foundation.abide.js')}"/>
+    <apex:includescript value="{!URLFOR($Resource.dealer__Customer_Check, '/js/foundation/foundation.dropdown.js')}"/>
+    <apex:includescript value="{!URLFOR($Resource.dealer__Customer_Check, '/js/foundation/foundation.reveal.js')}"/>
+    
+    <apex:includeScript value="{!URLFOR($Resource.dealer__Customer_Check, '/js/jquery.jqscribble.js')}" />
+    
+    <html class="no-js" lang="en" >
+        <head>
+            <meta charset="utf-8"/>
+            <meta name="viewport" content="width=device-width, user-scalable=no"/>
+            <meta name="apple-mobile-web-app-capable" content="yes"/>
+            <meta name="apple-mobile-web-app-status-bar-style" content="black"/> 
+            
+            <title>Digital MPI Customer Check In</title>
+            <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400' rel='stylesheet' type='text/css'/>
+            <script type="text/javascript">
+            	
+            	var apptId = '{!serviceAppointment.Id}';
+                $j = jQuery.noConflict();
+                var idavailable = false;
+                var inspectionReportId = '{!JSENCODE(mpi.Id)}';
+            	var inspectionReportNumber = '{!mpi.Name}';
+            
+            	var DF_Checked = false;var PF_Checked = false;var DR_Checked = false;var PR_Checked = false;
+            
+            
+            	//var inspectionReportId = 'a0RE000000CocvN';
+                var mpidatload = '{!JSENCODE(MPIJSON)}';
+                console.log(mpidatload);
+                var mpidat = $j.parseJSON(mpidatload);
+                console.log(mpidat);
+                //var bkgImg = ( idavailable ) ? '{!IF(dealer__Inspection_Report__c.dealer__Body_Damage_URL__c != '', dealer__Inspection_Report__c.dealer__Body_Damage_URL__c, URLFOR($Resource.Customer_Check, 'img/vehicle-walkaround-bkg3.png') ) }' : 'https://mpi-image-bucket.s3.amazonaws.com/'+inspectionReportId+'_damage.png';
+
+                $j(document).ready(function() {
+       
+
+                    
+                    $j("#carDrawing").jqScribble({
+                        width:'374px',
+                        height:'276px',
+                        backgroundImage: "{! URLFOR($Resource.Customer_Check, 'img/vehicle-walkaround-bkg3.png') }",
+                        brushColor: '#FF9900'
+                    }); 
+
+                    if(mpidat.dealer__Body_Damage_URL__c !== undefined) { 
+                    $j.ajax({
+                        'type':'POST',
+                        'url':'https://apsv1.dealerteam.com/api/mpi/body-damage-image.php',
+                        'data': {
+                            'id' : inspectionReportId
+                        },
+                        'dataType':'text',
+                        'success':function(data) {
+                            // Canvas APPS
+                            $j("#carDrawing").data('jqScribble').clear().update({ backgroundImage: data });
+                        }
+                    });
+                    }
+
+                    $j("span.custom").click(function() { 
+                        
+                        $j('.footer').slideUp();
+                        
+                        var clicked = $j(this).attr('id');
+                        
+ 						if(clicked == 'dealer__Tire_Tread_DF__c:G' || clicked == 'dealer__Tire_Tread_DF__c:Y' ||clicked == 'dealer__Tire_Tread_DF__c:R') {
+                         	DF_Checked = true;   
+                        }
+                        
+ 						if(clicked == 'dealer__Tire_Tread_PF__c:G' || clicked == 'dealer__Tire_Tread_PF__c:Y' ||clicked == 'dealer__Tire_Tread_PF__c:R') {
+                         	PF_Checked = true;   
+                        }
+                        
+ 						if(clicked == 'dealer__Tire_Tread_DR__c:G' || clicked == 'dealer__Tire_Tread_DR__c:Y' ||clicked == 'dealer__Tire_Tread_DR__c:R') {
+                         	DR_Checked = true;   
+                        }
+                        
+ 						if(clicked == 'dealer__Tire_Tread_PR__c:G' || clicked == 'dealer__Tire_Tread_PR__c:Y' ||clicked == 'dealer__Tire_Tread_PR__c:R') {
+                         	PR_Checked = true;   
+                        }
+                        
+                        dealer.MPI2_EXT.setM($j(this).attr('id')+':'+inspectionReportId, function(result, event){
+                           
+                            $j('.footer').slideDown();
+                            if(result===false) {
+                                // Error 
+                                console.log('Error, remote returned false');
+                            }
+                        });
+                    });
+                    
+                    $j('.lineItem').click(function() {
+                        $j('.footer').slideUp();
+                        var sfid = $j(this).attr("data-sfid");
+                    	var removeLinePass = apptId+':'+$j(this).attr("data-sfid");
+                        
+                        dealer.MPI2_EXT.apptLineRemove(removeLinePass, function(result, event){
+                            $j('.footer').slideDown();
+                             if(result===false) {
+                                 alert('An error occured when deleting this line item!');
+                             } else {
+                                 $j('a[data-sfid='+sfid+']').remove();
+                             }
+                         });
+                    });
+                    
+                    
+                    /*$j.each(mpidat, function(i, e) {
+                        if(i.indexOf('dealer__')!=-1) {
+                            if($j('#'+i+'\\:'+e).length>0) {
+                               $j('#'+i+'\\:'+e).addClass('checked');
+                                }
+                            }
+                    }); */
+                    
+                    if(typeof mpidat.dealer__Tire_Tread_DF__c != 'undefined') {
+                        var value = mpidat.dealer__Tire_Tread_DF__c;
+                        $j('#dealer__Tire_Tread_DF__c\\:'+value).addClass('checked');
+                        DF_Checked = true;
+                    }
+                    
+                    if(typeof mpidat.dealer__Tire_Tread_DR__c != 'undefined') {
+                        var value = mpidat.dealer__Tire_Tread_DR__c;
+                        $j('#dealer__Tire_Tread_DR__c\\:'+value).addClass('checked');
+                        DR_Checked = true;
+                    }
+                    
+                    if(typeof mpidat.dealer__Tire_Tread_PF__c != 'undefined') {
+                        var value = mpidat.dealer__Tire_Tread_PF__c;
+                        $j('#dealer__Tire_Tread_PF__c\\:'+value).addClass('checked');
+                        PF_Checked = true;
+                    }
+                    
+                    if(typeof mpidat.dealer__Tire_Tread_PR__c != 'undefined') {
+                        var value = mpidat.dealer__Tire_Tread_PR__c;
+                        $j('#dealer__Tire_Tread_PR__c\\:'+value).addClass('checked');
+                        PR_Checked = true;
+                    }
+                        
+                    
+                    /*
+                    // Canvas APPS
+                    $j("#carDrawing").jqScribble({
+                        width:'374px',
+                        height:'276px',
+                        backgroundImage: bkgImg,
+                        brushColor: '#FF9900'
+                    }); 
+                    */
+
+                    $j('#clear_marks').click(function(e){
+                        e.preventDefault();
+                        $j("#carDrawing").data('jqScribble').clear().update({ backgroundImage:"{! URLFOR($Resource.Customer_Check, 'img/vehicle-walkaround-bkg3.png') }" });
+                    });
+
+                    // Desktop Applications
+                    $j("#carDrawing").mouseup(function() {
+                    	$j('.footer').slideUp();
+
+                        $j("#carDrawing").data('jqScribble').save(function(imageData) {
+                            var image_name = inspectionReportId+'_damage.png'
+
+                            $j.ajax({
+                                type: "POST",
+                                url: 'https://apsv1.dealerteam.com/api/mpi/canvas-handler.php',
+                                data: {
+                                    'image': imageData,
+                                    'image_name': image_name
+                                },
+                                success: function(response){
+                                    console.log(response);
+                                    // Save MPI with Body Damage Image
+                                    if(response.url!='') {
+                                        dealer.MPI2_EXT.saveVehicleDamage(inspectionReportId+'~'+response.url, function(result, event) {
+                                            if(!event.status) {
+                                                alert('Error: Image did not save');
+                                            }
+                                        });
+                                    }
+                                   	$j('.footer').slideDown();
+                                },
+                                dataType: 'json'
+                            });
+                        });
+                    });
+                    
+                    // iOS Devices
+                    $j('#carDrawing').bind( "touchend", function(e){
+                    	$j('.footer').slideUp();
+
+                        $j("#carDrawing").data('jqScribble').save(function(imageData) {
+                            var image_name = inspectionReportId+'_damage.png'
+
+                            $j.ajax({
+                                type: "POST",
+                                url: 'https://apsv1.dealerteam.com/api/mpi/canvas-handler.php',
+                                data: {
+                                    'image': imageData,
+                                    'image_name': image_name
+                                },
+                                success: function(response){
+                                    console.log(response);
+                                    if(response.url!='') {
+                                        dealer.MPI2_EXT.saveVehicleDamage(inspectionReportId+'~'+response.url, function(result, event) {
+                                            if(!event.status) {
+                                                alert('Error: Image did not save');
+                                            }
+                                        });
+                                    }                                    
+                                   	$j('.footer').slideDown();
+                                },
+                                dataType: 'json'
+                            });
+                        });
+                   	});
+                   
+                });
+                
+                function setValue(fN, fV) {
+                    $j('.footer').slideUp();
+                    dealer.MPI2_EXT.setM(fN+':'+fV+':'+inspectionReportId, function(result, event){
+                        $j('.footer').slideDown();
+                        if(result===false) {
+                            // Error 
+                            console.log('Error, remote returned false');
+                        }
+                    });
+                }
+
+                function dataURItoBlob(dataURI) {
+                    var binary = atob(dataURI.split(',')[1]);
+                    var array = [];
+                    for(var i = 0; i < binary.length; i++) {
+                        array.push(binary.charCodeAt(i));
+                    }
+                    return new Blob([new Uint8Array(array)], {type: 'image/jpeg'});
+                }
+            </script>
+            <style>
+                .fixedHeight {
+                    height: 450px;
+                }
+            </style>
+            
+            <script>   
+                function checkCheckboxes() {
+                    if(DF_Checked == true && PF_Checked == true && DR_Checked == true && PR_Checked == true) {
+                        return true;
+                    } else {
+                        alert('Please make sure you have inspected all four tires before continuing.');
+                        return false;
+                    }
+                }
+            </script>
+        </head>
+    <body>  
+                        <!-- DISABLE PORTRAIT MODE
+                ************************************************************************* -->
+        <!--div id="portrait">
+            <img src="{!URLFOR($Resource.Customer_Check,'/img/rotate-ipad.png')}" width="100" style="margin-top: 200px;"/>
+            <h2>Rotate Device to Landscape</h2>
+        </div-->
+        
+       
+        <!-- Wraps All Content -->
+        <div id="contentWrap">
+
+                        <!-- TOP BAR
+                ************************************************************************* -->
+            <div class="topBar">
+                <div class="row">
+                    <div class="logo small-3 columns">
+                        <a href="/apex/dealer__MPICheckIn"><img src="/{!MPILogo}"  alt="" width="126" height="73"/></a>
+                    </div>
+                  
+                    <div class="small-6 columns text-right">
+                        <table width="" border="0" align="right" cellpadding="0" cellspacing="0" class="advisor">
+                            <tr>
+                                <th width="60" align="center" valign="middle" scope="col">
+                                    <div class="UserPhoto" style="background: url({!me.SmallPhotoUrl}) no-repeat center center; background-size: 100%;">&nbsp;</div>
+                                </th>
+                                <th align="left" valign="middle" scope="col">
+                                    <span class="userTitle">Service Advisor</span>
+                                    <span class="userName"><apex:outputText value="{!me.Name}" /></span>
+                                </th>
+                                <th valign="middle" scope="col"><div class="Date"><apex:outputText value="{0,date,yyyy.MM.dd}"> <apex:param value="{!NOW()}" /> </apex:outputText></div></th>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+                    <!-- BODY CONTENT
+                ************************************************************************* -->
+            <div class="bodyWrap">
+                <div class="row">
+                    <!-- Left-hand Column -->
+                    <div class="small-10 small-offset-1 columns bodyCol">
+                        <h2 style="margin-top: 0px; margin-bottom: 0px;">Vehicle Walk-Around</h2>
+                        <form  class="custom">
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tires" style="margin: 0px;">
+                                <tr>
+                                    <td valign="top">
+                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Driver's Front</th>
+                                                </tr>
+                                            </thead>
+                                            <tr>
+                                                <td>
+                                                    <label for="radio23">
+                                                        <input name="radio23" type="radio" id="radio23" value="okay" style="display:none;"/>
+                                                        <span id="dealer__Tire_Tread_DF__c:G" class="custom radio greenBtn"></span>&nbsp; 5/32 or above
+                                                    </label>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label for="radio23">
+                                                        <input name="radio23" type="radio" id="radio23" value="okay" style="display:none;"/>
+                                                        <span id="dealer__Tire_Tread_DF__c:Y" class="custom radio yellowBtn"></span>&nbsp; 4/32
+                                                    </label>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label for="radio23">
+                                                        <input name="radio23" type="radio" id="radio23" value="okay" style="display:none;"/>
+                                                        <span id="dealer__Tire_Tread_DF__c:R" class="custom radio redBtn"></span>&nbsp; 3/32 or below
+                                                    </label>
+                                                </td>
+                                            </tr>
+                                        </table>
+             
+                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Driver's Rear</th>
+                                                </tr>
+                                            </thead>
+                                            <tr>
+                                                <td>
+                                                    <label for="radio24">
+                                                        <input name="radio24" type="radio" id="radio24" value="okay" style="display:none;"/>
+                                                        <span id="dealer__Tire_Tread_DR__c:G" class="custom radio greenBtn"></span>&nbsp; 5/32 or above
+                                                    </label>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label for="radio24">
+                                                        <input name="radio24" type="radio" id="radio24" value="okay" style="display:none;"/>
+                                                        <span id="dealer__Tire_Tread_DR__c:Y" class="custom radio yellowBtn"></span>&nbsp; 4/32
+                                                    </label>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label for="radio24">
+                                                        <input name="radio24" type="radio" id="radio24" value="okay" style="display:none;"/>
+                                                        <span id="dealer__Tire_Tread_DR__c:R" class="custom radio redBtn"></span>&nbsp; 3/32 or below
+                                                    </label>
+                                                </td>
+                                            </tr>
+                                        </table>   
+                                    </td>
+          
+                                    <td align="center" class="" valign="middle">
+                                        <!--canvas id="carDrawing" width="374" height="276" style="background: url({!IF(dealer__Inspection_Report__c.dealer__Body_Damage_URL__c != '', dealer__Inspection_Report__c.dealer__Body_Damage_URL__c, URLFOR($Resource.Customer_Check, 'img/vehicle-walkaround-bkg3.png') ) }) no-repeat center center; background-size: 100%;"--> 
+                                        <canvas id="carDrawing" width="374" height="276" style="background: no-repeat center center; background-size: 100%;"> 
+                                            Sorry, your browser is not supported.
+                                        </canvas>  
+                                        <!-- apex:outputText value="{!dealer__Inspection_Report__c.dealer__Body_Damage_URL__c}" rendered="true" /-->
+                                        <!-- apex:outputText value="{!IF(dealer__Inspection_Report__c.dealer__Body_Damage_URL__c != '', dealer__Inspection_Report__c.dealer__Body_Damage_URL__c, URLFOR($Resource.Customer_Check, 'img/vehicle-walkaround-bkg3.png') ) }" rendered="true" / -->
+                                       <div class="row">
+                                            <div class="small-12 columns">
+                                                <center><a id="clear_marks" href="#" class="btn small button alert">Clear Marks</a></center>
+                                            </div>
+                                            <!-- <div class="small-4 columns">
+                                                <a id="save_btn" href="#" class="btn small button">Save</a>
+                                            </div>
+                                            <div class="small-4 columns end" style="padding-top: 22px;">
+					                        	<i id="savedImageText" style="display:none;text-align:center;">Saved image!</i>
+                                            </div> -->
+                                        </div>
+
+                                    </td>
+          
+                                    <td valign="top">
+                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Passenger's Front</th>
+                                                </tr>
+                                            </thead>
+                                            <tr>
+                                                <td>
+                                                    <label for="radio25">
+                                                        <input name="radio25" type="radio" id="radio25" value="okay" style="display:none;"/>
+                                                        <span id="dealer__Tire_Tread_PF__c:G" class="custom radio greenBtn"></span>&nbsp; 5/32 or above
+                                                    </label>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label for="radio25">
+                                                        <input name="radio25" type="radio" id="radio25" value="okay" style="display:none;"/>
+                                                        <span id="dealer__Tire_Tread_PF__c:Y" class="custom radio yellowBtn"></span>&nbsp; 4/32
+                                                    </label>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label for="radio25">
+                                                        <input name="radio25" type="radio" id="radio25" value="okay" style="display:none;"/>
+                                                        <span id="dealer__Tire_Tread_PF__c:R" class="custom radio redBtn"></span>&nbsp; 3/32 or below
+                                                    </label>
+                                                </td>
+                                            </tr>
+                                        </table>
+
+                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Passenger's  Rear</th>
+                                                </tr>
+                                            </thead>
+                                            <tr>
+                                                <td>
+                                                    <label for="radio26">
+                                                        <input name="radio26" type="radio" id="radio26" value="okay" style="display:none;"/>
+                                                        <span id="dealer__Tire_Tread_PR__c:G" class="custom radio greenBtn"></span>&nbsp; 5/32 or above
+                                                    </label>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label for="radio26">
+                                                        <input name="radio26" type="radio" id="radio26" value="okay" style="display:none;"/>
+                                                        <span id="dealer__Tire_Tread_PR__c:Y" class="custom radio yellowBtn"></span>&nbsp; 4/32
+                                                    </label>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label for="radio26">
+                                                        <input name="radio26" type="radio" id="radio26" value="okay" style="display:none;"/>
+                                                        <span id="dealer__Tire_Tread_PR__c:R" class="custom radio redBtn"></span>&nbsp; 3/32 or below
+                                                    </label>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </form>
+                    </div>
+  
+                    <!-- Right-hand Column -->
+                   <!-- <div class="small-2 columns bodyCol fixedHeight show-for-large-up" style="border-left: 1px solid #fff; border-bottom: none; border-top: none; background-color: #dfdfdf;">
+                        <a href="#" class="apptItems customerDetails">
+                            <strong>Customer:&nbsp;</strong><apex:outputText value="{!serviceVehicle.dealer__Veh_Owner_Contact__r.FirstName}" />&nbsp;<apex:outputText value="{!serviceVehicle.dealer__Veh_Owner_Contact__r.LastName}" />
+                        </a>
+        
+                        <h3>Visit Summary</h3>
+                        <apex:repeat var="a" value="{!serviceAppointment.dealer__Service_Appointment_Lines__r}">
+                            <a href="#" class="apptItems lineItem" data-sfid="{!a.Id}">(<apex:outputText value="{!a.Op_Code__c}" />)&nbsp;<apex:outputText value="{!a.Complaint__c}" /></a>
+                        </apex:repeat>
+                    </div> -->
+    
+                </div><!-- Closes Body Row -->
+            </div>
+
+                    <!-- FOOTER
+                    ************************************************************************* -->
+             <apex:form id="mpiItemForm">        
+            <div class="footer">
+                <div class="row">
+                    <div class="small-6 columns">
+                        <apex:commandLink value="< Back" action="{!doCustomerStates}" styleClass="btn" style="text-align: left; padding-left: 15px; background-color: #ccc;" id="bCustInfo"/>
+                    </div>
+                    <div class="small-6 columns">
+                        <apex:commandLink value="Next >" action="{!doItems}" onclick="return checkCheckboxes()" styleClass="btn" style="text-align: right; padding-right: 15px;" id="doItems"/>
+                    </div>
+                </div>
+            </div>
+            </apex:form>
+
+                
+
+            </div> 
+            
+            <!-- ENDS class contentWrap -->
+
+                <!-- FOOTER SCRIPTS
+                    //////////////////////////////////////////////////////////////////////// -->
+
+        <script>
+            $j(document).foundation();
+        </script>
+        <style>
+        /* Portrait */
+            /*
+            @media screen and (orientation:landscape) {
+                #portrait { display: none;}
+                #contentWrap {visibility:visible;}
+            }
+            */
+        /* Landscape */
+            /*
+            @media screen and (orientation:portrait) {
+                #portrait { display: block;}
+                #contentWrap {visibility:hidden;}
+            }
+            #portrait {width: 100%; text-align: center;}
+            */
+        </style>
+    </body>
+</html>
+
+</apex:page>

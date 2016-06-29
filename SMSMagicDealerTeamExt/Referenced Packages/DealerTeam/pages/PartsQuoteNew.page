@@ -1,0 +1,2 @@
+<apex:page standardController="dealer__Parts_Quote__c" action="{!urlFor($Page.PartsInvoiceCreate, '', null, true)}">
+</apex:page>
