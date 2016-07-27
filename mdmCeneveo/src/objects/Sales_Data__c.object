@@ -1,0 +1,737 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <fields>
+        <fullName>Account__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Account</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipName>Sales_Records</relationshipName>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Actual_Amount__c</fullName>
+        <externalId>false</externalId>
+        <label>Actual Amount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>true</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Actual_Forecast_USD__c</fullName>
+        <externalId>false</externalId>
+        <formula>if( 
+Period_End_Date__c &lt; (today()-15), 
+Actual_Amount__c , 
+ Forecast_USD__c 
+)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Actual/Forecast USD$</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Actual_Forecast__c</fullName>
+        <externalId>false</externalId>
+        <formula>if(
+Period_End_Date__c &lt; (today()-15),
+ Actual_Amount__c ,
+ Forecast_Amount__c 
+)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Actual/Forecast</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Actual_Units__c</fullName>
+        <externalId>false</externalId>
+        <label>Actual Units</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Billing_Account_Number__c</fullName>
+        <externalId>false</externalId>
+        <label>Billing Account Number</label>
+        <length>40</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Budget_Amount_USD__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF 
+( 
+Owner:User.Canadian_User__c = true, 
+
+(if 
+( Year__c =&apos;2014&apos;,(  Budget_Amount__c  /1.05), 
+
+
+ Budget_Amount__c  )), 
+
+Budget_Amount__c )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Budget Amount - USD$</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Budget_Amount__c</fullName>
+        <externalId>false</externalId>
+        <label>Budget Amount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>true</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Budget_Units__c</fullName>
+        <externalId>false</externalId>
+        <label>Budget Units</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Current_Reporting_Period__c</fullName>
+        <defaultValue>8</defaultValue>
+        <externalId>false</externalId>
+        <label>Current Reporting Period</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ENV_1st_Pass_Budget_Amount__c</fullName>
+        <externalId>false</externalId>
+        <label>ENV - 1st Pass Budget Amount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>ENV_1st_Pass_Budget_Units__c</fullName>
+        <externalId>false</externalId>
+        <label>ENV - 1st Pass Budget Units</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ENV_Adjusted_Budget_Amount__c</fullName>
+        <externalId>false</externalId>
+        <label>ENV - Adjusted Budget Amount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>ENV_Baseline_Amount__c</fullName>
+        <externalId>false</externalId>
+        <label>ENV - Baseline_Amount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>ENV_Buyout_Resale_Actual_Sales__c</fullName>
+        <externalId>false</externalId>
+        <label>ENV - Buyout/Resale Actual Sales</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>ENV_Buyout_Resale_Actual_Units__c</fullName>
+        <externalId>false</externalId>
+        <label>ENV - Buyout/Resale Actual Units</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>ENV_Buyout_Resale_Budget_Sales__c</fullName>
+        <externalId>false</externalId>
+        <label>ENV - Buyout/Resale Budget Sales</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>ENV_Buyout_Resale_Budget_Units__c</fullName>
+        <externalId>false</externalId>
+        <label>ENV - Buyout/Resale Budget Units</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>ENV_LME_Adjustment__c</fullName>
+        <externalId>false</externalId>
+        <label>ENV - LME Adjustment</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>ENV_Manufactured_Actual_Sales__c</fullName>
+        <externalId>false</externalId>
+        <label>ENV - Manufactured Actual Sales</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>ENV_Manufactured_Actual_Units__c</fullName>
+        <externalId>false</externalId>
+        <label>ENV - Manufactured Actual Units</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>ENV_Manufactured_Budget_Sales__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Envelope Only</inlineHelpText>
+        <label>ENV - Manufactured Budget Sales</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>ENV_Manufactured_Budget_Units__c</fullName>
+        <externalId>false</externalId>
+        <label>ENV - Manufactured Budget Units</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>ENV_Veritiv_Adjustment__c</fullName>
+        <externalId>false</externalId>
+        <label>ENV Veritiv Adjustment</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Fiscal_year__c</fullName>
+        <externalId>false</externalId>
+        <label>Fiscal year</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Forecast_2_Week_Prior__c</fullName>
+        <externalId>false</externalId>
+        <label>Forecast 2 Week Prior</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Forecast_3_Week_Prior__c</fullName>
+        <externalId>false</externalId>
+        <label>Forecast 3 Week Prior</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Forecast_4_Week_Prior__c</fullName>
+        <externalId>false</externalId>
+        <label>Forecast 4 Week Prior</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Forecast_Amount__c</fullName>
+        <externalId>false</externalId>
+        <label>Forecast Amount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>true</trackHistory>
+        <trackTrending>true</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Forecast_USD__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF
+(
+  Owner:User.Canadian_User__c  = true,
+
+(if 
+( Year__c =&apos;2011&apos;,( Forecast_Amount__c /1.00),
+
+(if
+( Year__c =&apos;2012&apos;,( Forecast_Amount__c /0.970),
+
+(if
+( Year__c =&apos;2013&apos;,( Forecast_Amount__c /0.980),
+
+(if
+( Year__c =&apos;2014&apos;,( Forecast_Amount__c /1.05),
+
+(if
+( Year__c =&apos;2015&apos;,( Forecast_Amount__c /1.10),
+
+Forecast_Amount__c 
+
+)))))))))),
+
+Forecast_Amount__c )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Forecast Amount - USD$</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Forecast_Units__c</fullName>
+        <externalId>false</externalId>
+        <label>Forecast Units</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>true</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Forecast_Variance_From_2_Week_Prior__c</fullName>
+        <externalId>false</externalId>
+        <label>Forecast Variance From 2 Week Prior</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Forecast_Variance_From_3_Week_Prior__c</fullName>
+        <externalId>false</externalId>
+        <label>Forecast Variance From 3 Week Prior</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Forecast_Variance_From_4_Week_Prior__c</fullName>
+        <externalId>false</externalId>
+        <label>Forecast Variance From 4 Week Prior</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Forecast_Variance_From_Previous_Week__c</fullName>
+        <externalId>false</externalId>
+        <label>Forecast Variance From Previous Week</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>true</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>GMDollars__c</fullName>
+        <externalId>false</externalId>
+        <label>GM $</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>GM__c</fullName>
+        <externalId>false</externalId>
+        <label>GM %</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Historical_Owner__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Field used to keep track of owner of sales data.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This field indicates historical owner of data and not the current owner of account.</inlineHelpText>
+        <label>Historical Owner</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Sales_Data</relationshipName>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Key__c</fullName>
+        <externalId>true</externalId>
+        <label>Key</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Manager__c</fullName>
+        <description>Record Owner Manager</description>
+        <externalId>false</externalId>
+        <label>Mgr Group</label>
+        <length>40</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Margin_Sales_Dollars__c</fullName>
+        <externalId>false</externalId>
+        <label>Margin Sales Dollars</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Month__c</fullName>
+        <externalId>false</externalId>
+        <label>Month</label>
+        <length>32</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Period_End_Date_Chk__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(
+ Period_End_Date__c &lt; (today ()-15) ,1,0)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Period End Date Chk</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Period_End_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Period End Date</label>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>true</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Period__c</fullName>
+        <externalId>false</externalId>
+        <label>Period</label>
+        <precision>2</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>true</trackHistory>
+        <trackTrending>true</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Plant_Product__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Plant Product</label>
+        <referenceTo>Plant_Products__c</referenceTo>
+        <relationshipName>Sales_Records</relationshipName>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Plant__c</fullName>
+        <externalId>false</externalId>
+        <formula>Plant_Product__r.Plant__r.Name</formula>
+        <label>Plant</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Previous_Week_Forecast_Amount__c</fullName>
+        <externalId>false</externalId>
+        <label>Previous Week Forecast Amount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>true</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Product_Family__c</fullName>
+        <externalId>false</externalId>
+        <formula>TEXT(Plant_Product__r.Product__r.Family)</formula>
+        <label>Product Family</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Product__c</fullName>
+        <externalId>false</externalId>
+        <formula>Plant_Product__r.Product__r.Name</formula>
+        <label>Product</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Sales_Data_Key__c</fullName>
+        <externalId>false</externalId>
+        <formula>Year__c + &apos;-&apos; + TEXT(Period__c) + &apos;-&apos; + TEXT(Period_End_Date__c) + &apos;-&apos; + Account__r.Name + &apos;-&apos; + Plant__c + &apos;-&apos; + Product_Family__c + &apos;-&apos; + Product__c + &apos;-&apos; +  Account__r.Id</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Sales Data Key</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Year__c</fullName>
+        <defaultValue>text(YEAR(today()))</defaultValue>
+        <externalId>false</externalId>
+        <label>Year</label>
+        <length>4</length>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>Sales Data</label>
+    <listViews>
+        <fullName>All</fullName>
+        <columns>OBJECT_ID</columns>
+        <columns>Account__c</columns>
+        <columns>Key__c</columns>
+        <columns>OWNER.ALIAS</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <nameField>
+        <displayFormat>SR-{0000}</displayFormat>
+        <label>Sales Record ID</label>
+        <trackHistory>false</trackHistory>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Sales Data</pluralLabel>
+    <recordTypeTrackHistory>false</recordTypeTrackHistory>
+    <recordTypes>
+        <fullName>Forecast_Sales_Data</fullName>
+        <active>true</active>
+        <description>Used when creating forecasted Sales Data records from the Forecast VF page.</description>
+        <label>Forecast Sales Data</label>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Sales_Data_Record</fullName>
+        <active>true</active>
+        <description>Used when creating normal Sales Data records.</description>
+        <label>Sales Data Record</label>
+    </recordTypes>
+    <searchLayouts>
+        <lookupDialogsAdditionalFields>Account__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Year__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Plant_Product__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Period__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Period_End_Date__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Budget_Amount__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Forecast_Amount__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Actual_Amount__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>UPDATEDBY_USER</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>LAST_UPDATE</lookupDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Account__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Year__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Period__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Period_End_Date__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Budget_Amount__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Forecast_Amount__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Actual_Amount__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Plant_Product__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>UPDATEDBY_USER</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>LAST_UPDATE</lookupPhoneDialogsAdditionalFields>
+        <searchFilterFields>NAME</searchFilterFields>
+        <searchFilterFields>Account__c</searchFilterFields>
+        <searchFilterFields>Plant__c</searchFilterFields>
+        <searchFilterFields>Product__c</searchFilterFields>
+        <searchFilterFields>Year__c</searchFilterFields>
+        <searchFilterFields>Period__c</searchFilterFields>
+        <searchFilterFields>Period_End_Date__c</searchFilterFields>
+        <searchFilterFields>Budget_Amount__c</searchFilterFields>
+        <searchFilterFields>Forecast_Amount__c</searchFilterFields>
+        <searchFilterFields>Actual_Amount__c</searchFilterFields>
+    </searchLayouts>
+    <sharingModel>ReadWrite</sharingModel>
+    <validationRules>
+        <fullName>Cannot_update_after_Actual_filled_in</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND (
+NOT($Profile.Name = &quot;System Administrator&quot;),
+      OR (
+           ISCHANGED (  Year__c ),
+           ISCHANGED (  Period__c ),
+           ISCHANGED (  Forecast_Amount__c )
+          ),
+      AND (
+           NOT (ISBLANK (  Actual_Amount__c )),
+           Actual_Amount__c &lt;&gt; 0
+          )
+     )</errorConditionFormula>
+        <errorMessage>The Year, Period of Forecast Amount for this Sales Data record cannot be modified after the Actual Amount field is populated.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Year_Must_Be_Numeric</fullName>
+        <active>true</active>
+        <errorConditionFormula>NOT(ISNUMBER( Year__c ) )</errorConditionFormula>
+        <errorDisplayField>Year__c</errorDisplayField>
+        <errorMessage>Year must be numeric.</errorMessage>
+    </validationRules>
+</CustomObject>

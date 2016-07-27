@@ -1,0 +1,4936 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>CallHighlightAction</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>EmailHighlightAction</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>EnableCustomerPortalUser</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>ListClean</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>RequestUpdate</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>ViewCustomerPortalUser</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>WebsiteHighlightAction</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <enableFeeds>true</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <fieldSets>
+        <fullName>Owner_Information</fullName>
+        <description>Only on the Owner Page Layout</description>
+        <label>Owner Information</label>
+    </fieldSets>
+    <fields>
+        <fullName>ACT_ACCOUNTID__c</fullName>
+        <externalId>true</externalId>
+        <label>ACT_ACCOUNTID</label>
+        <length>150</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ACT_Customer__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Customer # Previously entered in ACT!</inlineHelpText>
+        <label>ACT! Customer #</label>
+        <length>2000</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>ACT_ID_Status__c</fullName>
+        <externalId>false</externalId>
+        <label>ACT! ID/Status</label>
+        <length>128</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ACT_RecordMgr__c</fullName>
+        <externalId>false</externalId>
+        <label>ACT! RecordMgr</label>
+        <length>150</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ACT_Referred_By__c</fullName>
+        <externalId>false</externalId>
+        <label>ACT! Referred By</label>
+        <length>64</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ACT_X_Activity__c</fullName>
+        <externalId>false</externalId>
+        <label>ACT! X Activity</label>
+        <length>2000</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>ACT_X_History__c</fullName>
+        <externalId>false</externalId>
+        <label>ACT! X History</label>
+        <length>32768</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>ACT_X_Notes__c</fullName>
+        <externalId>false</externalId>
+        <label>ACT! X Notes</label>
+        <length>32768</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>AccountNumber</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+    </fields>
+    <fields>
+        <fullName>AccountSource</fullName>
+        <picklist>
+            <picklistValues>
+                <fullName>Advertisement</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Cenveo Store</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Current Customer</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Employee Referral</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>External Referral</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>--Other--</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Partner</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Public Relations</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Referral</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Research</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Seminar - Internal</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Seminar - Partner</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Team Mahr</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Trade Show</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Web - Cadmus</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Web - CenveoLP</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Web - CenveoPublisherServices</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Web - Gilbreth</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Web - Nashua</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Web - Rex</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Web - Rx Tech</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Website</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Word of mouth</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Account_AGC_Name__c</fullName>
+        <externalId>false</externalId>
+        <label>Account AGC Name</label>
+        <length>40</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Account_AGC__c</fullName>
+        <externalId>false</externalId>
+        <label>Account AGC Code</label>
+        <length>10</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Account_Create_Request_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Account Create Request Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Account_Number__c</fullName>
+        <displayFormat>A-{00000000}</displayFormat>
+        <externalId>false</externalId>
+        <inlineHelpText>Auto Generated Account Number by Salesforce</inlineHelpText>
+        <label>Account Number</label>
+        <trackHistory>false</trackHistory>
+        <type>AutoNumber</type>
+    </fields>
+    <fields>
+        <fullName>Account_Owner_Link__c</fullName>
+        <externalId>false</externalId>
+        <formula>HYPERLINK(&apos;/&apos; + Owner.Id, Owner.FirstName &amp; &quot; &quot; &amp; Owner.LastName, &quot;_blank&quot;)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Account Owner</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Account_Owner__c</fullName>
+        <externalId>false</externalId>
+        <formula>Owner.FirstName &amp; &quot; &quot; &amp; Owner.LastName</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Account Owner</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Account_Status__c</fullName>
+        <externalId>false</externalId>
+        <label>Account Status</label>
+        <picklist>
+            <picklistValues>
+                <fullName>New Customer</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Existing Customer</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Acct_Segmentation__c</fullName>
+        <externalId>false</externalId>
+        <label>Acct Segmentation</label>
+        <picklist>
+            <picklistValues>
+                <fullName>A</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>B</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>C</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>D</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Delete</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Transfer</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Active_Account__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Check if this account is being actively pursued.</inlineHelpText>
+        <label>Active Account</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Activity_Monitor_Carlos__c</fullName>
+        <description>cx</description>
+        <externalId>false</externalId>
+        <formula>IF ( ISPICKVAL(Acct_Segmentation__c,&quot;B&quot;),
+
+IF(ISNULL(LastActivityDate), IMAGE(&quot;/img/samples/color_red.gif &quot;, &quot;NO ACTIVITIES&quot;,15,15),
+
+IF( Days_Since_Last_Activity__c &lt;30, IMAGE(&quot;/img/samples/color_green.gif&quot;,&quot;Less than 30&quot;,15,15) ,
+
+IF( Days_Since_Last_Activity__c &lt; 45, IMAGE(&quot;/img/samples/color_yellow.gif&quot;,&quot;30 to 45&quot;,15,15),
+
+IF( Days_Since_Last_Activity__c &gt;45,IMAGE(&quot;/img/samples/color_red.gif&quot;,&quot;More than 45 Days&quot;,15,15),
+IMAGE(&quot;/img/samples/color_red.gif&quot;,&quot;More than 45 Days&quot;,15,15)
+)))),
+
+
+IF( ISPICKVAL(Acct_Segmentation__c ,&quot;C&quot;),
+
+IF(ISNULL(LastActivityDate), IMAGE(&quot;/img/samples/color_red.gif &quot;, &quot;NO ACTIVITIES&quot;,15,15),
+
+IF( Days_Since_Last_Activity__c &lt;45, IMAGE(&quot;/img/samples/color_green.gif&quot;,&quot;Less than 45&quot;,15,15) ,
+
+IF( Days_Since_Last_Activity__c &lt; 60, IMAGE(&quot;/img/samples/color_yellow.gif&quot;,&quot;45 to 60&quot;,15,15),
+
+IF( Days_Since_Last_Activity__c &gt;60,IMAGE(&quot;/img/samples/color_red.gif&quot;,&quot;More than 60 Days&quot;,15,15),
+IMAGE(&quot;/img/samples/color_red.gif&quot;,&quot;More than 60 Days&quot;,15,15)
+)))),
+
+
+IF( ISPICKVAL(Acct_Segmentation__c,&quot;D&quot;),
+
+IF(ISNULL(LastActivityDate), IMAGE(&quot;/img/samples/color_red.gif &quot;, &quot;NO ACTIVITIES&quot;,15,15),
+
+IF( Days_Since_Last_Activity__c &lt;75, IMAGE(&quot;/img/samples/color_green.gif&quot;,&quot;Less than 75&quot;,15,15) ,
+
+IF( Days_Since_Last_Activity__c &lt; 90, IMAGE(&quot;/img/samples/color_yellow.gif&quot;,&quot;75 to 90&quot;,15,15),
+
+IF( Days_Since_Last_Activity__c &gt;90,IMAGE(&quot;/img/samples/color_red.gif&quot;,&quot;More than 90 Days&quot;,15,15),
+IMAGE(&quot;/img/samples/color_red.gif&quot;,&quot;More than 90 Days&quot;,15,15)
+)))),
+
+
+IF(ISNULL(LastActivityDate), IMAGE(&quot;/img/samples/color_red.gif &quot;, &quot;NO ACTIVITIES&quot;,15,15),
+
+IF( Days_Since_Last_Activity__c &lt;15, IMAGE(&quot;/img/samples/color_green.gif&quot;,&quot;Less than 30&quot;,15,15) ,
+
+IF( Days_Since_Last_Activity__c &lt; 30, IMAGE(&quot;/img/samples/color_yellow.gif&quot;,&quot;30 to 45&quot;,15,15),
+
+IF( Days_Since_Last_Activity__c &gt;29,IMAGE(&quot;/img/samples/color_red.gif&quot;,&quot;45 to 60&quot;,15,15), IMAGE(&quot;/img/samples/color_red.gif&quot;,&quot;More than 60 Days&quot;,15,15)
+))))
+)))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Activity Monitor Carlos</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Activity_Monitor__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF
+(ISNULL(LastActivityDate),
+IMAGE(&quot;/img/samples/color_red.gif &quot;, &quot;NO ACTIVITIES&quot;,15,15),
+IF( Days_Since_Last_Activity__c &lt;15,
+IMAGE(&quot;/img/samples/color_green.gif&quot;,&quot;Less than 30&quot;,15,15) ,
+IF( Days_Since_Last_Activity__c &lt; 30,
+IMAGE(&quot;/img/samples/color_yellow.gif&quot;,&quot;30 to 45&quot;,15,15),
+IF( Days_Since_Last_Activity__c &gt;29,
+IMAGE(&quot;/img/samples/color_red.gif&quot;,&quot;45 to 60&quot;,15,15) ,
+IMAGE(&quot;/img/samples/color_red.gif&quot;,&quot;More than 60 Days&quot;,15,15)))))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Green: Activity &lt; 15 Days
+
+Yellow: Activity &gt; 15 Days
+
+Red: Activity &gt;45 Days</inlineHelpText>
+        <label>Activity Monitor</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Address_Active__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Address Active</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Address_Type__c</fullName>
+        <externalId>false</externalId>
+        <label>Address Type</label>
+        <length>15</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Address_Valid_From_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Address Valid From Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Address_Valid_To_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Address Valid To Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>AnnualRevenue</fullName>
+        <inlineHelpText>This is the company&apos;s revenue size. (For example, FedEx does $42.6 billion of revenue)</inlineHelpText>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>At_Risk__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>At Risk</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Attention__c</fullName>
+        <externalId>false</externalId>
+        <label>Attention</label>
+        <length>50</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>BOY_Forecast__c</fullName>
+        <externalId>false</externalId>
+        <label>BOY Forecast</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>BillingAddress</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Billing_Account_Number__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Number pulled from older systems prior to Salesforce implementation.</inlineHelpText>
+        <label>Billing Account Number</label>
+        <length>50</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Billing_Address_Formula__c</fullName>
+        <externalId>false</externalId>
+        <formula>if(LEN(BillingStreet)&gt;0, BillingStreet&amp; &quot; &quot; , &quot;&quot; ) &amp; BR() &amp;
+if(LEN(BillingCity)&gt;0, BillingCity&amp; &quot;, &quot; , &quot;&quot; )&amp;
+if(LEN(BillingState)&gt;0, BillingState&amp; &quot; &quot; , &quot;&quot; )&amp;
+if(LEN(BillingPostalCode)&gt;0, BillingPostalCode,&quot;&quot;) &amp; BR() &amp;
+If(LEN( BillingCountry) &gt;0, BillingCountry,&quot;&quot;)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Billing Address Formula</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Budget_2014__c</fullName>
+        <description>Rollup SUM budget_amount__c WHERE YEAR(Period_End_Date) = 2014</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Rollup SUM budget_amount__c WHERE YEAR(Period_End_Date) = 2014</inlineHelpText>
+        <label>Budget (2014)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Budget_2015__c</fullName>
+        <externalId>false</externalId>
+        <label>Budget (2015)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Business_Name__c</fullName>
+        <externalId>false</externalId>
+        <label>Business Name</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Business_Started_Month__c</fullName>
+        <externalId>false</externalId>
+        <label>Business Started Month</label>
+        <length>10</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Business_Started_Year__c</fullName>
+        <externalId>false</externalId>
+        <label>Business Started Year</label>
+        <length>10</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Business_Type__c</fullName>
+        <externalId>false</externalId>
+        <label>Business Type</label>
+        <length>10</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Business_Unit__c</fullName>
+        <externalId>false</externalId>
+        <label>Business Unit</label>
+        <length>30</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CCR_CLAM_2__Set_Master__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>CCR CLAM 2 app multiple merge - use this field to flag a single record as the master record, i.e. the record to be kept and all duplicate data to be merged onto within a duplicate set</description>
+        <externalId>false</externalId>
+        <label>Set Master</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>CCR_CLAM_2__Set_Number__c</fullName>
+        <deprecated>false</deprecated>
+        <description>CCR CLAM 2 app multiple merge - use this field to group duplicates together, i.e. give each set of duplicates its own unique set number and populate this field with that number for each of the duplicates in the set</description>
+        <externalId>false</externalId>
+        <label>Set Number</label>
+        <precision>12</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CCR_CLAM_2__Set_Processed__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>CCR CLAM app multiple merge - this field is used by the CCR CLAM app to flag a duplicate set as having finished merge processing</description>
+        <externalId>false</externalId>
+        <label>Set Processed</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>CP_Top_93_HE__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>CP Top 93 HE</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>CSR__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>Only Customer Service Department Users may be selected</inlineHelpText>
+        <label>CSR</label>
+        <lookupFilter>
+            <active>true</active>
+            <filterItems>
+                <field>User.Department</field>
+                <operation>equals</operation>
+                <value>Customer Service</value>
+            </filterItems>
+            <infoMessage>Only Customer Service Department Users may be selected</infoMessage>
+            <isOptional>true</isOptional>
+        </lookupFilter>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Accounts1</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>CVO_Account_Name__c</fullName>
+        <externalId>false</externalId>
+        <label>CVO - Account Name</label>
+        <length>50</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CVO_City_Address__c</fullName>
+        <description>Cenveo User City Address</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Cenveo User City Address</inlineHelpText>
+        <label>CVO - City Address</label>
+        <length>15</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CVO_Country_Address__c</fullName>
+        <description>Cenveo Users Country Address</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Cenveo Users Country Address</inlineHelpText>
+        <label>CVO - Country Address</label>
+        <length>15</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CVO_Fax__c</fullName>
+        <description>Cenveo User Fax Number</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Cenveo User Fax Number</inlineHelpText>
+        <label>CVO - Fax</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Phone</type>
+    </fields>
+    <fields>
+        <fullName>CVO_HE_Sales_Bowl__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>CVO HE Sales Bowl</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>CVO_Industry__c</fullName>
+        <description>Cenveo User Industry Field</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Cenveo User Industry Field</inlineHelpText>
+        <label>CVO - Industry</label>
+        <picklist>
+            <picklistValues>
+                <fullName>*Beverage</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>*Business Process Outsourcing (BPO)</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>*Comics</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>*Consumer/Retail</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>*Contract Manufactures</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>*Contract Packagers</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>*Distributor</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>*Enterprise Content</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>*Financial</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>*Government Printing Office (GPO)</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>*Health &amp; Beauty</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>*Managed Care</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>*Multi-level Marketing</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>*Non-Profit</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>*Pharma</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>*Private Label</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>*Tobacco</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>*Travel/Leisure</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>*University</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Agency/Creative Services</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Association</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Business Services</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Communications</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Direct Marketing</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Education</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Food &amp; Beverage</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Government</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Industrial/Manufacturing</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>IT/Telecom</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Medical Services</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Printing</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Publishing</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CL - Print Brokers</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CL - Other</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CL - Agricultural &amp; Animal Care</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CL - Health &amp; Beauty</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CL - Food</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CL - Candle &amp; Household</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CL - Nutraceutical / Medical</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CL - eCig / Vape</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CL - Intercompany</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CL - Unassigned</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>CVO_Phone__c</fullName>
+        <externalId>false</externalId>
+        <label>CVO - Phone</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Phone</type>
+    </fields>
+    <fields>
+        <fullName>CVO_State_Address__c</fullName>
+        <description>Cenveo Users State Address</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Cenveo Users State Address</inlineHelpText>
+        <label>CVO - State Address</label>
+        <length>2</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CVO_Street_Address__c</fullName>
+        <description>Cenveo User Street Address</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Cenveo User Street Address</inlineHelpText>
+        <label>CVO - Street Address</label>
+        <length>100</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CVO_Zip_Code_Address__c</fullName>
+        <description>Cenveo User Zip Code Address</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Cenveo User Zip Code Address</inlineHelpText>
+        <label>CVO - Zip Code Address</label>
+        <length>10</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CY_Budget_100K__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Budgets greater than 100,000</description>
+        <externalId>false</externalId>
+        <label>CY Budget &gt; 100K ?</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Category__c</fullName>
+        <externalId>false</externalId>
+        <label>Category</label>
+        <length>40</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CleanStatus</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Commercial_Print_Potential__c</fullName>
+        <externalId>false</externalId>
+        <label>Commercial Print Potential $</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Commercial_Print__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Commercial Print</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Content_Potential__c</fullName>
+        <externalId>false</externalId>
+        <label>Content Potential $</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Content__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Content</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Contract_Expiration_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Contract Expiration Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Country__c</fullName>
+        <externalId>false</externalId>
+        <label>Country</label>
+        <length>5</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CreateAccount__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>CreateAccount</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Created_from_D_B_Company__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Created from D&amp;B Company</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Credit_Application_Status__c</fullName>
+        <externalId>false</externalId>
+        <label>Credit Application Status</label>
+        <length>40</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Credit_Application__c</fullName>
+        <externalId>false</externalId>
+        <label>Credit Application</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Not Issued</fullName>
+                <default>true</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Issued</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Pending Review</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Customer Changes Requested</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Approved</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Not Approved</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Credit_Group__c</fullName>
+        <externalId>false</externalId>
+        <label>Credit Group</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Rex</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Charlotte/International</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Nashua</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Gilbreth</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Credit_Rep_UserLookup__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>Only Credit Department Users may be selected</inlineHelpText>
+        <label>Credit Rep:</label>
+        <lookupFilter>
+            <active>true</active>
+            <errorMessage>Credit Rep must be a User assigned to the Credit Department</errorMessage>
+            <filterItems>
+                <field>User.Department</field>
+                <operation>equals</operation>
+                <value>Credit</value>
+            </filterItems>
+            <infoMessage>Only Credit Department Users may be selected</infoMessage>
+            <isOptional>false</isOptional>
+        </lookupFilter>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Accounts</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Credit_Status__c</fullName>
+        <externalId>false</externalId>
+        <label>Credit Status</label>
+        <length>40</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Credit_Terms__c</fullName>
+        <externalId>false</externalId>
+        <label>Credit Terms</label>
+        <picklist>
+            <picklistValues>
+                <fullName>1% 10 NET 30</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>1% 15 NET 30</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>2% 10 NET 30</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>2% 15 NET 30</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>COD</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CREDIT CARD</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>NET 30</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>NET 45</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>NET 60</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>PAY UPON RECEIPT</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Current_YTD_Budget__c</fullName>
+        <externalId>false</externalId>
+        <label>Current YTD Budget</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Current_YTD_Sales__c</fullName>
+        <externalId>false</externalId>
+        <label>YTD Actual</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Current_Year_Budget__c</fullName>
+        <externalId>false</externalId>
+        <label>CY Budget</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Current_Year_Outlook__c</fullName>
+        <externalId>false</externalId>
+        <formula>BOY_Forecast__c +  Current_YTD_Sales__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Current Year Outlook</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>DSA__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>DSA</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>DandbCompanyId</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Date_Created__c</fullName>
+        <externalId>false</externalId>
+        <label>Date Created</label>
+        <length>40</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Days_Since_Last_Activity__c</fullName>
+        <externalId>false</externalId>
+        <formula>-(LastActivityDate-TODAY())</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Days Since Last Activity</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Description</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Diversity_Business_Ownership__c</fullName>
+        <externalId>false</externalId>
+        <label>Diversity Business Ownership</label>
+        <length>50</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Diversity_Certified__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Diversity Certified</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Domestic_Ultimate_Business_Name__c</fullName>
+        <externalId>false</externalId>
+        <formula>DandbCompany.DomesticUltimateBusinessName</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Domestic Ultimate Business Name</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Dunning__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Dunning</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>DunsNumber</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+    </fields>
+    <fields>
+        <fullName>EDI_Capable__c</fullName>
+        <externalId>false</externalId>
+        <label>EDI Capable?</label>
+        <picklist>
+            <picklistValues>
+                <fullName>None</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>No</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>ENV_Interco_Broker__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>This field is used for the Envelope Group Only to track Intercompany accounts, Broker Accounts and accounts marked as &quot;Other&quot;.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This field is used for the Envelope Group Only to track Intercompany accounts, Broker Accounts and accounts marked as &quot;Other&quot;.</inlineHelpText>
+        <label>ENV - Interco/Other Accounts</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Email_Type__c</fullName>
+        <externalId>false</externalId>
+        <label>Email Type</label>
+        <length>18</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Email__c</fullName>
+        <externalId>false</externalId>
+        <label>Email</label>
+        <length>50</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Envelope_Identifier__c</fullName>
+        <externalId>false</externalId>
+        <label>Envelope Identifier</label>
+        <picklist>
+            <picklistValues>
+                <fullName>None</fullName>
+                <default>true</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>State of Oregon</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>David Heath - SWE</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Envelope_Potential__c</fullName>
+        <externalId>false</externalId>
+        <label>Envelope Potential $</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Envelopes__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Envelopes</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Ethnicity_Type__c</fullName>
+        <externalId>false</externalId>
+        <label>Ethnicity Type</label>
+        <length>50</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Fax</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Fax_Opt_Out__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Fax Opt Out</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Feed_Title_1__c</fullName>
+        <externalId>false</externalId>
+        <label>Feed Title 1</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Feed_Title_2__c</fullName>
+        <externalId>false</externalId>
+        <label>Feed Title 2</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Feed_Title_3__c</fullName>
+        <externalId>false</externalId>
+        <label>Feed Title 3</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Feed_Title_4__c</fullName>
+        <externalId>false</externalId>
+        <label>Feed Title 4</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Feed_URL_2__c</fullName>
+        <externalId>false</externalId>
+        <label>Feed URL 2</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>Feed_URL_3__c</fullName>
+        <externalId>false</externalId>
+        <label>Feed URL 3</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>Feed_URL_4__c</fullName>
+        <externalId>false</externalId>
+        <label>Feed URL 4</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>Feed_URL__c</fullName>
+        <externalId>false</externalId>
+        <label>Feed URL 1</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>Focus_Reason__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Enter the focus for this account for the current year. Include Company information, Why it was selected, Platform and or products to grow, Dollar amount to grow</inlineHelpText>
+        <label>Focus Reason</label>
+        <length>32768</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Folding_Carton_Potential__c</fullName>
+        <externalId>false</externalId>
+        <label>Folding Carton Potential $</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Folding_Cartons__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Folding Cartons</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Forecast_Comments__c</fullName>
+        <externalId>false</externalId>
+        <label>Forecast Comments</label>
+        <length>32768</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Fortune_500__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Tracking our account&apos;s that fall under the Fortune 500 classification. Fortune 500 = the top 500 U.S. closely held and public corporations</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Tracking our account&apos;s that fall under the Fortune 500 classification. Fortune 500 = the top 500 U.S. closely held and public corporations</inlineHelpText>
+        <label>Fortune 500</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Freight__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Freight Carrier for Shipping</inlineHelpText>
+        <label>Freight Carrier</label>
+        <length>40</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Future_Parent_Organization_ID__c</fullName>
+        <externalId>false</externalId>
+        <label>Future Parent Organization</label>
+        <length>20</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Future_Parent_Relationship_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Future Parent Relationship Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Global_Parent_Account__c</fullName>
+        <externalId>false</externalId>
+        <formula>DandbCompany.GlobalUltimateBusinessName</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Global Ultimate Business Name</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Group_Membership__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Groups from ACT!</inlineHelpText>
+        <label>Group Membership</label>
+        <length>2000</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>LongTextArea</type>
+        <visibleLines>4</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Industry</fullName>
+        <picklist>
+            <picklistValues>
+                <fullName>*Beverage</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>*Business Process Outsourcing (BPO)</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>*Comics</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>*Consumer/Retail</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>*Contract Manufactures</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>*Contract Packagers</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>*Distributor</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>*Enterprise Content</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>*Financial</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>*Government Printing Office (GPO)</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>*Health &amp; Beauty</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>*Managed Care</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>*Multi-level Marketing</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>*Non-Profit</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>*Pharma</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>*Private Label</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>*Tobacco</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>*Travel/Leisure</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>*University</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Agency/Creative Services</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Association</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Business Services</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Communications</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Direct Marketing</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Education</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Food &amp; Beverage</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Government</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Industrial/Manufacturing</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>IT/Telecom</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Medical Services</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Printing</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Publishing</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CL - Print Brokers</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CL - Other</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CL - Agricultural &amp; Animal Care</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CL - Health &amp; Beauty</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CL - Food</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CL - Candle &amp; Household</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CL - Nutraceutical / Medical</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CL - eCig / Vape</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CL - Intercompany</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CL - Unassigned</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Intercompany_Rep__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Intercompany Rep</label>
+        <referenceTo>Intercompany_Rep__c</referenceTo>
+        <relationshipLabel>Accounts</relationshipLabel>
+        <relationshipName>Accounts</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>International_Calling_Code__c</fullName>
+        <externalId>false</externalId>
+        <label>International Calling Code</label>
+        <length>32</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Is_Eligible_For_Budget_Report__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Budgets greater than 250,000</description>
+        <externalId>false</externalId>
+        <label>CY Budget &gt; 250K ?</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Is_Eligible_For_Outlook_Report__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>This checkbox is created to track the accounts having &gt; 250000 current year outlook or child of this type of account. These accounts are eligible for reporting.</description>
+        <externalId>false</externalId>
+        <label>Is Eligible For CY Outlook Report</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Is_Supplier__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Is Supplier</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Issue_Date__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Date the credit app is issued to the client.</inlineHelpText>
+        <label>App Issue Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Jigsaw</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>LID__LinkedIn_Company_Id__c</fullName>
+        <deprecated>false</deprecated>
+        <description>LinkedIn Id of the company/Account</description>
+        <externalId>false</externalId>
+        <label>LinkedIn Company Id</label>
+        <length>80</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LL_Web_Source__c</fullName>
+        <externalId>false</externalId>
+        <label>LL Web Source</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Quote Request</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Online Registration</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Contact Us</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Order Page</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>MultiselectPicklist</type>
+        <visibleLines>4</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Large_Litho_Format_Potential__c</fullName>
+        <externalId>false</externalId>
+        <label>Large Litho Format Potential $</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Large_Litho_Format__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Large Litho Format</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Last_Modified_CurrYBudget__c</fullName>
+        <description>Helps run the batch process Account Sales Data rollup. Please do not alter the values manually.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Helps run the batch process Account Sales Data rollup</inlineHelpText>
+        <label>Last Modified CurrYBudget</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Lead_Initiator__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Lead Initiator</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Accounts2</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Lead_Source__c</fullName>
+        <externalId>false</externalId>
+        <label>Lead Source</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Advertisement</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Association Membership</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Current Customer</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>DMA</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Google/Internet</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Mailing</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Partner</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Prospecting</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Public Relations</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Referral</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Research</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Seminar - Internal</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Seminar  - Partner</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Trade Show</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Web - Cenveo</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Web - CenveoLabel</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Web - CenveoPack</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Web - CenveoPrint</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Web - CenveoPublisherServices</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Web - GilbrethUSA</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Website</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Word of Mouth</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Legal_Name__c</fullName>
+        <externalId>false</externalId>
+        <label>Legal Name</label>
+        <length>50</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Legal_Structure_Type__c</fullName>
+        <externalId>false</externalId>
+        <label>Legal Structure Type</label>
+        <length>50</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Loss_Prevention__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Loss Prevention</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Lost_Account__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Please enter the date this account was lost.</inlineHelpText>
+        <label>Lost Account</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Market__c</fullName>
+        <externalId>false</externalId>
+        <label>Market</label>
+        <length>20</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Media_PSG_Potential__c</fullName>
+        <externalId>false</externalId>
+        <label>Media (PSG) Potential $</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Media_PSG__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Media (PSG)</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Minority_Business_Entity__c</fullName>
+        <externalId>false</externalId>
+        <label>Minority Business Entity</label>
+        <length>20</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Minority_Business__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Minority Business</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>NAICS_CODE__c</fullName>
+        <externalId>false</externalId>
+        <label>NAICS CODE</label>
+        <length>10</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>NEC_Billing_Acct_Number__c</fullName>
+        <externalId>false</externalId>
+        <label>NEC Billing Acct Number</label>
+        <length>20</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>NEC_SF_Account_ID__c</fullName>
+        <caseSensitive>false</caseSensitive>
+        <description>This contains the Salesforce ID assigned by the NEC SF system. 
+Once we have converted and fully operational this field can be removed.</description>
+        <externalId>false</externalId>
+        <label>NEC - SF Account ID</label>
+        <length>18</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>true</unique>
+    </fields>
+    <fields>
+        <fullName>NY_Budget__c</fullName>
+        <description>Next year budget amount</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Next year budget amount</inlineHelpText>
+        <label>NY Budget</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>NY_Fcst_Diff_to_CY_Est__c</fullName>
+        <externalId>false</externalId>
+        <formula>NY_Forecast__c - Current_Year_Outlook__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>NY Fcst Diff to CY Est</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>NY_Forecast__c</fullName>
+        <description>Next year forecast amount</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Next year forecast amount</inlineHelpText>
+        <label>NY Forecast</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>NaicsCode</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+    </fields>
+    <fields>
+        <fullName>NaicsDesc</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Name</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Nashua_Coated__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Nashua Coated</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Nashua_Label_Potential__c</fullName>
+        <externalId>false</externalId>
+        <label>Nashua Label Potential $</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Nashua_Labels__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Nashua Labels</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Nashua_POS_Potential__c</fullName>
+        <externalId>false</externalId>
+        <label>Nashua POS Potential $</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Nashua_POS__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Nashua POS</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Nashua_Top_15__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Nashua Top 15</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>New_Cust_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>New Cust Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>New_New_Focus__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>New/New Focus</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>NumberOfEmployees</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Number_of_Employees__c</fullName>
+        <externalId>false</externalId>
+        <label>Number of Employees</label>
+        <precision>10</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>OPEN_ACTIVITIES__c</fullName>
+        <externalId>false</externalId>
+        <label>OPEN ACTIVITIES</label>
+        <length>32768</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Old_Owner__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Contains previous owner reference.</description>
+        <externalId>false</externalId>
+        <label>Old Owner</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>OldOwnedAccounts</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Opt_In_Date_Time__c</fullName>
+        <externalId>false</externalId>
+        <label>Opt In Date - Time</label>
+        <length>20</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Organization_Type__c</fullName>
+        <externalId>false</externalId>
+        <label>Organization Type</label>
+        <length>50</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>OwnerId</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Owner_Change_Initiated_By__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Owner Change Initiated By</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Accounts3</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Owner_Manager__c</fullName>
+        <externalId>false</externalId>
+        <formula>Owner.Manager.FirstName&amp;&quot; &quot;&amp;Owner.Manager.LastName</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Owner Manager</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Ownership</fullName>
+        <picklist>
+            <picklistValues>
+                <fullName>Public</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Private</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Subsidiary</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>PY_Budget__c</fullName>
+        <externalId>false</externalId>
+        <label>PY Budget</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Packaging_Vendor__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Packaging Vendor</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>ParentId</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Hierarchy</type>
+    </fields>
+    <fields>
+        <fullName>Parent_CY_Budget_100K__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>True both parent and child Accounts,if parent rollup budget is greater than 100K.</description>
+        <externalId>false</externalId>
+        <label>Parent CY Budget&gt;$100K</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Parent_CY_Budget_250K__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Check on both parent and child, if parent budget  &gt; 250K.</description>
+        <externalId>false</externalId>
+        <label>Parent CY Budget&gt;$250K</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Parent_Company_Business_Name__c</fullName>
+        <externalId>false</externalId>
+        <formula>DandbCompany.ParentOrHqBusinessName</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Parent Company Business Name</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Parent_Id__c</fullName>
+        <externalId>true</externalId>
+        <label>Parent Id</label>
+        <length>18</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Parent_Organization_ID__c</fullName>
+        <externalId>false</externalId>
+        <label>Parent Organization ID</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Party__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Party</label>
+        <referenceTo>Party__c</referenceTo>
+        <relationshipLabel>Accounts</relationshipLabel>
+        <relationshipName>Accounts</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Past_Sales__c</fullName>
+        <externalId>false</externalId>
+        <label>Past Sales</label>
+        <length>10</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PeopleSoft_Acct__c</fullName>
+        <externalId>false</externalId>
+        <label>PeopleSoft Acct #</label>
+        <length>50</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Phone</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Phone_Extension__c</fullName>
+        <externalId>false</externalId>
+        <label>Phone Extension</label>
+        <length>15</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Phone_Number__c</fullName>
+        <externalId>false</externalId>
+        <label>Phone Number</label>
+        <length>15</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Phone_Type__c</fullName>
+        <externalId>false</externalId>
+        <label>Phone Type</label>
+        <length>15</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Plant_Locations__c</fullName>
+        <externalId>false</externalId>
+        <label>Plant Locations</label>
+        <length>10000</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>LongTextArea</type>
+        <visibleLines>2</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Plant__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>Enter the Plant and the associated Billing Account Number</inlineHelpText>
+        <label>Plant</label>
+        <referenceTo>Plant__c</referenceTo>
+        <relationshipLabel>Accounts</relationshipLabel>
+        <relationshipName>Accounts_del</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Previous_12Mo_Sales__c</fullName>
+        <description>Rollup of actual sales for rolling 12 months</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Rollup of actual sales for rolling 12 months</inlineHelpText>
+        <label>Previous 12Mo Sales</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Previous_2Last_12Mo_Sales__c</fullName>
+        <description>Rollup of Actual sales for the previous to last 12Mo</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Rollup of Actual sales for the previous to last 12Mo</inlineHelpText>
+        <label>Previous 2Last 12Mo Sales</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Pricing_Agreement__c</fullName>
+        <externalId>false</externalId>
+        <label>Pricing Agreement</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Contract</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Price Grid to PO</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Quote to PO</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Primary_Servicing_Division__c</fullName>
+        <externalId>false</externalId>
+        <label>Primary Servicing Division</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Prime_Label_Potential__c</fullName>
+        <externalId>false</externalId>
+        <label>Prime Label Potential $</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Prime_Labels__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Prime Labels</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Prior_YTD_Sales__c</fullName>
+        <externalId>false</externalId>
+        <label>Prior YTD Sales</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Prior_Year_Sales__c</fullName>
+        <externalId>false</externalId>
+        <label>Prior Year Sales</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Prod_SF_Acct_ID__c</fullName>
+        <externalId>false</externalId>
+        <label>Prod SF Acct ID</label>
+        <length>40</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Province__c</fullName>
+        <externalId>false</externalId>
+        <label>Province</label>
+        <length>40</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Q2_Update__c</fullName>
+        <externalId>false</externalId>
+        <label>Q2 Update</label>
+        <length>1500</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Q3_Update__c</fullName>
+        <externalId>false</externalId>
+        <label>Q3 Update</label>
+        <length>2000</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Q4_Update__c</fullName>
+        <externalId>false</externalId>
+        <label>Q4 Update</label>
+        <length>2000</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>RSS_Feed1__c</fullName>
+        <externalId>false</externalId>
+        <label>RSS Feed1</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>RSS_Feed2__c</fullName>
+        <externalId>false</externalId>
+        <label>RSS Feed2</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>RSS_Feed3__c</fullName>
+        <externalId>false</externalId>
+        <label>RSS Feed3</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>RSS_Feed4__c</fullName>
+        <externalId>false</externalId>
+        <label>RSS Feed4</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>RSS_Feed5__c</fullName>
+        <externalId>false</externalId>
+        <label>RSS Feed5</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>Rating</fullName>
+        <picklist>
+            <picklistValues>
+                <fullName>A</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>B</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>C</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Region__c</fullName>
+        <externalId>false</externalId>
+        <label>Region</label>
+        <length>50</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Rep_Group_Director__c</fullName>
+        <externalId>false</externalId>
+        <label>Rep Group Director</label>
+        <length>40</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Reporting_Account__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF( ISBLANK( ParentId),  Name ,  Parent.Name )</formula>
+        <label>Reporting Account</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Retail_Focus__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Retail Focus</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>SFSSDupeCatcher__Override_DupeCatcher__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Account Override DupeCatcher</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>SF_Acct_ID__c</fullName>
+        <description>18 character SF account ID</description>
+        <externalId>false</externalId>
+        <formula>Id &amp;
+MID(
+&quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ012345&quot;,
+MIN(FIND(MID(Id, 5, 1), &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;), 1) * 16 +
+MIN(FIND(MID(Id, 4, 1), &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;), 1) * 8 +
+MIN(FIND(MID(Id, 3, 1), &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;), 1) * 4 +
+MIN(FIND(MID(Id, 2, 1), &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;), 1) * 2 +
+MIN(FIND(MID(Id, 1, 1), &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;), 1) * 1 + 1,
+1) &amp;
+MID(
+&quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ012345&quot;,
+MIN(FIND(MID(Id, 10, 1), &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;), 1) * 16 +
+MIN(FIND(MID(Id, 9, 1), &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;), 1) * 8 +
+MIN(FIND(MID(Id, 8, 1), &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;), 1) * 4 +
+MIN(FIND(MID(Id, 7, 1), &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;), 1) * 2 +
+MIN(FIND(MID(Id, 6, 1), &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;), 1) * 1 + 1,
+1) &amp;
+MID(
+&quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ012345&quot;,
+MIN(FIND(MID(Id, 15, 1), &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;), 1) * 16 +
+MIN(FIND(MID(Id, 14, 1), &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;), 1) * 8 +
+MIN(FIND(MID(Id, 13, 1), &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;), 1) * 4 +
+MIN(FIND(MID(Id, 12, 1), &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;), 1) * 2 +
+MIN(FIND(MID(Id, 11, 1), &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;), 1) * 1 + 1,
+1)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>18 character SF account ID</inlineHelpText>
+        <label>SF Account ID</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>SIC_CODE__c</fullName>
+        <externalId>false</externalId>
+        <label>SIC CODE</label>
+        <length>10</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Sales_2013_2014__c</fullName>
+        <description>Field will be used in KPI Total Sales (2013-2014)</description>
+        <externalId>false</externalId>
+        <formula>X2013_Sales__c  +  X2014_Sales__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Sales 2013_2014</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Sales_Accelerator_Program__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>This check box should only beck &apos;Checked&apos; if it is a part of the Sales Accelerator Program!</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This check box should only beck &apos;Checked&apos; if it is a part of the Sales Accelerator Program!</inlineHelpText>
+        <label>Sales Accelerator Program</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Segment_List__c</fullName>
+        <externalId>false</externalId>
+        <label>Segment List</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Non Customers</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Sweepstakes</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Internal Final Send</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Former Customers May 2013 Upload</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Sample Pack Prospects - 2.7.14</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>LLMISSU3 - 3.10.14</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Food+Beverage May 2014</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Graphic Design- July 2014</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Nutraceutical</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Food and Beverage</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Health and Beauty 2</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Customers</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>BFM Test List</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Photo Contest Participants</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Health and Beauty</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>2014 Photo Contest</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Food</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>MultiselectPicklist</type>
+        <visibleLines>4</visibleLines>
+    </fields>
+    <fields>
+        <fullName>ShippingAddress</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Sic</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>SicDesc</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Site</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Sleeves_Potential__c</fullName>
+        <externalId>false</externalId>
+        <label>Sleeves Potential $</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Sleeves__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Sleeves</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Small_Business_Flag__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Small Business Flag</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Sub_Industry__c</fullName>
+        <externalId>false</externalId>
+        <label>Sub Industry</label>
+        <picklist>
+            <controllingField>Industry</controllingField>
+            <picklistValues>
+                <fullName>Advertising/Media</fullName>
+                <default>false</default>
+                <controllingFieldValues>Communications</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Agriculture</fullName>
+                <default>false</default>
+                <controllingFieldValues>Industrial/Manufacturing</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Airline</fullName>
+                <default>false</default>
+                <controllingFieldValues>*Travel/Leisure</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Alcoholic Beverages</fullName>
+                <default>false</default>
+                <controllingFieldValues>Food &amp; Beverage</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Animal Care</fullName>
+                <default>false</default>
+                <controllingFieldValues>*Consumer/Retail</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Apparel/Textiles</fullName>
+                <default>false</default>
+                <controllingFieldValues>*Consumer/Retail</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Association</fullName>
+                <default>false</default>
+                <controllingFieldValues>Publishing</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Automotive</fullName>
+                <default>false</default>
+                <controllingFieldValues>Industrial/Manufacturing</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>B2B</fullName>
+                <default>false</default>
+                <controllingFieldValues>Business Services</controllingFieldValues>
+                <controllingFieldValues>Publishing</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Banking</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Biotech</fullName>
+                <default>false</default>
+                <controllingFieldValues>*Pharma</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Bottled Water</fullName>
+                <default>false</default>
+                <controllingFieldValues>Food &amp; Beverage</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Car/Transportation Rental</fullName>
+                <default>false</default>
+                <controllingFieldValues>*Travel/Leisure</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Catalog</fullName>
+                <default>false</default>
+                <controllingFieldValues>Publishing</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Catalogs</fullName>
+                <default>false</default>
+                <controllingFieldValues>Communications</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>City</fullName>
+                <default>false</default>
+                <controllingFieldValues>Government</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Clinics</fullName>
+                <default>false</default>
+                <controllingFieldValues>Medical Services</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Commercial Print</fullName>
+                <default>false</default>
+                <controllingFieldValues>Printing</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Converter</fullName>
+                <default>false</default>
+                <controllingFieldValues>Printing</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Co-Packers/Decorators</fullName>
+                <default>false</default>
+                <controllingFieldValues>Industrial/Manufacturing</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Cruise</fullName>
+                <default>false</default>
+                <controllingFieldValues>*Travel/Leisure</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Department Store/Big Box</fullName>
+                <default>false</default>
+                <controllingFieldValues>*Consumer/Retail</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Diagnostic/Medical Labs</fullName>
+                <default>false</default>
+                <controllingFieldValues>Medical Services</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Diversified</fullName>
+                <default>false</default>
+                <controllingFieldValues>*Pharma</controllingFieldValues>
+                <controllingFieldValues>*Travel/Leisure</controllingFieldValues>
+                <controllingFieldValues>IT/Telecom</controllingFieldValues>
+                <controllingFieldValues>Industrial/Manufacturing</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>eCommerce</fullName>
+                <default>false</default>
+                <controllingFieldValues>IT/Telecom</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Energy/Chemicals</fullName>
+                <default>false</default>
+                <controllingFieldValues>Industrial/Manufacturing</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Entertainment Venue</fullName>
+                <default>false</default>
+                <controllingFieldValues>*Travel/Leisure</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Envelopes</fullName>
+                <default>false</default>
+                <controllingFieldValues>Printing</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Facilities</fullName>
+                <default>false</default>
+                <controllingFieldValues>Business Services</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Food/Baking/Confectionery</fullName>
+                <default>false</default>
+                <controllingFieldValues>Food &amp; Beverage</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Fraternal Society</fullName>
+                <default>false</default>
+                <controllingFieldValues>Association</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Further Education</fullName>
+                <default>false</default>
+                <controllingFieldValues>Education</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Gaming</fullName>
+                <default>false</default>
+                <controllingFieldValues>*Travel/Leisure</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Government</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Graphic Design</fullName>
+                <default>false</default>
+                <controllingFieldValues>Printing</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Hardware</fullName>
+                <default>false</default>
+                <controllingFieldValues>IT/Telecom</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Healthcare</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Higher Education</fullName>
+                <default>false</default>
+                <controllingFieldValues>Education</controllingFieldValues>
+                <controllingFieldValues>Publishing</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Hotel &amp; Lodging</fullName>
+                <default>false</default>
+                <controllingFieldValues>*Travel/Leisure</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Household/OTC</fullName>
+                <default>false</default>
+                <controllingFieldValues>*Consumer/Retail</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>HR and Staffing</fullName>
+                <default>false</default>
+                <controllingFieldValues>Business Services</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Insurance</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>K12 Education</fullName>
+                <default>false</default>
+                <controllingFieldValues>Publishing</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Labels</fullName>
+                <default>false</default>
+                <controllingFieldValues>Printing</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Labor Organization</fullName>
+                <default>false</default>
+                <controllingFieldValues>Association</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Laminator</fullName>
+                <default>false</default>
+                <controllingFieldValues>Printing</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Legal/Consulting</fullName>
+                <default>false</default>
+                <controllingFieldValues>Business Services</controllingFieldValues>
+                <controllingFieldValues>Publishing</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Magazine</fullName>
+                <default>false</default>
+                <controllingFieldValues>Publishing</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Managed Care</fullName>
+                <default>false</default>
+                <controllingFieldValues>Medical Services</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Manufacturing</fullName>
+                <default>false</default>
+                <controllingFieldValues>Industrial/Manufacturing</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Marketing</fullName>
+                <default>false</default>
+                <controllingFieldValues>Business Services</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Medical Device</fullName>
+                <default>false</default>
+                <controllingFieldValues>*Pharma</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Medical Transcription</fullName>
+                <default>false</default>
+                <controllingFieldValues>Medical Services</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Movie Theater</fullName>
+                <default>false</default>
+                <controllingFieldValues>*Travel/Leisure</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>National</fullName>
+                <default>false</default>
+                <controllingFieldValues>Government</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>News</fullName>
+                <default>false</default>
+                <controllingFieldValues>Communications</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Niche Publishing</fullName>
+                <default>false</default>
+                <controllingFieldValues>Publishing</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Non-Alcoholic Beverages</fullName>
+                <default>false</default>
+                <controllingFieldValues>Food &amp; Beverage</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Non Profit</fullName>
+                <default>false</default>
+                <controllingFieldValues>Association</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Nutraceutical</fullName>
+                <default>false</default>
+                <controllingFieldValues>Food &amp; Beverage</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Organic/Vitamin/Nutrition</fullName>
+                <default>false</default>
+                <controllingFieldValues>Food &amp; Beverage</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>OTC/Consumer</fullName>
+                <default>false</default>
+                <controllingFieldValues>*Pharma</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Other</fullName>
+                <default>false</default>
+                <controllingFieldValues>Publishing</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Outsourcing</fullName>
+                <default>false</default>
+                <controllingFieldValues>Business Services</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Packaging</fullName>
+                <default>false</default>
+                <controllingFieldValues>Printing</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Primary &amp; Secondary School</fullName>
+                <default>false</default>
+                <controllingFieldValues>Education</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Publishing</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Real Estate</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Reference</fullName>
+                <default>false</default>
+                <controllingFieldValues>Publishing</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Regional</fullName>
+                <default>false</default>
+                <controllingFieldValues>Government</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Religious</fullName>
+                <default>false</default>
+                <controllingFieldValues>Publishing</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Religious Organization</fullName>
+                <default>false</default>
+                <controllingFieldValues>Association</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Reseller - Catalog Companies</fullName>
+                <default>false</default>
+                <controllingFieldValues>Printing</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Reseller - eCommerce Retailers</fullName>
+                <default>false</default>
+                <controllingFieldValues>Printing</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Reseller - Franchise Groups</fullName>
+                <default>false</default>
+                <controllingFieldValues>Printing</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Reseller - Independent Printers</fullName>
+                <default>false</default>
+                <controllingFieldValues>Printing</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Reseller - Other</fullName>
+                <default>false</default>
+                <controllingFieldValues>Printing</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Reseller - Print Brokers</fullName>
+                <default>false</default>
+                <controllingFieldValues>Printing</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Resort</fullName>
+                <default>false</default>
+                <controllingFieldValues>*Travel/Leisure</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Restaurant</fullName>
+                <default>false</default>
+                <controllingFieldValues>*Consumer/Retail</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Satellite</fullName>
+                <default>false</default>
+                <controllingFieldValues>IT/Telecom</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Scientific/Technical/Medical</fullName>
+                <default>false</default>
+                <controllingFieldValues>Publishing</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Social Club</fullName>
+                <default>false</default>
+                <controllingFieldValues>Association</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Software</fullName>
+                <default>false</default>
+                <controllingFieldValues>IT/Telecom</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Sporting Goods</fullName>
+                <default>false</default>
+                <controllingFieldValues>*Consumer/Retail</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Sports</fullName>
+                <default>false</default>
+                <controllingFieldValues>*Travel/Leisure</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>State</fullName>
+                <default>false</default>
+                <controllingFieldValues>Government</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Supermarket/Drug Store</fullName>
+                <default>false</default>
+                <controllingFieldValues>*Consumer/Retail</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Technical/Trade School</fullName>
+                <default>false</default>
+                <controllingFieldValues>Education</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Telecom</fullName>
+                <default>false</default>
+                <controllingFieldValues>IT/Telecom</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Tobacco</fullName>
+                <default>false</default>
+                <controllingFieldValues>Food &amp; Beverage</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Tobacco (e-cig)</fullName>
+                <default>false</default>
+                <controllingFieldValues>Food &amp; Beverage</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Trade</fullName>
+                <default>false</default>
+                <controllingFieldValues>Publishing</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Transportation/Logistics</fullName>
+                <default>false</default>
+                <controllingFieldValues>Industrial/Manufacturing</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Travel Agent</fullName>
+                <default>false</default>
+                <controllingFieldValues>*Travel/Leisure</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Unions</fullName>
+                <default>false</default>
+                <controllingFieldValues>Publishing</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>University Press/Scholarly</fullName>
+                <default>false</default>
+                <controllingFieldValues>Publishing</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Utilities</fullName>
+                <default>false</default>
+                <controllingFieldValues>Industrial/Manufacturing</controllingFieldValues>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Supplier_Data_Synced__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Supplier Data Synced</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Tax_ID__c</fullName>
+        <externalId>false</externalId>
+        <label>Tax ID</label>
+        <length>20</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Taxable__c</fullName>
+        <externalId>false</externalId>
+        <label>Taxable?</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>No</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Territory__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>If you would like to divide accounts geographically, enter the region in this area.</inlineHelpText>
+        <label>Territory</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>TickerSymbol</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Time_Zone__c</fullName>
+        <externalId>false</externalId>
+        <label>Time Zone</label>
+        <length>30</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>To_Be_Deleted__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>To Be Deleted</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Top_100_Account__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Top 100 Account as tracked for Corporate reporting</description>
+        <externalId>false</externalId>
+        <label>Top 100 Account</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Trade_Group__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Trade Group</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Tradestyle</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Type</fullName>
+        <picklist>
+            <picklistValues>
+                <fullName>Applicant</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Competitor</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Customer</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Integrator</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Parent</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Partner</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Prospect</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Vendor</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>--Other--</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Cenveo</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>M&amp;A Target</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Co-Packer</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Equipment Supplier</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Vendor2</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>WHCDB_Days_since_last_update_or_activity__c</fullName>
+        <externalId>false</externalId>
+        <formula>if (today() - LastActivityDate &gt;=0,
+min(today() - LastActivityDate , now() - LastModifiedDate ),now() - LastModifiedDate )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Days since last update or activity</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Warehousing_Ffment_PSG_Potential__c</fullName>
+        <externalId>false</externalId>
+        <label>Warehousing/Ffment (PSG) Potential $</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Warehousing_Fulfillment_PSG__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Warehousing/Fulfillment (PSG)</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Web_Source__c</fullName>
+        <description>Mapped from Leads</description>
+        <externalId>false</externalId>
+        <label>Web Source</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Website</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Would_like_to_be_connected_via_EDI__c</fullName>
+        <externalId>false</externalId>
+        <label>Would like to be connected via EDI?</label>
+        <picklist>
+            <picklistValues>
+                <fullName>None</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>No</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>X12_Month_Pkg_Spend__c</fullName>
+        <externalId>false</externalId>
+        <label>12 Month Pkg Spend</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>X2011_Sales__c</fullName>
+        <defaultValue>0</defaultValue>
+        <externalId>false</externalId>
+        <label>2011 Sales</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>X2012_Sales__c</fullName>
+        <externalId>false</externalId>
+        <label>2012 Sales</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>X2013_Sales__c</fullName>
+        <externalId>false</externalId>
+        <label>2013 Sales</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>X2013_Target_Rev__c</fullName>
+        <externalId>false</externalId>
+        <label>2013 Target Revenue</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>X2014_Pkg_Spend__c</fullName>
+        <externalId>false</externalId>
+        <label>2014 Pkg Spend</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>X2014_Sales__c</fullName>
+        <externalId>false</externalId>
+        <label>2014 Sales</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>X2015_GM__c</fullName>
+        <externalId>false</externalId>
+        <label>2015 GM $</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>X2015_Pkg_Spend_Jan_Jul__c</fullName>
+        <externalId>false</externalId>
+        <label>2015 Pkg Spend (Jan-Jul)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>X2015_Sales__c</fullName>
+        <externalId>false</externalId>
+        <label>2015 Sales</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>X2016_Sales__c</fullName>
+        <externalId>false</externalId>
+        <label>2016 Sales</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>X2017_Sales__c</fullName>
+        <externalId>false</externalId>
+        <label>2017 Sales</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>X2018_Sales__c</fullName>
+        <externalId>false</externalId>
+        <label>2018 Sales</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>X2019_Sales__c</fullName>
+        <externalId>false</externalId>
+        <label>2019 Sales</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>X2020_Sales__c</fullName>
+        <externalId>false</externalId>
+        <label>2020 Sales</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>YTD_Forecast__c</fullName>
+        <externalId>false</externalId>
+        <label>YTD Forecast</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>YTD_GM__c</fullName>
+        <externalId>false</externalId>
+        <label>YTD GM $</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>YearStarted</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>ao2__Add_to_CS__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Add to Company Structure chart</inlineHelpText>
+        <label>Add to CS</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>ddc_prospector__Sourced_from_Data_com__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Used by Data.com Prospector Reports</description>
+        <externalId>false</externalId>
+        <formula>IF(OR(CONTAINS( TEXT(AccountSource) , &quot;Data.com&quot;),CONTAINS( TEXT(AccountSource) , &quot;Jigsaw&quot;)),1,0)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Sourced from Data.com</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>is_Duplicate__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>is Duplicate</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>lco1__Activity_Monitor__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>IF
+(ISNULL(LastActivityDate),
+IMAGE(&quot;/img/samples/flag_red.gif &quot;, &quot;NO ACTIVITIES&quot;),
+IF(lco1__Days_Since_Last_Activity__c &lt;15,
+IMAGE(&quot;/img/samples/flag_green.gif&quot;,&quot;Less than 15&quot;) ,
+IF(lco1__Days_Since_Last_Activity__c&lt; 30,
+IMAGE(&quot;/img/samples/flag_yellow.gif&quot;,&quot;15 to 30&quot;),
+IF(lco1__Days_Since_Last_Activity__c&lt; 45,
+IMAGE(&quot;/img/samples/flag_red.gif&quot;,&quot;31 to 45&quot;) ,
+IMAGE(&quot;/img/samples/flag_red.gif&quot;,&quot;More than 45 Days&quot;)))))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Green Flag = Last Activity &lt;15 days 
+Yellow Flag = Last Activity between 15 and 30 days 
+Red Flag = Last Activity &gt;30</inlineHelpText>
+        <label>PAM</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>lco1__Amount_at_Risk__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Risk ($)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>lco1__At_Risk__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>At Risk</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>lco1__Budget__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Budget</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>lco1__Days_Since_Last_Activity__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>today() -  LastActivityDate</formula>
+        <label>Days Since Last Activity</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>lco1__Has_Upside__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Has Upside</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>lco1__Upside_Amount__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Upside ($)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>of_Open_Activities__c</fullName>
+        <externalId>false</externalId>
+        <label># of Open Activities</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>oo__OpportunityOptimizerChange__c</fullName>
+        <deprecated>false</deprecated>
+        <description>This field is included with Sales Optimizer - Opportunity to allow validation rules to be coded to allow inserts by the PowerChart.</description>
+        <externalId>false</externalId>
+        <label>OpportunityOptimizerChange</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>oo__Reputation__c</fullName>
+        <deprecated>false</deprecated>
+        <description>This field is included with the Sales Optimizer - Opportunity application and is used to track the reputation of an Account.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Enter a description of this Account&apos;s reputation in the marketplace.</inlineHelpText>
+        <label>Reputation</label>
+        <length>1000</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>LongTextArea</type>
+        <visibleLines>5</visibleLines>
+    </fields>
+    <fields>
+        <fullName>oo__Strategy__c</fullName>
+        <deprecated>false</deprecated>
+        <description>This field is included with the Sales Optimizer - Opportunity application and is used to track the general go to market strategy of an Account.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Enter a description of the general go to market strategy of this Account.</inlineHelpText>
+        <label>Strategy</label>
+        <length>1000</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>LongTextArea</type>
+        <visibleLines>5</visibleLines>
+    </fields>
+    <fields>
+        <fullName>oo__Strengths__c</fullName>
+        <deprecated>false</deprecated>
+        <description>This field is included with the Sales Optimizer - Opportunity application and is used to track the strengths of an Account.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Enter a description of the general strengths of this Account.</inlineHelpText>
+        <label>Strengths</label>
+        <length>1000</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>LongTextArea</type>
+        <visibleLines>5</visibleLines>
+    </fields>
+    <fields>
+        <fullName>oo__Weaknesses__c</fullName>
+        <deprecated>false</deprecated>
+        <description>This field is included with the Sales Optimizer - Opportunity application and is used to track the weaknesses and competitive disadvantages of an Account.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Enter a description of the weaknesses and competitive disadvantages of this Account.</inlineHelpText>
+        <label>Weaknesses</label>
+        <length>1000</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>LongTextArea</type>
+        <visibleLines>5</visibleLines>
+    </fields>
+    <listViews>
+        <fullName>A1_My_Active_Accounts</fullName>
+        <columns>Acct_Segmentation__c</columns>
+        <columns>ACCOUNT.NAME</columns>
+        <columns>Activity_Monitor__c</columns>
+        <columns>ACCOUNT.ADDRESS1_STATE</columns>
+        <columns>ACCOUNT.PHONE1</columns>
+        <columns>ACCOUNT.TYPE</columns>
+        <columns>Current_Year_Budget__c</columns>
+        <columns>Current_YTD_Sales__c</columns>
+        <filterScope>Mine</filterScope>
+        <filters>
+            <field>Active_Account__c</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </filters>
+        <label>A1 - My Active Accounts</label>
+    </listViews>
+    <listViews>
+        <fullName>A2_My_Accounts</fullName>
+        <columns>Acct_Segmentation__c</columns>
+        <columns>ACCOUNT.NAME</columns>
+        <columns>Activity_Monitor__c</columns>
+        <columns>ACCOUNT.ADDRESS1_STATE</columns>
+        <columns>ACCOUNT.PHONE1</columns>
+        <columns>ACCOUNT.TYPE</columns>
+        <columns>Active_Account__c</columns>
+        <filterScope>Mine</filterScope>
+        <filters>
+            <field>Acct_Segmentation__c</field>
+            <operation>equals</operation>
+        </filters>
+        <label>A2 - My Unsegmented Accounts</label>
+    </listViews>
+    <listViews>
+        <fullName>Acclaim_Accounts</fullName>
+        <columns>ACCOUNT.NAME</columns>
+        <columns>ACCOUNT.ADDRESS1_STATE</columns>
+        <columns>ACCOUNT.PHONE1</columns>
+        <columns>ACCOUNT.TYPE</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <filterScope>Everything</filterScope>
+        <label>Group Accounts</label>
+        <sharedTo>
+            <roleAndSubordinates>Acclaim_Mgmt</roleAndSubordinates>
+            <roleAndSubordinates>Acclaim_Sales_Rep</roleAndSubordinates>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>Accounts_with_Sales_Volume_Rep</fullName>
+        <columns>ACCOUNT.NAME</columns>
+        <columns>ACCOUNT.TYPE</columns>
+        <columns>Prior_Year_Sales__c</columns>
+        <columns>Current_YTD_Sales__c</columns>
+        <columns>Current_YTD_Budget__c</columns>
+        <columns>CORE.USERS.LAST_NAME</columns>
+        <columns>ACCOUNT.ACCOUNT_NUMBER</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>ACCOUNT.TYPE</field>
+            <operation>equals</operation>
+            <value>Customer</value>
+        </filters>
+        <filters>
+            <field>X2013_Sales__c</field>
+            <operation>greaterThan</operation>
+            <value>0</value>
+        </filters>
+        <filters>
+            <field>X2012_Sales__c</field>
+            <operation>greaterThan</operation>
+            <value>0</value>
+        </filters>
+        <filters>
+            <field>Plant__c</field>
+            <operation>equals</operation>
+            <value>Envelope Finance</value>
+        </filters>
+        <label>A3 - YTD Sales vs Budg vs PY</label>
+    </listViews>
+    <listViews>
+        <fullName>All_Accounts_Main</fullName>
+        <columns>ACCOUNT.NAME</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <columns>Account_Number__c</columns>
+        <columns>ACCOUNT.TYPE</columns>
+        <columns>Active_Account__c</columns>
+        <columns>ACCOUNT.URL</columns>
+        <columns>ACCOUNT.LAST_ACTIVITY</columns>
+        <columns>Activity_Monitor__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>ACCOUNT.TYPE</field>
+            <operation>equals</operation>
+            <value>Customer,Prospect</value>
+        </filters>
+        <label>All Accounts</label>
+    </listViews>
+    <listViews>
+        <fullName>All_My_Accounts</fullName>
+        <columns>ACCOUNT.NAME</columns>
+        <columns>Activity_Monitor__c</columns>
+        <columns>ACCOUNT.SITE</columns>
+        <columns>ACCOUNT.ADDRESS1_STATE</columns>
+        <columns>ACCOUNT.PHONE1</columns>
+        <columns>ACCOUNT.TYPE</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <filterScope>Mine</filterScope>
+        <label>All My Accounts</label>
+    </listViews>
+    <listViews>
+        <fullName>Co_Packers</fullName>
+        <columns>ACCOUNT.NAME</columns>
+        <columns>ACCOUNT.ADDRESS1_STATE</columns>
+        <columns>ACCOUNT.TYPE</columns>
+        <columns>CORE.USERS.FIRST_NAME</columns>
+        <columns>CORE.USERS.LAST_NAME</columns>
+        <columns>ACCOUNT.LAST_UPDATE</columns>
+        <columns>ACCOUNT.INDUSTRY</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>ACCOUNT.TYPE</field>
+            <operation>equals</operation>
+            <value>Co-Packer</value>
+        </filters>
+        <label>Co-Packers</label>
+    </listViews>
+    <listViews>
+        <fullName>Competitors</fullName>
+        <columns>ACCOUNT.NAME</columns>
+        <columns>CORE.USERS.LAST_NAME</columns>
+        <columns>ACCOUNT.INDUSTRY</columns>
+        <columns>Sub_Industry__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>ACCOUNT.TYPE</field>
+            <operation>equals</operation>
+            <value>Competitor</value>
+        </filters>
+        <label>Competitors</label>
+    </listViews>
+    <listViews>
+        <fullName>Customers</fullName>
+        <columns>ACCOUNT.NAME</columns>
+        <columns>CORE.USERS.LAST_NAME</columns>
+        <columns>ACCOUNT.TYPE</columns>
+        <columns>Billing_Account_Number__c</columns>
+        <columns>X2014_Sales__c</columns>
+        <columns>Current_Year_Budget__c</columns>
+        <columns>Current_YTD_Budget__c</columns>
+        <columns>Current_YTD_Sales__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>ACCOUNT.TYPE</field>
+            <operation>equals</operation>
+            <value>Customer</value>
+        </filters>
+        <label>Customers</label>
+    </listViews>
+    <listViews>
+        <fullName>Ed_Mazur_Accounts</fullName>
+        <columns>ACCOUNT.NAME</columns>
+        <columns>ACCOUNT.ADDRESS1_STATE</columns>
+        <columns>ACCOUNT.PHONE1</columns>
+        <columns>ACCOUNT.TYPE</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <columns>ACCOUNT.ACCOUNT_NUMBER</columns>
+        <columns>CORE.USERS.FIRST_NAME</columns>
+        <columns>CORE.USERS.LAST_NAME</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CORE.USERS.LAST_NAME</field>
+            <operation>equals</operation>
+            <value>Newsham</value>
+        </filters>
+        <filters>
+            <field>ACCOUNT.TYPE</field>
+            <operation>equals</operation>
+            <value>Customer</value>
+        </filters>
+        <label>Rep Accounts</label>
+        <sharedTo>
+            <group>EM_Account_Sharing</group>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>Envelope_Customer_View</fullName>
+        <columns>ACCOUNT.NAME</columns>
+        <columns>CORE.USERS.LAST_NAME</columns>
+        <columns>Billing_Account_Number__c</columns>
+        <columns>Current_YTD_Sales__c</columns>
+        <columns>Prior_YTD_Sales__c</columns>
+        <columns>Current_YTD_Budget__c</columns>
+        <columns>X2013_Sales__c</columns>
+        <columns>X2012_Sales__c</columns>
+        <columns>X2011_Sales__c</columns>
+        <columns>ACCOUNT.LAST_ACTIVITY</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Plant__c</field>
+            <operation>equals</operation>
+            <value>Envelope Plants - Finance Only</value>
+        </filters>
+        <label>Envelope Customer View</label>
+        <sharedTo>
+            <group>Cenveo_Corporate_and_LP_Management</group>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>Equipment_Suppliers</fullName>
+        <columns>ACCOUNT.NAME</columns>
+        <columns>ACCOUNT.ADDRESS1_STATE</columns>
+        <columns>ACCOUNT.TYPE</columns>
+        <columns>ACCOUNT.LAST_UPDATE</columns>
+        <columns>CORE.USERS.FIRST_NAME</columns>
+        <columns>CORE.USERS.LAST_NAME</columns>
+        <columns>ACCOUNT.INDUSTRY</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>ACCOUNT.TYPE</field>
+            <operation>equals</operation>
+            <value>Equipment Supplier</value>
+        </filters>
+        <label>Equipment Suppliers</label>
+    </listViews>
+    <listViews>
+        <fullName>Loss_Prevention</fullName>
+        <columns>ACCOUNT.NAME</columns>
+        <columns>Activity_Monitor__c</columns>
+        <columns>ACCOUNT.ADDRESS1_STATE</columns>
+        <columns>ACCOUNT.PHONE1</columns>
+        <columns>ACCOUNT.TYPE</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Loss_Prevention__c</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </filters>
+        <label>Loss Prevention</label>
+    </listViews>
+    <listViews>
+        <fullName>My_Customer_Accounts</fullName>
+        <columns>ACCOUNT.NAME</columns>
+        <columns>ACCOUNT.ACCOUNT_NUMBER</columns>
+        <columns>CORE.USERS.LAST_NAME</columns>
+        <columns>ACCOUNT.TYPE</columns>
+        <columns>Current_YTD_Sales__c</columns>
+        <columns>Current_YTD_Budget__c</columns>
+        <columns>X2012_Sales__c</columns>
+        <filterScope>Mine</filterScope>
+        <label>My Customer Accounts</label>
+    </listViews>
+    <listViews>
+        <fullName>Prospects</fullName>
+        <columns>ACCOUNT.NAME</columns>
+        <columns>CORE.USERS.LAST_NAME</columns>
+        <columns>ACCOUNT.INDUSTRY</columns>
+        <columns>Sub_Industry__c</columns>
+        <columns>ACCOUNT.LAST_ACTIVITY</columns>
+        <columns>ACCOUNT.CREATED_DATE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>ACCOUNT.TYPE</field>
+            <operation>equals</operation>
+            <value>Prospect</value>
+        </filters>
+        <label>Prospects</label>
+    </listViews>
+    <listViews>
+        <fullName>Purchased_Accounts</fullName>
+        <columns>ACCOUNT.NAME</columns>
+        <columns>Account_Owner__c</columns>
+        <columns>Owner_Manager__c</columns>
+        <columns>ACCOUNT.ADDRESS1_STREET</columns>
+        <columns>ACCOUNT.ADDRESS1_CITY</columns>
+        <columns>ACCOUNT.ADDRESS1_ZIP</columns>
+        <columns>ACCOUNT.ADDRESS1_COUNTRY</columns>
+        <columns>ACCOUNT.URL</columns>
+        <filterScope>Everything</filterScope>
+        <label>Purchased Accounts</label>
+    </listViews>
+    <listViews>
+        <fullName>Sales_Accelerator</fullName>
+        <columns>CORE.USERS.LAST_NAME</columns>
+        <columns>ACCOUNT.NAME</columns>
+        <columns>Activity_Monitor__c</columns>
+        <columns>ACCOUNT.TYPE</columns>
+        <columns>ACCOUNT.URL</columns>
+        <columns>OPEN_ACTIVITIES__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Sales_Accelerator_Program__c</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </filters>
+        <label>Sales Accelerator Accts</label>
+    </listViews>
+    <listViews>
+        <fullName>Top_100Acct</fullName>
+        <columns>ACCOUNT.NAME</columns>
+        <columns>Q3_Update__c</columns>
+        <columns>Focus_Reason__c</columns>
+        <columns>ACCOUNT.ADDRESS1_STATE</columns>
+        <columns>ACCOUNT.PHONE1</columns>
+        <columns>ACCOUNT.TYPE</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Top_100_Account__c</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </filters>
+        <label>Top 100 Accounts</label>
+    </listViews>
+    <listViews>
+        <fullName>Top_15</fullName>
+        <columns>ACCOUNT.NAME</columns>
+        <columns>ACCOUNT.SITE</columns>
+        <columns>ACCOUNT.ADDRESS1_STATE</columns>
+        <columns>ACCOUNT.PHONE1</columns>
+        <columns>ACCOUNT.TYPE</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <filterScope>Mine</filterScope>
+        <filters>
+            <field>Nashua_Top_15__c</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </filters>
+        <label>Top 15</label>
+    </listViews>
+    <searchLayouts>
+        <customTabListAdditionalFields>ACCOUNT.NAME</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Billing_Account_Number__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>ACCOUNT.ADDRESS1_CITY</customTabListAdditionalFields>
+        <customTabListAdditionalFields>ACCOUNT.ADDRESS1_STATE</customTabListAdditionalFields>
+        <customTabListAdditionalFields>ACCOUNT.PHONE1</customTabListAdditionalFields>
+        <lookupDialogsAdditionalFields>ACCOUNT.NAME</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>ACCOUNT.SITE</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>CORE.USERS.ALIAS</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>ACCOUNT.TYPE</lookupDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>ACCOUNT.NAME</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>ACCOUNT.SITE</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>CORE.USERS.ALIAS</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>ACCOUNT.TYPE</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>ACCOUNT.PHONE1</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>00Nq0000000Pg3c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>00Nq0000000Pfyc</lookupPhoneDialogsAdditionalFields>
+        <searchFilterFields>CORE.USERS.FIRST_NAME</searchFilterFields>
+        <searchFilterFields>CORE.USERS.LAST_NAME</searchFilterFields>
+        <searchFilterFields>Active_Account__c</searchFilterFields>
+        <searchResultsAdditionalFields>ACCOUNT.NAME</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Billing_Account_Number__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>CORE.USERS.ALIAS</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>X2014_Sales__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>X2013_Sales__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>X2012_Sales__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>ACCOUNT.ADDRESS1_CITY</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>ACCOUNT.ADDRESS1_STATE</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>CORE.USERS.FIRST_NAME</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>CORE.USERS.LAST_NAME</searchResultsAdditionalFields>
+    </searchLayouts>
+    <sharingModel>Private</sharingModel>
+    <validationRules>
+        <fullName>Account_Owner_Rule</fullName>
+        <active>true</active>
+        <description>Only System Admin Can change account ownership</description>
+        <errorConditionFormula>AND(
+ 
+ISCHANGED(OwnerId),
+ 
+$Profile.Name &lt;&gt; &quot;System Administrator&quot;)</errorConditionFormula>
+        <errorMessage>Change in Account Ownership is restricted to Salesforce Administrators. Please log a case to have the Owner of this account modified.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Cannot_be_Customer</fullName>
+        <active>false</active>
+        <errorConditionFormula>AND (
+      ISPICKVAL( Type , &quot;Customer&quot;),
+      OR( ISBLANK( X2011_Sales__c ),
+           X2011_Sales__c = 0),
+      OR( ISBLANK( X2012_Sales__c ),
+           X2012_Sales__c = 0),
+      OR( ISBLANK( X2013_Sales__c ),
+           X2013_Sales__c = 0),
+      TEXT( Credit_Application__c) &lt;&gt; &quot;Approved&quot;)</errorConditionFormula>
+        <errorMessage>An Account can only be a &quot;Customer&quot; if there is past sales data or if the credit application is set to &quot;Approved&quot;.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Credit_Term_Rep_Required</fullName>
+        <active>true</active>
+        <description>If Picklist value for Credit Application=Approved, Credit Term and Credit Rep are required</description>
+        <errorConditionFormula>AND(
+      ISPICKVAL( Credit_Application__c , &quot;Approved&quot;) ,
+  OR(
+       ISBLANK( Credit_Rep_UserLookup__c ) ,
+       ISBLANK( TEXT( Credit_Terms__c  ) )
+         )
+    )</errorConditionFormula>
+        <errorDisplayField>Credit_Application__c</errorDisplayField>
+        <errorMessage>Credit Terms and Credit Rep required when Credit Application is Approved.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Customer_Account_Validation</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND( OR($Profile.Name = &apos;Cenveo Sales Rep&apos;, $Profile.Name = &apos;Cenveo Sales Rep&apos;), OR( ISNEW(), ISCHANGED(Type )), ISPICKVAL(Type , &apos;Customer&apos;) )</errorConditionFormula>
+        <errorDisplayField>Type</errorDisplayField>
+        <errorMessage>You do not have permission to create &apos;Customer&apos; Account.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>LID__Check_CompanyId_Value</fullName>
+        <active>true</active>
+        <description>Throws an exception message if the company id contains non-numerics</description>
+        <errorConditionFormula>AND(
+	(LID__LinkedIn_Company_Id__c &lt;&gt; NULL),
+	NOT(ISNUMBER(LID__LinkedIn_Company_Id__c))
+)</errorConditionFormula>
+        <errorDisplayField>LID__LinkedIn_Company_Id__c</errorDisplayField>
+        <errorMessage>CompanyId should be a numeric value</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Test_Account</fullName>
+        <active>false</active>
+        <errorConditionFormula>true</errorConditionFormula>
+        <errorMessage>Insert Fail</errorMessage>
+    </validationRules>
+    <webLinks>
+        <fullName>AltavistaNews</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>true</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>true</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Altavista News</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>true</showsLocation>
+        <showsStatus>true</showsStatus>
+        <url>http://news.altavista.com/search?nc=0&amp;q={!Account_Name}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Change_Owner</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <linkType>url</linkType>
+        <masterLabel>Change Owner</masterLabel>
+        <openType>replace</openType>
+        <protected>false</protected>
+        <url>/apex/AccountChangeOwnerinitiatedBy?id={!Account.Id}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Create_Account</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Create Account</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/23.0/connection.js&quot;)} 
+{!REQUIRESCRIPT(&quot;/soap/ajax/23.0/apex.js&quot;)} 
+
+var AccountID = &quot;{!Account.Id}&quot;; 
+var objAccount = new sforce.SObject(&apos;Account&apos;); 
+objAccount.Id = AccountID; 
+objAccount.CreateAccount__c = &quot;True&quot;; 
+result = sforce.connection.update([objAccount]); 
+location.reload(true);</url>
+    </webLinks>
+    <webLinks>
+        <fullName>GoogleMaps</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Google Maps</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>http://maps.google.com/maps?f=q&amp;hl=en&amp;q={!Account_BillingStreet}+{!Account_BillingCity}+{!Account_BillingState}&amp;om=1</url>
+    </webLinks>
+    <webLinks>
+        <fullName>GoogleNews</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Google News</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>http://www.google.com/news?&amp;q={!Account_Name}&amp;btnG=Search+News</url>
+    </webLinks>
+    <webLinks>
+        <fullName>GoogleSearch</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Google Search</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>http://www.google.com/search?q={!Account_Name}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>HooversProfile</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Hoovers Profile</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>http://search.hoovers.com/cgi-bin/hol_search?which=company&amp;query_string={!Account_Name}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>SDOC__Email_Docs</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <height>600</height>
+        <linkType>url</linkType>
+        <masterLabel>Email S-Docs</masterLabel>
+        <openType>sidebar</openType>
+        <protected>false</protected>
+        <url>/apex/SDOC__SDEmail?id={!Account.Id}&amp;Object=Account</url>
+    </webLinks>
+    <webLinks>
+        <fullName>SDOC__S_Docs</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <height>600</height>
+        <linkType>url</linkType>
+        <masterLabel>S-Docs</masterLabel>
+        <openType>sidebar</openType>
+        <protected>false</protected>
+        <url>/apex/SDOC__SDCreate1?id={!Account.Id}&amp;Object=Account</url>
+    </webLinks>
+    <webLinks>
+        <fullName>YahooMaps</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>true</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>true</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Yahoo Maps</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>true</showsLocation>
+        <showsStatus>true</showsStatus>
+        <url>http://maps.yahoo.com/py/maps.py?cn={!Account_BillingCountry}&amp;csz={!Account_BillingCity}+{!Account_BillingState}+{!Account_BillingPostalCode}+&amp;addr={!Account_BillingAddress}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>ao2__Generate_Documents</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <height>600</height>
+        <linkType>page</linkType>
+        <masterLabel>Generate Documents</masterLabel>
+        <openType>sidebar</openType>
+        <page>ao2__AODocGen</page>
+        <protected>false</protected>
+    </webLinks>
+    <webLinks>
+        <fullName>ao2__Optimize</fullName>
+        <availability>online</availability>
+        <description>This button is a part of Account Optimizer application to create an Optimized Account record.</description>
+        <displayType>button</displayType>
+        <linkType>page</linkType>
+        <masterLabel>Optimize!</masterLabel>
+        <openType>replace</openType>
+        <page>ao2__AccountOptimizer</page>
+        <protected>false</protected>
+    </webLinks>
+    <webLinks>
+        <fullName>oodb1__Optimize</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <height>600</height>
+        <linkType>page</linkType>
+        <masterLabel>Optimize 2.0</masterLabel>
+        <openType>sidebar</openType>
+        <page>oodb1__AODBMain</page>
+        <protected>false</protected>
+    </webLinks>
+</CustomObject>

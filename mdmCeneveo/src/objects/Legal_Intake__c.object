@@ -1,0 +1,548 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>InDevelopment</deploymentStatus>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <fields>
+        <fullName>Account__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Company Name &amp; Address</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Company Name &amp; Address</inlineHelpText>
+        <label>Account</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipName>Legal_Intake_Forms</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Business_Unit__c</fullName>
+        <externalId>false</externalId>
+        <label>Business Unit</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Packaging</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Labels</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>POS</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Cenveo_Info__c</fullName>
+        <externalId>false</externalId>
+        <label>Information Provided by Cenveo</label>
+        <length>32768</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>10</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Contact__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Contact Name</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Contact Name</inlineHelpText>
+        <label>Contact</label>
+        <lookupFilter>
+            <active>true</active>
+            <filterItems>
+                <field>Contact.Account.Id</field>
+                <operation>equals</operation>
+                <valueField>$Source.Account__c</valueField>
+            </filterItems>
+            <isOptional>false</isOptional>
+        </lookupFilter>
+        <referenceTo>Contact</referenceTo>
+        <relationshipName>Legal_Intake_Forms</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Customer_Work__c</fullName>
+        <description>Minimum/Percent of Customer&apos;s Work, if applicable</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Minimum/Percent of Customer&apos;s Work, if applicable</inlineHelpText>
+        <label>Customer Work</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Description_of_Work__c</fullName>
+        <description>Specific Description of Work</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Specific Description of Work</inlineHelpText>
+        <label>Description of Work</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Existing_Agreements__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Please explain any existing agreements with this account.</inlineHelpText>
+        <label>Existing Agreements</label>
+        <length>32768</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>10</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Existing_Agreements_in_Place__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Please select YES if any existing agreements are in place with this account</inlineHelpText>
+        <label>Existing Agreements in Place?</label>
+        <picklist>
+            <picklistValues>
+                <fullName>No</fullName>
+                <default>true</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>GenerateForm__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>GenerateForm</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Legal_Name_of_Other_Party__c</fullName>
+        <externalId>false</externalId>
+        <label>Legal Name of Other Party</label>
+        <length>100</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Location_Address__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Affect/Producing Facility Location name &amp; address</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Affect/Producing Facility Location name &amp; address</inlineHelpText>
+        <label>Location/Address</label>
+        <referenceTo>Plant__c</referenceTo>
+        <relationshipName>Legal_Intake_Forms</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Matter_Information__c</fullName>
+        <description>Name of Company, Type of Matter and/or Name of Document</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Name of Company, Type of Matter and/or Name of Document</inlineHelpText>
+        <label>Matter Information</label>
+        <length>32768</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Html</type>
+        <visibleLines>10</visibleLines>
+    </fields>
+    <fields>
+        <fullName>NDA__c</fullName>
+        <description>Is this request for an NDA?</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Is this request for an NDA?</inlineHelpText>
+        <label>NDA</label>
+        <picklist>
+            <picklistValues>
+                <fullName>No</fullName>
+                <default>true</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Opportunity__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Opportunity</label>
+        <referenceTo>Opportunity</referenceTo>
+        <relationshipName>Legal_Intake_Forms</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Other_Parties_Info__c</fullName>
+        <externalId>false</externalId>
+        <label>Information Provided by Other Parties</label>
+        <length>32768</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>10</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Other_Work_Done__c</fullName>
+        <description>Other Work Done Currently/Historically for this Customer</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Other Work Done Currently/Historically for this Customer</inlineHelpText>
+        <label>Other Work Done</label>
+        <length>32768</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>10</visibleLines>
+    </fields>
+    <fields>
+        <fullName>PA_Freight__c</fullName>
+        <description>Price Adjustments for Freight</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Price Adjustments for Freight</inlineHelpText>
+        <label>Price Adjustments - Freight</label>
+        <length>50</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PA_Ink__c</fullName>
+        <description>Price Adjustments for Ink</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Price Adjustments for Ink</inlineHelpText>
+        <label>Price Adjustments - Ink</label>
+        <length>50</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PA_Manufacturing__c</fullName>
+        <externalId>false</externalId>
+        <label>Price Adjustments - Manufacturing</label>
+        <length>50</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PA_Paper__c</fullName>
+        <description>Price Adjustments for Paper</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Price Adjustments for Paper</inlineHelpText>
+        <label>Price Adjustments - Paper</label>
+        <length>50</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Paper__c</fullName>
+        <externalId>false</externalId>
+        <label>Paper</label>
+        <length>50</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Payment_Terms__c</fullName>
+        <description>Terms must be approved by the Credit Department</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Terms must be approved by the Credit Department</inlineHelpText>
+        <label>Payment Terms</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Net Cash 30 Days from Invoice Date</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Person_Reviewing_Terms__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Record Owner&apos;s Manager</description>
+        <externalId>false</externalId>
+        <label>Person Reviewing Terms</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Legal_Intake_Forms</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Price_Adjustments__c</fullName>
+        <externalId>false</externalId>
+        <label>Price Adjustments</label>
+        <length>50</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Purpose_of_NDA__c</fullName>
+        <externalId>false</externalId>
+        <label>Purpose of NDA</label>
+        <length>100</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Renewal_Option__c</fullName>
+        <externalId>false</externalId>
+        <label>Renewal Option</label>
+        <length>50</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Requested_Due_Date__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Please provide at least 5 business days lead time for general matters and 10 business days lead time for contract review.
+
+Do NOT  use “ASAP;” we need a definitive date.</inlineHelpText>
+        <label>Requested Due Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Services_Needed__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Please be specific in your request.  We prefer to receive documentation in a Word format so changes can be made and highlighted easily. ONCE YOUR AGREEMENT/DOCUMENT HAS BEEN SIGNED BY ALL PARTIES, PLEASE SEND THE ORIGINAL DOCUMENT TO THE LEGAL DEPARTMENt</inlineHelpText>
+        <label>Services Needed</label>
+        <length>32768</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Html</type>
+        <visibleLines>10</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Special_Provisions__c</fullName>
+        <description>Rebate/Volume Discounts/Signing Bonus or Other Special Provisions</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Rebate/Volume Discounts/Signing Bonus or Other Special Provisions</inlineHelpText>
+        <label>Special Provisions</label>
+        <length>32768</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>10</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Status__c</fullName>
+        <externalId>false</externalId>
+        <label>Status</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Draft</fullName>
+                <default>true</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Sent to Legal</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Returned</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Term__c</fullName>
+        <externalId>false</externalId>
+        <label>Term</label>
+        <length>50</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Volume_Revenue__c</fullName>
+        <externalId>false</externalId>
+        <label>Volume/Revenue</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Work__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Is the work being shipped outside of the United States?</inlineHelpText>
+        <label>Work Being Shipped outside of US?</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>No</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <label>Legal</label>
+    <listViews>
+        <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>Account__c</columns>
+        <columns>CREATEDBY_USER</columns>
+        <columns>OWNER.FIRST_NAME</columns>
+        <columns>OWNER.LAST_NAME</columns>
+        <columns>CREATED_DATE</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <nameField>
+        <label>Legal Intake Form Name</label>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Legal</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>Private</sharingModel>
+    <webLinks>
+        <fullName>Generate_Legal_Form</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Generate Legal Form</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/23.0/connection.js&quot;)} 
+{!REQUIRESCRIPT(&quot;/soap/ajax/23.0/apex.js&quot;)} 
+
+var Legal_ID = &quot;{!Legal_Intake__c.Id}&quot;; 
+var objLegalForm = new sforce.SObject(&apos;Legal_Intake__c&apos;); 
+objLegalForm.Id = Legal_ID; 
+objLegalForm.GenerateForm__c = &quot;False&quot;; 
+result = sforce.connection.update([objLegalForm]); 
+objLegalForm.GenerateForm__c = &quot;True&quot;; 
+result = sforce.connection.update([objLegalForm]); 
+location.reload(true);</url>
+    </webLinks>
+</CustomObject>

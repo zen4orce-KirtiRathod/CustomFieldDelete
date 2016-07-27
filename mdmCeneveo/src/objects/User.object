@@ -1,0 +1,1026 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>CallHighlightAction</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>DeleteBannerPhotoAction</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>DeletePhotoAction</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>EditUserAction</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>EmailHighlightAction</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>FreezeUserAction</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>LinkToSetupUserDetailAction</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>ManagePermSetsAction</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>PasswordUnlockAction</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>ResetPasswordAction</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>UpdateBannerPhotoAction</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>UpdatePhotoAction</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>UserActivationAction</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>ViewPhotoAction</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <enableFeeds>true</enableFeeds>
+    <externalSharingModel>Private</externalSharingModel>
+    <fields>
+        <fullName>Activation_Status__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(IsActive , &quot;activated&quot;,&quot;deactivated&quot;)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Activation Status</label>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Attended_Class_Training__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Checked if the user has sat through either the initial 2 hour webinar, or had an in-person initial webinar.</inlineHelpText>
+        <label>Initial Training</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Business_Unit__c</fullName>
+        <externalId>false</externalId>
+        <label>Business Unit</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Labels</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Nashua</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Packaging</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>POS</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Pr-East</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Pr-West</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Pr-Strategic</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>IT</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Purchasing</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Finance</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Corporate</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Direct</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Custom Label</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Quality Park</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Envelope</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Canadian_User__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Canadian User</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Divisional_Sales_Leader_Email__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF( Self_Divisional_Sales_Leader__c ,  Email ,  Divisional_Sales_Leader_Ref__r.Email )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Divisional Sales Leader Email</label>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Divisional_Sales_Leader_Id__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF( Self_Divisional_Sales_Leader__c ,  Id ,  Divisional_Sales_Leader_Ref__r.Id )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Divisional Sales Leader Id</label>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Divisional_Sales_Leader_Name__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF( Self_Divisional_Sales_Leader__c ,  FirstName +&apos; &apos;+ LastName ,  Divisional_Sales_Leader_Ref__r.FirstName +&apos; &apos;+ Divisional_Sales_Leader_Ref__r.LastName)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Divisional Sales Leader Name</label>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Divisional_Sales_Leader_Ref__c</fullName>
+        <externalId>false</externalId>
+        <label>Divisional Sales Leader</label>
+        <relationshipName>DivSalesLeader</relationshipName>
+        <restrictedAdminField>false</restrictedAdminField>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Hierarchy</type>
+    </fields>
+    <fields>
+        <fullName>Draw_Deficit__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>For Admin Only - Checked if Rep is currently in a Draw Deficit</inlineHelpText>
+        <label>Draw Deficit</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Dropbox_for_SF__Dropbox_User_Id__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Dropbox User Id</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ET4AE__ExactTargetForAppExchangeAdmin__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>ExactTarget for AppExchange Admin</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>ET4AE__ExactTargetForAppExchangeUser__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>ExactTarget for AppExchange User</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>ET4AE__ExactTargetPassword__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>ExactTarget Password</label>
+        <length>175</length>
+        <maskChar>asterisk</maskChar>
+        <maskType>all</maskType>
+        <required>false</required>
+        <type>EncryptedText</type>
+    </fields>
+    <fields>
+        <fullName>ET4AE__ExactTargetUsername__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>ExactTarget Username</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ET4AE__ValidExactTargetUser__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Valid ExactTarget User</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Home_Plant__c</fullName>
+        <externalId>false</externalId>
+        <label>Home Plant</label>
+        <length>50</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Initial_Training_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Initial Training Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>License_Inactive_Date__c</fullName>
+        <description>Date User became inactive.</description>
+        <externalId>false</externalId>
+        <label>License Inactive Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>ManagerId</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Hierarchy</type>
+    </fields>
+    <fields>
+        <fullName>Manager_Changed_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Manager Changed Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Most_Recent_Account_Assignment_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Most Recent Account Assignment Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Most_Recent_Account_Removal_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Most Recent Account Removal Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>NEC_JDE_R__c</fullName>
+        <caseSensitive>false</caseSensitive>
+        <description>This is the code used by National to align sales data to the sales rep. 
+This field can be removed once implementation is complete.</description>
+        <externalId>false</externalId>
+        <label>NEC - JDE OSR code</label>
+        <length>3</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Text</type>
+        <unique>true</unique>
+    </fields>
+    <fields>
+        <fullName>NEC_Rep__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>This is used to ID the sales reps who were part of the National acquisition. 
+Once fully integrated we can delete this field.</description>
+        <externalId>false</externalId>
+        <label>NEC Rep</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>NEC_SF_User_ID__c</fullName>
+        <caseSensitive>false</caseSensitive>
+        <description>This field is used as Cross reference between the NEC SF data to the Cenveo SF environment. 
+Once things have been converted and stabilized this field could be removed.</description>
+        <externalId>false</externalId>
+        <label>NEC - SF User ID</label>
+        <length>18</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Text</type>
+        <unique>true</unique>
+    </fields>
+    <fields>
+        <fullName>Notification_Sent_for_Initial__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Notification Sent for Initial</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Plant_Address__c</fullName>
+        <externalId>false</externalId>
+        <label>Plant Address</label>
+        <length>80</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Plant_City__c</fullName>
+        <externalId>false</externalId>
+        <label>Plant City</label>
+        <length>80</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Plant_State__c</fullName>
+        <externalId>false</externalId>
+        <label>Plant State</label>
+        <length>80</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Plant_ZIP__c</fullName>
+        <externalId>false</externalId>
+        <label>Plant ZIP</label>
+        <length>10</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Prod_SF_User_ID__c</fullName>
+        <externalId>false</externalId>
+        <label>Prod SF User ID</label>
+        <length>40</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Regional_Sales_Leader_Email__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF( Self_Regional_Sales_Leader__c ,  Email ,  Regional_Sales_Leader_Ref__r.Email )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Regional Sales Leader Email</label>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Regional_Sales_Leader_Id__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF( Self_Regional_Sales_Leader__c ,  Id ,  Regional_Sales_Leader_Ref__r.Id )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Regional Sales Leader Id</label>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Regional_Sales_Leader_Name__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF( Self_Regional_Sales_Leader__c ,  FirstName +&apos; &apos;+ LastName ,  Regional_Sales_Leader_Ref__r.FirstName +&apos; &apos;+ Regional_Sales_Leader_Ref__r.LastName)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Regional Sales Leader Name</label>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Regional_Sales_Leader_Ref__c</fullName>
+        <externalId>false</externalId>
+        <label>Regional Sales Leader</label>
+        <relationshipName>RegSalesLeader</relationshipName>
+        <restrictedAdminField>false</restrictedAdminField>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Hierarchy</type>
+    </fields>
+    <fields>
+        <fullName>Regional_VP__c</fullName>
+        <externalId>false</externalId>
+        <label>Regional VP</label>
+        <relationshipName>RegVP</relationshipName>
+        <restrictedAdminField>false</restrictedAdminField>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Hierarchy</type>
+    </fields>
+    <fields>
+        <fullName>SF_User_ID__c</fullName>
+        <externalId>false</externalId>
+        <formula>Id &amp;
+MID(
+&quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ012345&quot;,
+MIN(FIND(MID(Id, 5, 1), &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;), 1) * 16 +
+MIN(FIND(MID(Id, 4, 1), &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;), 1) * 8 +
+MIN(FIND(MID(Id, 3, 1), &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;), 1) * 4 +
+MIN(FIND(MID(Id, 2, 1), &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;), 1) * 2 +
+MIN(FIND(MID(Id, 1, 1), &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;), 1) * 1 + 1,
+1) &amp;
+MID(
+&quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ012345&quot;,
+MIN(FIND(MID(Id, 10, 1), &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;), 1) * 16 +
+MIN(FIND(MID(Id, 9, 1), &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;), 1) * 8 +
+MIN(FIND(MID(Id, 8, 1), &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;), 1) * 4 +
+MIN(FIND(MID(Id, 7, 1), &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;), 1) * 2 +
+MIN(FIND(MID(Id, 6, 1), &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;), 1) * 1 + 1,
+1) &amp;
+MID(
+&quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ012345&quot;,
+MIN(FIND(MID(Id, 15, 1), &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;), 1) * 16 +
+MIN(FIND(MID(Id, 14, 1), &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;), 1) * 8 +
+MIN(FIND(MID(Id, 13, 1), &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;), 1) * 4 +
+MIN(FIND(MID(Id, 12, 1), &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;), 1) * 2 +
+MIN(FIND(MID(Id, 11, 1), &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;), 1) * 1 + 1,
+1)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>SF User ID</label>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Sales_Leader_Email__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF( Self_Sales_Leader__c ,  Email ,  Sales_Leader_Ref__r.Email )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Sales Leader Email</label>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Sales_Leader_Name__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF( Self_Sales_Leader__c,  FirstName+&apos; &apos;+ LastName  ,  Sales_Leader_Ref__r.FirstName +&apos; &apos;+ Sales_Leader_Ref__r.LastName)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Sales Leader Name</label>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Sales_Leader_Ref__c</fullName>
+        <externalId>false</externalId>
+        <label>Sales Leader</label>
+        <relationshipName>SalesLeader</relationshipName>
+        <restrictedAdminField>false</restrictedAdminField>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Hierarchy</type>
+    </fields>
+    <fields>
+        <fullName>Sales_Rep_Number__c</fullName>
+        <externalId>false</externalId>
+        <label>Sales Rep Number</label>
+        <length>50</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Sales_leader_Id__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF( Self_Sales_Leader__c ,  Id ,  Sales_Leader_Ref__r.Id )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Sales leader Id</label>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Self_Divisional_Sales_Leader__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Self Divisional Sales Leader?</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Self_Regional_Sales_Leader__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Self Regional Sales Leader?</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Self_Sales_Leader__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Self Sales Leader?</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Series_1_Training_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Series 1 Training Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Series_1_Training__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Series 1 Training</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Series_2_Training_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Series 2 Training Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Series_2_Training__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Series 2 Training</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Series_3_Training_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Series 3 Training Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Series_3_Training__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Series 3 Training</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Signature__c</fullName>
+        <description>Area to link your signature in the Documents to populate the Quote letters.</description>
+        <externalId>false</externalId>
+        <label>Signature</label>
+        <length>400</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Html</type>
+        <visibleLines>11</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Today_s_Activity__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF( Manager_Changed_Date__c = Today(), &apos;Manager changed&apos; +  BR() , &apos;&apos; ) &amp; IF(Most_Recent_Account_Assignment_Date__c = Today(), &apos;Account Assigned &apos; +  BR(), &apos;&apos; ) &amp; IF(Most_Recent_Account_Removal_Date__c = Today(), &apos;Account assignment removed&apos;, &apos;&apos;)</formula>
+        <label>Today&apos;s Activity</label>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>User_Id__c</fullName>
+        <externalId>false</externalId>
+        <formula>Id</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>User Id</label>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>User_Manager_Changed_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>User Manager Changed Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>User_Manager_Id__c</fullName>
+        <externalId>false</externalId>
+        <label>User Manager Id</label>
+        <length>18</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>User_Type__c</fullName>
+        <externalId>false</externalId>
+        <label>User Type</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Sales Rep</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Intercompany Sales Rep</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Westrock_User__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Westrock User</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Westrock__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(Westrock_User__c, &apos;Yes&apos;, &apos;No&apos;)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Westrock</label>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>agf__External_ID__c</fullName>
+        <caseSensitive>true</caseSensitive>
+        <deprecated>false</deprecated>
+        <externalId>true</externalId>
+        <label>External ID</label>
+        <length>32</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Text</type>
+        <unique>true</unique>
+    </fields>
+    <fields>
+        <fullName>agf__GUS_User_Type__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Full Time Employee - This will be used to identify all FTEs in GUS
+Contractor - This will be used to identify all Contractors in GUS
+Team User - This will be used to identify all Team Users in GUS
+API user - This will be used to identify all API users in GUS</description>
+        <externalId>false</externalId>
+        <label>GUS User Type</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Full Time Employee</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Contractor</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Team User</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>API User</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>agf__Notification_Level__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Adjusts how often you are sent emails about Work.
+
+Bread &amp; Butter:  User comments and added as an Assignee
+Meat &amp; Potatoes: User comments, status changes and added as Assignee
+The Whole Enchilada: All notifications (Default)</inlineHelpText>
+        <label>Work Notification Level</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Bread &amp; Butter</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Meat &amp; Potatoes</fullName>
+                <default>true</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>The Whole Enchilada</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>agf__Show_All_Work_Comments__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Show All Work Comments</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>agf__Summary__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Summary</label>
+        <length>32000</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>agf__Team_Member_Allocation__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>HYPERLINK(&apos;/apex/adm_teammemberallocation?Id=&apos; +  Id, &apos;view&apos; )</formula>
+        <label>Team Member Allocation</label>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>agf__Wall_Preference__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Wall Preference</label>
+        <length>32768</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>agf__Work_User_Interface__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Determines which version of the Work page you will see for Bugs and User Stories.</inlineHelpText>
+        <label>Work User Interface</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Classic</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Next Generation</fullName>
+                <default>true</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>icBase__LanguageLocale__c</fullName>
+        <deprecated>false</deprecated>
+        <description>This field stored the copied language locale for use in its package</description>
+        <externalId>false</externalId>
+        <label>LanguageLocale</label>
+        <length>5</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>uas__Home_Phone__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Home Phone</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Phone</type>
+    </fields>
+    <fields>
+        <fullName>uas__Sync_to_Contact__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Check this box if you want to the User Contact Sync application to automatically synchronize this User with a Contact.</inlineHelpText>
+        <label>Sync to Contact</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Checkbox</type>
+    </fields>
+    <listViews>
+        <fullName>ActiveUsers</fullName>
+        <columns>FULL_NAME</columns>
+        <columns>CORE.USERS.USERNAME</columns>
+        <columns>MANAGER</columns>
+        <columns>CORE.USERS.LAST_LOGIN</columns>
+        <columns>CORE.USER_ROLE.NAME</columns>
+        <columns>CORE.PROFILE.NAME</columns>
+        <columns>CORE.PROFILE.USERTYPE</columns>
+        <columns>Sales_Rep_Number__c</columns>
+        <columns>CORE.USERS.DIVISION</columns>
+        <columns>CREATED_DATE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CORE.USERS.ACTIVE</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </filters>
+        <label>Active Users</label>
+    </listViews>
+    <listViews>
+        <fullName>AdminUsers</fullName>
+        <columns>FULL_NAME</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <columns>CORE.USERS.USERNAME</columns>
+        <columns>CORE.USERS.LAST_LOGIN</columns>
+        <columns>CORE.USER_ROLE.NAME</columns>
+        <columns>CORE.USERS.ACTIVE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CORE.PROFILE.NAME</field>
+            <operation>equals</operation>
+            <value>System Administrator</value>
+        </filters>
+        <label>Admin Users</label>
+    </listViews>
+    <listViews>
+        <fullName>AllUsers</fullName>
+        <columns>FULL_NAME</columns>
+        <columns>CORE.USERS.USERNAME</columns>
+        <columns>CORE.USERS.LAST_LOGIN</columns>
+        <columns>CORE.USER_ROLE.NAME</columns>
+        <columns>MANAGER</columns>
+        <columns>CORE.USERS.ACTIVE</columns>
+        <columns>CORE.PROFILE.NAME</columns>
+        <columns>Sales_Rep_Number__c</columns>
+        <filterScope>Everything</filterScope>
+        <label>All Users</label>
+    </listViews>
+    <listViews>
+        <fullName>DrawDeficit</fullName>
+        <columns>FULL_NAME</columns>
+        <columns>CORE.USERS.USERNAME</columns>
+        <columns>MANAGER</columns>
+        <columns>CORE.USERS.LAST_LOGIN</columns>
+        <columns>CORE.USER_ROLE.NAME</columns>
+        <columns>CORE.PROFILE.NAME</columns>
+        <columns>CORE.PROFILE.USERTYPE</columns>
+        <columns>Sales_Rep_Number__c</columns>
+        <columns>CREATED_DATE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CORE.USERS.ACTIVE</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </filters>
+        <filters>
+            <field>Draw_Deficit__c</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </filters>
+        <label>Draw Deficit Users</label>
+    </listViews>
+    <listViews>
+        <fullName>UserContact_Sync_List</fullName>
+        <columns>FULL_NAME</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <columns>CORE.USERS.USERNAME</columns>
+        <columns>CORE.USERS.LAST_LOGIN</columns>
+        <columns>CORE.USER_ROLE.NAME</columns>
+        <columns>CORE.PROFILE.NAME</columns>
+        <columns>MANAGER</columns>
+        <columns>uas__Sync_to_Contact__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CORE.USERS.ACTIVE</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </filters>
+        <label>UserContact Sync List</label>
+    </listViews>
+    <searchLayouts>
+        <lookupDialogsAdditionalFields>FULL_NAME</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>CORE.USER_ROLE.NAME</lookupDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>FULL_NAME</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>CORE.USER_ROLE.NAME</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>CORE.USERS.PHONE</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>CORE.USERS.EXTENSION</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>CORE.USERS.CELL</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>00Nd0000006lVDq</lookupPhoneDialogsAdditionalFields>
+        <searchFilterFields>CORE.USERS.ACTIVE</searchFilterFields>
+        <searchResultsAdditionalFields>FULL_NAME</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>CORE.USERS.TITLE</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>CORE.USERS.PHONE</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>CORE.USERS.EMAIL</searchResultsAdditionalFields>
+    </searchLayouts>
+    <sharingModel>Read</sharingModel>
+    <validationRules>
+        <fullName>System_Administrator_Access_Only</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND( ISCHANGED(  Division  ),  $Profile.Name  &lt;&gt; 
+                  &quot;System Administrator&quot; )</errorConditionFormula>
+        <errorDisplayField>Division</errorDisplayField>
+        <errorMessage>You can not change this field, please contact System Administration for assistance.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>System_Administrator_Access_Only_Dep</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND( ISCHANGED(  Division  ),  $Profile.Name  &lt;&gt; 
+                  &quot;System Administrator&quot; )</errorConditionFormula>
+        <errorDisplayField>Department</errorDisplayField>
+        <errorMessage>You can not change this field, please contact System Administration for assistance.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>System_Administrator_Access_Only_Departm</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND( ISCHANGED(   Department   ),  $Profile.Name  &lt;&gt; 
+                  &quot;System Administrator&quot; )</errorConditionFormula>
+        <errorMessage>Only a System Administrator has access to change this field.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>User_Leader_Validation</fullName>
+        <active>true</active>
+        <errorConditionFormula>OR (AND(NOT(ISNULL(Sales_Leader_Ref__c )), NOT(ISBLANK(Sales_Leader_Ref__c )),Self_Sales_Leader__c) , AND( NOT(ISNULL(Regional_Sales_Leader_Ref__c)),NOT(ISBLANK(Regional_Sales_Leader_Ref__c)),Self_Regional_Sales_Leader__c ) , AND(NOT(ISNULL(Divisional_Sales_Leader_Ref__c )) ,NOT(ISBLANK(Divisional_Sales_Leader_Ref__c )) ,Self_Divisional_Sales_Leader__c ) )</errorConditionFormula>
+        <errorMessage>You can&apos;t enter leader reference and checkboxes same time.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>User_Manager_Change_Date_Required</fullName>
+        <active>false</active>
+        <description>User Manager Change Date Required when User Manager Change Date is updated.</description>
+        <errorConditionFormula>AND( NOT(ISNEW()), ISCHANGED(ManagerId), ISNULL(User_Manager_Changed_Date__c))</errorConditionFormula>
+        <errorMessage>Please enter a value.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Validate_To_Required_Employee_Number</fullName>
+        <active>true</active>
+        <description>Validation rule to check whether employee number is not blank when creating new users</description>
+        <errorConditionFormula>ISBLANK(EmployeeNumber)</errorConditionFormula>
+        <errorMessage>Employee Number cannot be blank when adding a new user. Please contact HR for the valid Employee Number. If the user is not an Employee, contact Kathy Coates for more information.</errorMessage>
+    </validationRules>
+</CustomObject>
