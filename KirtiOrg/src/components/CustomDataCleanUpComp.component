@@ -1,0 +1,139 @@
+<apex:component controller="CustomDataCleanUpService">
+	<apex:includescript value="//code.jquery.com/jquery-1.11.1.min.js" />
+	<apex:includescript value="//cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js" />
+	<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+	<apex:stylesheet value="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
+	<apex:stylesheet value="//cdn.datatables.net/1.10.4/css/jquery.dataTables.css" />
+	<apex:stylesheet value="{!URLFOR($Resource.bootstrap_sf1_beta16, 'bootstrap-sf1-0.1.0-beta.16/dist/css/bootstrap.css')}"/>
+	<script>
+    	 j$ = jQuery.noConflict();
+    	 j$(document).ready( function () {
+      		getObjects();
+          	var dataArr = [];   
+        	j$('#example tbody').on( 'click', 'tr', function () {
+        	j$(this).toggleClass('selected');
+    		});
+   		});
+    function getObjects() {
+       	var mylstar = {!lstlstCustomObj};   
+   		j$('#example').DataTable( {
+        	data:mylstar ,
+        	columns: [
+            {
+                title: "Object Name"}
+	        ] 
+    	});
+	}
+    function getselected(){
+    var dataArr = new Array();
+    j$.each(j$("#example tr.selected"),function(){ //get each tr which has selected class
+        dataArr.push(j$(this).find('td:first').text()); //You can use this too
+        CallApexMethod(dataArr);
+    });
+    }
+    function getRemoteAccount() {
+    var dataArr = [];
+    j$.each(j$("#example tr.selected"),function(){ //get each tr which has selected class
+        dataArr.push(j$(this).find('td:first').text()); //You can use this too
+    });
+    Visualforce.remoting.Manager.invokeAction(
+        '{!$RemoteAction.CustomDataCleanUpService.displaySelectedObjects}', 
+        dataArr, 
+        function(result, event){
+            alert(result);
+            //var table = j$('#selected').DataTable();
+            //table.destroy();
+            getSelectedObjects(result[0]);
+            getDependentObjects(result[1]);
+            j$("#load").modal('show');
+            if (event.status) {
+                
+            } else if (event.type === 'exception') {
+                document.getElementById("responseErrors").innerHTML = event.message;
+            } else {
+                document.getElementById("responseErrors").innerHTML = event.message;
+            }
+        }, 
+        {escape: true}
+    	);
+        
+	}
+    function getSelectedObjects(result) {
+        debugger;
+        var lstdependent = result;   
+   		j$('#selected').DataTable({
+        	data:lstdependent,
+        	columns: [
+            { title: "Object Name"}
+	        ] 
+    	});
+	}
+    
+     function getDependentObjects(result) {
+        debugger;
+        var lstdependent = result;   
+   		j$('#dependent').DataTable({
+            
+        	data:lstdependent,
+        	columns: [
+            { title: "Object Name"}
+	        ] 
+    	});
+	}
+    
+    </script>
+    <apex:form >
+    <div class="container">
+        <div clas="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+        	<font size="5" Color="red">Custom Data Cleanup</font>
+        </div>
+        <div class="col-md-3"></div>
+        </div>
+        <div clas="row">
+            <div class="col-md-12"></div>
+        </div>
+        <div clas="row">
+        	<div class="col-md-12"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <table id="example" class="display"></table>
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-5"></div>
+            <div class="col-md-2">
+                <input type="button" value="Proceed" onclick="getRemoteAccount();"/>
+            </div>
+            <div class="col-md-5"></div>
+        </div>
+    </div>    
+    <!--<table id="example" class="display"></table>-->
+    <!--<input type="button" value="Proceed" onclick="getRemoteAccount();"/>  <!--data-toggle="modal" data-target="#load"-->
+    <!--<input type="button" value="getSelected" data-toggle="modal" data-target="#load"/>-->
+    </apex:form>
+    <apex:form >
+        <!-- Modal -->
+	<div class="modal fade" id="load" role="dialog">
+		<div class="modal-dialog modal-lg">
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Summary</h4>
+				</div>
+				<div class="modal-body" style="overflow-y: auto; height: 500px;">  
+                    <font size="5" color="red">Selected Objects</font>
+					<table id="selected" class="display"></table>
+                    <br /> <br />
+                    <font size="5" color="red">Dependent Objects</font>   
+                    <table id="dependent" class="display"></table>
+				</div>
+			</div>
+		</div>
+	</div>
+       </apex:form>
+</apex:component>
