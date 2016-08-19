@@ -1,7 +1,7 @@
 public class DomainHandlerDataCleanUp {
     Public Static integer NumberOfRecordsNotCreated = 0;
     Public Static integer NumberOfRecordsCreated = 0;
-    //Delete a list of records 
+    //Delete a list of records --
     public Static void executeMethod(list<SObject> lstOfRecords)
     {
        if(lstOfRecords.size() > 0)
