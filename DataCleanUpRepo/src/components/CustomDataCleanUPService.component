@@ -1,0 +1,127 @@
+<apex:component controller="CustomDataCleanUpService">
+    <apex:form >
+    <apex:stylesheet value="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css"></apex:stylesheet>
+    <apex:includeScript value="https://code.jquery.com/jquery-1.12.4.js"></apex:includeScript>
+    <apex:includeScript value="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></apex:includeScript>
+    <script>
+      var j$=jQuery.noConflict();
+    	j$(document).ready(function(){
+          j$("#myCusDialog").dialog({
+             autoOpen  : false,
+             modal     : true,
+             closeText:""
+		});
+        
+        j$("#dependancyCusCheck").dialog({
+             autoOpen  : false,
+             modal     : true,
+             closeText: "",
+             buttons : [{
+                  text: "Confirm",
+                  click: function() {
+                     deleteCusRecords();
+                  },
+                 style : "position: absolute; left:20px;"
+               },
+               {
+                  text: "Cancel",
+                  click: function() {                      
+                      j$(this).dialog("close");
+                  }
+               }]
+		});
+        j$("#NoCusData").dialog({
+        	autoOpen : false,
+            modal    : true,
+            closeText : "",
+            buttons : [{
+                  text: "Confirm",
+                  click: function() {
+                      j$(this).dialog("close");
+                  },
+                 style : "position: absolute; left:20px;",
+                 click : function(){
+            	deleteCusRecords();
+            }
+               },
+               {
+                  text: "Cancel",
+                  click: function() {                      
+                      j$(this).dialog("close");
+                  }
+               }]
+            });
+           
+    });
+    function showCusCount(count)
+      {
+          debugger;
+          console.log(count);
+          j$("#recordCusCount").text(count);
+      	  j$("#myCusDialog").dialog("open");
+          
+      }
+    function showDependencyCheck(dependentList)
+    { 
+        if(dependentList.length > 2)
+        {
+            j$("#dependentCusObjects").text(dependentList);
+        	j$("#dependancyCusCheck").dialog("open");
+		}
+         else
+         {
+             
+             j$("#NoRecordCusData").text();
+             j$("#NoCusData").dialog("open");
+         }
+                
+       
+    }
+</script>
+    <apex:outputPanel id="hiddenblock">
+			<apex:pagemessages /> 
+    </apex:outputPanel>
+		<apex:actionFunction action="{!checkAllCustomObj}" name="checkCustom" reRender="customTable"/> 
+     	 	<apex:actionFunction action="{!deleteCusRecords}" name="deleteCusRecords" /> 
+          
+           <apex:pageBlock title="Custom Data Clean Up" >
+        <apex:pageBlock >
+               <apex:pageBlockSection id="pageId" title="Custom Objects" columns="4" collapsible="true">
+                   <apex:pageBlockTable value="{!customWrapObjList}" var="wObj"  id="customTable" align="center" title="Custom Objects" styleClass="table">
+                       <apex:column >
+                           <apex:facet name="header" ><apex:inputCheckbox onclick="checkCustom()" value="{!customFlag}"/></apex:facet>
+                           <apex:inputCheckbox value="{!wObj.isSelected}" id="InputId" label="Object Name"/> 
+                       </apex:column>
+                       <apex:column > 
+                           <apex:facet name="header" >Object Name</apex:facet> 
+                           {!wObj.objName} 
+                       </apex:column>
+                       <apex:column > 
+                           <apex:facet name="header" >Number of Records</apex:facet> 
+                           <apex:commandLink value="See Number of Records" action="{!QueryCount}" reRender="example" oncomplete="return showCusCount('{!count}');">
+                               <apex:param name="objCount" value="{!wObj.objName}" id="RecordsCount" assignTo="{!objName}"/>
+                           </apex:commandLink>
+                          
+                           </apex:column>
+                     </apex:pageBlockTable>
+               </apex:pageBlockSection>
+               <apex:pageBlockButtons >
+                <apex:commandButton value="Delete"  action="{!dependentCustomObjList}"  reRender="hiddenblock"  oncomplete="return showDependencyCheck('{!depencustomList}');"/>
+                <apex:commandButton action="{!cancelCustomDelete}" value="Cancel" reRender="pageId"/>
+                
+               </apex:pageBlockButtons>
+            </apex:pageBlock>
+        </apex:pageBlock>
+    </apex:form>
+    <div id="myCusDialog" title = "See Number of Records">
+         <div>Number of Records - <span id="recordCusCount"></span></div>
+	</div>
+    <div id="NoCusData" title = "Dependency Check">
+         <div>Their is no dependency ..You can safely delete Records - <span id="NoRecordCusData"></span></div>
+	</div>
+    <div id = "dependancyCusCheck" title = "Dependency Check">
+        <div>
+            Your attempt to delete  could not be completed because it is associated with the following objects. If you want to delete records you have to delete these objects records also.-<span id = "dependentCusObjects"></span></div>
+        </div>   
+    <div id = "example"></div>
+</apex:component>

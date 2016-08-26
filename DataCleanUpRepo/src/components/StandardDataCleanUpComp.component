@@ -1,0 +1,26 @@
+<apex:component controller="CustomDataCleanUpService">
+    <apex:includescript value="//code.jquery.com/jquery-1.11.1.min.js" />
+	<apex:includescript value="//cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js" />
+	<script
+		src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+	<apex:stylesheet value="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
+	<apex:stylesheet value="//cdn.datatables.net/1.10.4/css/jquery.dataTables.css" />
+	<apex:stylesheet value="{!URLFOR($Resource.bootstrap_sf1_beta16, 'bootstrap-sf1-0.1.0-beta.16/dist/css/bootstrap.css')}"/>
+    <script>
+    j$ = jQuery.noConflict();
+    j$(document).ready( function () {
+      getObjects();
+   });
+   function getObjects() {
+    var mylstar = {!lstlstCustomObj};   
+   		j$('#customData').DataTable( {
+        	data:mylstar ,
+        	columns: [
+            { title: "Object Name" },
+            { title: "No of Records"}
+	        ] 
+    	});
+	} 
+    </script>
+    <table id="customData" class="display"></table>
+</apex:component>
