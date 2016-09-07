@@ -1,4 +1,0 @@
-<apex:page sidebar="false"  showHeader="false"> 
-   <c:StandardDataCleanUPService />
-    <c:CustomDataCleanUPService />
-</apex:page>
