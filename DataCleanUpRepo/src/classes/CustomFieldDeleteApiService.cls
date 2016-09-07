@@ -1,4 +1,5 @@
 public class CustomFieldDeleteApiService {
+	//Delete Fields using metadata api
     public static void deleteField(List<String> lstOfMaps,String sessionID)
     {
         MetadataService.MetadataPort service = createServiceBatch(sessionID);
@@ -8,6 +9,7 @@ public class CustomFieldDeleteApiService {
         handleDeleteResults(results[0]);
        
    }
+   //Create service 
    public static MetadataService.MetadataPort createService()
     {
         MetadataService.MetadataPort service = new MetadataService.MetadataPort();
@@ -15,6 +17,7 @@ public class CustomFieldDeleteApiService {
         service.SessionHeader.sessionId = UserInfo.getSessionId();
         return service;
     }
+    //Create Service for batch
     public static MetadataService.MetadataPort createServiceBatch(string sessionId)
     {
         MetadataService.MetadataPort service = new MetadataService.MetadataPort();
@@ -24,6 +27,7 @@ public class CustomFieldDeleteApiService {
     }
 
     public class DeleteCustomFieldsException extends Exception { }
+    //Handle Save results
 	public  static void handleSaveResults(MetadataService.SaveResult saveResult)
     {
         // Nothing to see?
@@ -49,7 +53,7 @@ public class CustomFieldDeleteApiService {
             throw new DeleteCustomFieldsException('Request failed with no specified error.');
        
     }
-	
+	//Handle Delete Results
     public static List<String> handleDeleteResults(MetadataService.DeleteResult deleteResult)
     {
         // Nothing to see?

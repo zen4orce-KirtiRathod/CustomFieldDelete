@@ -1,0 +1,54 @@
+<apex:page Controller="CustomFieldDeleteService" showHeader="false" >
+	<apex:form >
+        <script>
+        	function checkAllBoxs(ele)
+        	{
+            	 alert(ele.isSelected); 
+              
+                alert(ele.isSelected);
+            }
+        </script>
+	    <apex:pageBlock >
+            <apex:actionFunction action="{!selectedFieldEvent}" name="selectedField" reRender="selectedAllField"/>
+      <!-- Section One --->
+	    	<apex:pageBlockSection title="All Objects" columns="3">
+	      	<apex:pageBlockTable value="{!objList}" var="obj">
+	       	<apex:column >
+                <apex:facet name="header" >All Objects </apex:facet> 
+                {!obj}
+                <apex:actionSupport event="onclick" rerender="allFieldSection" action="{!showAllFields}">
+                    <apex:param name="objCount" value="{!obj}"  assignTo="{!objCount}"/>
+                </apex:actionSupport>
+            </apex:column>
+	      	</apex:pageBlockTable> 
+	   <!-- Section Two --->
+	 
+	       <apex:pageBlockTable value="{!wrapFieldList}" var="fields" id="allFieldSection" >
+	       	<apex:column >
+	            <apex:facet name="header" ><apex:inputCheckbox onclick="flagField()" onchange="" ></apex:inputCheckbox></apex:facet>
+	           <apex:inputCheckbox value="{!fields.isSelected}" id="InputId" label="Field Name" />
+                <apex:actionSupport event="onclick" rerender="allFieldSection" action="{!selectedFieldEvent}" reRender="selectedAllField" >
+                  <!--  <input type="checkbox" onclick="checkAllBoxs(this)" /> -->
+
+                    <apex:param name="objCountting" value="{!fields.objName}"  assignTo="{!selectedField}" />
+                    <apex:param name="objSelected" value="{!fields.isSelected}"  assignTo="{!flag}"/> 
+                </apex:actionSupport>
+	        </apex:column>
+	        <apex:column > 
+	            <apex:facet name="header" >Field Name</apex:facet> 
+	            {!fields.objName} 
+	       </apex:column>
+	      </apex:pageBlockTable>
+        <!-- Section Three --->
+          <apex:pageBlockTable value="{!objFieldList}" var="selectedFields" id="selectedAllField" >
+	      	<apex:column > 
+                <apex:facet name="header" >Selected Field Name</apex:facet> 
+	            {!selectedFields} 
+	       </apex:column>
+	      </apex:pageBlockTable>
+	   </apex:pageBlockSection>
+	    <apex:commandButton action="{!DeleteAll}" value="Delete" id="theButton"/>    
+	    </apex:pageBlock>
+        
+	</apex:form>
+</apex:page>
